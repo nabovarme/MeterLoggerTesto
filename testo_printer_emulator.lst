@@ -1,0 +1,1108 @@
+gplink-1.2.0 #980 (Oct 25 2013)
+Copyright (c) 1998-2013 gputils project
+Listing File Generated: 3-28-2014  13:51:48
+ 
+ 
+Address  Value    Disassembly              Source
+-------  -----    -----------              ------
+                                           ;--------------------------------------------------------
+                                           ; File Created by SDCC : free open source ANSI-C Compiler
+                                           ; Version 3.3.0 #8604 (Oct 27 2013) (Mac OS X x86_64)
+                                           ; This file was generated Fri Mar 28 13:51:48 2014
+                                           ;--------------------------------------------------------
+                                           ; PIC16 port for the Microchip 16-bit core micros
+                                           ;--------------------------------------------------------
+                                           	list	p=18f4620
+                                           	radix	dec
+                                           	CONFIG	OSC=INTIO67
+                                           	CONFIG	FCMEN=OFF
+                                           	CONFIG	IESO=OFF
+                                           	CONFIG	PWRT=OFF
+                                           	CONFIG	BOREN=SBORDIS
+                                           	CONFIG	BORV=3
+                                           	CONFIG	WDT=OFF
+                                           	CONFIG	WDTPS=32768
+                                           	CONFIG	CCP2MX=PORTC
+                                           	CONFIG	PBADEN=OFF
+                                           	CONFIG	LPT1OSC=OFF
+                                           	CONFIG	MCLRE=ON
+                                           	CONFIG	STVREN=ON
+                                           	CONFIG	LVP=ON
+                                           	CONFIG	XINST=OFF
+                                           	CONFIG	CP0=OFF
+                                           	CONFIG	CP1=OFF
+                                           	CONFIG	CP2=OFF
+                                           	CONFIG	CP3=OFF
+                                           	CONFIG	CPB=OFF
+                                           	CONFIG	CPD=OFF
+                                           	CONFIG	WRT0=OFF
+                                           	CONFIG	WRT1=OFF
+                                           	CONFIG	WRT2=OFF
+                                           	CONFIG	WRT3=OFF
+                                           	CONFIG	WRTC=OFF
+                                           	CONFIG	WRTB=OFF
+                                           	CONFIG	WRTD=OFF
+                                           	CONFIG	EBTR0=OFF
+                                           	CONFIG	EBTR1=OFF
+                                           	CONFIG	EBTR2=OFF
+                                           	CONFIG	EBTR3=OFF
+                                           	CONFIG	EBTRB=OFF
+                                           
+                                           
+                                           ;--------------------------------------------------------
+                                           ; public variables in this module
+                                           ;--------------------------------------------------------
+                                           	global	_fifo_buffer
+                                           	global	_fifo_tail
+                                           	global	_fifo_head
+                                           	global	_i
+                                           	global	_sleep_ms
+                                           	global	_sleep_tick
+                                           	global	_init_system
+                                           	global	_my_usart_open
+                                           	global	__debug
+                                           	global	_timer_0_ms
+                                           	global	_timer_1
+                                           	global	_main
+                                           
+                                           ;--------------------------------------------------------
+                                           ; extern variables in this module
+                                           ;--------------------------------------------------------
+                                           	extern	_PORTAbits
+                                           	extern	_PORTBbits
+                                           	extern	_PORTCbits
+                                           	extern	_PORTDbits
+                                           	extern	_PORTEbits
+                                           	extern	_LATAbits
+                                           	extern	_LATBbits
+                                           	extern	_LATCbits
+                                           	extern	_LATDbits
+                                           	extern	_LATEbits
+                                           	extern	_DDRAbits
+                                           	extern	_TRISAbits
+                                           	extern	_DDRBbits
+                                           	extern	_TRISBbits
+                                           	extern	_DDRCbits
+                                           	extern	_TRISCbits
+                                           	extern	_DDRDbits
+                                           	extern	_TRISDbits
+                                           	extern	_DDREbits
+                                           	extern	_TRISEbits
+                                           	extern	_OSCTUNEbits
+                                           	extern	_PIE1bits
+                                           	extern	_PIR1bits
+                                           	extern	_IPR1bits
+                                           	extern	_PIE2bits
+                                           	extern	_PIR2bits
+                                           	extern	_IPR2bits
+                                           	extern	_EECON1bits
+                                           	extern	_RCSTAbits
+                                           	extern	_TXSTAbits
+                                           	extern	_T3CONbits
+                                           	extern	_CMCONbits
+                                           	extern	_CVRCONbits
+                                           	extern	_ECCP1ASbits
+                                           	extern	_PWM1CONbits
+                                           	extern	_BAUDCONbits
+                                           	extern	_BAUDCTLbits
+                                           	extern	_CCP2CONbits
+                                           	extern	_CCP1CONbits
+                                           	extern	_ADCON2bits
+                                           	extern	_ADCON1bits
+                                           	extern	_ADCON0bits
+                                           	extern	_SSPCON2bits
+                                           	extern	_SSPCON1bits
+                                           	extern	_SSPSTATbits
+                                           	extern	_T2CONbits
+                                           	extern	_T1CONbits
+                                           	extern	_RCONbits
+                                           	extern	_WDTCONbits
+                                           	extern	_HLVDCONbits
+                                           	extern	_LVDCONbits
+                                           	extern	_OSCCONbits
+                                           	extern	_T0CONbits
+                                           	extern	_STATUSbits
+                                           	extern	_INTCON3bits
+                                           	extern	_INTCON2bits
+                                           	extern	_INTCONbits
+                                           	extern	_STKPTRbits
+                                           	extern	_stdin
+                                           	extern	_stdout
+                                           	extern	_PORTA
+                                           	extern	_PORTB
+                                           	extern	_PORTC
+                                           	extern	_PORTD
+                                           	extern	_PORTE
+                                           	extern	_LATA
+                                           	extern	_LATB
+                                           	extern	_LATC
+                                           	extern	_LATD
+                                           	extern	_LATE
+                                           	extern	_DDRA
+                                           	extern	_TRISA
+                                           	extern	_DDRB
+                                           	extern	_TRISB
+                                           	extern	_DDRC
+                                           	extern	_TRISC
+                                           	extern	_DDRD
+                                           	extern	_TRISD
+                                           	extern	_DDRE
+                                           	extern	_TRISE
+                                           	extern	_OSCTUNE
+                                           	extern	_PIE1
+                                           	extern	_PIR1
+                                           	extern	_IPR1
+                                           	extern	_PIE2
+                                           	extern	_PIR2
+                                           	extern	_IPR2
+                                           	extern	_EECON1
+                                           	extern	_EECON2
+                                           	extern	_EEDATA
+                                           	extern	_EEADR
+                                           	extern	_EEADRH
+                                           	extern	_RCSTA
+                                           	extern	_TXSTA
+                                           	extern	_TXREG
+                                           	extern	_RCREG
+                                           	extern	_SPBRG
+                                           	extern	_SPBRGH
+                                           	extern	_T3CON
+                                           	extern	_TMR3
+                                           	extern	_TMR3L
+                                           	extern	_TMR3H
+                                           	extern	_CMCON
+                                           	extern	_CVRCON
+                                           	extern	_ECCP1AS
+                                           	extern	_PWM1CON
+                                           	extern	_BAUDCON
+                                           	extern	_BAUDCTL
+                                           	extern	_CCP2CON
+                                           	extern	_CCPR2
+                                           	extern	_CCPR2L
+                                           	extern	_CCPR2H
+                                           	extern	_CCP1CON
+                                           	extern	_CCPR1
+                                           	extern	_CCPR1L
+                                           	extern	_CCPR1H
+                                           	extern	_ADCON2
+                                           	extern	_ADCON1
+                                           	extern	_ADCON0
+                                           	extern	_ADRES
+                                           	extern	_ADRESL
+                                           	extern	_ADRESH
+                                           	extern	_SSPCON2
+                                           	extern	_SSPCON1
+                                           	extern	_SSPSTAT
+                                           	extern	_SSPADD
+                                           	extern	_SSPBUF
+                                           	extern	_T2CON
+                                           	extern	_PR2
+                                           	extern	_TMR2
+                                           	extern	_T1CON
+                                           	extern	_TMR1
+                                           	extern	_TMR1L
+                                           	extern	_TMR1H
+                                           	extern	_RCON
+                                           	extern	_WDTCON
+                                           	extern	_HLVDCON
+                                           	extern	_LVDCON
+                                           	extern	_OSCCON
+                                           	extern	_T0CON
+                                           	extern	_TMR0
+                                           	extern	_TMR0L
+                                           	extern	_TMR0H
+                                           	extern	_STATUS
+                                           	extern	_FSR2L
+                                           	extern	_FSR2H
+                                           	extern	_PLUSW2
+                                           	extern	_PREINC2
+                                           	extern	_POSTDEC2
+                                           	extern	_POSTINC2
+                                           	extern	_INDF2
+                                           	extern	_BSR
+                                           	extern	_FSR1L
+                                           	extern	_FSR1H
+                                           	extern	_PLUSW1
+                                           	extern	_PREINC1
+                                           	extern	_POSTDEC1
+                                           	extern	_POSTINC1
+                                           	extern	_INDF1
+                                           	extern	_WREG
+                                           	extern	_FSR0L
+                                           	extern	_FSR0H
+                                           	extern	_PLUSW0
+                                           	extern	_PREINC0
+                                           	extern	_POSTDEC0
+                                           	extern	_POSTINC0
+                                           	extern	_INDF0
+                                           	extern	_INTCON3
+                                           	extern	_INTCON2
+                                           	extern	_INTCON
+                                           	extern	_PROD
+                                           	extern	_PRODL
+                                           	extern	_PRODH
+                                           	extern	_TABLAT
+                                           	extern	_TBLPTR
+                                           	extern	_TBLPTRL
+                                           	extern	_TBLPTRH
+                                           	extern	_TBLPTRU
+                                           	extern	_PC
+                                           	extern	_PCL
+                                           	extern	_PCLATH
+                                           	extern	_PCLATU
+                                           	extern	_STKPTR
+                                           	extern	_TOS
+                                           	extern	_TOSL
+                                           	extern	_TOSH
+                                           	extern	_TOSU
+                                           	extern	_usart_drdy
+                                           	extern	_usart_getc
+                                           	extern	_usart_putc
+                                           	extern	_usart_puts
+                                           	extern	__mullong
+                                           
+                                           ;--------------------------------------------------------
+                                           ;	Equates to used internal registers
+                                           ;--------------------------------------------------------
+                                           STATUS	equ	0xfd8
+                                           PCLATH	equ	0xffa
+                                           PCLATU	equ	0xffb
+                                           BSR	equ	0xfe0
+                                           FSR0L	equ	0xfe9
+                                           FSR0H	equ	0xfea
+                                           FSR1L	equ	0xfe1
+                                           FSR2L	equ	0xfd9
+                                           POSTDEC1	equ	0xfe5
+                                           PREINC1	equ	0xfe4
+                                           PLUSW2	equ	0xfdb
+                                           PRODL	equ	0xff3
+                                           PRODH	equ	0xff4
+                                           
+                                           
+                                           ; Internal registers
+                                           .registers	udata_ovr	0x0000
+                                           r0x00	res	1
+                                           r0x01	res	1
+                                           r0x02	res	1
+                                           r0x03	res	1
+                                           r0x04	res	1
+                                           r0x05	res	1
+                                           r0x06	res	1
+                                           r0x07	res	1
+                                           r0x08	res	1
+                                           r0x09	res	1
+                                           r0x0a	res	1
+                                           r0x0b	res	1
+                                           r0x0c	res	1
+                                           r0x0d	res	1
+                                           r0x0e	res	1
+                                           r0x0f	res	1
+                                           
+                                           udata_testo_printer_emulator_0	udata
+                                           _i	res	1
+                                           
+                                           udata_testo_printer_emulator_1	udata
+                                           _fifo_head	res	2
+                                           
+                                           udata_testo_printer_emulator_2	udata
+                                           _fifo_tail	res	2
+                                           
+                                           udata_testo_printer_emulator_3	udata
+                                           _fifo_buffer	res	100
+                                           
+                                           udata_testo_printer_emulator_4	udata
+                                           _timer_0_ms	res	4
+                                           
+                                           udata_testo_printer_emulator_5	udata
+                                           _timer_1	res	4
+                                           
+                                           ;--------------------------------------------------------
+                                           ; interrupt vector
+                                           ;--------------------------------------------------------
+                                           
+                                           ;--------------------------------------------------------
+                                           ; global & static initialisations
+                                           ;--------------------------------------------------------
+                                           ; ; Starting pCode block for absolute section
+                                           ; ;-----------------------------------------
+                                           S_testo_printer_emulator_ivec_0x1_isr_high_prio	code	0X000008
+                                           ivec_0x1_isr_high_prio:
+000008   ef68     goto    0x4d0            	GOTO	_isr_high_prio
+00000a   f002
+                                           
+                                           ; ; Starting pCode block for absolute section
+                                           ; ;-----------------------------------------
+                                           S_testo_printer_emulator_ivec_0x2_isr_low_prio	code	0X000018
+                                           ivec_0x2_isr_low_prio:
+000018   efd1     goto    0x5a2            	GOTO	_isr_low_prio
+00001a   f002
+                                           
+                                           ; I code from now on!
+                                           ; ; Starting pCode block
+                                           S_testo_printer_emulator__main	code
+                                           _main:
+                                           ;	.line	22; testo_printer_emulator.c	OSCCONbits.SCS = 0x10;
+0006ae   50d3     movf    0xd3, 0, 0       	MOVF	_OSCCONbits, W
+0006b0   0bfc     andlw   0xfc             	ANDLW	0xfc
+0006b2   6ed3     movwf   0xd3, 0          	MOVWF	_OSCCONbits
+                                           ;	.line	23; testo_printer_emulator.c	OSCCONbits.IRCF = 0x7;	// 8 MHz
+0006b4   50d3     movf    0xd3, 0, 0       	MOVF	_OSCCONbits, W
+0006b6   0b8f     andlw   0x8f             	ANDLW	0x8f
+0006b8   0970     iorlw   0x70             	IORLW	0x70
+0006ba   6ed3     movwf   0xd3, 0          	MOVWF	_OSCCONbits
+0006bc   0100     movlb   0                	BANKSEL	_timer_0_ms
+                                           ;	.line	26; testo_printer_emulator.c	timer_0_ms = 0;
+0006be   6be4     clrf    0xe4, 0x1        	CLRF	_timer_0_ms, B
+0006c0   0100     movlb   0                	BANKSEL	(_timer_0_ms + 1)
+0006c2   6be5     clrf    0xe5, 0x1        	CLRF	(_timer_0_ms + 1), B
+0006c4   0100     movlb   0                	BANKSEL	(_timer_0_ms + 2)
+0006c6   6be6     clrf    0xe6, 0x1        	CLRF	(_timer_0_ms + 2), B
+0006c8   0100     movlb   0                	BANKSEL	(_timer_0_ms + 3)
+0006ca   6be7     clrf    0xe7, 0x1        	CLRF	(_timer_0_ms + 3), B
+                                           ;	.line	28; testo_printer_emulator.c	init_system();
+0006cc   ec8e     call    0x71c, 0         	CALL	_init_system
+0006ce   f003
+                                           ;	.line	31; testo_printer_emulator.c	IPR1bits.RCIP = 0;
+0006d0   9a9f     bcf     0x9f, 0x5, 0     	BCF	_IPR1bits, 5
+                                           ;	.line	32; testo_printer_emulator.c	IPR1bits.TXIP = 0;
+0006d2   989f     bcf     0x9f, 0x4, 0     	BCF	_IPR1bits, 4
+                                           ;	.line	43; testo_printer_emulator.c	my_usart_open();
+0006d4   ecad     call    0x75a, 0         	CALL	_my_usart_open
+0006d6   f003
+                                           ;	.line	45; testo_printer_emulator.c	sleep_ms(1000);	// let stuff settle...
+0006d8   0e00     movlw   0                	MOVLW	0x00
+0006da   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0006dc   0e00     movlw   0                	MOVLW	0x00
+0006de   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0006e0   0e03     movlw   0x3              	MOVLW	0x03
+0006e2   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0006e4   0ee8     movlw   0xe8             	MOVLW	0xe8
+0006e6   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0006e8   ecc0     call    0x380, 0         	CALL	_sleep_ms
+0006ea   f001
+0006ec   0e04     movlw   0x4              	MOVLW	0x04
+0006ee   26e1     addwf   0xe1, 0x1, 0     	ADDWF	FSR1L, F
+                                           ;	.line	46; testo_printer_emulator.c	usart_puts("OpenStoker starting... serial working\n\r");
+0006f0   0e00     movlw   0                	MOVLW	UPPER(__str_0)
+0006f2   6e02     movwf   0x2, 0           	MOVWF	r0x02
+0006f4   0e05     movlw   0x5              	MOVLW	HIGH(__str_0)
+0006f6   6e01     movwf   0x1, 0           	MOVWF	r0x01
+0006f8   0e7a     movlw   0x7a             	MOVLW	LOW(__str_0)
+0006fa   6e00     movwf   0, 0             	MOVWF	r0x00
+0006fc   5002     movf    0x2, 0, 0        	MOVF	r0x02, W
+0006fe   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+000700   5001     movf    0x1, 0, 0        	MOVF	r0x01, W
+000702   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+000704   5000     movf    0, 0, 0          	MOVF	r0x00, W
+000706   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+000708   ec1b     call    0x636, 0         	CALL	_usart_puts
+00070a   f003
+00070c   0e03     movlw   0x3              	MOVLW	0x03
+00070e   26e1     addwf   0xe1, 0x1, 0     	ADDWF	FSR1L, F
+                                           ;	.line	48; testo_printer_emulator.c	TRISBbits.RB0 = 0x1;	// input
+000710   8093     bsf     0x93, 0, 0       	BSF	_TRISBbits, 0
+                                           ;	.line	49; testo_printer_emulator.c	TRISCbits.RC0 = 0x1;	// input
+000712   8094     bsf     0x94, 0, 0       	BSF	_TRISCbits, 0
+                                           ;	.line	50; testo_printer_emulator.c	TRISDbits.RD4 = 0x0;	// output
+000714   9895     bcf     0x95, 0x4, 0     	BCF	_TRISDbits, 4
+                                           ;	.line	51; testo_printer_emulator.c	PORTDbits.RD4 = 0;		// clear output
+000716   9883     bcf     0x83, 0x4, 0     	BCF	_PORTDbits, 4
+                                           _00106_DS_:
+                                           ;	.line	53; testo_printer_emulator.c	while (1) {
+000718   d7ff     bra     0x718            	BRA	_00106_DS_
+00071a   0012     return  0                	RETURN	
+                                           
+                                           ; ; Starting pCode block
+                                           S_testo_printer_emulator___debug	code
+                                           __debug:
+                                           ;	.line	249; testo_printer_emulator.c	void _debug() {
+00080e   cfd9     movff   0xfd9, 0xfe5     	MOVFF	FSR2L, POSTDEC1
+000810   ffe5
+000812   cfe1     movff   0xfe1, 0xfd9     	MOVFF	FSR1L, FSR2L
+000814   ffd9
+                                           ;	.line	254; testo_printer_emulator.c	}
+000816   cfe4     movff   0xfe4, 0xfd9     	MOVFF	PREINC1, FSR2L
+000818   ffd9
+00081a   0012     return  0                	RETURN	
+                                           
+                                           ; ; Starting pCode block
+                                           S_testo_printer_emulator__my_usart_open	code
+                                           _my_usart_open:
+                                           ;	.line	219; testo_printer_emulator.c	void my_usart_open() {
+00075a   cfd9     movff   0xfd9, 0xfe5     	MOVFF	FSR2L, POSTDEC1
+00075c   ffe5
+00075e   cfe1     movff   0xfe1, 0xfd9     	MOVFF	FSR1L, FSR2L
+000760   ffd9
+                                           ;	.line	220; testo_printer_emulator.c	SPBRG = 103;					// 8MHz => 19230 baud
+000762   0e67     movlw   0x67             	MOVLW	0x67
+000764   6eaf     movwf   0xaf, 0          	MOVWF	_SPBRG
+                                           ;	.line	221; testo_printer_emulator.c	TXSTAbits.BRGH = 1;	// (1 = high speed)
+000766   84ac     bsf     0xac, 0x2, 0     	BSF	_TXSTAbits, 2
+                                           ;	.line	222; testo_printer_emulator.c	TXSTAbits.SYNC = 0;	// (0 = asynchronous)
+000768   98ac     bcf     0xac, 0x4, 0     	BCF	_TXSTAbits, 4
+                                           ;	.line	223; testo_printer_emulator.c	BAUDCONbits.BRG16 = 1;
+00076a   86b8     bsf     0xb8, 0x3, 0     	BSF	_BAUDCONbits, 3
+                                           ;	.line	226; testo_printer_emulator.c	RCSTAbits.SPEN = 1; // (1 = serial port enabled)
+00076c   8eab     bsf     0xab, 0x7, 0     	BSF	_RCSTAbits, 7
+                                           ;	.line	229; testo_printer_emulator.c	PIE1bits.TXIE = 0; // (1 = enabled)
+00076e   989d     bcf     0x9d, 0x4, 0     	BCF	_PIE1bits, 4
+                                           ;	.line	230; testo_printer_emulator.c	IPR1bits.TXIP = 0; // USART Tx on low priority interrupt
+000770   989f     bcf     0x9f, 0x4, 0     	BCF	_IPR1bits, 4
+                                           ;	.line	233; testo_printer_emulator.c	PIE1bits.RCIE = 1; // (1 = enabled)
+000772   8a9d     bsf     0x9d, 0x5, 0     	BSF	_PIE1bits, 5
+                                           ;	.line	234; testo_printer_emulator.c	IPR1bits.RCIP = 0; // USART Rx on low priority interrupt
+000774   9a9f     bcf     0x9f, 0x5, 0     	BCF	_IPR1bits, 5
+                                           ;	.line	237; testo_printer_emulator.c	TXSTAbits.TX9 = 0; // (0 = 8-bit transmit)
+000776   9cac     bcf     0xac, 0x6, 0     	BCF	_TXSTAbits, 6
+                                           ;	.line	240; testo_printer_emulator.c	RCSTAbits.RX9 = 0; // (0 = 8-bit reception)
+000778   9cab     bcf     0xab, 0x6, 0     	BCF	_RCSTAbits, 6
+                                           ;	.line	243; testo_printer_emulator.c	RCSTAbits.CREN = 1; // (1 = Enables receiver)
+00077a   88ab     bsf     0xab, 0x4, 0     	BSF	_RCSTAbits, 4
+                                           ;	.line	246; testo_printer_emulator.c	TXSTAbits.TXEN = 1; // (1 = transmit enabled)
+00077c   8aac     bsf     0xac, 0x5, 0     	BSF	_TXSTAbits, 5
+00077e   cfe4     movff   0xfe4, 0xfd9     	MOVFF	PREINC1, FSR2L
+000780   ffd9
+000782   0012     return  0                	RETURN	
+                                           
+                                           ; ; Starting pCode block
+                                           S_testo_printer_emulator__init_system	code
+                                           _init_system:
+                                           ;	.line	159; testo_printer_emulator.c	void init_system() {
+00071c   cfd9     movff   0xfd9, 0xfe5     	MOVFF	FSR2L, POSTDEC1
+00071e   ffe5
+000720   cfe1     movff   0xfe1, 0xfd9     	MOVFF	FSR1L, FSR2L
+000722   ffd9
+                                           ;	.line	161; testo_printer_emulator.c	T0CONbits.TMR0ON = 1;
+000724   8ed5     bsf     0xd5, 0x7, 0     	BSF	_T0CONbits, 7
+                                           ;	.line	162; testo_printer_emulator.c	T0CONbits.T0PS0 = 0;
+000726   90d5     bcf     0xd5, 0, 0       	BCF	_T0CONbits, 0
+                                           ;	.line	163; testo_printer_emulator.c	T0CONbits.T0PS1 = 0;
+000728   92d5     bcf     0xd5, 0x1, 0     	BCF	_T0CONbits, 1
+                                           ;	.line	164; testo_printer_emulator.c	T0CONbits.T0PS2 = 0;	// prescaler 1:2
+00072a   94d5     bcf     0xd5, 0x2, 0     	BCF	_T0CONbits, 2
+                                           ;	.line	165; testo_printer_emulator.c	T0CONbits.T08BIT = 0;   // use timer0 16-bit counter
+00072c   9cd5     bcf     0xd5, 0x6, 0     	BCF	_T0CONbits, 6
+                                           ;	.line	166; testo_printer_emulator.c	T0CONbits.T0CS = 0;             // internal clock source
+00072e   9ad5     bcf     0xd5, 0x5, 0     	BCF	_T0CONbits, 5
+                                           ;	.line	167; testo_printer_emulator.c	T0CONbits.PSA = 1;              // disable timer0 prescaler
+000730   86d5     bsf     0xd5, 0x3, 0     	BSF	_T0CONbits, 3
+                                           ;	.line	168; testo_printer_emulator.c	INTCON2bits.TMR0IP = 1; // high priority
+000732   84f1     bsf     0xf1, 0x2, 0     	BSF	_INTCON2bits, 2
+                                           ;	.line	169; testo_printer_emulator.c	INTCONbits.T0IE = 1;    // Ensure that TMR0 Interrupt is enabled
+000734   8af2     bsf     0xf2, 0x5, 0     	BSF	_INTCONbits, 5
+                                           ;	.line	170; testo_printer_emulator.c	INTCONbits.TMR0IF = 1;  // Force Instant entry to Timer 0 Interrupt
+000736   84f2     bsf     0xf2, 0x2, 0     	BSF	_INTCONbits, 2
+                                           ;	.line	173; testo_printer_emulator.c	T1CONbits.TMR1ON = 1;
+000738   80cd     bsf     0xcd, 0, 0       	BSF	_T1CONbits, 0
+                                           ;	.line	174; testo_printer_emulator.c	T1CONbits.RD16 = 1;
+00073a   8ecd     bsf     0xcd, 0x7, 0     	BSF	_T1CONbits, 7
+                                           ;	.line	175; testo_printer_emulator.c	T1CONbits.TMR1CS = 0;   // internal clock source
+00073c   92cd     bcf     0xcd, 0x1, 0     	BCF	_T1CONbits, 1
+                                           ;	.line	176; testo_printer_emulator.c	T1CONbits.T1OSCEN = 0;  // dont put t1 on pin
+00073e   96cd     bcf     0xcd, 0x3, 0     	BCF	_T1CONbits, 3
+                                           ;	.line	177; testo_printer_emulator.c	T1CONbits.T1CKPS0 = 0;
+000740   98cd     bcf     0xcd, 0x4, 0     	BCF	_T1CONbits, 4
+                                           ;	.line	178; testo_printer_emulator.c	T1CONbits.T1CKPS1 = 0;
+000742   9acd     bcf     0xcd, 0x5, 0     	BCF	_T1CONbits, 5
+                                           ;	.line	179; testo_printer_emulator.c	IPR1bits.TMR1IP = 0;	// low priority
+000744   909f     bcf     0x9f, 0, 0       	BCF	_IPR1bits, 0
+                                           ;	.line	180; testo_printer_emulator.c	PIE1bits.TMR1IE = 1;	// Ensure that TMR1 Interrupt is enabled
+000746   809d     bsf     0x9d, 0, 0       	BSF	_PIE1bits, 0
+                                           ;	.line	181; testo_printer_emulator.c	PIR1bits.TMR1IF = 1;	// Force Instant entry to Timer 1 Interrupt
+000748   809e     bsf     0x9e, 0, 0       	BSF	_PIR1bits, 0
+                                           ;	.line	210; testo_printer_emulator.c	RCONbits.IPEN = 1;
+00074a   8ed0     bsf     0xd0, 0x7, 0     	BSF	_RCONbits, 7
+                                           ;	.line	212; testo_printer_emulator.c	INTCONbits.INT0IE = 1;		// enable ext int
+00074c   88f2     bsf     0xf2, 0x4, 0     	BSF	_INTCONbits, 4
+                                           ;	.line	213; testo_printer_emulator.c	INTCON2bits.INTEDG0 = 0;	// on falling edge
+00074e   9cf1     bcf     0xf1, 0x6, 0     	BCF	_INTCON2bits, 6
+                                           ;	.line	215; testo_printer_emulator.c	INTCONbits.PEIE = 1;
+000750   8cf2     bsf     0xf2, 0x6, 0     	BSF	_INTCONbits, 6
+                                           ;	.line	216; testo_printer_emulator.c	INTCONbits.GIE = 1;	/* Enable Global interrupts   */	
+000752   8ef2     bsf     0xf2, 0x7, 0     	BSF	_INTCONbits, 7
+000754   cfe4     movff   0xfe4, 0xfd9     	MOVFF	PREINC1, FSR2L
+000756   ffd9
+000758   0012     return  0                	RETURN	
+                                           
+                                           ; ; Starting pCode block
+                                           S_testo_printer_emulator__sleep_tick	code
+                                           _sleep_tick:
+                                           ;	.line	150; testo_printer_emulator.c	void sleep_tick(unsigned long ms) {
+000230   cfd9     movff   0xfd9, 0xfe5     	MOVFF	FSR2L, POSTDEC1
+000232   ffe5
+000234   cfe1     movff   0xfe1, 0xfd9     	MOVFF	FSR1L, FSR2L
+000236   ffd9
+000238   c000     movff   0, 0xfe5         	MOVFF	r0x00, POSTDEC1
+00023a   ffe5
+00023c   c001     movff   0x1, 0xfe5       	MOVFF	r0x01, POSTDEC1
+00023e   ffe5
+000240   c002     movff   0x2, 0xfe5       	MOVFF	r0x02, POSTDEC1
+000242   ffe5
+000244   c003     movff   0x3, 0xfe5       	MOVFF	r0x03, POSTDEC1
+000246   ffe5
+000248   c004     movff   0x4, 0xfe5       	MOVFF	r0x04, POSTDEC1
+00024a   ffe5
+00024c   c005     movff   0x5, 0xfe5       	MOVFF	r0x05, POSTDEC1
+00024e   ffe5
+000250   c006     movff   0x6, 0xfe5       	MOVFF	r0x06, POSTDEC1
+000252   ffe5
+000254   c007     movff   0x7, 0xfe5       	MOVFF	r0x07, POSTDEC1
+000256   ffe5
+000258   c008     movff   0x8, 0xfe5       	MOVFF	r0x08, POSTDEC1
+00025a   ffe5
+00025c   c009     movff   0x9, 0xfe5       	MOVFF	r0x09, POSTDEC1
+00025e   ffe5
+000260   c00a     movff   0xa, 0xfe5       	MOVFF	r0x0a, POSTDEC1
+000262   ffe5
+000264   c00b     movff   0xb, 0xfe5       	MOVFF	r0x0b, POSTDEC1
+000266   ffe5
+000268   c00c     movff   0xc, 0xfe5       	MOVFF	r0x0c, POSTDEC1
+00026a   ffe5
+00026c   c00d     movff   0xd, 0xfe5       	MOVFF	r0x0d, POSTDEC1
+00026e   ffe5
+000270   c00e     movff   0xe, 0xfe5       	MOVFF	r0x0e, POSTDEC1
+000272   ffe5
+000274   c00f     movff   0xf, 0xfe5       	MOVFF	r0x0f, POSTDEC1
+000276   ffe5
+000278   0e02     movlw   0x2              	MOVLW	0x02
+00027a   cfdb     movff   0xfdb, 0         	MOVFF	PLUSW2, r0x00
+00027c   f000
+00027e   0e03     movlw   0x3              	MOVLW	0x03
+000280   cfdb     movff   0xfdb, 0x1       	MOVFF	PLUSW2, r0x01
+000282   f001
+000284   0e04     movlw   0x4              	MOVLW	0x04
+000286   cfdb     movff   0xfdb, 0x2       	MOVFF	PLUSW2, r0x02
+000288   f002
+00028a   0e05     movlw   0x5              	MOVLW	0x05
+00028c   cfdb     movff   0xfdb, 0x3       	MOVFF	PLUSW2, r0x03
+00028e   f003
+                                           ;	.line	152; testo_printer_emulator.c	start_timer_1 = timer_1;	
+000290   c0e8     movff   0xe8, 0x4        	MOVFF	_timer_1, r0x04
+000292   f004
+000294   c0e9     movff   0xe9, 0x5        	MOVFF	(_timer_1 + 1), r0x05
+000296   f005
+000298   c0ea     movff   0xea, 0x6        	MOVFF	(_timer_1 + 2), r0x06
+00029a   f006
+00029c   c0eb     movff   0xeb, 0x7        	MOVFF	(_timer_1 + 3), r0x07
+00029e   f007
+                                           _00157_DS_:
+                                           ;	.line	155; testo_printer_emulator.c	while ( (((signed long)(timer_1 - start_timer_1) < 0) ? (-1 * (timer_1 - start_timer_1)) : (timer_1 - start_timer_1)) < ms) {
+0002a0   5004     movf    0x4, 0, 0        	MOVF	r0x04, W
+0002a2   0100     movlb   0                	BANKSEL	_timer_1
+0002a4   5de8     subwf   0xe8, 0, 0x1     	SUBWF	_timer_1, W, B
+0002a6   6e08     movwf   0x8, 0           	MOVWF	r0x08
+0002a8   5005     movf    0x5, 0, 0        	MOVF	r0x05, W
+0002aa   0100     movlb   0                	BANKSEL	(_timer_1 + 1)
+0002ac   59e9     subwfb  0xe9, 0, 0x1     	SUBWFB	(_timer_1 + 1), W, B
+0002ae   6e09     movwf   0x9, 0           	MOVWF	r0x09
+0002b0   5006     movf    0x6, 0, 0        	MOVF	r0x06, W
+0002b2   0100     movlb   0                	BANKSEL	(_timer_1 + 2)
+0002b4   59ea     subwfb  0xea, 0, 0x1     	SUBWFB	(_timer_1 + 2), W, B
+0002b6   6e0a     movwf   0xa, 0           	MOVWF	r0x0a
+0002b8   5007     movf    0x7, 0, 0        	MOVF	r0x07, W
+0002ba   0100     movlb   0                	BANKSEL	(_timer_1 + 3)
+0002bc   59eb     subwfb  0xeb, 0, 0x1     	SUBWFB	(_timer_1 + 3), W, B
+0002be   6e0b     movwf   0xb, 0           	MOVWF	r0x0b
+0002c0   5008     movf    0x8, 0, 0        	MOVF	r0x08, W
+0002c2   6e0c     movwf   0xc, 0           	MOVWF	r0x0c
+0002c4   5009     movf    0x9, 0, 0        	MOVF	r0x09, W
+0002c6   6e0d     movwf   0xd, 0           	MOVWF	r0x0d
+0002c8   500a     movf    0xa, 0, 0        	MOVF	r0x0a, W
+0002ca   6e0e     movwf   0xe, 0           	MOVWF	r0x0e
+0002cc   500b     movf    0xb, 0, 0        	MOVF	r0x0b, W
+0002ce   6e0f     movwf   0xf, 0           	MOVWF	r0x0f
+0002d0   80d8     bsf     0xd8, 0, 0       	BSF	STATUS, 0
+0002d2   ae0f     btfss   0xf, 0x7, 0      	BTFSS	r0x0f, 7
+0002d4   90d8     bcf     0xd8, 0, 0       	BCF	STATUS, 0
+0002d6   e31c     bnc     0x310            	BNC	_00162_DS_
+0002d8   500b     movf    0xb, 0, 0        	MOVF	r0x0b, W
+0002da   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0002dc   500a     movf    0xa, 0, 0        	MOVF	r0x0a, W
+0002de   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0002e0   5009     movf    0x9, 0, 0        	MOVF	r0x09, W
+0002e2   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0002e4   5008     movf    0x8, 0, 0        	MOVF	r0x08, W
+0002e6   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0002e8   0eff     movlw   0xff             	MOVLW	0xff
+0002ea   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0002ec   0eff     movlw   0xff             	MOVLW	0xff
+0002ee   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0002f0   0eff     movlw   0xff             	MOVLW	0xff
+0002f2   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0002f4   0eff     movlw   0xff             	MOVLW	0xff
+0002f6   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0002f8   ec0e     call    0x1c, 0          	CALL	__mullong
+0002fa   f000
+0002fc   6e0c     movwf   0xc, 0           	MOVWF	r0x0c
+0002fe   cff3     movff   0xff3, 0xd       	MOVFF	PRODL, r0x0d
+000300   f00d
+000302   cff4     movff   0xff4, 0xe       	MOVFF	PRODH, r0x0e
+000304   f00e
+000306   cfe9     movff   0xfe9, 0xf       	MOVFF	FSR0L, r0x0f
+000308   f00f
+00030a   0e08     movlw   0x8              	MOVLW	0x08
+00030c   26e1     addwf   0xe1, 0x1, 0     	ADDWF	FSR1L, F
+00030e   d008     bra     0x320            	BRA	_00163_DS_
+                                           _00162_DS_:
+000310   c008     movff   0x8, 0xc         	MOVFF	r0x08, r0x0c
+000312   f00c
+000314   c009     movff   0x9, 0xd         	MOVFF	r0x09, r0x0d
+000316   f00d
+000318   c00a     movff   0xa, 0xe         	MOVFF	r0x0a, r0x0e
+00031a   f00e
+00031c   c00b     movff   0xb, 0xf         	MOVFF	r0x0b, r0x0f
+00031e   f00f
+                                           _00163_DS_:
+000320   5003     movf    0x3, 0, 0        	MOVF	r0x03, W
+000322   5c0f     subwf   0xf, 0, 0        	SUBWF	r0x0f, W
+000324   e108     bnz     0x336            	BNZ	_00170_DS_
+000326   5002     movf    0x2, 0, 0        	MOVF	r0x02, W
+000328   5c0e     subwf   0xe, 0, 0        	SUBWF	r0x0e, W
+00032a   e105     bnz     0x336            	BNZ	_00170_DS_
+00032c   5001     movf    0x1, 0, 0        	MOVF	r0x01, W
+00032e   5c0d     subwf   0xd, 0, 0        	SUBWF	r0x0d, W
+000330   e102     bnz     0x336            	BNZ	_00170_DS_
+000332   5000     movf    0, 0, 0          	MOVF	r0x00, W
+000334   5c0c     subwf   0xc, 0, 0        	SUBWF	r0x0c, W
+                                           _00170_DS_:
+000336   a0d8     btfss   0xd8, 0, 0       	BTFSS	STATUS, 0
+000338   d7b3     bra     0x2a0            	BRA	_00157_DS_
+00033a   cfe4     movff   0xfe4, 0xf       	MOVFF	PREINC1, r0x0f
+00033c   f00f
+00033e   cfe4     movff   0xfe4, 0xe       	MOVFF	PREINC1, r0x0e
+000340   f00e
+000342   cfe4     movff   0xfe4, 0xd       	MOVFF	PREINC1, r0x0d
+000344   f00d
+000346   cfe4     movff   0xfe4, 0xc       	MOVFF	PREINC1, r0x0c
+000348   f00c
+00034a   cfe4     movff   0xfe4, 0xb       	MOVFF	PREINC1, r0x0b
+00034c   f00b
+00034e   cfe4     movff   0xfe4, 0xa       	MOVFF	PREINC1, r0x0a
+000350   f00a
+000352   cfe4     movff   0xfe4, 0x9       	MOVFF	PREINC1, r0x09
+000354   f009
+000356   cfe4     movff   0xfe4, 0x8       	MOVFF	PREINC1, r0x08
+000358   f008
+00035a   cfe4     movff   0xfe4, 0x7       	MOVFF	PREINC1, r0x07
+00035c   f007
+00035e   cfe4     movff   0xfe4, 0x6       	MOVFF	PREINC1, r0x06
+000360   f006
+000362   cfe4     movff   0xfe4, 0x5       	MOVFF	PREINC1, r0x05
+000364   f005
+000366   cfe4     movff   0xfe4, 0x4       	MOVFF	PREINC1, r0x04
+000368   f004
+00036a   cfe4     movff   0xfe4, 0x3       	MOVFF	PREINC1, r0x03
+00036c   f003
+00036e   cfe4     movff   0xfe4, 0x2       	MOVFF	PREINC1, r0x02
+000370   f002
+000372   cfe4     movff   0xfe4, 0x1       	MOVFF	PREINC1, r0x01
+000374   f001
+000376   cfe4     movff   0xfe4, 0         	MOVFF	PREINC1, r0x00
+000378   f000
+00037a   cfe4     movff   0xfe4, 0xfd9     	MOVFF	PREINC1, FSR2L
+00037c   ffd9
+00037e   0012     return  0                	RETURN	
+                                           
+                                           ; ; Starting pCode block
+                                           S_testo_printer_emulator__sleep_ms	code
+                                           _sleep_ms:
+                                           ;	.line	140; testo_printer_emulator.c	void sleep_ms(unsigned long ms) {
+000380   cfd9     movff   0xfd9, 0xfe5     	MOVFF	FSR2L, POSTDEC1
+000382   ffe5
+000384   cfe1     movff   0xfe1, 0xfd9     	MOVFF	FSR1L, FSR2L
+000386   ffd9
+000388   c000     movff   0, 0xfe5         	MOVFF	r0x00, POSTDEC1
+00038a   ffe5
+00038c   c001     movff   0x1, 0xfe5       	MOVFF	r0x01, POSTDEC1
+00038e   ffe5
+000390   c002     movff   0x2, 0xfe5       	MOVFF	r0x02, POSTDEC1
+000392   ffe5
+000394   c003     movff   0x3, 0xfe5       	MOVFF	r0x03, POSTDEC1
+000396   ffe5
+000398   c004     movff   0x4, 0xfe5       	MOVFF	r0x04, POSTDEC1
+00039a   ffe5
+00039c   c005     movff   0x5, 0xfe5       	MOVFF	r0x05, POSTDEC1
+00039e   ffe5
+0003a0   c006     movff   0x6, 0xfe5       	MOVFF	r0x06, POSTDEC1
+0003a2   ffe5
+0003a4   c007     movff   0x7, 0xfe5       	MOVFF	r0x07, POSTDEC1
+0003a6   ffe5
+0003a8   c008     movff   0x8, 0xfe5       	MOVFF	r0x08, POSTDEC1
+0003aa   ffe5
+0003ac   c009     movff   0x9, 0xfe5       	MOVFF	r0x09, POSTDEC1
+0003ae   ffe5
+0003b0   c00a     movff   0xa, 0xfe5       	MOVFF	r0x0a, POSTDEC1
+0003b2   ffe5
+0003b4   c00b     movff   0xb, 0xfe5       	MOVFF	r0x0b, POSTDEC1
+0003b6   ffe5
+0003b8   c00c     movff   0xc, 0xfe5       	MOVFF	r0x0c, POSTDEC1
+0003ba   ffe5
+0003bc   c00d     movff   0xd, 0xfe5       	MOVFF	r0x0d, POSTDEC1
+0003be   ffe5
+0003c0   c00e     movff   0xe, 0xfe5       	MOVFF	r0x0e, POSTDEC1
+0003c2   ffe5
+0003c4   c00f     movff   0xf, 0xfe5       	MOVFF	r0x0f, POSTDEC1
+0003c6   ffe5
+0003c8   0e02     movlw   0x2              	MOVLW	0x02
+0003ca   cfdb     movff   0xfdb, 0         	MOVFF	PLUSW2, r0x00
+0003cc   f000
+0003ce   0e03     movlw   0x3              	MOVLW	0x03
+0003d0   cfdb     movff   0xfdb, 0x1       	MOVFF	PLUSW2, r0x01
+0003d2   f001
+0003d4   0e04     movlw   0x4              	MOVLW	0x04
+0003d6   cfdb     movff   0xfdb, 0x2       	MOVFF	PLUSW2, r0x02
+0003d8   f002
+0003da   0e05     movlw   0x5              	MOVLW	0x05
+0003dc   cfdb     movff   0xfdb, 0x3       	MOVFF	PLUSW2, r0x03
+0003de   f003
+                                           ;	.line	142; testo_printer_emulator.c	start_timer_0_ms = timer_0_ms;	
+0003e0   c0e4     movff   0xe4, 0x4        	MOVFF	_timer_0_ms, r0x04
+0003e2   f004
+0003e4   c0e5     movff   0xe5, 0x5        	MOVFF	(_timer_0_ms + 1), r0x05
+0003e6   f005
+0003e8   c0e6     movff   0xe6, 0x6        	MOVFF	(_timer_0_ms + 2), r0x06
+0003ea   f006
+0003ec   c0e7     movff   0xe7, 0x7        	MOVFF	(_timer_0_ms + 3), r0x07
+0003ee   f007
+                                           _00139_DS_:
+                                           ;	.line	145; testo_printer_emulator.c	while ( (((signed long)(timer_0_ms - start_timer_0_ms) < 0) ? (-1 * (timer_0_ms - start_timer_0_ms)) : (timer_0_ms - start_timer_0_ms)) < ms) {
+0003f0   5004     movf    0x4, 0, 0        	MOVF	r0x04, W
+0003f2   0100     movlb   0                	BANKSEL	_timer_0_ms
+0003f4   5de4     subwf   0xe4, 0, 0x1     	SUBWF	_timer_0_ms, W, B
+0003f6   6e08     movwf   0x8, 0           	MOVWF	r0x08
+0003f8   5005     movf    0x5, 0, 0        	MOVF	r0x05, W
+0003fa   0100     movlb   0                	BANKSEL	(_timer_0_ms + 1)
+0003fc   59e5     subwfb  0xe5, 0, 0x1     	SUBWFB	(_timer_0_ms + 1), W, B
+0003fe   6e09     movwf   0x9, 0           	MOVWF	r0x09
+000400   5006     movf    0x6, 0, 0        	MOVF	r0x06, W
+000402   0100     movlb   0                	BANKSEL	(_timer_0_ms + 2)
+000404   59e6     subwfb  0xe6, 0, 0x1     	SUBWFB	(_timer_0_ms + 2), W, B
+000406   6e0a     movwf   0xa, 0           	MOVWF	r0x0a
+000408   5007     movf    0x7, 0, 0        	MOVF	r0x07, W
+00040a   0100     movlb   0                	BANKSEL	(_timer_0_ms + 3)
+00040c   59e7     subwfb  0xe7, 0, 0x1     	SUBWFB	(_timer_0_ms + 3), W, B
+00040e   6e0b     movwf   0xb, 0           	MOVWF	r0x0b
+000410   5008     movf    0x8, 0, 0        	MOVF	r0x08, W
+000412   6e0c     movwf   0xc, 0           	MOVWF	r0x0c
+000414   5009     movf    0x9, 0, 0        	MOVF	r0x09, W
+000416   6e0d     movwf   0xd, 0           	MOVWF	r0x0d
+000418   500a     movf    0xa, 0, 0        	MOVF	r0x0a, W
+00041a   6e0e     movwf   0xe, 0           	MOVWF	r0x0e
+00041c   500b     movf    0xb, 0, 0        	MOVF	r0x0b, W
+00041e   6e0f     movwf   0xf, 0           	MOVWF	r0x0f
+000420   80d8     bsf     0xd8, 0, 0       	BSF	STATUS, 0
+000422   ae0f     btfss   0xf, 0x7, 0      	BTFSS	r0x0f, 7
+000424   90d8     bcf     0xd8, 0, 0       	BCF	STATUS, 0
+000426   e31c     bnc     0x460            	BNC	_00144_DS_
+000428   500b     movf    0xb, 0, 0        	MOVF	r0x0b, W
+00042a   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+00042c   500a     movf    0xa, 0, 0        	MOVF	r0x0a, W
+00042e   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+000430   5009     movf    0x9, 0, 0        	MOVF	r0x09, W
+000432   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+000434   5008     movf    0x8, 0, 0        	MOVF	r0x08, W
+000436   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+000438   0eff     movlw   0xff             	MOVLW	0xff
+00043a   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+00043c   0eff     movlw   0xff             	MOVLW	0xff
+00043e   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+000440   0eff     movlw   0xff             	MOVLW	0xff
+000442   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+000444   0eff     movlw   0xff             	MOVLW	0xff
+000446   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+000448   ec0e     call    0x1c, 0          	CALL	__mullong
+00044a   f000
+00044c   6e0c     movwf   0xc, 0           	MOVWF	r0x0c
+00044e   cff3     movff   0xff3, 0xd       	MOVFF	PRODL, r0x0d
+000450   f00d
+000452   cff4     movff   0xff4, 0xe       	MOVFF	PRODH, r0x0e
+000454   f00e
+000456   cfe9     movff   0xfe9, 0xf       	MOVFF	FSR0L, r0x0f
+000458   f00f
+00045a   0e08     movlw   0x8              	MOVLW	0x08
+00045c   26e1     addwf   0xe1, 0x1, 0     	ADDWF	FSR1L, F
+00045e   d008     bra     0x470            	BRA	_00145_DS_
+                                           _00144_DS_:
+000460   c008     movff   0x8, 0xc         	MOVFF	r0x08, r0x0c
+000462   f00c
+000464   c009     movff   0x9, 0xd         	MOVFF	r0x09, r0x0d
+000466   f00d
+000468   c00a     movff   0xa, 0xe         	MOVFF	r0x0a, r0x0e
+00046a   f00e
+00046c   c00b     movff   0xb, 0xf         	MOVFF	r0x0b, r0x0f
+00046e   f00f
+                                           _00145_DS_:
+000470   5003     movf    0x3, 0, 0        	MOVF	r0x03, W
+000472   5c0f     subwf   0xf, 0, 0        	SUBWF	r0x0f, W
+000474   e108     bnz     0x486            	BNZ	_00152_DS_
+000476   5002     movf    0x2, 0, 0        	MOVF	r0x02, W
+000478   5c0e     subwf   0xe, 0, 0        	SUBWF	r0x0e, W
+00047a   e105     bnz     0x486            	BNZ	_00152_DS_
+00047c   5001     movf    0x1, 0, 0        	MOVF	r0x01, W
+00047e   5c0d     subwf   0xd, 0, 0        	SUBWF	r0x0d, W
+000480   e102     bnz     0x486            	BNZ	_00152_DS_
+000482   5000     movf    0, 0, 0          	MOVF	r0x00, W
+000484   5c0c     subwf   0xc, 0, 0        	SUBWF	r0x0c, W
+                                           _00152_DS_:
+000486   a0d8     btfss   0xd8, 0, 0       	BTFSS	STATUS, 0
+000488   d7b3     bra     0x3f0            	BRA	_00139_DS_
+00048a   cfe4     movff   0xfe4, 0xf       	MOVFF	PREINC1, r0x0f
+00048c   f00f
+00048e   cfe4     movff   0xfe4, 0xe       	MOVFF	PREINC1, r0x0e
+000490   f00e
+000492   cfe4     movff   0xfe4, 0xd       	MOVFF	PREINC1, r0x0d
+000494   f00d
+000496   cfe4     movff   0xfe4, 0xc       	MOVFF	PREINC1, r0x0c
+000498   f00c
+00049a   cfe4     movff   0xfe4, 0xb       	MOVFF	PREINC1, r0x0b
+00049c   f00b
+00049e   cfe4     movff   0xfe4, 0xa       	MOVFF	PREINC1, r0x0a
+0004a0   f00a
+0004a2   cfe4     movff   0xfe4, 0x9       	MOVFF	PREINC1, r0x09
+0004a4   f009
+0004a6   cfe4     movff   0xfe4, 0x8       	MOVFF	PREINC1, r0x08
+0004a8   f008
+0004aa   cfe4     movff   0xfe4, 0x7       	MOVFF	PREINC1, r0x07
+0004ac   f007
+0004ae   cfe4     movff   0xfe4, 0x6       	MOVFF	PREINC1, r0x06
+0004b0   f006
+0004b2   cfe4     movff   0xfe4, 0x5       	MOVFF	PREINC1, r0x05
+0004b4   f005
+0004b6   cfe4     movff   0xfe4, 0x4       	MOVFF	PREINC1, r0x04
+0004b8   f004
+0004ba   cfe4     movff   0xfe4, 0x3       	MOVFF	PREINC1, r0x03
+0004bc   f003
+0004be   cfe4     movff   0xfe4, 0x2       	MOVFF	PREINC1, r0x02
+0004c0   f002
+0004c2   cfe4     movff   0xfe4, 0x1       	MOVFF	PREINC1, r0x01
+0004c4   f001
+0004c6   cfe4     movff   0xfe4, 0         	MOVFF	PREINC1, r0x00
+0004c8   f000
+0004ca   cfe4     movff   0xfe4, 0xfd9     	MOVFF	PREINC1, FSR2L
+0004cc   ffd9
+0004ce   0012     return  0                	RETURN	
+                                           
+                                           ; ; Starting pCode block
+                                           S_testo_printer_emulator__isr_low_prio	code
+                                           _isr_low_prio:
+                                           ;	.line	121; testo_printer_emulator.c	static void isr_low_prio(void) __interrupt 2 {
+0005a2   cfd8     movff   0xfd8, 0xfe5     	MOVFF	STATUS, POSTDEC1
+0005a4   ffe5
+0005a6   cfe0     movff   0xfe0, 0xfe5     	MOVFF	BSR, POSTDEC1
+0005a8   ffe5
+0005aa   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0005ac   cff3     movff   0xff3, 0xfe5     	MOVFF	PRODL, POSTDEC1
+0005ae   ffe5
+0005b0   cff4     movff   0xff4, 0xfe5     	MOVFF	PRODH, POSTDEC1
+0005b2   ffe5
+0005b4   cfe9     movff   0xfe9, 0xfe5     	MOVFF	FSR0L, POSTDEC1
+0005b6   ffe5
+0005b8   cfea     movff   0xfea, 0xfe5     	MOVFF	FSR0H, POSTDEC1
+0005ba   ffe5
+0005bc   cffa     movff   0xffa, 0xfe5     	MOVFF	PCLATH, POSTDEC1
+0005be   ffe5
+0005c0   cffb     movff   0xffb, 0xfe5     	MOVFF	PCLATU, POSTDEC1
+0005c2   ffe5
+0005c4   cfd9     movff   0xfd9, 0xfe5     	MOVFF	FSR2L, POSTDEC1
+0005c6   ffe5
+0005c8   cfe1     movff   0xfe1, 0xfd9     	MOVFF	FSR1L, FSR2L
+0005ca   ffd9
+0005cc   c000     movff   0, 0xfe5         	MOVFF	r0x00, POSTDEC1
+0005ce   ffe5
+                                           ;	.line	124; testo_printer_emulator.c	if (PIR1bits.TMR1IF) {
+0005d0   a09e     btfss   0x9e, 0, 0       	BTFSS	_PIR1bits, 0
+0005d2   d010     bra     0x5f4            	BRA	_00123_DS_
+                                           ;	.line	125; testo_printer_emulator.c	TMR1H = (unsigned char)(TIMER1_RELOAD >> 8);    // 262,158ms @ 8MHz
+0005d4   0ef8     movlw   0xf8             	MOVLW	0xf8
+0005d6   6ecf     movwf   0xcf, 0          	MOVWF	_TMR1H
+                                           ;	.line	126; testo_printer_emulator.c	TMR1L = (unsigned char)TIMER1_RELOAD;
+0005d8   0e53     movlw   0x53             	MOVLW	0x53
+0005da   6ece     movwf   0xce, 0          	MOVWF	_TMR1L
+                                           ;	.line	127; testo_printer_emulator.c	PIR1bits.TMR1IF = 0;    /* Clear the Timer Flag  */
+0005dc   909e     bcf     0x9e, 0, 0       	BCF	_PIR1bits, 0
+0005de   0100     movlb   0                	BANKSEL	_timer_0_ms
+                                           ;	.line	128; testo_printer_emulator.c	timer_0_ms++;
+0005e0   2be4     incf    0xe4, 0x1, 0x1   	INCF	_timer_0_ms, F, B
+0005e2   e308     bnc     0x5f4            	BNC	_00123_DS_
+0005e4   0100     movlb   0                	BANKSEL	(_timer_0_ms + 1)
+0005e6   2be5     incf    0xe5, 0x1, 0x1   	INCF	(_timer_0_ms + 1), F, B
+0005e8   e305     bnc     0x5f4            	BNC	_00123_DS_
+0005ea   0100     movlb   0                	BANKSEL	(_timer_0_ms + 2)
+0005ec   3fe6     incfsz  0xe6, 0x1, 0x1   	INCFSZ	(_timer_0_ms + 2), F, B
+0005ee   d002     bra     0x5f4            	BRA	_10185_DS_
+0005f0   0100     movlb   0                	BANKSEL	(_timer_0_ms + 3)
+0005f2   2be7     incf    0xe7, 0x1, 0x1   	INCF	(_timer_0_ms + 3), F, B
+                                           _10185_DS_:
+                                           _00134_DS_:
+                                           _00123_DS_:
+                                           ;	.line	132; testo_printer_emulator.c	if (usart_drdy()) {
+0005f4   ec0e     call    0x81c, 0         	CALL	_usart_drdy
+0005f6   f004
+0005f8   6e00     movwf   0, 0             	MOVWF	r0x00
+0005fa   5000     movf    0, 0, 0          	MOVF	r0x00, W
+0005fc   e006     bz      0x60a            	BZ	_00126_DS_
+                                           ;	.line	134; testo_printer_emulator.c	c = usart_getc();
+0005fe   ecc2     call    0x784, 0         	CALL	_usart_getc
+000600   f003
+000602   6e00     movwf   0, 0             	MOVWF	r0x00
+                                           ;	.line	135; testo_printer_emulator.c	usart_putc(c);
+000604   5000     movf    0, 0, 0          	MOVF	r0x00, W
+000606   ecff     call    0x7fe, 0         	CALL	_usart_putc
+000608   f003
+                                           _00126_DS_:
+00060a   cfe4     movff   0xfe4, 0         	MOVFF	PREINC1, r0x00
+00060c   f000
+00060e   cfe4     movff   0xfe4, 0xfd9     	MOVFF	PREINC1, FSR2L
+000610   ffd9
+000612   cfe4     movff   0xfe4, 0xffb     	MOVFF	PREINC1, PCLATU
+000614   fffb
+000616   cfe4     movff   0xfe4, 0xffa     	MOVFF	PREINC1, PCLATH
+000618   fffa
+00061a   cfe4     movff   0xfe4, 0xfea     	MOVFF	PREINC1, FSR0H
+00061c   ffea
+00061e   cfe4     movff   0xfe4, 0xfe9     	MOVFF	PREINC1, FSR0L
+000620   ffe9
+000622   cfe4     movff   0xfe4, 0xff4     	MOVFF	PREINC1, PRODH
+000624   fff4
+000626   cfe4     movff   0xfe4, 0xff3     	MOVFF	PREINC1, PRODL
+000628   fff3
+00062a   50e4     movf    0xe4, 0, 0       	MOVF	PREINC1, W
+00062c   cfe4     movff   0xfe4, 0xfe0     	MOVFF	PREINC1, BSR
+00062e   ffe0
+000630   cfe4     movff   0xfe4, 0xfd8     	MOVFF	PREINC1, STATUS
+000632   ffd8
+000634   0010     retfie  0                	RETFIE	
+                                           
+                                           ; ; Starting pCode block
+                                           S_testo_printer_emulator__isr_high_prio	code
+                                           _isr_high_prio:
+                                           ;	.line	65; testo_printer_emulator.c	static void isr_high_prio(void) __interrupt 1 {
+0004d0   cfd8     movff   0xfd8, 0xfe5     	MOVFF	STATUS, POSTDEC1
+0004d2   ffe5
+0004d4   cfe0     movff   0xfe0, 0xfe5     	MOVFF	BSR, POSTDEC1
+0004d6   ffe5
+0004d8   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
+0004da   cff3     movff   0xff3, 0xfe5     	MOVFF	PRODL, POSTDEC1
+0004dc   ffe5
+0004de   cff4     movff   0xff4, 0xfe5     	MOVFF	PRODH, POSTDEC1
+0004e0   ffe5
+0004e2   cfe9     movff   0xfe9, 0xfe5     	MOVFF	FSR0L, POSTDEC1
+0004e4   ffe5
+0004e6   cfea     movff   0xfea, 0xfe5     	MOVFF	FSR0H, POSTDEC1
+0004e8   ffe5
+0004ea   cffa     movff   0xffa, 0xfe5     	MOVFF	PCLATH, POSTDEC1
+0004ec   ffe5
+0004ee   cffb     movff   0xffb, 0xfe5     	MOVFF	PCLATU, POSTDEC1
+0004f0   ffe5
+0004f2   cfd9     movff   0xfd9, 0xfe5     	MOVFF	FSR2L, POSTDEC1
+0004f4   ffe5
+0004f6   cfe1     movff   0xfe1, 0xfd9     	MOVFF	FSR1L, FSR2L
+0004f8   ffd9
+                                           ;	.line	66; testo_printer_emulator.c	if (INTCONbits.INT0IF) {
+0004fa   a2f2     btfss   0xf2, 0x1, 0     	BTFSS	_INTCONbits, 1
+0004fc   d023     bra     0x544            	BRA	_00114_DS_
+                                           ;	.line	67; testo_printer_emulator.c	INTCONbits.INT0IF = 0;	/* Clear Interrupt Flag */
+0004fe   92f2     bcf     0xf2, 0x1, 0     	BCF	_INTCONbits, 1
+                                           ;	.line	73; testo_printer_emulator.c	PORTDbits.RD4 = 0x1;
+000500   8883     bsf     0x83, 0x4, 0     	BSF	_PORTDbits, 4
+000502   0000     nop                      	nop
+000504   0000     nop                      	nop
+000506   0000     nop                      	nop
+000508   0000     nop                      	nop
+00050a   0000     nop                      	nop
+00050c   0000     nop                      	nop
+00050e   0000     nop                      	nop
+000510   0000     nop                      	nop
+000512   0000     nop                      	nop
+000514   0000     nop                      	nop
+000516   0000     nop                      	nop
+000518   0000     nop                      	nop
+00051a   0000     nop                      	nop
+00051c   0000     nop                      	nop
+00051e   0000     nop                      	nop
+000520   0000     nop                      	nop
+000522   0000     nop                      	nop
+000524   0000     nop                      	nop
+000526   0000     nop                      	nop
+000528   0000     nop                      	nop
+00052a   0000     nop                      	nop
+00052c   0000     nop                      	nop
+00052e   0000     nop                      	nop
+000530   0000     nop                      	nop
+000532   0000     nop                      	nop
+000534   0000     nop                      	nop
+000536   0000     nop                      	nop
+000538   0000     nop                      	nop
+00053a   0000     nop                      	nop
+00053c   0000     nop                      	nop
+00053e   0000     nop                      	nop
+000540   0000     nop                      	nop
+                                           	
+                                           ;	.line	111; testo_printer_emulator.c	PORTDbits.RD4 = 0x0;
+000542   9883     bcf     0x83, 0x4, 0     	BCF	_PORTDbits, 4
+                                           _00114_DS_:
+                                           ;	.line	114; testo_printer_emulator.c	if (INTCONbits.TMR0IF) {
+000544   a4f2     btfss   0xf2, 0x2, 0     	BTFSS	_INTCONbits, 2
+000546   d005     bra     0x552            	BRA	_00117_DS_
+                                           ;	.line	115; testo_printer_emulator.c	TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
+000548   0efc     movlw   0xfc             	MOVLW	0xfc
+00054a   6ed7     movwf   0xd7, 0          	MOVWF	_TMR0H
+                                           ;	.line	116; testo_printer_emulator.c	TMR0L = (unsigned char)TIMER0_RELOAD;   /* Reload the Timer ASAP */
+00054c   0ec8     movlw   0xc8             	MOVLW	0xc8
+00054e   6ed6     movwf   0xd6, 0          	MOVWF	_TMR0L
+                                           ;	.line	117; testo_printer_emulator.c	INTCONbits.TMR0IF = 0;  /* Clear the Timer Flag  */
+000550   94f2     bcf     0xf2, 0x2, 0     	BCF	_INTCONbits, 2
+                                           _00117_DS_:
+000552   cfe4     movff   0xfe4, 0xfd9     	MOVFF	PREINC1, FSR2L
+000554   ffd9
+000556   cfe4     movff   0xfe4, 0xffb     	MOVFF	PREINC1, PCLATU
+000558   fffb
+00055a   cfe4     movff   0xfe4, 0xffa     	MOVFF	PREINC1, PCLATH
+00055c   fffa
+00055e   cfe4     movff   0xfe4, 0xfea     	MOVFF	PREINC1, FSR0H
+000560   ffea
+000562   cfe4     movff   0xfe4, 0xfe9     	MOVFF	PREINC1, FSR0L
+000564   ffe9
+000566   cfe4     movff   0xfe4, 0xff4     	MOVFF	PREINC1, PRODH
+000568   fff4
+00056a   cfe4     movff   0xfe4, 0xff3     	MOVFF	PREINC1, PRODL
+00056c   fff3
+00056e   50e4     movf    0xe4, 0, 0       	MOVF	PREINC1, W
+000570   cfe4     movff   0xfe4, 0xfe0     	MOVFF	PREINC1, BSR
+000572   ffe0
+000574   cfe4     movff   0xfe4, 0xfd8     	MOVFF	PREINC1, STATUS
+000576   ffd8
+000578   0010     retfie  0                	RETFIE	
+                                           
+                                           ; ; Starting pCode block
+                                           __str_0:
+00057a   704f     btg     0x4f, 0, 0       	DB	0x4f, 0x70, 0x65, 0x6e, 0x53, 0x74, 0x6f, 0x6b, 0x65, 0x72, 0x20, 0x73
+00057c   6e65     movwf   0x65, 0          
+00057e   7453     btg     0x53, 0x2, 0     
+000580   6b6f     clrf    0x6f, 0x1        
+000582   7265     btg     0x65, 0x1, 0     
+000584   7320     btg     0x20, 0x1, 0x1   
+000586   6174     cpfslt  0x74, 0x1        	DB	0x74, 0x61, 0x72, 0x74, 0x69, 0x6e, 0x67, 0x2e, 0x2e, 0x2e, 0x20, 0x73
+000588   7472     btg     0x72, 0x2, 0     
+00058a   6e69     movwf   0x69, 0          
+00058c   2e67     decfsz  0x67, 0x1, 0     
+00058e   2e2e     decfsz  0x2e, 0x1, 0     
+000590   7320     btg     0x20, 0x1, 0x1   
+000592   7265     btg     0x65, 0x1, 0     	DB	0x65, 0x72, 0x69, 0x61, 0x6c, 0x20, 0x77, 0x6f, 0x72, 0x6b, 0x69, 0x6e
+000594   6169     cpfslt  0x69, 0x1        
+000596   206c     addwfc  0x6c, 0, 0       
+000598   6f77     movwf   0x77, 0x1        
+00059a   6b72     clrf    0x72, 0x1        
+00059c   6e69     movwf   0x69, 0          
+00059e   0a67     xorlw   0x67             	DB	0x67, 0x0a, 0x0d, 0x00
+0005a0   000d     tblwt   *+               
+                                           
+                                           
+                                           ; Statistics:
+                                           ; code size:	 1232 (0x04d0) bytes ( 0.94%)
+                                           ;           	  616 (0x0268) words
+                                           ; udata size:	  113 (0x0071) bytes ( 2.94%)
+                                           ; access size:	   16 (0x0010) bytes
+                                           
+                                           
+                                           	end
