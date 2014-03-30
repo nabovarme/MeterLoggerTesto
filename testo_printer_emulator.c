@@ -20,7 +20,6 @@ volatile unsigned char fifo_buffer[QUEUE_SIZE];
 enum ir_state_t {
 	INIT_STATE,
 	START_BIT_WAIT,
-	ERR_CORR_WAIT,
 	DATA_WAIT
 };
 
@@ -28,9 +27,7 @@ typedef struct {
 	enum ir_state_t state;
 	unsigned char start_bit;
 	unsigned char start_bit_len;
-	unsigned char err_corr_bits;
-	unsigned char err_corr_bits_len;
-	unsigned char data;
+	unsigned int data;
 	unsigned char data_len;
 	
 } ir_proto_t;
@@ -106,9 +103,9 @@ static void isr_high_prio(void) __interrupt 1 {
 						ir_proto.start_bit_len++;
 					}
 					else {
-						ir_proto.err_corr_bits = 0;
-						ir_proto.err_corr_bits_len = 0;
-						ir_proto.state = ERR_CORR_WAIT;
+						ir_proto.data = 0;
+						ir_proto.data_len = 0;
+						ir_proto.state = DATA_WAIT;
 						_debug();
 					}
 				}
@@ -117,69 +114,14 @@ static void isr_high_prio(void) __interrupt 1 {
 					ir_proto.state = START_BIT_WAIT;
 				}
 				break;
-			case ERR_CORR_WAIT:
-				if (ir_proto.err_corr_bits_len < 4) {
-					if (((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) || ((3 * TICK_LOW < timer_0) && (timer_0 < 3 * TICK_HIGH))) {
-						// phase shift
-						if ((ir_proto.err_corr_bits & 1) != 0) {
-							// previous bit is set
-							ir_proto.err_corr_bits << 1;		// bitshift once to left
-							ir_proto.err_corr_bits &= 0b1110;	// and clear bit 0
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-							_debug();
-#endif
-						}
-						else {
-							// previous bit is zero
-							ir_proto.err_corr_bits << 1;		// bitshift once to left
-							ir_proto.err_corr_bits |= 0b0001;	// and set bit 0
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-							_debug();
-							_debug();
-							_debug();
-#endif
-						}
-					}
-					else if ((2 * TICK_LOW < timer_0) && (timer_0 < 2 * TICK_HIGH)) {
-						// in phase
-						if ((ir_proto.err_corr_bits & 1) != 0) {
-							// previous bit is set
-							ir_proto.err_corr_bits << 1;		// bitshift once to left
-							ir_proto.err_corr_bits |= 0b0001;	// and set bit 0
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-							_debug();
-							_debug();
-							_debug();
-#endif
-						}
-						else {
-							// previous bit is zero
-							ir_proto.err_corr_bits << 1;		// bitshift once to left
-							ir_proto.err_corr_bits &= 0b1110;	// and clear bit 0
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-							_debug();
-#endif
-						}
-					}
-					else {
-						ir_proto.state = INIT_STATE;
-					}
-					ir_proto.err_corr_bits_len++;
-				}
-				else {
-					ir_proto.data = 0x00;
-					ir_proto.state = INIT_STATE;//DATA_WAIT;
-				}
-				break;
-#ifdef PROCESS_DATA
 			case DATA_WAIT:
-				if (ir_proto.data_len < 8) {
+				if (ir_proto.data_len < 12) {
 					if (((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) || ((3 * TICK_LOW < timer_0) && (timer_0 < 3 * TICK_HIGH))) {
 						// phase shift
 						if ((ir_proto.data & 1) != 0) {
 							// previous bit is set
 							ir_proto.data << 1;		// bitshift once to left
-							ir_proto.data &= 0b1110;	// and clear bit 0
+							ir_proto.data &= 0b111111111110;	// and clear bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug();
 #endif
@@ -187,7 +129,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						else {
 							// previous bit is zero
 							ir_proto.data << 1;		// bitshift once to left
-							ir_proto.data |= 0b0001;	// and set bit 0
+							ir_proto.data |= 0b0000000000001;	// and set bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug();
 							_debug();
@@ -200,7 +142,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						if ((ir_proto.data & 1) != 0) {
 							// previous bit is set
 							ir_proto.data << 1;		// bitshift once to left
-							ir_proto.data |= 0b0001;	// and set bit 0
+							ir_proto.data |= 0b0000000000001;	// and set bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug();
 							_debug();
@@ -210,7 +152,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						else {
 							// previous bit is zero
 							ir_proto.data << 1;		// bitshift once to left
-							ir_proto.data &= 0b1110;	// and clear bit 0
+							ir_proto.data &= 0b111111111110;	// and clear bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug();
 #endif
@@ -222,11 +164,13 @@ static void isr_high_prio(void) __interrupt 1 {
 					ir_proto.data_len++;
 				}
 				else {
+					// frame received!
+					// calculate error correction and send via serial port
+					usart_putc((unsigned char)ir_proto.data);
 					ir_proto.data = 0x00;
 					ir_proto.state = INIT_STATE;
 				}
 				break;
-#endif
 		}
 
 				
