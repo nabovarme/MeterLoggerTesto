@@ -7,7 +7,7 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG
-#define DEBUG_PHASE_SHIFT_DECODED
+//#define DEBUG_PHASE_SHIFT_DECODED
 
 unsigned char i;
 unsigned long timer_0_ms;
@@ -106,7 +106,9 @@ static void isr_high_prio(void) __interrupt 1 {
 						ir_proto.data = 0;
 						ir_proto.data_len = 0;
 						ir_proto.state = DATA_WAIT;
+#ifdef DEBUG_PHASE_SHIFT_DECODED
 						_debug();
+#endif
 					}
 				}
 				else {
@@ -115,25 +117,27 @@ static void isr_high_prio(void) __interrupt 1 {
 				}
 				break;
 			case DATA_WAIT:
-				if (ir_proto.data_len < 12) {
+				if (ir_proto.data_len < 11) {
 					if (((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) || ((3 * TICK_LOW < timer_0) && (timer_0 < 3 * TICK_HIGH))) {
 						// phase shift
 						if ((ir_proto.data & 1) != 0) {
 							// previous bit is set
-							ir_proto.data << 1;		// bitshift once to left
+							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
 							ir_proto.data &= 0b111111111110;	// and clear bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug();
+							usart_putc(0);
 #endif
 						}
 						else {
 							// previous bit is zero
-							ir_proto.data << 1;		// bitshift once to left
+							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
 							ir_proto.data |= 0b0000000000001;	// and set bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug();
 							_debug();
 							_debug();
+							usart_putc(0x5a);
 #endif
 						}
 					}
@@ -141,20 +145,22 @@ static void isr_high_prio(void) __interrupt 1 {
 						// in phase
 						if ((ir_proto.data & 1) != 0) {
 							// previous bit is set
-							ir_proto.data << 1;		// bitshift once to left
+							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
 							ir_proto.data |= 0b0000000000001;	// and set bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug();
 							_debug();
 							_debug();
+							usart_putc(0x5a);
 #endif
 						}
 						else {
 							// previous bit is zero
-							ir_proto.data << 1;		// bitshift once to left
+							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
 							ir_proto.data &= 0b111111111110;	// and clear bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug();
+							usart_putc(0);
 #endif
 						}
 					}
@@ -167,7 +173,7 @@ static void isr_high_prio(void) __interrupt 1 {
 					// frame received!
 					// calculate error correction and send via serial port
 					usart_putc((unsigned char)ir_proto.data);
-					ir_proto.data = 0x00;
+				//	usart_putc(0x5a);
 					ir_proto.state = INIT_STATE;
 				}
 				break;
