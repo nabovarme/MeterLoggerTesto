@@ -129,11 +129,10 @@ static void isr_high_prio(void) __interrupt 1 {
 					else if ((2 * TICK_LOW < timer_0) && (timer_0 < 2 * TICK_HIGH)) {
 						_debug();
 						_debug();
+						_debug();
 						//ir_proto.state = INIT_STATE;//ERR_CORR_1;
 					}
 					else if ((3 * TICK_LOW < timer_0) && (timer_0 < 3 * TICK_HIGH)) {
-						_debug();
-						_debug();
 						_debug();
 						//ir_proto.state = INIT_STATE;//ERR_CORR_1;
 					}
