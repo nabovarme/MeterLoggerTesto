@@ -7,7 +7,6 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG
-//#define DEBUG_PHASE_SHIFT
 #define DEBUG_PHASE_SHIFT_DECODED
 
 unsigned char i;
@@ -122,11 +121,6 @@ static void isr_high_prio(void) __interrupt 1 {
 				if (ir_proto.err_corr_bits_len < 4) {
 					if (((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) || ((3 * TICK_LOW < timer_0) && (timer_0 < 3 * TICK_HIGH))) {
 						// phase shift
-#ifdef DEBUG_PHASE_SHIFT
-						_debug();
-						_debug();
-						_debug();
-#endif
 						if ((ir_proto.err_corr_bits & 1) != 0) {
 							// previous bit is set
 							ir_proto.err_corr_bits << 1;		// bitshift once to left
@@ -148,9 +142,6 @@ static void isr_high_prio(void) __interrupt 1 {
 					}
 					else if ((2 * TICK_LOW < timer_0) && (timer_0 < 2 * TICK_HIGH)) {
 						// in phase
-#ifdef DEBUG_PHASE_SHIFT
-						_debug();
-#endif
 						if ((ir_proto.err_corr_bits & 1) != 0) {
 							// previous bit is set
 							ir_proto.err_corr_bits << 1;		// bitshift once to left
@@ -176,10 +167,66 @@ static void isr_high_prio(void) __interrupt 1 {
 					ir_proto.err_corr_bits_len++;
 				}
 				else {
-					//ir_proto.data = 0x00;
+					ir_proto.data = 0x00;
 					ir_proto.state = INIT_STATE;//DATA_WAIT;
 				}
 				break;
+#ifdef PROCESS_DATA
+			case DATA_WAIT:
+				if (ir_proto.data_len < 8) {
+					if (((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) || ((3 * TICK_LOW < timer_0) && (timer_0 < 3 * TICK_HIGH))) {
+						// phase shift
+						if ((ir_proto.data & 1) != 0) {
+							// previous bit is set
+							ir_proto.data << 1;		// bitshift once to left
+							ir_proto.data &= 0b1110;	// and clear bit 0
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+							_debug();
+#endif
+						}
+						else {
+							// previous bit is zero
+							ir_proto.data << 1;		// bitshift once to left
+							ir_proto.data |= 0b0001;	// and set bit 0
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+							_debug();
+							_debug();
+							_debug();
+#endif
+						}
+					}
+					else if ((2 * TICK_LOW < timer_0) && (timer_0 < 2 * TICK_HIGH)) {
+						// in phase
+						if ((ir_proto.data & 1) != 0) {
+							// previous bit is set
+							ir_proto.data << 1;		// bitshift once to left
+							ir_proto.data |= 0b0001;	// and set bit 0
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+							_debug();
+							_debug();
+							_debug();
+#endif
+						}
+						else {
+							// previous bit is zero
+							ir_proto.data << 1;		// bitshift once to left
+							ir_proto.data &= 0b1110;	// and clear bit 0
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+							_debug();
+#endif
+						}
+					}
+					else {
+						ir_proto.state = INIT_STATE;
+					}
+					ir_proto.data_len++;
+				}
+				else {
+					ir_proto.data = 0x00;
+					ir_proto.state = INIT_STATE;
+				}
+				break;
+#endif
 		}
 
 				
