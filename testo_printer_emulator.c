@@ -90,38 +90,57 @@ static void isr_high_prio(void) __interrupt 1 {
 		TMR0H = 0x00;
 		TMR0L = 0x00;
 
-		if (ir_proto.state == INIT_STATE) {
-			ir_proto.start_frame = 0b100;
-			ir_proto.state = START_BIT_1;
-			//_debug();
-		}
-		else if (ir_proto.state == START_BIT_1) {
-			if ((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) {
-			//	_debug();
-				ir_proto.start_frame = 0b110;
-				ir_proto.state = START_BIT_2;
-			}
-			else {
-				ir_proto.start_frame = 0b000;
+		switch (ir_proto.state) {
+			case INIT_STATE:
+				ir_proto.start_frame = 0b100;
 				ir_proto.state = START_BIT_1;
-			}
+				//_debug();
+				break;
+			case START_BIT_1:
+				if ((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) {
+					//	_debug();
+					ir_proto.start_frame = 0b110;
+					ir_proto.state = START_BIT_2;
+				}
+				else {
+					ir_proto.start_frame = 0b000;
+					ir_proto.state = START_BIT_1;
+				}
+				break;
+			case START_BIT_2:
+				if ((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) {
+					//	_debug();
+					ir_proto.start_frame = 0b111;
+					ir_proto.state = ERR_CORR_1;
+				}
+				else {
+					ir_proto.start_frame = 0b000;
+					ir_proto.state = START_BIT_1;
+				}
+				break;
+			case ERR_CORR_1:
+				if ((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) {
+					_debug();
+					//ir_proto.start_frame = 0b111;
+					ir_proto.state = INIT_STATE;//ERR_CORR_1;
+				}
+				else if ((2 * TICK_LOW < timer_0) && (timer_0 < 2 * TICK_HIGH)) {
+					_debug();
+					_debug();
+					ir_proto.state = INIT_STATE;//ERR_CORR_1;
+				}
+				else {
+					//ir_proto.start_frame = 0b000;
+					ir_proto.state = INIT_STATE;//START_BIT_1;
+				}
+				break;
 		}
-		else if (ir_proto.state == START_BIT_2) {
-			if ((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) {
-				_debug();
-				ir_proto.start_frame = 0b111;
-				ir_proto.state = INIT_STATE;//ERR_CORR_1;
-			}
-			else {
-				ir_proto.start_frame = 0b000;
-				ir_proto.state = START_BIT_1;
-			}
-		}
+
 				
-//		last_time = time;
 		INTCONbits.INT0IF = 0;	/* Clear Interrupt Flag */
 	}
 	if (INTCONbits.TMR0IF) {
+		// if timer overflow occurs - reset state
 		ir_proto.start_frame = 0b000;
 		ir_proto.state = INIT_STATE;
 		
@@ -315,6 +334,200 @@ void _debug() {
 		nop
 		nop
 		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
 	__endasm;
 	PORTDbits.RD4 = 0x0;
+	__asm 
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+	__endasm;
 }
