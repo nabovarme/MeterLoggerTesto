@@ -18,9 +18,13 @@ volatile unsigned char fifo_buffer[QUEUE_SIZE];
 
 enum ir_state_t {
 	INIT_STATE,
-	START_FRAME_1,
-	START_FRAME_2,
-	START_FRAME_3
+	START_BIT_1,
+	START_BIT_2,
+	START_BIT_3,
+	ERR_CORR_1,
+	ERR_CORR_2,
+	ERR_CORR_3,
+	ERR_CORR_4
 };
 
 typedef struct {
@@ -30,8 +34,7 @@ typedef struct {
 } ir_proto_t;
 
 volatile ir_proto_t ir_proto;
-unsigned long time;
-unsigned long last_time;
+unsigned int timer_0;
 
 void main(void) {
     OSCCONbits.SCS = 0x10;
@@ -42,8 +45,6 @@ void main(void) {
 	
 	ir_proto.state = INIT_STATE;
 	ir_proto.start_frame = 0b000;
-	time = 0;
-	last_time = 0;
 	
 	init_system();
 
@@ -85,27 +86,36 @@ void main(void) {
 
 static void isr_high_prio(void) __interrupt 1 {
 	if (INTCONbits.INT0IF) {
-		if (ir_proto.state == INIT_STATE) {			// start frame not received state
-			TMR0H = 0x00;
-			TMR0L = 0x00;
+		timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
+		TMR0H = 0x00;
+		TMR0L = 0x00;
+
+		if (ir_proto.state == INIT_STATE) {
 			ir_proto.start_frame = 0b100;
-			ir_proto.state = START_FRAME_1;
+			ir_proto.state = START_BIT_1;
 			//_debug();
 		}
-		else if (ir_proto.state == START_FRAME_1) {	// first burst in start frame received
-//			if ((TICK_LOW < time) && (time < TICK_HIGH)) {
-			_debug();
-			if ((TMR0L < 100)) {
+		else if (ir_proto.state == START_BIT_1) {
+			if ((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) {
+			//	_debug();
 				ir_proto.start_frame = 0b110;
-				ir_proto.state = START_FRAME_1;
-				//_debug();
+				ir_proto.state = START_BIT_2;
 			}
 			else {
 				ir_proto.start_frame = 0b000;
-				ir_proto.state = START_FRAME_1;
+				ir_proto.state = START_BIT_1;
 			}
-			TMR0H = 0x00;
-			TMR0L = 0x00;
+		}
+		else if (ir_proto.state == START_BIT_2) {
+			if ((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) {
+				_debug();
+				ir_proto.start_frame = 0b111;
+				ir_proto.state = INIT_STATE;//ERR_CORR_1;
+			}
+			else {
+				ir_proto.start_frame = 0b000;
+				ir_proto.state = START_BIT_1;
+			}
 		}
 				
 //		last_time = time;
