@@ -1,5 +1,3 @@
-// PIC18F4685 Configuration Bit Settings
-
 #ifdef pic18f4620
 // CONFIG1H
 #pragma config OSC = INTIO67    // Oscillator Selection bits (Internal oscillator block, port function on RA6 and RA7)
@@ -60,6 +58,7 @@
 
 
 #ifdef pic18f4685
+
 // CONFIG1H
 #pragma config OSC = IRCIO67    // Oscillator Selection bits (Internal oscillator block, port function on RA6 and RA7)
 #pragma config FCMEN = OFF      // Fail-Safe Clock Monitor Enable bit (Fail-Safe Clock Monitor disabled)
@@ -67,15 +66,15 @@
 
 // CONFIG2L
 #pragma config PWRT = OFF       // Power-up Timer Enable bit (PWRT disabled)
-#pragma config BOREN = BOHW     // Brown-out Reset Enable bits (Brown-out Reset enabled in hardware only (SBOREN is disabled))
+#pragma config BOREN = OFF      // Brown-out Reset Enable bits (Brown-out Reset disabled in hardware and software)
 #pragma config BORV = 3         // Brown-out Reset Voltage bits (VBOR set to 2.1V)
 
 // CONFIG2H
-#pragma config WDT = OFF         // Watchdog Timer Enable bit (WDT disabled)
+#pragma config WDT = OFF        // Watchdog Timer Enable bit (WDT disabled (control is placed on the SWDTEN bit))
 #pragma config WDTPS = 32768    // Watchdog Timer Postscale Select bits (1:32768)
 
 // CONFIG3H
-#pragma config PBADEN = ON      // PORTB A/D Enable bit (PORTB<4:0> pins are configured as analog input channels on Reset)
+#pragma config PBADEN = OFF     // PORTB A/D Enable bit (PORTB<4:0> pins are configured as digital I/O on Reset)
 #pragma config LPT1OSC = OFF    // Low-Power Timer 1 Oscillator Enable bit (Timer1 configured for higher power operation)
 #pragma config MCLRE = ON       // MCLR Pin Enable bit (MCLR pin enabled; RE3 input pin disabled)
 

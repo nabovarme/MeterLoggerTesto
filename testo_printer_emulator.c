@@ -10,13 +10,28 @@
 
 unsigned char i;
 unsigned long timer_0_ms;
-unsigned long timer_1;
 
 // command queue
 #define QUEUE_SIZE	100
 volatile unsigned int fifo_head, fifo_tail;
 volatile unsigned char fifo_buffer[QUEUE_SIZE];
 
+enum ir_state_t {
+	INIT_STATE,
+	START_FRAME_1,
+	START_FRAME_2,
+	START_FRAME_3
+};
+
+typedef struct {
+	enum ir_state_t state;
+	unsigned char start_frame : 3;
+	unsigned char : 5;
+} ir_proto_t;
+
+volatile ir_proto_t ir_proto;
+unsigned long time;
+unsigned long last_time;
 
 void main(void) {
     OSCCONbits.SCS = 0x10;
@@ -24,6 +39,11 @@ void main(void) {
 //	WDTCONbits.SWDTEN = 1;	// enable watchdog
 
 	timer_0_ms = 0;
+	
+	ir_proto.state = INIT_STATE;
+	ir_proto.start_frame = 0b000;
+	time = 0;
+	last_time = 0;
 	
 	init_system();
 
@@ -51,6 +71,7 @@ void main(void) {
 	PORTDbits.RD4 = 0;		// clear output
 
 	while (1) {
+		sleep_ms(1);
 		/*
 		if (PORTCbits.RC0) {
 			PORTDbits.RD4 = 0x0;
@@ -64,57 +85,37 @@ void main(void) {
 
 static void isr_high_prio(void) __interrupt 1 {
 	if (INTCONbits.INT0IF) {
+		if (ir_proto.state == INIT_STATE) {			// start frame not received state
+			TMR0H = 0x00;
+			TMR0L = 0x00;
+			ir_proto.start_frame = 0b100;
+			ir_proto.state = START_FRAME_1;
+			//_debug();
+		}
+		else if (ir_proto.state == START_FRAME_1) {	// first burst in start frame received
+//			if ((TICK_LOW < time) && (time < TICK_HIGH)) {
+			_debug();
+			if ((TMR0L < 100)) {
+				ir_proto.start_frame = 0b110;
+				ir_proto.state = START_FRAME_1;
+				//_debug();
+			}
+			else {
+				ir_proto.start_frame = 0b000;
+				ir_proto.state = START_FRAME_1;
+			}
+			TMR0H = 0x00;
+			TMR0L = 0x00;
+		}
+				
+//		last_time = time;
 		INTCONbits.INT0IF = 0;	/* Clear Interrupt Flag */
-
-//		INTCONbits.T0IE = 1;	/* Ensure that TMR0 Interrupt is enabled */
-//		T0CONbits.TMR0ON = 1;	// enable timer0
-//		INTCONbits.TMR0IF = 1;	/* Force Instant entry to Timer 0 Interrupt */
-		
-		PORTDbits.RD4 = 0x1;
-
-		__asm 
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-		__endasm;
-
-	//	sleep_tick(1);
-		PORTDbits.RD4 = 0x0;
 	}
-	
 	if (INTCONbits.TMR0IF) {
-		TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
-		TMR0L = (unsigned char)TIMER0_RELOAD;   /* Reload the Timer ASAP */
-		INTCONbits.TMR0IF = 0;  /* Clear the Timer Flag  */
+		ir_proto.start_frame = 0b000;
+		ir_proto.state = INIT_STATE;
+		
+		INTCONbits.TMR0IF = 0;
 	}
 }
 
@@ -147,15 +148,6 @@ void sleep_ms(unsigned long ms) {
 	}
 }
 
-void sleep_tick(unsigned long ms) {
-	unsigned long start_timer_1;
-	start_timer_1 = timer_1;	
-
-// while the absolute value of the time diff < ms
-	while ( (((signed long)(timer_1 - start_timer_1) < 0) ? (-1 * (timer_1 - start_timer_1)) : (timer_1 - start_timer_1)) < ms) {
-		// do nothing
-	}
-}
 void init_system() {
 	// timer 0
 	T0CONbits.TMR0ON = 1;
@@ -166,7 +158,7 @@ void init_system() {
 	T0CONbits.T0CS = 0;             // internal clock source
 	T0CONbits.PSA = 1;              // disable timer0 prescaler
 	INTCON2bits.TMR0IP = 1; // high priority
-	INTCONbits.T0IE = 1;    // Ensure that TMR0 Interrupt is enabled
+	INTCONbits.T0IE = 1;    // Enable TMR0 Interrupt
 	INTCONbits.TMR0IF = 1;  // Force Instant entry to Timer 0 Interrupt
 
 	// timer 1
@@ -247,8 +239,72 @@ void my_usart_open() {
 }
 
 void _debug() {
-//	latched_lcd_power(0);
-//	sleep_ms(200);
-//	latched_lcd_power(1);
-//	sleep_ms(200);
+	PORTDbits.RD4 = 0x1;
+	__asm 
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+	__endasm;
+	PORTDbits.RD4 = 0x0;
 }

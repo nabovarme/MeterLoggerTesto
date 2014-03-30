@@ -1,6 +1,6 @@
 PK2CMD = pk2cmd -PPIC18F4685
-#PROCESSOR = 18f4685
-PROCESSOR = 18f4620
+PROCESSOR = 18f4685
+#PROCESSOR = 18f4620
 MODEL = pic16
 GPSIM_PROCESSOR = pic18f4620
 SDCC = /opt/local/bin/sdcc
@@ -61,6 +61,9 @@ sim:
 
 flash:
 	$(PK2CMD) -F testo_printer_emulator.hex -M
+
+flash_erase:
+	$(PK2CMD) -E
 
 flash_master:
 	$(PK2CMD) -F testo_printer_emulator_master.hex -M
