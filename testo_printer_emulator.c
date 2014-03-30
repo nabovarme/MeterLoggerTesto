@@ -58,13 +58,13 @@ void main(void) {
 				USART_ASYNCH_MODE & 
 				USART_EIGHT_BIT &
 				USART_CONT_RX,
-				12     // 19200 kbps @ 4 MHz
+				12     // 19200 kbps @ 8 MHz
 	);
 	*/
 	my_usart_open();
 
 	sleep_ms(1000);	// let stuff settle...
-	usart_puts("OpenStoker starting... serial working\n\r");
+	usart_puts("Testo printer emulator... serial working\n\r");
 
 	TRISBbits.RB0 = 0x1;	// input
 	TRISCbits.RC0 = 0x1;	// input

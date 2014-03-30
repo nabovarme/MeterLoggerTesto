@@ -5,6 +5,8 @@ IR Printer emulator for Testo flue gas analysator <http://www.testousa.com/combu
 
 Coded for pic18f4685 compiled with SDCC
 
+send data at 19200 bps
+
 protocol http://members.ziggo.nl/kees.van.der.sanden/downloads/82240bte.pdf
 
 http://www.keesvandersanden.nl/calculators/hp82240.php
