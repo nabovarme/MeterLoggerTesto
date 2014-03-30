@@ -169,11 +169,10 @@ static void isr_high_prio(void) __interrupt 1 {
 					}
 					ir_proto.data_len++;
 				}
-				else {
+				if (ir_proto.data_len == 11) {
 					// frame received!
 					// calculate error correction and send via serial port
 					usart_putc((unsigned char)ir_proto.data);
-				//	usart_putc(0x5a);
 					ir_proto.state = INIT_STATE;
 				}
 				break;
