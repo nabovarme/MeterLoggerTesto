@@ -18,19 +18,20 @@ volatile unsigned char fifo_buffer[QUEUE_SIZE];
 
 enum ir_state_t {
 	INIT_STATE,
-	START_BIT_1,
-	START_BIT_2,
-	START_BIT_3,
-	ERR_CORR_1,
-	ERR_CORR_2,
-	ERR_CORR_3,
-	ERR_CORR_4
+	START_BIT_WAIT,
+	ERR_CORR_WAIT,
+	DATA_WAIT
 };
 
 typedef struct {
 	enum ir_state_t state;
-	unsigned char start_frame : 3;
-	unsigned char : 5;
+	unsigned char start_bit;
+	unsigned char start_bit_len;
+	unsigned char err_corr_bit;
+	unsigned char err_corr_bit_len;
+	unsigned char data;
+	unsigned char data_len;
+	
 } ir_proto_t;
 
 volatile ir_proto_t ir_proto;
@@ -44,7 +45,8 @@ void main(void) {
 	timer_0_ms = 0;
 	
 	ir_proto.state = INIT_STATE;
-	ir_proto.start_frame = 0b000;
+	ir_proto.start_bit = 0;
+	ir_proto.start_bit_len = 0;
 	
 	init_system();
 
@@ -92,47 +94,58 @@ static void isr_high_prio(void) __interrupt 1 {
 
 		switch (ir_proto.state) {
 			case INIT_STATE:
-				ir_proto.start_frame = 0b100;
-				ir_proto.state = START_BIT_1;
+				ir_proto.start_bit = 1;
+				ir_proto.start_bit_len = 1;
+				ir_proto.state = START_BIT_WAIT;
 				//_debug();
 				break;
-			case START_BIT_1:
+			case START_BIT_WAIT:
 				if ((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) {
-					//	_debug();
-					ir_proto.start_frame = 0b110;
-					ir_proto.state = START_BIT_2;
+					if (ir_proto.start_bit++ < 3) {
+						//_debug();
+						
+						ir_proto.start_bit = (ir_proto.start_bit << 1) & 0b111;
+						ir_proto.start_bit |= 1;
+					}
+					else {
+						ir_proto.err_corr_bit = 0;
+						ir_proto.err_corr_bit_len = 0;
+						ir_proto.state = ERR_CORR_WAIT;
+						_debug();
+					}
 				}
 				else {
-					ir_proto.start_frame = 0b000;
-					ir_proto.state = START_BIT_1;
+					ir_proto.start_bit = 0;
+					ir_proto.state = START_BIT_WAIT;
 				}
 				break;
-			case START_BIT_2:
-				if ((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) {
-					//	_debug();
-					ir_proto.start_frame = 0b111;
-					ir_proto.state = ERR_CORR_1;
-				}
-				else {
-					ir_proto.start_frame = 0b000;
-					ir_proto.state = START_BIT_1;
-				}
-				break;
-			case ERR_CORR_1:
-				if ((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) {
-					_debug();
-					//ir_proto.start_frame = 0b111;
-					ir_proto.state = INIT_STATE;//ERR_CORR_1;
-				}
-				else if ((2 * TICK_LOW < timer_0) && (timer_0 < 2 * TICK_HIGH)) {
-					_debug();
-					_debug();
-					ir_proto.state = INIT_STATE;//ERR_CORR_1;
-				}
-				else {
-					//ir_proto.start_frame = 0b000;
-					ir_proto.state = INIT_STATE;//START_BIT_1;
-				}
+			case ERR_CORR_WAIT:
+			//	if (ir_proto.data_len++ < 8) {
+					if ((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) {
+						_debug();
+						//ir_proto.start_bit = 0b111;
+						//ir_proto.state = INIT_STATE;//ERR_CORR_1;
+					}
+					else if ((2 * TICK_LOW < timer_0) && (timer_0 < 2 * TICK_HIGH)) {
+						_debug();
+						_debug();
+						//ir_proto.state = INIT_STATE;//ERR_CORR_1;
+					}
+					else if ((3 * TICK_LOW < timer_0) && (timer_0 < 3 * TICK_HIGH)) {
+						_debug();
+						_debug();
+						_debug();
+						//ir_proto.state = INIT_STATE;//ERR_CORR_1;
+					}
+					else {
+						//ir_proto.start_bit = 0b000;
+						ir_proto.state = INIT_STATE;//START_BIT_WAIT_1;
+					}
+			//	}
+			//	else {
+					//ir_proto.start_bit = 0b000;
+			//		ir_proto.state = INIT_STATE;//START_BIT_WAIT_1;
+			//	}
 				break;
 		}
 
@@ -141,7 +154,7 @@ static void isr_high_prio(void) __interrupt 1 {
 	}
 	if (INTCONbits.TMR0IF) {
 		// if timer overflow occurs - reset state
-		ir_proto.start_frame = 0b000;
+		ir_proto.start_bit = 0;
 		ir_proto.state = INIT_STATE;
 		
 		INTCONbits.TMR0IF = 0;
@@ -315,175 +328,9 @@ void _debug() {
 		nop
 		nop
 		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
 	__endasm;
 	PORTDbits.RD4 = 0x0;
 	__asm 
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
 		nop
 		nop
 		nop
