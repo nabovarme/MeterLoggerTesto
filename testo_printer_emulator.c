@@ -7,7 +7,7 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG
-//#define DEBUG_PHASE_SHIFT_DECODED
+#define DEBUG_PHASE_SHIFT_DECODED
 
 unsigned char i;
 unsigned long timer_0_ms;
@@ -126,7 +126,7 @@ static void isr_high_prio(void) __interrupt 1 {
 							ir_proto.data &= 0b111111111110;	// and clear bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug();
-							usart_putc(0);
+							usart_putc('0');
 #endif
 						}
 						else {
@@ -137,7 +137,7 @@ static void isr_high_prio(void) __interrupt 1 {
 							_debug();
 							_debug();
 							_debug();
-							usart_putc(0x5a);
+							usart_putc('1');
 #endif
 						}
 					}
@@ -151,7 +151,7 @@ static void isr_high_prio(void) __interrupt 1 {
 							_debug();
 							_debug();
 							_debug();
-							usart_putc(0x5a);
+							usart_putc('1');
 #endif
 						}
 						else {
@@ -160,7 +160,7 @@ static void isr_high_prio(void) __interrupt 1 {
 							ir_proto.data &= 0b111111111110;	// and clear bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug();
-							usart_putc(0);
+							usart_putc('0');
 #endif
 						}
 					}
@@ -172,7 +172,8 @@ static void isr_high_prio(void) __interrupt 1 {
 				if (ir_proto.data_len == 11) {
 					// frame received!
 					// calculate error correction and send via serial port
-					usart_putc((unsigned char)ir_proto.data);
+				//	usart_putc((unsigned char)ir_proto.data);
+					usart_putc('\n');
 					ir_proto.state = INIT_STATE;
 				}
 				break;
@@ -307,6 +308,14 @@ void my_usart_open() {
 	
 	// TXEN - Trasmit Enable Bit
 	TXSTAbits.TXEN = 1; // (1 = transmit enabled)
+}
+
+unsigned char reverse(unsigned char b) {
+	unsigned char c;
+	c  = ((b >>  1) & 0x55) | ((b <<  1) & 0xaa);
+	c |= ((b >>  2) & 0x33) | ((b <<  2) & 0xcc);
+	c |= ((b >>  4) & 0x0f) | ((b <<  4) & 0xf0);
+	return(c);
 }
 
 void _debug() {

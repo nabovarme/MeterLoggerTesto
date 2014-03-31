@@ -14,4 +14,6 @@ void init_system();
 
 void my_usart_open();
 
+unsigned char reverse(unsigned char b);
+
 void _debug();
