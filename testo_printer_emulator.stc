@@ -1,26 +1,24 @@
 
 frequency 800000
-#node zc_node
-#stimulus asynchronous_stimulus initial_state 1 start_cycle 0 period 50000 {
-#	800, 0
-#} name zc_stim end 
-#attach zc_node zc_stim portb0
 
-#node remote_node
-#stimulus asynchronous_stimulus initial_state 1 start_cycle 0 period 50000 {
-#	800, 0
-#} name remote_stim end 
-#attach remote_node remote_stim portc7
+node ir_node
+stimulus asynchronous_stimulus initial_state 1 start_cycle 0 period 855 {
+	427, 0
+} name ir_stim end 
+attach ir_node ir_stim portb0
 
-scope.ch0 = "portd0"	# LCD E
-scope.ch1 = "portd1"	# LCD DATA
-scope.ch2 = "portd2"	# LCD DATA
-scope.ch3 = "portd3"	# LCD DATA
-scope.ch4 = "portd4"	# LCD DATA
-scope.ch5 = "portd5"	# LCD DATA
-scope.ch6 = "portd6"	# LCD DATA
-scope.ch7 = "portd7"	# LCD DATA
-scope.ch8 = "portc5"	# RELÆ
+scope.ch0 = "portd4"
+scope.ch1 = "portb0"
+
+#scope.ch0 = "portd0"	# LCD E
+#scope.ch1 = "portd1"	# LCD DATA
+#scope.ch2 = "portd2"	# LCD DATA
+#scope.ch3 = "portd3"	# LCD DATA
+#scope.ch4 = "portd4"	# LCD DATA
+#scope.ch5 = "portd5"	# LCD DATA
+#scope.ch6 = "portd6"	# LCD DATA
+#scope.ch7 = "portd7"	# LCD DATA
+#scope.ch8 = "portc5"	# RELÆ
 #scope.ch8 = "portd7"	# LCD DATA
 #scope.ch2 = "portb2"	# FORWARD_PIN
 #scope.ch3 = "portb1"	# BACKWARD_PIN
@@ -86,6 +84,9 @@ D1.ypos = 36
 
 
 # Connections:
+node ir_node
+attach ir_node ir_stim portb0
+
 #node zc_node
 #attach zc_node zc_stim portb0
 
@@ -121,7 +122,7 @@ attach LED portc5 D1.in
 #break e 0x90d
 #break e 0x2358 #low prio int
 #break e 0x1538 #high prio int
-break e 0x0432
+break e 0x5e
 
 #break c 300000
 #run

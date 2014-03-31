@@ -7,7 +7,8 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG
-#define DEBUG_PHASE_SHIFT_DECODED
+//#define DEBUG_PHASE_SHIFT_DECODED
+//#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 unsigned char i;
 unsigned long timer_0_ms;
@@ -117,7 +118,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				}
 				break;
 			case DATA_WAIT:
-				if (ir_proto.data_len < 11) {
+				if (ir_proto.data_len < 12) {
 					if (((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) || ((3 * TICK_LOW < timer_0) && (timer_0 < 3 * TICK_HIGH))) {
 						// phase shift
 						if ((ir_proto.data & 1) != 0) {
@@ -126,6 +127,8 @@ static void isr_high_prio(void) __interrupt 1 {
 							ir_proto.data &= 0b111111111110;	// and clear bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug();
+#endif
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 							usart_putc('0');
 #endif
 						}
@@ -137,6 +140,8 @@ static void isr_high_prio(void) __interrupt 1 {
 							_debug();
 							_debug();
 							_debug();
+#endif
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 							usart_putc('1');
 #endif
 						}
@@ -151,6 +156,8 @@ static void isr_high_prio(void) __interrupt 1 {
 							_debug();
 							_debug();
 							_debug();
+#endif
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 							usart_putc('1');
 #endif
 						}
@@ -160,6 +167,8 @@ static void isr_high_prio(void) __interrupt 1 {
 							ir_proto.data &= 0b111111111110;	// and clear bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug();
+#endif
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 							usart_putc('0');
 #endif
 						}
@@ -169,11 +178,14 @@ static void isr_high_prio(void) __interrupt 1 {
 					}
 					ir_proto.data_len++;
 				}
-				if (ir_proto.data_len == 11) {
+				if (ir_proto.data_len == 12) {
 					// frame received!
 					// calculate error correction and send via serial port
-				//	usart_putc((unsigned char)ir_proto.data);
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 					usart_putc('\n');
+#else
+					usart_putc((unsigned char)ir_proto.data);
+#endif
 					ir_proto.state = INIT_STATE;
 				}
 				break;
