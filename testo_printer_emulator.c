@@ -7,10 +7,8 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG_PHASE_SHIFT_DECODED
-#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
-#define DO_ERR_CORR_CALC
+//#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
-unsigned char i;
 unsigned long timer_1_ms;
 unsigned char buffer[32];
 
@@ -177,24 +175,22 @@ static void isr_high_prio(void) __interrupt 1 {
 						ir_proto.data_len++;
 					}
 					else {
-						sprintf(buffer, "\ndata: %u TMR0: %u #received: %u\n", (ir_proto.data & 0xff), timer_0, ir_proto.data_len);
-						usart_puts(buffer);
-						_debug();
+//						sprintf(buffer, "\ndata: %u TMR0: %u #received: %u\n", (ir_proto.data & 0xff), timer_0, ir_proto.data_len);
+//						usart_puts(buffer);
+//						_debug();
 						
 						ir_proto.state = INIT_STATE;
 					}
 					if (ir_proto.data_len == 12) {
 						// frame received!
 						// calculate error correction and send via serial port
-#ifdef DO_ERR_CORR_CALC
-						
-
-#endif
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 						sprintf(buffer, ": data %u len: %u.\n", (ir_proto.data & 0xff), ir_proto.data_len);
 						usart_puts(buffer);
 #else
-						usart_putc(ir_proto.data & 0xff);
+						if (valid_err_corr(ir_proto.data & 0xff)) {
+							usart_putc(ir_proto.data & 0xff);
+						}
 #endif
 						ir_proto.state = INIT_STATE;
 					}
@@ -339,6 +335,52 @@ unsigned char reverse(unsigned char b) {
 	c |= ((b >>  2) & 0x33) | ((b <<  2) & 0xcc);
 	c |= ((b >>  4) & 0x0f) | ((b <<  4) & 0xf0);
 	return(c);
+}
+
+unsigned char valid_err_corr(unsigned int c) {
+    unsigned char calculated_err_corr, calculated_err_corr_bit;
+    unsigned char i;
+    
+    calculated_err_corr = 0;
+    
+    // bit 3
+    calculated_err_corr_bit = 0;
+    for (i = 0; i < 8; i++) {
+        calculated_err_corr_bit ^= (((c & 0x78) & (1 << i)) != 0);   // 0b01111000
+    }
+    calculated_err_corr |= calculated_err_corr_bit;
+    calculated_err_corr = calculated_err_corr << 1;
+    
+    // bit 2
+    calculated_err_corr_bit = 0;
+    for (i = 0; i < 8; i++) {
+        calculated_err_corr_bit ^= (((c & 0xe6) & (1 << i)) != 0);   // 0b11100110
+    }
+    calculated_err_corr |= calculated_err_corr_bit;
+    calculated_err_corr = calculated_err_corr << 1;
+    
+    // bit 1
+    calculated_err_corr_bit = 0;
+    for (i = 0; i < 8; i++) {
+        calculated_err_corr_bit ^= (((c & 0xd5) & (1 << i)) != 0);   // 0b11010101
+    }
+    calculated_err_corr |= calculated_err_corr_bit;
+    calculated_err_corr = calculated_err_corr << 1;
+    
+    // bit 0
+    calculated_err_corr_bit = 0;
+    for (i = 0; i < 8; i++) {
+        calculated_err_corr_bit ^= (((c & 0x8b) & (1 << i)) != 0);   // 0b10001011
+    }
+    calculated_err_corr |= calculated_err_corr_bit;
+    
+    if ((c >> 8) == calculated_err_corr) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+
 }
 
 void _debug() {

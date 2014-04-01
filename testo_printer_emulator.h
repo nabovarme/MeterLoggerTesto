@@ -14,4 +14,6 @@ void my_usart_open();
 
 unsigned char reverse(unsigned char b);
 
+unsigned char valid_err_corr(unsigned int c);
+
 void _debug();
