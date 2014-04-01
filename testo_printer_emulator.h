@@ -4,9 +4,7 @@
 #define TIMER3_RELOAD	0x0000	// ~ 131 ms @ 4MHz
 
 #define TICK 855
-#define TICK_ADJ 50
-#define TICK_LOW (TICK - TICK_ADJ)
-#define TICK_HIGH (TICK + TICK_ADJ)
+#define TICK_ADJ 200
 
 void sleep_ms(unsigned long ms);
 

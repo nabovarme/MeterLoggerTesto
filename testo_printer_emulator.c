@@ -6,7 +6,6 @@
 #include "config.h"
 #include "testo_printer_emulator.h"
 
-//#define DEBUG
 //#define DEBUG_PHASE_SHIFT_DECODED
 //#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
@@ -98,7 +97,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				//_debug();
 				break;
 			case START_BIT_WAIT:
-				if ((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) {
+				if ((TICK - TICK_ADJ < timer_0) && (timer_0 < TICK + TICK_ADJ)) {
 					if (ir_proto.start_bit_len < 2) {
 						//_debug();
 						ir_proto.start_bit_len++;
@@ -119,7 +118,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				break;
 			case DATA_WAIT:
 				if (ir_proto.data_len < 12) {
-					if (((TICK_LOW < timer_0) && (timer_0 < TICK_HIGH)) || ((3 * TICK_LOW < timer_0) && (timer_0 < 3 * TICK_HIGH))) {
+					if (((TICK - TICK_ADJ < timer_0) && (timer_0 < TICK + TICK_ADJ)) || ((3 * TICK - TICK_ADJ < timer_0) && (timer_0 < 3 * TICK + TICK_ADJ))) {
 						// phase shift
 						if ((ir_proto.data & 1) != 0) {
 							// previous bit is set
@@ -146,7 +145,7 @@ static void isr_high_prio(void) __interrupt 1 {
 #endif
 						}
 					}
-					else if ((2 * TICK_LOW < timer_0) && (timer_0 < 2 * TICK_HIGH)) {
+					else if ((2 * TICK - TICK_ADJ < timer_0) && (timer_0 < 2 * TICK + TICK_ADJ)) {
 						// in phase
 						if ((ir_proto.data & 1) != 0) {
 							// previous bit is set
@@ -182,6 +181,9 @@ static void isr_high_prio(void) __interrupt 1 {
 					// frame received!
 					// calculate error correction and send via serial port
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
+					usart_putc(':');
+				//	usart_putc((unsigned char)ir_proto.data);
+					usart_putc('#');
 					usart_putc('\n');
 #else
 					usart_putc((unsigned char)ir_proto.data);
