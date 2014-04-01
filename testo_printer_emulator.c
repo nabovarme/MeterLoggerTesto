@@ -8,6 +8,7 @@
 
 //#define DEBUG_PHASE_SHIFT_DECODED
 #define DEBUG_SERIAL_PHASE_SHIFT_DECODED
+#define DO_ERR_CORR_CALC
 
 unsigned char i;
 unsigned long timer_1_ms;
@@ -185,12 +186,16 @@ static void isr_high_prio(void) __interrupt 1 {
 					if (ir_proto.data_len == 12) {
 						// frame received!
 						// calculate error correction and send via serial port
-	#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
+#ifdef DO_ERR_CORR_CALC
+						
+
+#endif
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 						sprintf(buffer, ": data %u len: %u.\n", (ir_proto.data & 0xff), ir_proto.data_len);
 						usart_puts(buffer);
-	#else
+#else
 						usart_putc(ir_proto.data & 0xff);
-	#endif
+#endif
 						ir_proto.state = INIT_STATE;
 					}
 				}
