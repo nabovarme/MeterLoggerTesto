@@ -7,10 +7,11 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG_PHASE_SHIFT_DECODED
-//#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
+#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 unsigned char i;
 unsigned long timer_0_ms;
+unsigned char buffer[32];
 
 // command queue
 #define QUEUE_SIZE	100
@@ -181,10 +182,9 @@ static void isr_high_prio(void) __interrupt 1 {
 					// frame received!
 					// calculate error correction and send via serial port
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-					usart_putc(':');
 				//	usart_putc((unsigned char)ir_proto.data);
-					usart_putc('#');
-					usart_putc('\n');
+					sprintf(buffer, ": data %d.\n", (unsigned char)ir_proto.data);
+					usart_puts(buffer);
 #else
 					usart_putc((unsigned char)ir_proto.data);
 #endif
