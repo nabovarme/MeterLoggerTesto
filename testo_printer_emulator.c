@@ -7,7 +7,7 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG_PHASE_SHIFT_DECODED
-#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
+//#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 unsigned char i;
 unsigned long timer_0_ms;
@@ -145,6 +145,7 @@ static void isr_high_prio(void) __interrupt 1 {
 							usart_putc('1');
 #endif
 						}
+						ir_proto.data_len++;
 					}
 					else if ((2 * TICK - TICK_ADJ < timer_0) && (timer_0 < 2 * TICK + TICK_ADJ)) {
 						// in phase
@@ -172,21 +173,21 @@ static void isr_high_prio(void) __interrupt 1 {
 							usart_putc('0');
 #endif
 						}
+						ir_proto.data_len++;
 					}
 					else {
 						ir_proto.state = INIT_STATE;
 					}
-					ir_proto.data_len++;
+//					ir_proto.data_len++;
 				}
 				if (ir_proto.data_len == 12) {
 					// frame received!
 					// calculate error correction and send via serial port
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-				//	usart_putc((unsigned char)ir_proto.data);
-					sprintf(buffer, ": data %d.\n", (unsigned char)ir_proto.data);
+					sprintf(buffer, ": data %d len: %d.\n", (unsigned char)(ir_proto.data & 0xff), ir_proto.data_len);
 					usart_puts(buffer);
 #else
-					usart_putc((unsigned char)ir_proto.data);
+					usart_putc((unsigned char)(ir_proto.data & 0xff));
 #endif
 					ir_proto.state = INIT_STATE;
 				}
