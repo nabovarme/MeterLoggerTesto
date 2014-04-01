@@ -10,7 +10,7 @@
 #define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 unsigned char i;
-unsigned long timer_0_ms;
+unsigned long timer_1_ms;
 unsigned char buffer[32];
 
 // command queue
@@ -41,7 +41,7 @@ void main(void) {
     OSCCONbits.IRCF = 0x7;	// 8 MHz
 //	WDTCONbits.SWDTEN = 1;	// enable watchdog
 
-	timer_0_ms = 0;
+	timer_1_ms = 0;
 	
 	ir_proto.state = INIT_STATE;
 //	ir_proto.start_bit = 0;
@@ -176,16 +176,19 @@ static void isr_high_prio(void) __interrupt 1 {
 						ir_proto.data_len++;
 					}
 					else {
+						sprintf(buffer, "timing error: %d\n", timer_0);
+						usart_puts(buffer);
+						
 						ir_proto.state = INIT_STATE;
 					}
 					if (ir_proto.data_len == 12) {
 						// frame received!
 						// calculate error correction and send via serial port
 	#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-						sprintf(buffer, ": data %d len: %d.\n", (unsigned char)(ir_proto.data & 0xff), ir_proto.data_len);
+						sprintf(buffer, ": data %d len: %d.\n", (ir_proto.data & 0xff), ir_proto.data_len);
 						usart_puts(buffer);
 	#else
-						usart_putc((unsigned char)(ir_proto.data & 0xff));
+						usart_putc(ir_proto.data & 0xff);
 	#endif
 						ir_proto.state = INIT_STATE;
 					}
@@ -198,8 +201,8 @@ static void isr_high_prio(void) __interrupt 1 {
 	}
 	if (INTCONbits.TMR0IF) {
 		// if timer overflow occurs - reset state
-		ir_proto.start_bit = 0;
-		ir_proto.state = INIT_STATE;
+	//	ir_proto.start_bit = 0;
+	//	ir_proto.state = INIT_STATE;
 		
 		INTCONbits.TMR0IF = 0;
 	}
@@ -212,7 +215,7 @@ static void isr_low_prio(void) __interrupt 2 {
 		TMR1H = (unsigned char)(TIMER1_RELOAD >> 8);    // 262,158ms @ 8MHz
 		TMR1L = (unsigned char)TIMER1_RELOAD;
 		PIR1bits.TMR1IF = 0;    /* Clear the Timer Flag  */
-		timer_0_ms++;
+		timer_1_ms++;
 	}
 
 	// serial rx interrupt
@@ -225,11 +228,11 @@ static void isr_low_prio(void) __interrupt 2 {
 }
 
 void sleep_ms(unsigned long ms) {
-	unsigned long start_timer_0_ms;
-	start_timer_0_ms = timer_0_ms;	
+	unsigned long start_timer_1_ms;
+	start_timer_1_ms = timer_1_ms;	
 
 // while the absolute value of the time diff < ms
-	while ( (((signed long)(timer_0_ms - start_timer_0_ms) < 0) ? (-1 * (timer_0_ms - start_timer_0_ms)) : (timer_0_ms - start_timer_0_ms)) < ms) {
+	while ( (((signed long)(timer_1_ms - start_timer_1_ms) < 0) ? (-1 * (timer_1_ms - start_timer_1_ms)) : (timer_1_ms - start_timer_1_ms)) < ms) {
 		// do nothing
 	}
 }
