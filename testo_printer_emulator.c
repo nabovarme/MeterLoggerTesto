@@ -7,7 +7,7 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG_PHASE_SHIFT_DECODED
-//#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
+#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 unsigned char i;
 unsigned long timer_0_ms;
@@ -118,7 +118,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				}
 				break;
 			case DATA_WAIT:
-				if (ir_proto.data_len < 12) {
+				if (ir_proto.data_len <= 12) {
 					if (((TICK - TICK_ADJ < timer_0) && (timer_0 < TICK + TICK_ADJ)) || ((3 * TICK - TICK_ADJ < timer_0) && (timer_0 < 3 * TICK + TICK_ADJ))) {
 						// phase shift
 						if ((ir_proto.data & 1) != 0) {
@@ -178,18 +178,17 @@ static void isr_high_prio(void) __interrupt 1 {
 					else {
 						ir_proto.state = INIT_STATE;
 					}
-//					ir_proto.data_len++;
-				}
-				if (ir_proto.data_len == 12) {
-					// frame received!
-					// calculate error correction and send via serial port
-#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-					sprintf(buffer, ": data %d len: %d.\n", (unsigned char)(ir_proto.data & 0xff), ir_proto.data_len);
-					usart_puts(buffer);
-#else
-					usart_putc((unsigned char)(ir_proto.data & 0xff));
-#endif
-					ir_proto.state = INIT_STATE;
+					if (ir_proto.data_len == 12) {
+						// frame received!
+						// calculate error correction and send via serial port
+	#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
+						sprintf(buffer, ": data %d len: %d.\n", (unsigned char)(ir_proto.data & 0xff), ir_proto.data_len);
+						usart_puts(buffer);
+	#else
+						usart_putc((unsigned char)(ir_proto.data & 0xff));
+	#endif
+						ir_proto.state = INIT_STATE;
+					}
 				}
 				break;
 		}
