@@ -176,8 +176,9 @@ static void isr_high_prio(void) __interrupt 1 {
 						ir_proto.data_len++;
 					}
 					else {
-						sprintf(buffer, "timing error: %d\n", timer_0);
+						sprintf(buffer, "\ndata: %u TMR0: %u #received: %u\n", (ir_proto.data & 0xff), timer_0, ir_proto.data_len);
 						usart_puts(buffer);
+						_debug();
 						
 						ir_proto.state = INIT_STATE;
 					}
@@ -185,7 +186,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						// frame received!
 						// calculate error correction and send via serial port
 	#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-						sprintf(buffer, ": data %d len: %d.\n", (ir_proto.data & 0xff), ir_proto.data_len);
+						sprintf(buffer, ": data %u len: %u.\n", (ir_proto.data & 0xff), ir_proto.data_len);
 						usart_puts(buffer);
 	#else
 						usart_putc(ir_proto.data & 0xff);
@@ -201,8 +202,8 @@ static void isr_high_prio(void) __interrupt 1 {
 	}
 	if (INTCONbits.TMR0IF) {
 		// if timer overflow occurs - reset state
-	//	ir_proto.start_bit = 0;
-	//	ir_proto.state = INIT_STATE;
+		ir_proto.start_bit = 0;
+		ir_proto.state = INIT_STATE;
 		
 		INTCONbits.TMR0IF = 0;
 	}
