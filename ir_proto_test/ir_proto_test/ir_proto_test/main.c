@@ -121,10 +121,56 @@ void isr_high_prio(unsigned int timer_0) {
         
 }
 
+unsigned char valid_err_corr(unsigned int c) {
+    unsigned char calculated_err_corr, calculated_err_corr_bit;
+    unsigned char i;
+    
+    calculated_err_corr = 0;
+    
+    // bit 3
+    calculated_err_corr_bit = 0;
+    for (i = 0; i < 8; i++) {
+        calculated_err_corr_bit ^= (((c & 0x78) & (1 << i)) != 0);   // 0b01111000
+    }
+    calculated_err_corr |= calculated_err_corr_bit;
+    calculated_err_corr = calculated_err_corr << 1;
+    
+    // bit 2
+    calculated_err_corr_bit = 0;
+    for (i = 0; i < 8; i++) {
+        calculated_err_corr_bit ^= (((c & 0xe6) & (1 << i)) != 0);   // 0b11100110
+    }
+    calculated_err_corr |= calculated_err_corr_bit;
+    calculated_err_corr = calculated_err_corr << 1;
+    
+    // bit 1
+    calculated_err_corr_bit = 0;
+    for (i = 0; i < 8; i++) {
+        calculated_err_corr_bit ^= (((c & 0xd5) & (1 << i)) != 0);   // 0b11010101
+    }
+    calculated_err_corr |= calculated_err_corr_bit;
+    calculated_err_corr = calculated_err_corr << 1;
+    
+    // bit 0
+    calculated_err_corr_bit = 0;
+    for (i = 0; i < 8; i++) {
+        calculated_err_corr_bit ^= (((c & 0x8b) & (1 << i)) != 0);   // 0b10001011
+    }
+    calculated_err_corr |= calculated_err_corr_bit;
+    
+    if ((c >> 8) == calculated_err_corr) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+
+}
+
 int main(int argc, const char * argv[])
 {
 
-    // insert code here...
+/*
     isr_high_prio(10);
     isr_high_prio(10);
     isr_high_prio(10);
@@ -143,5 +189,9 @@ int main(int argc, const char * argv[])
     isr_high_prio(20);
     isr_high_prio(20);
     return 0;
+ */
+    if (valid_err_corr(0x0d41)) {
+        printf("yes");
+    }
 }
 
