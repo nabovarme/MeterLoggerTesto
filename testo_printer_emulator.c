@@ -7,7 +7,7 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG_PHASE_SHIFT_DECODED
-//#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
+#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 unsigned long timer_1_ms;
 unsigned char buffer[32];
@@ -293,7 +293,7 @@ void init_system() {
     RCONbits.IPEN = 1;
 	
 	INTCONbits.INT0IE = 1;		// enable ext int
-	INTCON2bits.INTEDG0 = 1;//0;	// on falling edge
+	INTCON2bits.INTEDG0 = 0;	// on falling edge
 
 	INTCONbits.PEIE = 1;
 	INTCONbits.GIE = 1;	/* Enable Global interrupts   */	
