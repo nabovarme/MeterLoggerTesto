@@ -11,7 +11,9 @@
 
 unsigned long timer_1_ms;
 unsigned char buffer[64];
+#ifdef WITH_RX_COUNTER
 unsigned long rx_bytes;
+#endif
 
 enum ir_state_t {
 	INIT_STATE,
@@ -37,7 +39,6 @@ void main(void) {
 //	WDTCONbits.SWDTEN = 1;	// enable watchdog
 
 	timer_1_ms = 0;
-	rx_bytes = 0;
 	
 	ir_proto.state = INIT_STATE;
 //	ir_proto.start_bit = 0;
@@ -94,7 +95,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				//_debug();
 				break;
 			case START_BIT_WAIT:
-				if ((TICK - TICK_ADJ < timer_0 - TIMER0_RELOAD) && (timer_0 - TIMER0_RELOAD < TICK + TICK_ADJ)) {
+				if ((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) {
 					if (ir_proto.start_bit_len < 2) {
 						//_debug();
 						ir_proto.start_bit_len++;
@@ -115,7 +116,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				break;
 			case DATA_WAIT:
 				if (ir_proto.data_len <= 12) {
-					if (((TICK - TICK_ADJ < timer_0 - TIMER0_RELOAD) && (timer_0 - TIMER0_RELOAD < TICK + TICK_ADJ)) || ((3 * TICK - TICK_ADJ < timer_0 - TIMER0_RELOAD) && (timer_0 - TIMER0_RELOAD < 3 * TICK + TICK_ADJ))) {
+					if (((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) || ((3 * TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < 3 * TICK + TIMER0_RELOAD + TICK_ADJ))) {
 						// phase shift
 						if ((ir_proto.data & 1) != 0) {
 							// previous bit is set
@@ -143,7 +144,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						}
 						ir_proto.data_len++;
 					}
-					else if ((2 * TICK - TICK_ADJ < timer_0 - TIMER0_RELOAD) && (timer_0 - TIMER0_RELOAD < 2 * TICK + TICK_ADJ)) {
+					else if ((2 * TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < 2 * TICK + TIMER0_RELOAD + TICK_ADJ)) {
 						// in phase
 						if ((ir_proto.data & 1) != 0) {
 							// previous bit is set
@@ -173,20 +174,20 @@ static void isr_high_prio(void) __interrupt 1 {
 					}
 					else {
 						// error in bit time framing
-						sprintf(buffer, ":\t#%u\terror\tTMR0 %u\trx bytes %u\n", ir_proto.data_len, timer_0, rx_bytes);
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
+						sprintf(buffer, ":\t#%u\terror\tTMR0 %u\n", ir_proto.data_len, timer_0);
 						usart_puts(buffer);
-//						if (rx_bytes < 20) {
-//							_debug();
-//						}
+#endif
 						
-						ir_proto.state = INIT_STATE;
+						ir_proto.start_bit_len = 1;
+						ir_proto.state = START_BIT_WAIT;
+//						ir_proto.state = INIT_STATE;
 					}
 					if (ir_proto.data_len == 12) {
 						// frame received!
 						// calculate error correction and send via serial port
-						rx_bytes++;
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-						sprintf(buffer, ":\t#%u\tdata %u\tTMR0 %u\trx bytes %u\n", ir_proto.data_len, (ir_proto.data & 0xff), timer_0, rx_bytes);
+						sprintf(buffer, ":\t#%u\tdata %u\tTMR0 %u\n", ir_proto.data_len, (ir_proto.data & 0xff), timer_0);
 						usart_puts(buffer);
 #else
 						if (valid_err_corr(ir_proto.data & 0xff)) {
