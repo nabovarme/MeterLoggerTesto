@@ -7,7 +7,7 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG_PHASE_SHIFT_DECODED
-//#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
+#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 unsigned long timer_1_ms;
 unsigned char buffer[32];
@@ -176,7 +176,8 @@ static void isr_high_prio(void) __interrupt 1 {
 					}
 					else {
 //						sprintf(buffer, "\ndata: %u TMR0: %u #received: %u\n", (ir_proto.data & 0xff), timer_0, ir_proto.data_len);
-//						usart_puts(buffer);
+						sprintf(buffer, ":\t#%u\terror\tTMR0 %u\n", ir_proto.data_len, timer_0);
+						usart_puts(buffer);
 //						_debug();
 						
 						ir_proto.state = INIT_STATE;
@@ -185,7 +186,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						// frame received!
 						// calculate error correction and send via serial port
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-						sprintf(buffer, ": data %u len: %u.\n", (ir_proto.data & 0xff), ir_proto.data_len);
+						sprintf(buffer, ":\t#%u\tdata %u\tTMR0 %u\n", ir_proto.data_len, (ir_proto.data & 0xff), timer_0);
 						usart_puts(buffer);
 #else
 						if (valid_err_corr(ir_proto.data & 0xff)) {
@@ -293,7 +294,7 @@ void init_system() {
     RCONbits.IPEN = 1;
 	
 	INTCONbits.INT0IE = 1;		// enable ext int
-	INTCON2bits.INTEDG0 = 1;//0;	// on falling edge
+	INTCON2bits.INTEDG0 = 0;	// on falling edge
 
 	INTCONbits.PEIE = 1;
 	INTCONbits.GIE = 1;	/* Enable Global interrupts   */	
