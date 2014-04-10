@@ -10,12 +10,10 @@
 #define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 unsigned long timer_1_ms;
-unsigned char buffer[32];
-
-// command queue
-#define QUEUE_SIZE	100
-volatile unsigned int fifo_head, fifo_tail;
-volatile unsigned char fifo_buffer[QUEUE_SIZE];
+unsigned char buffer[64];
+#ifdef WITH_RX_COUNTER
+unsigned long rx_bytes;
+#endif
 
 enum ir_state_t {
 	INIT_STATE,
@@ -69,7 +67,11 @@ void main(void) {
 	TRISBbits.RB0 = 0x1;	// input
 	TRISCbits.RC0 = 0x1;	// input
 	TRISDbits.RD4 = 0x0;	// output
+	TRISDbits.RD5 = 0x0;	// output
+	TRISDbits.RD6 = 0x0;	// output
 	PORTDbits.RD4 = 0;		// clear output
+	PORTDbits.RD5 = 0;		// clear output
+	PORTDbits.RD6 = 0;		// clear output
 
 	while (1) {
 		sleep_ms(1);
@@ -87,9 +89,10 @@ void main(void) {
 static void isr_high_prio(void) __interrupt 1 {
 	if (INTCONbits.INT0IF) {
 		timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
-		TMR0H = 0x00;
-		TMR0L = 0x00;
+		TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
+		TMR0L = (unsigned char)TIMER0_RELOAD;
 
+		_debug3();
 		switch (ir_proto.state) {
 			case INIT_STATE:
 				ir_proto.start_bit_len = 1;
@@ -97,7 +100,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				//_debug();
 				break;
 			case START_BIT_WAIT:
-				if ((TICK - TICK_ADJ < timer_0) && (timer_0 < TICK + TICK_ADJ)) {
+				if ((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) {
 					if (ir_proto.start_bit_len < 2) {
 						//_debug();
 						ir_proto.start_bit_len++;
@@ -118,7 +121,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				break;
 			case DATA_WAIT:
 				if (ir_proto.data_len <= 12) {
-					if (((TICK - TICK_ADJ < timer_0) && (timer_0 < TICK + TICK_ADJ)) || ((3 * TICK - TICK_ADJ < timer_0) && (timer_0 < 3 * TICK + TICK_ADJ))) {
+					if (((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) || ((3 * TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < 3 * TICK + TIMER0_RELOAD + TICK_ADJ))) {
 						// phase shift
 						if ((ir_proto.data & 1) != 0) {
 							// previous bit is set
@@ -146,7 +149,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						}
 						ir_proto.data_len++;
 					}
-					else if ((2 * TICK - TICK_ADJ < timer_0) && (timer_0 < 2 * TICK + TICK_ADJ)) {
+					else if ((2 * TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < 2 * TICK + TIMER0_RELOAD + TICK_ADJ)) {
 						// in phase
 						if ((ir_proto.data & 1) != 0) {
 							// previous bit is set
@@ -175,22 +178,29 @@ static void isr_high_prio(void) __interrupt 1 {
 						ir_proto.data_len++;
 					}
 					else {
-//						sprintf(buffer, "\ndata: %u TMR0: %u #received: %u\n", (ir_proto.data & 0xff), timer_0, ir_proto.data_len);
-//						usart_puts(buffer);
-//						_debug();
-						
-						ir_proto.state = INIT_STATE;
+						// error in bit time framing
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
+						sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", ir_proto.data_len, timer_0);
+						usart_puts(buffer);
+#endif
+						ir_proto.start_bit_len = 1;
+						ir_proto.state = START_BIT_WAIT;
+//						ir_proto.state = INIT_STATE;
 					}
+					// testing
+//					if (ir_proto.data_len == 11) {
+//						_debug();
+//					}
 					if (ir_proto.data_len == 12) {
 						// frame received!
 						// calculate error correction and send via serial port
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-						sprintf(buffer, ": data %u len: %u.\n", (ir_proto.data & 0xff), ir_proto.data_len);
+						sprintf(buffer, "\t#%u\tdata %u\tTMR0 %u\n", ir_proto.data_len, (ir_proto.data & 0xff), timer_0);
 						usart_puts(buffer);
 #else
-						if (valid_err_corr(ir_proto.data & 0xff)) {
+//						if (valid_err_corr(ir_proto.data & 0xff)) {
 							usart_putc(ir_proto.data & 0xff);
-						}
+//						}
 #endif
 						ir_proto.state = INIT_STATE;
 					}
@@ -203,7 +213,20 @@ static void isr_high_prio(void) __interrupt 1 {
 	}
 	if (INTCONbits.TMR0IF) {
 		// if timer overflow occurs - reset state
+		TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
+		TMR0L = (unsigned char)TIMER0_RELOAD;
 		ir_proto.start_bit = 0;
+		if (ir_proto.state != INIT_STATE) {
+//			usart_putc('R');
+//			usart_putc('\n');
+			if (ir_proto.data_len == 11) {
+				_debug2();
+			}
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
+			sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", ir_proto.data_len, timer_0);
+			usart_puts(buffer);
+#endif
+		}
 		ir_proto.state = INIT_STATE;
 		
 		INTCONbits.TMR0IF = 0;
@@ -293,7 +316,7 @@ void init_system() {
     RCONbits.IPEN = 1;
 	
 	INTCONbits.INT0IE = 1;		// enable ext int
-	INTCON2bits.INTEDG0 = 0;	// on falling edge
+	INTCON2bits.INTEDG0 = 1;	// rising edge 0;	// on falling edge
 
 	INTCONbits.PEIE = 1;
 	INTCONbits.GIE = 1;	/* Enable Global interrupts   */	
@@ -433,6 +456,204 @@ void _debug() {
 		nop
 	__endasm;
 	PORTDbits.RD4 = 0x0;
+	__asm 
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+	__endasm;
+}
+
+void _debug2() {
+	PORTDbits.RD5 = 0x1;
+	__asm 
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+	__endasm;
+	PORTDbits.RD5 = 0x0;
+	__asm 
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+	__endasm;
+}
+
+void _debug3() {
+	PORTDbits.RD6 = 0x1;
+	__asm 
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+	__endasm;
+	PORTDbits.RD6 = 0x0;
 	__asm 
 		nop
 		nop
