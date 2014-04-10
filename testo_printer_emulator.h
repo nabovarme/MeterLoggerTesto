@@ -1,6 +1,7 @@
 //#define TIMER0_RELOAD 0xFCC8	// 427us @ 8MHz
 //#define TIMER0_RELOAD 0xF000	// ~ 2ms @ 8MHz
-#define TIMER0_RELOAD 0x0000
+#define TIMER0_RELOAD 0xF323	// ~ 4 * 427us @ 8MHz
+//#define TIMER0_RELOAD 0x0000
 #define TIMER1_RELOAD 0xF853    // 1 ms @ 8MHz
 #define TIMER2_RELOAD	0x00	// ~ 5 ms @ 8Mhz
 #define TIMER3_RELOAD	0x0000	// ~ 131 ms @ 4MHz
@@ -19,3 +20,5 @@ unsigned char reverse(unsigned char b);
 unsigned char valid_err_corr(unsigned int c);
 
 void _debug();
+void _debug2();
+void _debug3();
