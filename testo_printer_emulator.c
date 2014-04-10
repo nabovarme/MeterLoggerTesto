@@ -7,7 +7,7 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG_PHASE_SHIFT_DECODED
-#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
+//#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 unsigned long timer_1_ms;
 unsigned char buffer[64];
@@ -41,7 +41,6 @@ void main(void) {
 	timer_1_ms = 0;
 	
 	ir_proto.state = INIT_STATE;
-//	ir_proto.start_bit = 0;
 	ir_proto.start_bit_len = 0;
 	
 	init_system();
@@ -67,22 +66,10 @@ void main(void) {
 	TRISBbits.RB0 = 0x1;	// input
 	TRISCbits.RC0 = 0x1;	// input
 	TRISDbits.RD4 = 0x0;	// output
-	TRISDbits.RD5 = 0x0;	// output
-	TRISDbits.RD6 = 0x0;	// output
 	PORTDbits.RD4 = 0;		// clear output
-	PORTDbits.RD5 = 0;		// clear output
-	PORTDbits.RD6 = 0;		// clear output
 
 	while (1) {
-		sleep_ms(1);
-		/*
-		if (PORTCbits.RC0) {
-			PORTDbits.RD4 = 0x0;
-		}
-		else {
-			PORTDbits.RD4 = 0x1;
-		}
-		*/
+		// do nothing
 	}
 }
 
@@ -92,7 +79,6 @@ static void isr_high_prio(void) __interrupt 1 {
 		TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
 		TMR0L = (unsigned char)TIMER0_RELOAD;
 
-		_debug3();
 		switch (ir_proto.state) {
 			case INIT_STATE:
 				ir_proto.start_bit_len = 1;
@@ -185,12 +171,7 @@ static void isr_high_prio(void) __interrupt 1 {
 #endif
 						ir_proto.start_bit_len = 1;
 						ir_proto.state = START_BIT_WAIT;
-//						ir_proto.state = INIT_STATE;
 					}
-					// testing
-//					if (ir_proto.data_len == 11) {
-//						_debug();
-//					}
 					if (ir_proto.data_len == 12) {
 						// frame received!
 						// calculate error correction and send via serial port
@@ -217,11 +198,6 @@ static void isr_high_prio(void) __interrupt 1 {
 		TMR0L = (unsigned char)TIMER0_RELOAD;
 		ir_proto.start_bit = 0;
 		if (ir_proto.state != INIT_STATE) {
-//			usart_putc('R');
-//			usart_putc('\n');
-			if (ir_proto.data_len == 11) {
-				_debug2();
-			}
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 			sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", ir_proto.data_len, timer_0);
 			usart_puts(buffer);
@@ -316,7 +292,7 @@ void init_system() {
     RCONbits.IPEN = 1;
 	
 	INTCONbits.INT0IE = 1;		// enable ext int
-	INTCON2bits.INTEDG0 = 1;	// rising edge 0;	// on falling edge
+	INTCON2bits.INTEDG0 = 1;	// rising edge
 
 	INTCONbits.PEIE = 1;
 	INTCONbits.GIE = 1;	/* Enable Global interrupts   */	
@@ -456,204 +432,6 @@ void _debug() {
 		nop
 	__endasm;
 	PORTDbits.RD4 = 0x0;
-	__asm 
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-	__endasm;
-}
-
-void _debug2() {
-	PORTDbits.RD5 = 0x1;
-	__asm 
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-	__endasm;
-	PORTDbits.RD5 = 0x0;
-	__asm 
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-	__endasm;
-}
-
-void _debug3() {
-	PORTDbits.RD6 = 0x1;
-	__asm 
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-	__endasm;
-	PORTDbits.RD6 = 0x0;
 	__asm 
 		nop
 		nop
