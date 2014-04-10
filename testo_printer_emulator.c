@@ -6,8 +6,8 @@
 #include "config.h"
 #include "testo_printer_emulator.h"
 
-#define DEBUG_PHASE_SHIFT_DECODED
-#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
+//#define DEBUG_PHASE_SHIFT_DECODED
+//#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 unsigned long timer_1_ms;
 unsigned char buffer[64];
@@ -198,9 +198,9 @@ static void isr_high_prio(void) __interrupt 1 {
 						sprintf(buffer, "\t#%u\tdata %u\tTMR0 %u\n", ir_proto.data_len, (ir_proto.data & 0xff), timer_0);
 						usart_puts(buffer);
 #else
-						if (valid_err_corr(ir_proto.data & 0xff)) {
+//						if (valid_err_corr(ir_proto.data & 0xff)) {
 							usart_putc(ir_proto.data & 0xff);
-						}
+//						}
 #endif
 						ir_proto.state = INIT_STATE;
 					}
