@@ -169,6 +169,14 @@ unsigned char valid_err_corr(unsigned int c) {
 
 int main(int argc, const char * argv[])
 {
+    int foo;
+    
+    foo = 1;
+    
+    if (!foo) {
+        
+        printf("af");
+    }
 
 /*
     isr_high_prio(10);
