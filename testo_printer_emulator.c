@@ -9,6 +9,8 @@
 //#define DEBUG_PHASE_SHIFT_DECODED
 //#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
+//#define DEBUG_SERIAL_ERROR_CORRECTION
+
 unsigned long timer_1_ms;
 unsigned char buffer[64];
 #ifdef WITH_RX_COUNTER
@@ -179,9 +181,9 @@ static void isr_high_prio(void) __interrupt 1 {
 						sprintf(buffer, "\t#%u\tdata %u\tTMR0 %u\n", ir_proto.data_len, (ir_proto.data & 0xff), timer_0);
 						usart_puts(buffer);
 #else
-//						if (valid_err_corr(ir_proto.data & 0xff)) {
+						if (valid_err_corr(ir_proto.data & 0xffff)) {
 							usart_putc(ir_proto.data & 0xff);
-//						}
+						}
 #endif
 						ir_proto.state = INIT_STATE;
 					}
@@ -372,14 +374,23 @@ unsigned char valid_err_corr(unsigned int c) {
         calculated_err_corr_bit ^= (((c & 0x8b) & (1 << i)) != 0);   // 0b10001011
     }
     calculated_err_corr |= calculated_err_corr_bit;
-    
+
+#ifdef DEBUG_SERIAL_ERROR_CORRECTION
+	sprintf(buffer, "\nbyte:\t"BYTETOBINARYPATTERN, BYTETOBINARY(c));
+	usart_puts(buffer);
+	sprintf(buffer, "\nerr_corr:\t"BYTETOBINARYPATTERN, BYTETOBINARY((c >> 8)));
+	usart_puts(buffer);
+	sprintf(buffer, "\ncalc_err_corr:\t"BYTETOBINARYPATTERN, BYTETOBINARY(calculated_err_corr));
+	usart_puts(buffer);
+	return 0;
+#else
     if ((c >> 8) == calculated_err_corr) {
         return 1;
     }
     else {
         return 0;
     }
-
+#endif
 }
 
 void _debug() {
