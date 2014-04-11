@@ -6,13 +6,16 @@
 #include "config.h"
 #include "testo_printer_emulator.h"
 
+#define DEBUG
 //#define DEBUG_PHASE_SHIFT_DECODED
 //#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 //#define DEBUG_SERIAL_ERROR_CORRECTION
 
 unsigned long timer_1_ms;
+#ifdef DEBUG
 unsigned char buffer[64];
+#endif
 #ifdef WITH_RX_COUNTER
 unsigned long rx_bytes;
 #endif
@@ -62,13 +65,15 @@ void main(void) {
 	*/
 	my_usart_open();
 
-	sleep_ms(1000);	// let stuff settle...
+//	sleep_ms(1000);	// let stuff settle...
+#ifdef DEBUG
 	usart_puts("Testo printer emulator... serial working\n\r");
+#endif
 
 	TRISBbits.RB0 = 0x1;	// input
 	TRISCbits.RC0 = 0x1;	// input
-	TRISDbits.RD4 = 0x0;	// output
-	PORTDbits.RD4 = 0;		// clear output
+	TRISBbits.RB1 = 0x0;	// output
+	PORTBbits.RB1 = 0;		// clear output
 
 	while (1) {
 		// do nothing
@@ -85,21 +90,16 @@ static void isr_high_prio(void) __interrupt 1 {
 			case INIT_STATE:
 				ir_proto.start_bit_len = 1;
 				ir_proto.state = START_BIT_WAIT;
-				//_debug();
 				break;
 			case START_BIT_WAIT:
 				if ((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) {
 					if (ir_proto.start_bit_len < 2) {
-						//_debug();
 						ir_proto.start_bit_len++;
 					}
 					else {
 						ir_proto.data = 0;
 						ir_proto.data_len = 0;
 						ir_proto.state = DATA_WAIT;
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-						_debug();
-#endif
 					}
 				}
 				else {
@@ -115,9 +115,6 @@ static void isr_high_prio(void) __interrupt 1 {
 							// previous bit is set
 							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
 							ir_proto.data &= 0b111111111110;	// and clear bit 0
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-							_debug();
-#endif
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 							usart_putc('0');
 #endif
@@ -126,11 +123,6 @@ static void isr_high_prio(void) __interrupt 1 {
 							// previous bit is zero
 							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
 							ir_proto.data |= 0b0000000000001;	// and set bit 0
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-							_debug();
-							_debug();
-							_debug();
-#endif
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 							usart_putc('1');
 #endif
@@ -143,11 +135,6 @@ static void isr_high_prio(void) __interrupt 1 {
 							// previous bit is set
 							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
 							ir_proto.data |= 0b0000000000001;	// and set bit 0
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-							_debug();
-							_debug();
-							_debug();
-#endif
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 							usart_putc('1');
 #endif
@@ -156,9 +143,6 @@ static void isr_high_prio(void) __interrupt 1 {
 							// previous bit is zero
 							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
 							ir_proto.data &= 0b111111111110;	// and clear bit 0
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-							_debug();
-#endif
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 							usart_putc('0');
 #endif
@@ -394,101 +378,3 @@ unsigned char valid_err_corr(unsigned int c) {
 #endif
 }
 
-void _debug() {
-	PORTDbits.RD4 = 0x1;
-	__asm 
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-	__endasm;
-	PORTDbits.RD4 = 0x0;
-	__asm 
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-	__endasm;
-}

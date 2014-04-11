@@ -1,8 +1,8 @@
-PK2CMD = pk2cmd -PPIC18F4685
-PROCESSOR = 18f4685
+PK2CMD = pk2cmd -PPIC18F2550
+PROCESSOR = 18f2550
 #PROCESSOR = 18f4620
 MODEL = pic16
-GPSIM_PROCESSOR = pic18f4620
+GPSIM_PROCESSOR = 18f2455
 SDCC = /opt/local/bin/sdcc
 GPLINK = /opt/local/bin/gplink
 GPASM = /opt/local/bin/gpasm
