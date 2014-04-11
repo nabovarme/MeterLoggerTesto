@@ -7,6 +7,8 @@ Coded for pic18f4685 compiled with SDCC
 
 send data at 19200 bps
 
-protocol http://members.ziggo.nl/kees.van.der.sanden/downloads/82240bte.pdf
+protocol http://members.ziggo.nl/kees.van.der.sanden/downloads/82240bte.pdf (HP-IR, HP48)
 
 http://www.keesvandersanden.nl/calculators/hp82240.php
+
+Video showing "printing": https://www.youtube.com/watch?v=RM3XE1EymNQ
