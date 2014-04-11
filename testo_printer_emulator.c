@@ -200,6 +200,7 @@ static void isr_high_prio(void) __interrupt 1 {
 		TMR0L = (unsigned char)TIMER0_RELOAD;
 		ir_proto.start_bit = 0;
 		if (ir_proto.state != INIT_STATE) {
+			sleep();
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 			sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", ir_proto.data_len, timer_0);
 			usart_puts(buffer);

@@ -9,6 +9,8 @@
 	(byte & 0x02 ? 1 : 0), \
 	(byte & 0x01 ? 1 : 0)
 
+#define sleep() __asm sleep __endasm
+
 //#define TIMER0_RELOAD 0xFCC8	// 427us @ 8MHz
 //#define TIMER0_RELOAD 0xF000	// ~ 2ms @ 8MHz
 #define TIMER0_RELOAD 0xF323	// ~ 4 * 427us @ 8MHz
