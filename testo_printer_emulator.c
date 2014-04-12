@@ -70,15 +70,34 @@ void main(void) {
 	usart_puts("Testo printer emulator... serial working\n\r");
 #endif
 
-	TRISBbits.RB0 = 0x1;	// input
-	TRISCbits.RC0 = 0x1;	// input
-	TRISBbits.RB1 = 0x0;	// output
-	PORTBbits.RB1 = 0;		// clear output
-	TRISBbits.RB2 = 0x0;	// output
-	PORTBbits.RB2 = 0;		// clear output
+	TRISBbits.RB0 = 1;		// ir input
+	
+	TRISBbits.RB1 = 0;		// debug output
+	PORTBbits.RB1 = 0;		// clear debug output
+	TRISBbits.RB2 = 0;		// debug 2 output
+	PORTBbits.RB2 = 0;		// clear debug 2 output
+	
+	// pwm
+	TRISCbits.RC1 = 0;		// pwm output
+	PORTCbits.RC1 = 0;		// clear output
 
+	PR2 = 90;				// pwm period 22kHz
+	CCPR2L = 45;			// duty cycle msb
+	
+	T2CONbits.T2CKPS = 0;	// timer 2 clock prescaler is 1
+	T2CONbits.T2OUTPS = 0;	// timer2 output 1:1 postscaler
+	T2CONbits.TMR2ON = 1;	// timer 2 on
+	
+	CCP2CONbits.CCP2M = 0xc;// pwm mode: P1A, P1C active-high; P1B, P1D active-high
+	
 	while (1) {
 		// do nothing
+	//	_debug();
+	//	_debug2();
+		TRISCbits.RC1 = 1;
+		sleep_ms(100);
+		TRISCbits.RC1 = 0;
+		sleep_ms(100);
 	}
 }
 
