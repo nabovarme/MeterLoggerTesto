@@ -41,7 +41,6 @@ unsigned int timer_0;
 void main(void) {
     OSCCONbits.SCS = 0x10;
     OSCCONbits.IRCF = 0x7;	// 8 MHz
-//	WDTCONbits.SWDTEN = 1;	// enable watchdog
 
 	timer_1_ms = 0;
 	
@@ -50,53 +49,15 @@ void main(void) {
 	
 	init_system();
 
-	// USART interrupt low priority
-	IPR1bits.RCIP = 0;
-	IPR1bits.TXIP = 0;
-	/*
-	usart_open(	USART_TX_INT_OFF &
-				USART_RX_INT_ON & 
-				USART_BRGH_HIGH & 
-				USART_ASYNCH_MODE & 
-				USART_EIGHT_BIT &
-				USART_CONT_RX,
-				12     // 19200 kbps @ 8 MHz
-	);
-	*/
-	my_usart_open();
-
-//	sleep_ms(1000);	// let stuff settle...
 #ifdef DEBUG
 	usart_puts("Testo printer emulator... serial working\n\r");
 #endif
 
-	TRISBbits.RB0 = 1;		// ir input
-	
-	TRISBbits.RB1 = 0;		// debug output
-	PORTBbits.RB1 = 0;		// clear debug output
-	TRISBbits.RB2 = 0;		// debug 2 output
-	PORTBbits.RB2 = 0;		// clear debug 2 output
-	
-	// pwm
-	TRISCbits.RC1 = 0;		// pwm output
-	PORTCbits.RC1 = 0;		// clear output
-
-	PR2 = 90;				// pwm period 22kHz
-	CCPR2L = 45;			// duty cycle msb
-	
-	T2CONbits.T2CKPS = 0;	// timer 2 clock prescaler is 1
-	T2CONbits.T2OUTPS = 0;	// timer2 output 1:1 postscaler
-	T2CONbits.TMR2ON = 1;	// timer 2 on
-	
-	CCP2CONbits.CCP2M = 0xc;// pwm mode: P1A, P1C active-high; P1B, P1D active-high
-	
 	while (1) {
 		// do nothing
-	//	_debug();
-	//	_debug2();
-		TRISCbits.RC1 = 1;
+		TRIS_PWM_PIN = OUTPUT_STATE;
 		sleep_ms(100);
-		TRISCbits.RC1 = 0;
+		TRIS_PWM_PIN = INPUT_STATE;
 		sleep_ms(100);
 	}
 }
@@ -289,6 +250,25 @@ void sleep_ms(unsigned long ms) {
 }
 
 void init_system() {
+	// PIN CONFIGURATION
+	TRIS_IR_PIN = INPUT_STATE;		// as input
+	
+	TRIS_DEBUG_PIN = OUTPUT_STATE;	// as output
+	DEBUG_PIN = 0;					// and clear
+	TRIS_DEBUG2_PIN = OUTPUT_STATE;	// as output
+	DEBUG2_PIN = 0;					// and clear
+	
+	// pwm
+	TRIS_PWM_PIN = INPUT_STATE;		// disable output from pwm module at init
+	PWM_PIN = 0;					// and clear
+
+	// serial
+	TRIS_RX_PIN = INPUT_STATE;		// as input
+	TRIS_TX_PIN = OUTPUT_STATE;		// as input
+
+
+
+	// TIMERS
 	// timer 0
 	T0CONbits.TMR0ON = 0;
 	T0CONbits.T0PS0 = 0;
@@ -338,7 +318,9 @@ void init_system() {
     PIR2bits.TMR3IF = 1;
 	*/
 
-    // set up interrupt and timers
+
+
+    // set up interrupt
     RCONbits.IPEN = 1;
 	
 	INTCONbits.INT0IE = 1;		// enable ext int
@@ -346,6 +328,36 @@ void init_system() {
 
 	INTCONbits.PEIE = 1;
 	INTCONbits.GIE = 1;	/* Enable Global interrupts   */	
+
+
+
+	// USART interrupt low priority
+	IPR1bits.RCIP = 0;
+	IPR1bits.TXIP = 0;
+	/*
+	usart_open(	USART_TX_INT_OFF &
+				USART_RX_INT_ON & 
+				USART_BRGH_HIGH & 
+				USART_ASYNCH_MODE & 
+				USART_EIGHT_BIT &
+				USART_CONT_RX,
+				12     // 19200 kbps @ 8 MHz
+	);
+	*/
+	my_usart_open();
+
+
+
+	// PWM
+	PR2 = 90;				// pwm period 22kHz
+	CCPR2L = 45;			// duty cycle msb
+	
+	T2CONbits.T2CKPS = 0;	// timer 2 clock prescaler is 1
+	T2CONbits.T2OUTPS = 0;	// timer2 output 1:1 postscaler
+	T2CONbits.TMR2ON = 1;	// timer 2 on
+	
+	CCP2CONbits.CCP2M = 0xc;// pwm mode: P1A, P1C active-high; P1B, P1D active-high
+	
 }
 
 void my_usart_open() {
@@ -442,7 +454,7 @@ unsigned char valid_err_corr(unsigned int c) {
 }
 
 void _debug() {
-	PORTBbits.RB1 = 0x1;
+	DEBUG_PIN = 0x1;
 	__asm 
 		nop
 		nop
@@ -490,7 +502,7 @@ void _debug() {
 		nop
 		nop
 	__endasm;
-	PORTBbits.RB1 = 0x0;
+	DEBUG_PIN = 0x0;
 	__asm 
 		nop
 		nop
@@ -541,7 +553,7 @@ void _debug() {
 }
 
 void _debug2() {
-	PORTBbits.RB2 = 0x1;
+	DEBUG2_PIN = 0x1;
 	__asm 
 		nop
 		nop
@@ -589,7 +601,7 @@ void _debug2() {
 		nop
 		nop
 	__endasm;
-	PORTBbits.RB2 = 0x0;
+	DEBUG2_PIN = 0x0;
 	__asm 
 		nop
 		nop

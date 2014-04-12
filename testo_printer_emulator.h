@@ -19,6 +19,27 @@
 #define TIMER2_RELOAD	0x00	// ~ 5 ms @ 8Mhz
 #define TIMER3_RELOAD	0x0000	// ~ 131 ms @ 4MHz
 
+
+#define OUTPUT_STATE 0
+#define INPUT_STATE 1
+
+#define TRIS_IR_PIN		TRISBbits.RB0
+
+#define TRIS_DEBUG_PIN	TRISBbits.RB1 
+#define DEBUG_PIN		PORTBbits.RB1
+
+#define TRIS_DEBUG2_PIN	TRISBbits.RB2
+#define DEBUG2_PIN		PORTBbits.RB2
+
+#define TRIS_PWM_PIN	TRISCbits.RC1
+#define PWM_PIN			PORTCbits.RC1
+
+#define TRIS_RX_PIN		TRISCbits.RC7
+#define RX_PIN			PORTCbits.RC7
+
+#define TRIS_TX_PIN		TRISCbits.RC6
+#define TX_PIN			PORTCbits.RC6
+
 #define TICK 855
 #define TICK_ADJ 200
 
