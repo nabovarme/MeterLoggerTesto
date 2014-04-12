@@ -65,7 +65,7 @@ void main(void) {
 	*/
 	my_usart_open();
 
-	sleep_ms(1000);	// let stuff settle...
+//	sleep_ms(1000);	// let stuff settle...
 #ifdef DEBUG
 	usart_puts("Testo printer emulator... serial working\n\r");
 #endif
@@ -161,6 +161,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", ir_proto.data_len, timer_0);
 						usart_puts(buffer);
 #endif
+						
 						ir_proto.start_bit_len = 1;
 						ir_proto.state = START_BIT_WAIT;
 					}
@@ -384,3 +385,101 @@ unsigned char valid_err_corr(unsigned int c) {
 #endif
 }
 
+void _debug() {
+	PORTBbits.RB1 = 0x1;
+	__asm 
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+	__endasm;
+	PORTBbits.RB1 = 0x0;
+	__asm 
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+	__endasm;
+}
