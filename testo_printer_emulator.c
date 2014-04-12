@@ -6,7 +6,7 @@
 #include "config.h"
 #include "testo_printer_emulator.h"
 
-#define DEBUG
+//#define DEBUG
 //#define DEBUG_PHASE_SHIFT_DECODED
 //#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
@@ -65,7 +65,7 @@ void main(void) {
 	*/
 	my_usart_open();
 
-//	sleep_ms(1000);	// let stuff settle...
+	sleep_ms(1000);	// let stuff settle...
 #ifdef DEBUG
 	usart_puts("Testo printer emulator... serial working\n\r");
 #endif
@@ -77,6 +77,12 @@ void main(void) {
 
 	while (1) {
 		// do nothing
+#ifdef DEBUG
+		sleep_ms(100);
+		PORTBbits.RB1 = 1;
+		sleep_ms(100);
+		PORTBbits.RB1 = 0;
+#endif
 	}
 }
 
