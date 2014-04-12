@@ -6,8 +6,8 @@
 #include "config.h"
 #include "testo_printer_emulator.h"
 
-//#define DEBUG
-//#define DEBUG_PHASE_SHIFT_DECODED
+#define DEBUG
+#define DEBUG_PHASE_SHIFT_DECODED
 //#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 //#define DEBUG_SERIAL_ERROR_CORRECTION
@@ -74,15 +74,11 @@ void main(void) {
 	TRISCbits.RC0 = 0x1;	// input
 	TRISBbits.RB1 = 0x0;	// output
 	PORTBbits.RB1 = 0;		// clear output
+	TRISBbits.RB2 = 0x0;	// output
+	PORTBbits.RB2 = 0;		// clear output
 
 	while (1) {
 		// do nothing
-#ifdef DEBUG
-		sleep_ms(100);
-		PORTBbits.RB1 = 1;
-		sleep_ms(100);
-		PORTBbits.RB1 = 0;
-#endif
 	}
 }
 
@@ -94,23 +90,43 @@ static void isr_high_prio(void) __interrupt 1 {
 
 		switch (ir_proto.state) {
 			case INIT_STATE:
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+				_debug();
+#endif
+				T0CONbits.TMR0ON = 1;		// Start TMR0
 				ir_proto.start_bit_len = 1;
 				ir_proto.state = START_BIT_WAIT;
 				break;
 			case START_BIT_WAIT:
 				if ((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) {
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+					_debug2();
+					_debug2();
+#endif
 					if (ir_proto.start_bit_len < 2) {
 						ir_proto.start_bit_len++;
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+//						_debug();
+#endif
 					}
 					else {
+						// last start bits received, set state to DATA_WAIT
 						ir_proto.data = 0;
 						ir_proto.data_len = 0;
 						ir_proto.state = DATA_WAIT;
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+						_debug();
+						_debug();
+#endif
 					}
 				}
 				else {
+					// error in bit time framing
 					ir_proto.start_bit_len = 1;
 					ir_proto.state = START_BIT_WAIT;
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+						_debug2();
+#endif
 				}
 				break;
 			case DATA_WAIT:
@@ -121,6 +137,9 @@ static void isr_high_prio(void) __interrupt 1 {
 							// previous bit is set
 							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
 							ir_proto.data &= 0b111111111110;	// and clear bit 0
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+//							_debug();
+#endif
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 							usart_putc('0');
 #endif
@@ -129,6 +148,11 @@ static void isr_high_prio(void) __interrupt 1 {
 							// previous bit is zero
 							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
 							ir_proto.data |= 0b0000000000001;	// and set bit 0
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+//							_debug();
+//							_debug();
+//							_debug();
+#endif
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 							usart_putc('1');
 #endif
@@ -141,6 +165,11 @@ static void isr_high_prio(void) __interrupt 1 {
 							// previous bit is set
 							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
 							ir_proto.data |= 0b0000000000001;	// and set bit 0
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+//							_debug();
+//							_debug();
+//							_debug();
+#endif
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 							usart_putc('1');
 #endif
@@ -149,6 +178,9 @@ static void isr_high_prio(void) __interrupt 1 {
 							// previous bit is zero
 							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
 							ir_proto.data &= 0b111111111110;	// and clear bit 0
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+//							_debug();
+#endif
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 							usart_putc('0');
 #endif
@@ -189,15 +221,21 @@ static void isr_high_prio(void) __interrupt 1 {
 		// if timer overflow occurs - reset state
 		TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
 		TMR0L = (unsigned char)TIMER0_RELOAD;
-		ir_proto.start_bit = 0;
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+		_debug2();
+		_debug2();
+		_debug2();
+#endif
+		T0CONbits.TMR0ON = 0;		// Stop TMR0
+//		ir_proto.start_bit = 0;
+		ir_proto.state = INIT_STATE;
+//		sleep();							// sleep until we receive next bit via interrupt on INT0
 		if (ir_proto.state != INIT_STATE) {
-			sleep();							// sleep until we receive next bit via interrupt on INT0
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 			sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", ir_proto.data_len, timer_0);
 			usart_puts(buffer);
 #endif
 		}
-		ir_proto.state = INIT_STATE;
 		
 		INTCONbits.TMR0IF = 0;
 	}
@@ -234,7 +272,7 @@ void sleep_ms(unsigned long ms) {
 
 void init_system() {
 	// timer 0
-	T0CONbits.TMR0ON = 1;
+	T0CONbits.TMR0ON = 0;
 	T0CONbits.T0PS0 = 0;
 	T0CONbits.T0PS1 = 0;
 	T0CONbits.T0PS2 = 0;	// prescaler 1:2
@@ -435,6 +473,105 @@ void _debug() {
 		nop
 	__endasm;
 	PORTBbits.RB1 = 0x0;
+	__asm 
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+	__endasm;
+}
+
+void _debug2() {
+	PORTBbits.RB2 = 0x1;
+	__asm 
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+	__endasm;
+	PORTBbits.RB2 = 0x0;
 	__asm 
 		nop
 		nop
