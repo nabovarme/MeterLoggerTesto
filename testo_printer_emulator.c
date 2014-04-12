@@ -6,8 +6,8 @@
 #include "config.h"
 #include "testo_printer_emulator.h"
 
-#define DEBUG
-#define DEBUG_PHASE_SHIFT_DECODED
+//#define DEBUG
+//#define DEBUG_PHASE_SHIFT_DECODED
 //#define DEBUG_SERIAL_PHASE_SHIFT_DECODED
 
 //#define DEBUG_SERIAL_ERROR_CORRECTION
@@ -226,10 +226,9 @@ static void isr_high_prio(void) __interrupt 1 {
 		_debug2();
 		_debug2();
 #endif
-		T0CONbits.TMR0ON = 0;		// Stop TMR0
-//		ir_proto.start_bit = 0;
+		T0CONbits.TMR0ON = 0;			// Stop TMR0
 		ir_proto.state = INIT_STATE;
-//		sleep();							// sleep until we receive next bit via interrupt on INT0
+		sleep();						// sleep until we receive next bit via interrupt on INT0
 		if (ir_proto.state != INIT_STATE) {
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
 			sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", ir_proto.data_len, timer_0);
