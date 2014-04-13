@@ -53,6 +53,9 @@ unsigned char reverse(unsigned char b);
 
 unsigned char valid_err_corr(unsigned int c);
 
+void send_hijack_carrier(void);
+void send_hijack_test(void);
+
 void _debug();
 void _debug2();
 
