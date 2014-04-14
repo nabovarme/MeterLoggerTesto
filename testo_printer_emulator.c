@@ -16,26 +16,41 @@ unsigned long timer_1_ms;
 #ifdef DEBUG
 unsigned char buffer[64];
 #endif
-#ifdef WITH_RX_COUNTER
-unsigned long rx_bytes;
-#endif
 
-enum ir_state_t {
+enum codec_type_t {
+	NONE,
+	TESTO,
+	RS232
+};
+enum codec_type_t codec_type;
+
+enum rx_state_t {
 	INIT_STATE,
 	START_BIT_WAIT,
-	DATA_WAIT
+	DATA_WAIT,
+	PARITY_WAIT,
+	STOP_BIT_WAIT
 };
 
 typedef struct {
-	enum ir_state_t state;
+	enum rx_state_t state;
 	unsigned char start_bit;
 	unsigned char start_bit_len;
 	unsigned int data;
 	unsigned char data_len;
-	
-} ir_proto_t;
+} testo_ir_proto_t;
 
-volatile ir_proto_t ir_proto;
+typedef struct {
+	enum rx_state_t state;
+	unsigned char start_bit;
+	unsigned char data;
+	unsigned char data_len;
+	unsigned char parity;
+	unsigned char stop_bit;
+} rs232_ir_proto_t;
+
+volatile testo_ir_proto_t testo_ir_proto;
+volatile rs232_ir_proto_t rs232_ir_proto;
 unsigned int timer_0;
 
 void main(void) {
@@ -44,10 +59,11 @@ void main(void) {
 
 	timer_1_ms = 0;
 	
-	ir_proto.state = INIT_STATE;
-	ir_proto.start_bit_len = 0;
+	testo_ir_proto.state = INIT_STATE;
+	testo_ir_proto.start_bit_len = 0;
 	
 	init_system();
+	testo_ir_enable();
 
 #ifdef DEBUG
 	usart_puts("Testo printer emulator... serial working\n\r");
@@ -55,6 +71,7 @@ void main(void) {
 
 	while (1) {
 		// do nothing
+		/*
 		send_hijack_carrier();
 		send_hijack_test();
 		send_hijack_carrier();
@@ -68,6 +85,7 @@ void main(void) {
 		send_hijack_carrier();
 		send_hijack_carrier();
 		send_hijack_carrier();
+		*/
 //		TRIS_PWM_PIN = OUTPUT_STATE;
 //		sleep_ms(100);
 //		TRIS_PWM_PIN = INPUT_STATE;
@@ -81,14 +99,14 @@ static void isr_high_prio(void) __interrupt 1 {
 		TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
 		TMR0L = (unsigned char)TIMER0_RELOAD;
 
-		switch (ir_proto.state) {
+		switch (testo_ir_proto.state) {
 			case INIT_STATE:
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 				_debug();
 #endif
 				T0CONbits.TMR0ON = 1;		// Start TMR0
-				ir_proto.start_bit_len = 1;
-				ir_proto.state = START_BIT_WAIT;
+				testo_ir_proto.start_bit_len = 1;
+				testo_ir_proto.state = START_BIT_WAIT;
 				break;
 			case START_BIT_WAIT:
 				if ((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) {
@@ -96,17 +114,17 @@ static void isr_high_prio(void) __interrupt 1 {
 					_debug2();
 					_debug2();
 #endif
-					if (ir_proto.start_bit_len < 2) {
-						ir_proto.start_bit_len++;
+					if (testo_ir_proto.start_bit_len < 2) {
+						testo_ir_proto.start_bit_len++;
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 //						_debug();
 #endif
 					}
 					else {
 						// last start bits received, set state to DATA_WAIT
-						ir_proto.data = 0;
-						ir_proto.data_len = 0;
-						ir_proto.state = DATA_WAIT;
+						testo_ir_proto.data = 0;
+						testo_ir_proto.data_len = 0;
+						testo_ir_proto.state = DATA_WAIT;
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 						_debug();
 						_debug();
@@ -115,21 +133,21 @@ static void isr_high_prio(void) __interrupt 1 {
 				}
 				else {
 					// error in bit time framing
-					ir_proto.start_bit_len = 1;
-					ir_proto.state = START_BIT_WAIT;
+					testo_ir_proto.start_bit_len = 1;
+					testo_ir_proto.state = START_BIT_WAIT;
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 						_debug2();
 #endif
 				}
 				break;
 			case DATA_WAIT:
-				if (ir_proto.data_len <= 12) {
+				if (testo_ir_proto.data_len <= 12) {
 					if (((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) || ((3 * TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < 3 * TICK + TIMER0_RELOAD + TICK_ADJ))) {
 						// phase shift
-						if ((ir_proto.data & 1) != 0) {
+						if ((testo_ir_proto.data & 1) != 0) {
 							// previous bit is set
-							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
-							ir_proto.data &= 0b111111111110;	// and clear bit 0
+							testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
+							testo_ir_proto.data &= 0b111111111110;	// and clear bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 //							_debug();
 #endif
@@ -139,8 +157,8 @@ static void isr_high_prio(void) __interrupt 1 {
 						}
 						else {
 							// previous bit is zero
-							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
-							ir_proto.data |= 0b0000000000001;	// and set bit 0
+							testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
+							testo_ir_proto.data |= 0b0000000000001;	// and set bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 //							_debug();
 //							_debug();
@@ -150,14 +168,14 @@ static void isr_high_prio(void) __interrupt 1 {
 							usart_putc('1');
 #endif
 						}
-						ir_proto.data_len++;
+						testo_ir_proto.data_len++;
 					}
 					else if ((2 * TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < 2 * TICK + TIMER0_RELOAD + TICK_ADJ)) {
 						// in phase
-						if ((ir_proto.data & 1) != 0) {
+						if ((testo_ir_proto.data & 1) != 0) {
 							// previous bit is set
-							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
-							ir_proto.data |= 0b0000000000001;	// and set bit 0
+							testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
+							testo_ir_proto.data |= 0b0000000000001;	// and set bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 //							_debug();
 //							_debug();
@@ -169,8 +187,8 @@ static void isr_high_prio(void) __interrupt 1 {
 						}
 						else {
 							// previous bit is zero
-							ir_proto.data = ir_proto.data << 1;		// bitshift once to left
-							ir_proto.data &= 0b111111111110;	// and clear bit 0
+							testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
+							testo_ir_proto.data &= 0b111111111110;	// and clear bit 0
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 //							_debug();
 #endif
@@ -178,30 +196,30 @@ static void isr_high_prio(void) __interrupt 1 {
 							usart_putc('0');
 #endif
 						}
-						ir_proto.data_len++;
+						testo_ir_proto.data_len++;
 					}
 					else {
 						// error in bit time framing
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-						sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", ir_proto.data_len, timer_0);
+						sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", testo_ir_proto.data_len, timer_0);
 						usart_puts(buffer);
 #endif
 						
-						ir_proto.start_bit_len = 1;
-						ir_proto.state = START_BIT_WAIT;
+						testo_ir_proto.start_bit_len = 1;
+						testo_ir_proto.state = START_BIT_WAIT;
 					}
-					if (ir_proto.data_len == 12) {
+					if (testo_ir_proto.data_len == 12) {
 						// frame received!
 						// calculate error correction and send via serial port
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-						sprintf(buffer, "\t#%u\tdata %u\tTMR0 %u\n", ir_proto.data_len, (ir_proto.data & 0xff), timer_0);
+						sprintf(buffer, "\t#%u\tdata %u\tTMR0 %u\n", testo_ir_proto.data_len, (testo_ir_proto.data & 0xff), timer_0);
 						usart_puts(buffer);
 #else
-						if (valid_err_corr(ir_proto.data & 0xffff)) {
-							usart_putc(ir_proto.data & 0xff);
+						if (valid_err_corr(testo_ir_proto.data & 0xffff)) {
+							usart_putc(testo_ir_proto.data & 0xff);
 						}
 #endif
-						ir_proto.state = INIT_STATE;
+						testo_ir_proto.state = INIT_STATE;
 					}
 				}
 				break;
@@ -220,11 +238,11 @@ static void isr_high_prio(void) __interrupt 1 {
 		_debug2();
 #endif
 		T0CONbits.TMR0ON = 0;			// Stop TMR0
-		ir_proto.state = INIT_STATE;
+		testo_ir_proto.state = INIT_STATE;
 		sleep();						// sleep until we receive next bit via interrupt on INT0
-		if (ir_proto.state != INIT_STATE) {
+		if (testo_ir_proto.state != INIT_STATE) {
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-			sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", ir_proto.data_len, timer_0);
+			sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", testo_ir_proto.data_len, timer_0);
 			usart_puts(buffer);
 #endif
 		}
@@ -337,7 +355,7 @@ void init_system() {
     // set up interrupt
     RCONbits.IPEN = 1;
 	
-	INTCONbits.INT0IE = 1;		// enable ext int
+	INTCONbits.INT0IE = 0;		// disable ext int, enabled when ir demodulator is started
 	INTCON2bits.INTEDG0 = 1;	// rising edge
 
 	INTCONbits.PEIE = 1;
@@ -465,6 +483,19 @@ unsigned char valid_err_corr(unsigned int c) {
         return 0;
     }
 #endif
+}
+
+void testo_ir_enable() {
+	// should configure timers here and set codec to TESTO
+	codec_type = TESTO;
+	INTCONbits.INT0IE = 1;		// enable ext int
+	INTCON2bits.INTEDG0 = 1;	// rising edge
+}
+
+void testo_ir_disable() {
+	codec_type = NONE;
+	INTCONbits.INT0IE = 0;		// enable ext int
+	INTCON2bits.INTEDG0 = 0;	// rising edge
 }
 
 void send_hijack_carrier(void) {
