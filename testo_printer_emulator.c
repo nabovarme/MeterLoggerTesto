@@ -12,11 +12,19 @@
 
 //#define DEBUG_SERIAL_ERROR_CORRECTION
 
+#define QUEUE_SIZE 256
+
+// Global variables
 unsigned long timer_1_ms;
 volatile unsigned int timer0_reload;
 #ifdef DEBUG
 unsigned char buffer[64];
 #endif
+
+// command queue
+volatile unsigned int fifo_head, fifo_tail;
+volatile unsigned char fifo_buffer[QUEUE_SIZE];
+volatile unsigned char c;
 
 enum codec_type_t {
 	NONE,
@@ -63,6 +71,9 @@ void main(void) {
     OSCCONbits.IRCF = 0x7;	// 8 MHz
 
 	timer_1_ms = 0;
+
+	fifo_head = 0;
+	fifo_tail = 0;
 	
 	init_system();
 
@@ -74,6 +85,15 @@ void main(void) {
 #endif
 
 	while (1) {
+		fifo_put(36);
+		sleep_ms(100);
+		
+		fifo_put(97);
+		sleep_ms(100);
+		
+//		fifo_put(97);
+//		fifo_get(&c);
+//		usart_putc(c);
 		// do nothing
 		/*
 		send_hijack_carrier();
@@ -266,14 +286,15 @@ static void isr_high_prio(void) __interrupt 1 {
 				_debug();
 				switch (rs232_ir_proto.state) {
 					case INIT_STATE:
-						PWM_PIN = 0;
-						rs232_ir_proto.state = START_BIT_SENT;
-						rs232_ir_proto.data_len = 8;
-						rs232_ir_proto.data = 0xfa;
+						if (fifo_get(&c)) {
+							PWM_PIN = 0;
+							rs232_ir_proto.state = START_BIT_SENT;
+							rs232_ir_proto.data_len = 8;
+							rs232_ir_proto.data = c;
+						}
 						break;
 					case START_BIT_SENT:
 						if (rs232_ir_proto.data_len > 1) {
-							//PWM_PIN = 1;
 							PWM_PIN = (rs232_ir_proto.data & 1) != 0;
 							rs232_ir_proto.data = rs232_ir_proto.data >> 1;
 							rs232_ir_proto.data_len--;
@@ -1604,6 +1625,40 @@ void send_hijack_test(void) {
 		nop
 	__endasm;
 
+}
+
+unsigned int fifo_in_use() {
+	return fifo_head - fifo_tail;
+}
+
+unsigned char fifo_put(unsigned char c) {
+	if (fifo_in_use() != QUEUE_SIZE) {
+		fifo_buffer[fifo_head++ % QUEUE_SIZE] = c;
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+unsigned char fifo_get(unsigned char *c) {
+	if (fifo_in_use() != 0) {
+		*c = fifo_buffer[fifo_tail++ % QUEUE_SIZE];
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+unsigned char fifo_snoop(unsigned char *c, unsigned char pos) {
+	if (fifo_in_use() > (pos)) {
+		*c = fifo_buffer[(fifo_tail + pos) % QUEUE_SIZE];
+		return 1;
+	}
+	else {
+		return 0;
+	}
 }
 
 void _debug() {

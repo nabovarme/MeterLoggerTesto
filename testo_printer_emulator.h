@@ -62,6 +62,11 @@ void rs232_tx_enable();
 void send_hijack_carrier(void);
 void send_hijack_test(void);
 
+unsigned int fifo_in_use();
+unsigned char fifo_put(unsigned char c);
+unsigned char fifo_get(unsigned char  *c);
+unsigned char fifo_snoop(unsigned char *c, unsigned char pos);
+
 void _debug();
 void _debug2();
 

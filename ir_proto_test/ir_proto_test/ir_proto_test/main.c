@@ -15,6 +15,12 @@
 #define TICK_LOW (TICK - TICK_ADJ)
 #define TICK_HIGH (TICK + TICK_ADJ)
 
+#define QUEUE_SIZE 256
+
+volatile unsigned int fifo_head, fifo_tail;
+volatile unsigned char fifo_buffer[QUEUE_SIZE];
+volatile unsigned char c;
+
 enum ir_state_t {
 	INIT_STATE,
 	START_BIT_WAIT,
@@ -167,8 +173,52 @@ unsigned char valid_err_corr(unsigned int c) {
 
 }
 
+unsigned int fifo_in_use() {
+	return fifo_head - fifo_tail;
+}
+
+unsigned char fifo_put(unsigned char c) {
+	if (fifo_in_use() != QUEUE_SIZE) {
+		fifo_buffer[fifo_head++ % QUEUE_SIZE] = c;
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+unsigned char fifo_get(unsigned char *c) {
+	if (fifo_in_use() != 0) {
+		*c = fifo_buffer[fifo_tail++ % QUEUE_SIZE];
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+unsigned char fifo_snoop(unsigned char *c, unsigned char pos) {
+	if (fifo_in_use() > (pos)) {
+		*c = fifo_buffer[(fifo_tail + pos) % QUEUE_SIZE];
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+
+
 int main(int argc, const char * argv[])
 {
+    while (1) {
+        fifo_put('a');
+        if (fifo_get(&c)) {
+            printf("%c\n", c);
+        }
+    }
+    
+/*
     int foo;
     
     foo = 1;
@@ -177,7 +227,7 @@ int main(int argc, const char * argv[])
         
         printf("af");
     }
-
+*/
 /*
     isr_high_prio(10);
     isr_high_prio(10);
@@ -198,8 +248,8 @@ int main(int argc, const char * argv[])
     isr_high_prio(20);
     return 0;
  */
-    if (valid_err_corr(0x0d41)) {
-        printf("yes");
-    }
+//    if (valid_err_corr(0x0d41)) {
+//        printf("yes");
+//    }
 }
 
