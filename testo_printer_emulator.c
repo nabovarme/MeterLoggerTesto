@@ -13,6 +13,7 @@
 //#define DEBUG_SERIAL_ERROR_CORRECTION
 
 unsigned long timer_1_ms;
+volatile unsigned int timer0_reload;
 #ifdef DEBUG
 unsigned char buffer[64];
 #endif
@@ -100,8 +101,8 @@ static void isr_high_prio(void) __interrupt 1 {
 	// external interrupt handler
 	if (INTCONbits.INT0IF) {
 		timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
-		TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
-		TMR0L = (unsigned char)TIMER0_RELOAD;
+		TMR0H = (unsigned char)(timer0_reload >> 8);
+		TMR0L = (unsigned char)timer0_reload;
 
 		switch (codec_type) {
 			case TESTO:
@@ -115,7 +116,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						testo_ir_proto.state = START_BIT_WAIT;
 						break;
 					case START_BIT_WAIT:
-						if ((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) {
+						if ((TICK + timer0_reload - TICK_ADJ < timer_0) && (timer_0 < TICK + timer0_reload + TICK_ADJ)) {
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 							_debug2();
 							_debug2();
@@ -148,7 +149,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						break;
 					case DATA_WAIT:
 						if (testo_ir_proto.data_len <= 12) {
-							if (((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) || ((3 * TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < 3 * TICK + TIMER0_RELOAD + TICK_ADJ))) {
+							if (((TICK + timer0_reload - TICK_ADJ < timer_0) && (timer_0 < TICK + timer0_reload + TICK_ADJ)) || ((3 * TICK + timer0_reload - TICK_ADJ < timer_0) && (timer_0 < 3 * TICK + timer0_reload + TICK_ADJ))) {
 								// phase shift
 								if ((testo_ir_proto.data & 1) != 0) {
 									// previous bit is set
@@ -176,7 +177,7 @@ static void isr_high_prio(void) __interrupt 1 {
 								}
 								testo_ir_proto.data_len++;
 							}
-							else if ((2 * TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < 2 * TICK + TIMER0_RELOAD + TICK_ADJ)) {
+							else if ((2 * TICK + timer0_reload - TICK_ADJ < timer_0) && (timer_0 < 2 * TICK + timer0_reload + TICK_ADJ)) {
 								// in phase
 								if ((testo_ir_proto.data & 1) != 0) {
 									// previous bit is set
@@ -241,8 +242,8 @@ static void isr_high_prio(void) __interrupt 1 {
 	// timer interrupt handler
 	if (INTCONbits.TMR0IF) {
 		// if timer overflow occurs - reset state
-		TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
-		TMR0L = (unsigned char)TIMER0_RELOAD;
+		TMR0H = (unsigned char)(timer0_reload >> 8);
+		TMR0L = (unsigned char)timer0_reload;
 
 		switch (codec_type) {
 			case TESTO:
@@ -262,6 +263,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				}
 				break;
 			case RS232_TX:
+				_debug();
 				switch (rs232_ir_proto.state) {
 					case INIT_STATE:
 						PWM_PIN = 0;
@@ -520,6 +522,8 @@ unsigned char valid_err_corr(unsigned int c) {
 void testo_ir_enable() {
 	testo_ir_proto.state = INIT_STATE;
 	testo_ir_proto.start_bit_len = 0;
+
+	timer0_reload = TIMER0_RELOAD;
 	
 	codec_type = TESTO;
 
@@ -548,6 +552,8 @@ void rs232_tx_enable() {
 	rs232_ir_proto.state = INIT_STATE;
 //	rs232_ir_proto.start_bit_len = 0;
 	
+	timer0_reload = TIMER0_RS232_2400;
+
 	PWM_PIN = 1;
 
 	codec_type = RS232_TX;
