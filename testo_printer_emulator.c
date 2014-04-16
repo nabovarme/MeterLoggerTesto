@@ -28,9 +28,12 @@ enum codec_type_t codec_type;
 enum state_t {
 	INIT_STATE,
 	START_BIT_WAIT,
+	START_BIT_SENT,
 	DATA_WAIT,
+	DATA_SENT,
 	PARITY_WAIT,
-	STOP_BIT_WAIT
+	STOP_BIT_WAIT,
+	STOP_BIT_SENT
 };
 
 typedef struct {
@@ -62,8 +65,8 @@ void main(void) {
 	
 	init_system();
 
-	testo_ir_enable();
-//	rs232_tx_enable();
+//	testo_ir_enable();
+	rs232_tx_enable();
 
 #ifdef DEBUG
 	usart_puts("Testo printer emulator... serial working\n\r");
@@ -94,6 +97,7 @@ void main(void) {
 }
 
 static void isr_high_prio(void) __interrupt 1 {
+	// external interrupt handler
 	if (INTCONbits.INT0IF) {
 		timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
 		TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
@@ -234,6 +238,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				
 		INTCONbits.INT0IF = 0;	/* Clear Interrupt Flag */
 	}
+	// timer interrupt handler
 	if (INTCONbits.TMR0IF) {
 		// if timer overflow occurs - reset state
 		TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
@@ -257,9 +262,33 @@ static void isr_high_prio(void) __interrupt 1 {
 				}
 				break;
 			case RS232_TX:
-				// do nothing
-				rs232_ir_proto.data ^= 1;
-				PWM_PIN = rs232_ir_proto.data;
+				switch (rs232_ir_proto.state) {
+					case INIT_STATE:
+						PWM_PIN = 0;
+						rs232_ir_proto.state = START_BIT_SENT;
+						rs232_ir_proto.data_len = 8;
+						rs232_ir_proto.data = 0xfa;
+						break;
+					case START_BIT_SENT:
+						if (rs232_ir_proto.data_len > 1) {
+							//PWM_PIN = 1;
+							PWM_PIN = (rs232_ir_proto.data & 1) != 0;
+							rs232_ir_proto.data = rs232_ir_proto.data >> 1;
+							rs232_ir_proto.data_len--;
+						}
+						else {
+							rs232_ir_proto.state = DATA_SENT;
+						}
+						break;
+					case DATA_SENT:
+						PWM_PIN = 1;
+						rs232_ir_proto.state = STOP_BIT_SENT;
+						break;
+					case STOP_BIT_SENT:
+						PWM_PIN = 1;
+						rs232_ir_proto.state = INIT_STATE;
+						break;
+				}
 				break;
 		}
 		
@@ -519,6 +548,8 @@ void rs232_tx_enable() {
 	rs232_ir_proto.state = INIT_STATE;
 //	rs232_ir_proto.start_bit_len = 0;
 	
+	PWM_PIN = 1;
+
 	codec_type = RS232_TX;
 
 	// timer 0
