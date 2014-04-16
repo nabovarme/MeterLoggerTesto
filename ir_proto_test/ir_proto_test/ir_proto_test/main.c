@@ -21,15 +21,30 @@ volatile unsigned int fifo_head, fifo_tail;
 volatile unsigned char fifo_buffer[QUEUE_SIZE];
 volatile unsigned char c;
 
-enum ir_state_t {
+unsigned char buffer[64];
+unsigned char foo;
+
+enum codec_type_t {
+	NONE,
+	TESTO,
+	RS232_RX,
+	RS232_TX
+};
+enum codec_type_t codec_type;
+
+enum state_t {
 	INIT_STATE,
 	START_BIT_WAIT,
-	ERR_CORR_WAIT,
-	DATA_WAIT
+	START_BIT_SENT,
+	DATA_WAIT,
+	DATA_SENT,
+	PARITY_WAIT,
+	STOP_BIT_WAIT,
+	STOP_BIT_SENT
 };
 
 typedef struct {
-	enum ir_state_t state;
+	enum state_t state;
 	unsigned char start_bit;
 	unsigned char start_bit_len;
 	unsigned char err_corr_bits;
@@ -39,6 +54,16 @@ typedef struct {
 	
 } ir_proto_t;
 
+typedef struct {
+	enum state_t state;
+	unsigned char start_bit;
+	unsigned char data;
+	unsigned char data_len;
+	unsigned char parity;
+	unsigned char stop_bit;
+} rs232_ir_proto_t;
+
+volatile rs232_ir_proto_t rs232_ir_proto;
 volatile ir_proto_t ir_proto;
 //unsigned int timer_0;
 
@@ -207,15 +232,71 @@ unsigned char fifo_snoop(unsigned char *c, unsigned char pos) {
 	}
 }
 
+void isr_timer0() {
+    switch (codec_type) {
+        case TESTO:
+            //            T0CONbits.TMR0ON = 0;			// Stop TMR0
+            //            testo_ir_proto.state = INIT_STATE;
+            //            sleep();						// sleep until we receive next bit via interrupt on INT0
+            //            if (testo_ir_proto.state != INIT_STATE) {
+            //            }
+            break;
+        case RS232_TX:
+//            _debug();
+            switch (rs232_ir_proto.state) {
+                case INIT_STATE:
+                    if (fifo_get(&c)) {
+                        //                        PWM_PIN = 0;
+                        rs232_ir_proto.state = START_BIT_SENT;
+                        rs232_ir_proto.data_len = 8;
+                        rs232_ir_proto.data = c;
+                        
+                        printf("%d: ", rs232_ir_proto.data);
+                    }
+                    break;
+                case START_BIT_SENT:
+                    if (rs232_ir_proto.data_len >= 1) {
+                        //                        PWM_PIN = (rs232_ir_proto.data & 1) != 0;
+                        foo = (rs232_ir_proto.data & 1) != 0;
+                        printf("%c", ((rs232_ir_proto.data & 1) != 0) ? '1' : '0');
+                        
+                        rs232_ir_proto.data = rs232_ir_proto.data >> 1;
+                        rs232_ir_proto.data_len--;
+                    }
+                    else {
+                        rs232_ir_proto.state = DATA_SENT;
+                        printf("\n\r");
+                        //                        usart_puts(buffer);
+                    }
+                    break;
+                case DATA_SENT:
+                    //                    PWM_PIN = 1;
+                    rs232_ir_proto.state = STOP_BIT_SENT;
+                    break;
+                case STOP_BIT_SENT:
+                    //                    PWM_PIN = 1;
+                    rs232_ir_proto.state = INIT_STATE;
+                    break;
+            }
+            break;
+    }
+    
+}
+
 
 
 int main(int argc, const char * argv[])
 {
+    codec_type = RS232_TX;
     while (1) {
-        fifo_put('a');
-        if (fifo_get(&c)) {
-            printf("%c\n", c);
-        }
+        fifo_put(97);
+        fifo_put(36);
+        isr_timer0();
+        isr_timer0();
+        isr_timer0();
+//        if (fifo_get(&c)) {
+//            printf("%c\n", c);
+//        }
     }
     
 /*
