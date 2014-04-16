@@ -1,0 +1,8 @@
+The disadvantages to using interrupt priorities are many:
+
+More interrupt setup code
+More complex ISR declaration
+Higher latency for high-priority interrupts due to the necessary springboard GOTO
+Much higher latency for low-priority interrupts since they can't use the fast register stack
+Increased code space usage due to all of the above.
+More hardware and software stack space is required.

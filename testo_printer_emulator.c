@@ -64,6 +64,8 @@ void main(void) {
 	
 	init_system();
 	testo_ir_enable();
+	
+//	rs232_tx_enable();
 
 #ifdef DEBUG
 	usart_puts("Testo printer emulator... serial working\n\r");
@@ -99,7 +101,9 @@ static void isr_high_prio(void) __interrupt 1 {
 		TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
 		TMR0L = (unsigned char)TIMER0_RELOAD;
 
-		switch (testo_ir_proto.state) {
+		switch (codec_type) {
+			case TESTO:
+				switch (testo_ir_proto.state) {
 			case INIT_STATE:
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 				_debug();
@@ -224,7 +228,11 @@ static void isr_high_prio(void) __interrupt 1 {
 				}
 				break;
 		}
-
+				break;
+			case RS232:
+				// do nothing
+				break;
+		}
 				
 		INTCONbits.INT0IF = 0;	/* Clear Interrupt Flag */
 	}
@@ -232,19 +240,29 @@ static void isr_high_prio(void) __interrupt 1 {
 		// if timer overflow occurs - reset state
 		TMR0H = (unsigned char)(TIMER0_RELOAD >> 8);
 		TMR0L = (unsigned char)TIMER0_RELOAD;
+
+		switch (codec_type) {
+			case TESTO:
 #ifdef DEBUG_PHASE_SHIFT_DECODED
-		_debug2();
-		_debug2();
-		_debug2();
+				_debug2();
+				_debug2();
+				_debug2();
 #endif
-		T0CONbits.TMR0ON = 0;			// Stop TMR0
-		testo_ir_proto.state = INIT_STATE;
-		sleep();						// sleep until we receive next bit via interrupt on INT0
-		if (testo_ir_proto.state != INIT_STATE) {
+				T0CONbits.TMR0ON = 0;			// Stop TMR0
+				testo_ir_proto.state = INIT_STATE;
+				sleep();						// sleep until we receive next bit via interrupt on INT0
+				if (testo_ir_proto.state != INIT_STATE) {
 #ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-			sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", testo_ir_proto.data_len, timer_0);
-			usart_puts(buffer);
+					sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", testo_ir_proto.data_len, timer_0);
+					usart_puts(buffer);
 #endif
+				}
+				break;
+			case RS232:
+				// do nothing
+				rs232_ir_proto.data ^= 1;
+				TRIS_PWM_PIN = rs232_ir_proto.data;
+				break;
 		}
 		
 		INTCONbits.TMR0IF = 0;
@@ -494,8 +512,13 @@ void testo_ir_enable() {
 
 void testo_ir_disable() {
 	codec_type = NONE;
-	INTCONbits.INT0IE = 0;		// enable ext int
-	INTCON2bits.INTEDG0 = 0;	// rising edge
+	INTCONbits.INT0IE = 0;		// disable ext int
+}
+
+void rs232_tx_enable() {
+	codec_type = RS232;
+	INTCONbits.INT0IE = 0;		// disable ext int while sending with software uart
+	T0CONbits.TMR0ON = 1;		// start timer 0
 }
 
 void send_hijack_carrier(void) {

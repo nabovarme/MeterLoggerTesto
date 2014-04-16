@@ -56,6 +56,8 @@ unsigned char valid_err_corr(unsigned int c);
 void testo_ir_enable();
 void testo_ir_disable();
 
+void rs232_tx_enable();
+
 void send_hijack_carrier(void);
 void send_hijack_test(void);
 
