@@ -315,20 +315,7 @@ void init_system() {
 	TRIS_TX_PIN = OUTPUT_STATE;		// as input
 
 
-
 	// TIMERS
-	// timer 0
-	T0CONbits.TMR0ON = 0;
-	T0CONbits.T0PS0 = 0;
-	T0CONbits.T0PS1 = 0;
-	T0CONbits.T0PS2 = 0;	// prescaler 1:2
-	T0CONbits.T08BIT = 0;   // use timer0 16-bit counter
-	T0CONbits.T0CS = 0;             // internal clock source
-	T0CONbits.PSA = 1;              // disable timer0 prescaler
-	INTCON2bits.TMR0IP = 1; // high priority
-	INTCONbits.T0IE = 1;    // Enable TMR0 Interrupt
-	INTCONbits.TMR0IF = 0;
-
 	// timer 1
 	T1CONbits.TMR1ON = 1;
 	T1CONbits.RD16 = 1;
@@ -511,13 +498,13 @@ void testo_ir_enable() {
 	T0CONbits.TMR0ON = 0;
 	T0CONbits.T0PS0 = 0;
 	T0CONbits.T0PS1 = 0;
-	T0CONbits.T0PS2 = 0;	// prescaler 1:2
-	T0CONbits.T08BIT = 0;   // use timer0 16-bit counter
-	T0CONbits.T0CS = 0;             // internal clock source
-	T0CONbits.PSA = 1;              // disable timer0 prescaler
-	INTCON2bits.TMR0IP = 1; // high priority
-	INTCONbits.T0IE = 1;    // Enable TMR0 Interrupt
-	INTCONbits.TMR0IF = 1;  // Force Instant entry to Timer 0 Interrupt
+	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+	T0CONbits.T0CS = 0;			// internal clock source
+	T0CONbits.PSA = 1;			// disable timer0 prescaler
+	INTCON2bits.TMR0IP = 1;		// high priority
+	INTCONbits.T0IE = 1;		// Enable TMR0 Interrupt
+	INTCONbits.TMR0IF = 0;
 
 	INTCONbits.INT0IE = 1;		// enable ext int
 	INTCON2bits.INTEDG0 = 1;	// rising edge
@@ -533,6 +520,19 @@ void rs232_tx_enable() {
 //	rs232_ir_proto.start_bit_len = 0;
 	
 	codec_type = RS232_TX;
+
+	// timer 0
+	T0CONbits.TMR0ON = 0;
+	T0CONbits.T0PS0 = 0;
+	T0CONbits.T0PS1 = 0;
+	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+	T0CONbits.T0CS = 0;			// internal clock source
+	T0CONbits.PSA = 1;			// disable timer0 prescaler
+	INTCON2bits.TMR0IP = 1;		// high priority
+	INTCONbits.T0IE = 1;		// Enable TMR0 Interrupt
+	INTCONbits.TMR0IF = 0;
+
 	INTCONbits.INT0IE = 0;		// disable ext int while sending with software uart
 	T0CONbits.TMR0ON = 1;		// start timer 0
 }
