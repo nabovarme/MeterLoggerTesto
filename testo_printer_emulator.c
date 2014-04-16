@@ -20,11 +20,12 @@ unsigned char buffer[64];
 enum codec_type_t {
 	NONE,
 	TESTO,
-	RS232
+	RS232_RX,
+	RS232_TX
 };
 enum codec_type_t codec_type;
 
-enum rx_state_t {
+enum state_t {
 	INIT_STATE,
 	START_BIT_WAIT,
 	DATA_WAIT,
@@ -33,7 +34,7 @@ enum rx_state_t {
 };
 
 typedef struct {
-	enum rx_state_t state;
+	enum state_t state;
 	unsigned char start_bit;
 	unsigned char start_bit_len;
 	unsigned int data;
@@ -41,7 +42,7 @@ typedef struct {
 } testo_ir_proto_t;
 
 typedef struct {
-	enum rx_state_t state;
+	enum state_t state;
 	unsigned char start_bit;
 	unsigned char data;
 	unsigned char data_len;
@@ -59,12 +60,9 @@ void main(void) {
 
 	timer_1_ms = 0;
 	
-	testo_ir_proto.state = INIT_STATE;
-	testo_ir_proto.start_bit_len = 0;
-	
 	init_system();
+
 	testo_ir_enable();
-	
 //	rs232_tx_enable();
 
 #ifdef DEBUG
@@ -104,132 +102,132 @@ static void isr_high_prio(void) __interrupt 1 {
 		switch (codec_type) {
 			case TESTO:
 				switch (testo_ir_proto.state) {
-			case INIT_STATE:
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-				_debug();
-#endif
-				T0CONbits.TMR0ON = 1;		// Start TMR0
-				testo_ir_proto.start_bit_len = 1;
-				testo_ir_proto.state = START_BIT_WAIT;
-				break;
-			case START_BIT_WAIT:
-				if ((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) {
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-					_debug2();
-					_debug2();
-#endif
-					if (testo_ir_proto.start_bit_len < 2) {
-						testo_ir_proto.start_bit_len++;
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-//						_debug();
-#endif
-					}
-					else {
-						// last start bits received, set state to DATA_WAIT
-						testo_ir_proto.data = 0;
-						testo_ir_proto.data_len = 0;
-						testo_ir_proto.state = DATA_WAIT;
+					case INIT_STATE:
 #ifdef DEBUG_PHASE_SHIFT_DECODED
 						_debug();
-						_debug();
 #endif
-					}
-				}
-				else {
-					// error in bit time framing
-					testo_ir_proto.start_bit_len = 1;
-					testo_ir_proto.state = START_BIT_WAIT;
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-						_debug2();
-#endif
-				}
-				break;
-			case DATA_WAIT:
-				if (testo_ir_proto.data_len <= 12) {
-					if (((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) || ((3 * TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < 3 * TICK + TIMER0_RELOAD + TICK_ADJ))) {
-						// phase shift
-						if ((testo_ir_proto.data & 1) != 0) {
-							// previous bit is set
-							testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
-							testo_ir_proto.data &= 0b111111111110;	// and clear bit 0
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-//							_debug();
-#endif
-#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-							usart_putc('0');
-#endif
-						}
-						else {
-							// previous bit is zero
-							testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
-							testo_ir_proto.data |= 0b0000000000001;	// and set bit 0
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-//							_debug();
-//							_debug();
-//							_debug();
-#endif
-#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-							usart_putc('1');
-#endif
-						}
-						testo_ir_proto.data_len++;
-					}
-					else if ((2 * TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < 2 * TICK + TIMER0_RELOAD + TICK_ADJ)) {
-						// in phase
-						if ((testo_ir_proto.data & 1) != 0) {
-							// previous bit is set
-							testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
-							testo_ir_proto.data |= 0b0000000000001;	// and set bit 0
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-//							_debug();
-//							_debug();
-//							_debug();
-#endif
-#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-							usart_putc('1');
-#endif
-						}
-						else {
-							// previous bit is zero
-							testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
-							testo_ir_proto.data &= 0b111111111110;	// and clear bit 0
-#ifdef DEBUG_PHASE_SHIFT_DECODED
-//							_debug();
-#endif
-#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-							usart_putc('0');
-#endif
-						}
-						testo_ir_proto.data_len++;
-					}
-					else {
-						// error in bit time framing
-#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-						sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", testo_ir_proto.data_len, timer_0);
-						usart_puts(buffer);
-#endif
-						
+						T0CONbits.TMR0ON = 1;		// Start TMR0
 						testo_ir_proto.start_bit_len = 1;
 						testo_ir_proto.state = START_BIT_WAIT;
-					}
-					if (testo_ir_proto.data_len == 12) {
-						// frame received!
-						// calculate error correction and send via serial port
-#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
-						sprintf(buffer, "\t#%u\tdata %u\tTMR0 %u\n", testo_ir_proto.data_len, (testo_ir_proto.data & 0xff), timer_0);
-						usart_puts(buffer);
-#else
-						if (valid_err_corr(testo_ir_proto.data & 0xffff)) {
-							usart_putc(testo_ir_proto.data & 0xff);
-						}
+						break;
+					case START_BIT_WAIT:
+						if ((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) {
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+							_debug2();
+							_debug2();
 #endif
-						testo_ir_proto.state = INIT_STATE;
-					}
+							if (testo_ir_proto.start_bit_len < 2) {
+								testo_ir_proto.start_bit_len++;
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+//								_debug();
+#endif
+							}
+							else {
+								// last start bits received, set state to DATA_WAIT
+								testo_ir_proto.data = 0;
+								testo_ir_proto.data_len = 0;
+								testo_ir_proto.state = DATA_WAIT;
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+								_debug();
+								_debug();
+#endif
+							}
+						}
+						else {
+							// error in bit time framing
+							testo_ir_proto.start_bit_len = 1;
+							testo_ir_proto.state = START_BIT_WAIT;
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+							_debug2();
+#endif
+						}
+						break;
+					case DATA_WAIT:
+						if (testo_ir_proto.data_len <= 12) {
+							if (((TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < TICK + TIMER0_RELOAD + TICK_ADJ)) || ((3 * TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < 3 * TICK + TIMER0_RELOAD + TICK_ADJ))) {
+								// phase shift
+								if ((testo_ir_proto.data & 1) != 0) {
+									// previous bit is set
+									testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
+									testo_ir_proto.data &= 0b111111111110;	// and clear bit 0
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+//									_debug();
+#endif
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
+									usart_putc('0');
+#endif
+								}
+								else {
+									// previous bit is zero
+									testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
+									testo_ir_proto.data |= 0b0000000000001;	// and set bit 0
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+//									_debug();
+//									_debug();
+//									_debug();
+#endif
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
+									usart_putc('1');
+#endif
+								}
+								testo_ir_proto.data_len++;
+							}
+							else if ((2 * TICK + TIMER0_RELOAD - TICK_ADJ < timer_0) && (timer_0 < 2 * TICK + TIMER0_RELOAD + TICK_ADJ)) {
+								// in phase
+								if ((testo_ir_proto.data & 1) != 0) {
+									// previous bit is set
+									testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
+									testo_ir_proto.data |= 0b0000000000001;	// and set bit 0
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+//									_debug();
+//									_debug();
+//									_debug();
+#endif
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
+									usart_putc('1');
+#endif
+								}
+								else {
+									// previous bit is zero
+									testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
+									testo_ir_proto.data &= 0b111111111110;	// and clear bit 0
+#ifdef DEBUG_PHASE_SHIFT_DECODED
+//									_debug();
+#endif
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
+									usart_putc('0');
+#endif
+								}
+								testo_ir_proto.data_len++;
+							}
+							else {
+								// error in bit time framing
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
+								sprintf(buffer, "\t#%u\terror\tTMR0 %u\n", testo_ir_proto.data_len, timer_0);
+								usart_puts(buffer);
+#endif
+						
+								testo_ir_proto.start_bit_len = 1;
+								testo_ir_proto.state = START_BIT_WAIT;
+							}
+							if (testo_ir_proto.data_len == 12) {
+								// frame received!
+								// calculate error correction and send via serial port
+#ifdef DEBUG_SERIAL_PHASE_SHIFT_DECODED
+								sprintf(buffer, "\t#%u\tdata %u\tTMR0 %u\n", testo_ir_proto.data_len, (testo_ir_proto.data & 0xff), timer_0);
+								usart_puts(buffer);
+#else
+								if (valid_err_corr(testo_ir_proto.data & 0xffff)) {
+									usart_putc(testo_ir_proto.data & 0xff);
+								}
+#endif
+								testo_ir_proto.state = INIT_STATE;
+							}
+						}
+						break;
 				}
 				break;
-		}
-				break;
-			case RS232:
+			case RS232_TX:
 				// do nothing
 				break;
 		}
@@ -258,10 +256,10 @@ static void isr_high_prio(void) __interrupt 1 {
 #endif
 				}
 				break;
-			case RS232:
+			case RS232_TX:
 				// do nothing
 				rs232_ir_proto.data ^= 1;
-				TRIS_PWM_PIN = rs232_ir_proto.data;
+				PWM_PIN = rs232_ir_proto.data;
 				break;
 		}
 		
@@ -329,7 +327,7 @@ void init_system() {
 	T0CONbits.PSA = 1;              // disable timer0 prescaler
 	INTCON2bits.TMR0IP = 1; // high priority
 	INTCONbits.T0IE = 1;    // Enable TMR0 Interrupt
-	INTCONbits.TMR0IF = 1;  // Force Instant entry to Timer 0 Interrupt
+	INTCONbits.TMR0IF = 0;
 
 	// timer 1
 	T1CONbits.TMR1ON = 1;
@@ -504,8 +502,23 @@ unsigned char valid_err_corr(unsigned int c) {
 }
 
 void testo_ir_enable() {
-	// should configure timers here and set codec to TESTO
+	testo_ir_proto.state = INIT_STATE;
+	testo_ir_proto.start_bit_len = 0;
+	
 	codec_type = TESTO;
+
+	// timer 0
+	T0CONbits.TMR0ON = 0;
+	T0CONbits.T0PS0 = 0;
+	T0CONbits.T0PS1 = 0;
+	T0CONbits.T0PS2 = 0;	// prescaler 1:2
+	T0CONbits.T08BIT = 0;   // use timer0 16-bit counter
+	T0CONbits.T0CS = 0;             // internal clock source
+	T0CONbits.PSA = 1;              // disable timer0 prescaler
+	INTCON2bits.TMR0IP = 1; // high priority
+	INTCONbits.T0IE = 1;    // Enable TMR0 Interrupt
+	INTCONbits.TMR0IF = 1;  // Force Instant entry to Timer 0 Interrupt
+
 	INTCONbits.INT0IE = 1;		// enable ext int
 	INTCON2bits.INTEDG0 = 1;	// rising edge
 }
@@ -516,7 +529,10 @@ void testo_ir_disable() {
 }
 
 void rs232_tx_enable() {
-	codec_type = RS232;
+	rs232_ir_proto.state = INIT_STATE;
+//	rs232_ir_proto.start_bit_len = 0;
+	
+	codec_type = RS232_TX;
 	INTCONbits.INT0IE = 0;		// disable ext int while sending with software uart
 	T0CONbits.TMR0ON = 1;		// start timer 0
 }

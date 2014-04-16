@@ -6,3 +6,13 @@ Higher latency for high-priority interrupts due to the necessary springboard GOT
 Much higher latency for low-priority interrupts since they can't use the fast register stack
 Increased code space usage due to all of the above.
 More hardware and software stack space is required.
+
+Kamstrup
+
+http://kamstrup.se/media/504/file.pdf
+Baud rate Max. 2400 bit/sek
+
+http://www.kamstrup.com/media/2105/IEC61107_comprotocol.pdf
+
+Readout by the use of IEC1107 is in mode A.
+Communication with the meter uses serial communication according to the RS232 standard. Setup for serial communication is 300 baud, 1 start bit, 7 data bits, even parity and 1 stop bit.
