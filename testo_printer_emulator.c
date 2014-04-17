@@ -75,15 +75,289 @@ void main(void) {
 	init_system();
 
 //	testo_ir_enable();
-	rs232_tx_enable();
+//	rs232_tx_enable();	
+	hijack_tx_enable();
 
 #ifdef DEBUG
 	usart_puts("Testo printer emulator... serial working\n\r");
 #endif
 
 	while (1) {
-		fifo_put(foo++);
-		sleep_ms(100);
+		T2CONbits.T2CKPS = 0;
+		sleep_ms(2);
+		T2CONbits.T2CKPS = 1;
+		sleep_ms(2);
+/*		
+		T2CONbits.T2CKPS = 0;	// timer 2 clock prescaler is 1
+		__asm
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+		__endasm;
+		T2CONbits.T2CKPS = 1;	// timer 2 clock prescaler is 1
+		__asm
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+		__endasm;
+		*/
+//		sleep_ms(1);	
+		
+//		hijack_tx_enable();
+//		fifo_put(foo++);
+//		sleep_ms(100);
+//		hijack_tx_disable();
+//		sleep_ms(100);
 		
 //		fifo_put(97);
 //		fifo_get(&c);
@@ -244,6 +518,10 @@ static void isr_high_prio(void) __interrupt 1 {
 		
 		INTCONbits.TMR0IF = 0;
 	}
+//	if (PIR1bits.TMR2IF) {
+//		PIR1bits.TMR2IF = 0;
+//		_debug();
+//	}
 }
 
 static void isr_low_prio(void) __interrupt 2 {
@@ -359,19 +637,6 @@ void init_system() {
 	);
 	*/
 	my_usart_open();
-
-
-
-	// PWM
-//	PR2 = 90;				// pwm period 22kHz
-//	CCPR2L = 45;			// duty cycle msb
-	
-//	T2CONbits.T2CKPS = 0;	// timer 2 clock prescaler is 1
-//	T2CONbits.T2OUTPS = 0;	// timer2 output 1:1 postscaler
-//	T2CONbits.TMR2ON = 1;	// timer 2 on
-	
-//	CCP2CONbits.CCP2M = 0xc;// pwm mode: P1A, P1C active-high; P1B, P1D active-high
-	
 }
 
 void my_usart_open() {
@@ -520,6 +785,31 @@ void rs232_tx_enable() {
 
 	INTCONbits.INT0IE = 0;		// disable ext int while sending with software uart
 	T0CONbits.TMR0ON = 1;		// start timer 0
+}
+
+void rs232_tx_disable() {
+
+}
+
+void hijack_tx_enable() {
+	// PWM
+	PR2 = 90;				// pwm period 22kHz
+	CCPR2L = 45;			// duty cycle msb
+	
+//	IPR1bits.TMR2IP = 1;	// high priority
+//	PIE1bits.TMR2IE = 1;
+//	PIR1bits.TMR2IF = 0;
+
+	T2CONbits.T2CKPS = 0;	// timer 2 clock prescaler is 1
+	T2CONbits.T2OUTPS = 0;	// timer2 output 1:1 postscaler
+	T2CONbits.TMR2ON = 1;	// timer 2 on
+	
+	CCP2CONbits.CCP2M = 0xc;// pwm mode: P1A, P1C active-high; P1B, P1D active-high
+	
+}
+
+void hijack_tx_disable() {
+	T2CONbits.TMR2ON = 0;	// timer 2 off
 }
 
 void send_hijack_carrier(void) {

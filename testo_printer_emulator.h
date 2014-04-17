@@ -58,6 +58,10 @@ void testo_ir_enable();
 void testo_ir_disable();
 
 void rs232_tx_enable();
+void rs232_tx_disable();
+
+void hijack_tx_enable();
+void hijack_tx_disable();
 
 void send_hijack_carrier(void);
 void send_hijack_test(void);
