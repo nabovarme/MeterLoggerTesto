@@ -76,7 +76,8 @@ void main(void) {
 
 //	testo_ir_enable();
 //	rs232_tx_enable();	
-	hijack_tx_enable();
+//	hijack_tx_enable();
+	hijack_rx_enable();
 
 #ifdef DEBUG
 	usart_puts("Testo printer emulator... serial working\n\r");
@@ -810,6 +811,20 @@ void hijack_tx_enable() {
 
 void hijack_tx_disable() {
 	T2CONbits.TMR2ON = 0;	// timer 2 off
+}
+
+void hijack_rx_enable() {
+	// tris...
+	CVRCONbits.CVREF = 0xf;	// When CVRR = 1: CVREF = ((CVR3:CVR0)/24) x (CVRSRC), When CVRR = 0: CVREF = (CVRSRC/4) + (((CVR3:CVR0)/32) x CVRSRC)
+	CVRCONbits.CVRSS = 0;	// Comparator VREF Source Selection bit, Comparator reference source CVRSRC = VDD – VSS
+	CVRCONbits.CVRR = 1;	// low range, 0 to 0.667 CVRSRC, with CVRSRC/24 step size (low range)
+	CVRCONbits.CVROE = 0;	// Comparator VREF Output disabled, CVREF voltage is disconnected from the RA2/AN2/VREF-/CVREF pin
+	CVRCONbits.CVREN = 1;	// Comparator Voltage Reference Enable bit
+	
+	CMCONbits.CM = 0x6;		// four inputs multiplexed to two comparators
+	CMCONbits.CIS = 0;		// multiplexed to RA0/AN0 and RA1/AN1
+
+	PIE2bits.CMIE=1;
 }
 
 void send_hijack_carrier(void) {
