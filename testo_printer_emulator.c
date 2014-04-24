@@ -76,18 +76,22 @@ void main(void) {
 
 //	testo_ir_enable();
 //	rs232_tx_enable();	
-//	hijack_tx_enable();
-	hijack_rx_enable();
+//	fsk_tx_enable();
+	fsk_rx_enable();
 
 #ifdef DEBUG
 	usart_puts("Testo printer emulator... serial working\n\r");
 #endif
 
 	while (1) {
-		T2CONbits.T2CKPS = 0;
-		sleep_ms(2);
-		T2CONbits.T2CKPS = 1;
-		sleep_ms(2);
+//		T2CONbits.T2CKPS = 0;
+//		sleep_ms(2);
+//		T2CONbits.T2CKPS = 1;
+//		sleep_ms(2);
+		if (fifo_get(&foo)) {
+			sprintf(buffer, "%d ", foo);
+			usart_puts(buffer);
+		}
 /*		
 		T2CONbits.T2CKPS = 0;	// timer 2 clock prescaler is 1
 		__asm
@@ -354,10 +358,10 @@ void main(void) {
 		*/
 //		sleep_ms(1);	
 		
-//		hijack_tx_enable();
+//		fsk_tx_enable();
 //		fifo_put(foo++);
 //		sleep_ms(100);
-//		hijack_tx_disable();
+//		fsk_tx_disable();
 //		sleep_ms(100);
 		
 //		fifo_put(97);
@@ -365,19 +369,19 @@ void main(void) {
 //		usart_putc(c);
 		// do nothing
 		/*
-		send_hijack_carrier();
-		send_hijack_test();
-		send_hijack_carrier();
-		send_hijack_carrier();
-		send_hijack_carrier();
-		send_hijack_carrier();
-		send_hijack_carrier();
-		send_hijack_carrier();
-		send_hijack_carrier();
-		send_hijack_carrier();
-		send_hijack_carrier();
-		send_hijack_carrier();
-		send_hijack_carrier();
+		send_fsk_carrier();
+		send_fsk_test();
+		send_fsk_carrier();
+		send_fsk_carrier();
+		send_fsk_carrier();
+		send_fsk_carrier();
+		send_fsk_carrier();
+		send_fsk_carrier();
+		send_fsk_carrier();
+		send_fsk_carrier();
+		send_fsk_carrier();
+		send_fsk_carrier();
+		send_fsk_carrier();
 		*/
 //		TRIS_PWM_PIN = OUTPUT_STATE;
 //		sleep_ms(100);
@@ -520,8 +524,35 @@ static void isr_high_prio(void) __interrupt 1 {
 		INTCONbits.TMR0IF = 0;
 	}
 	if (PIR2bits.CMIF) {
-		//DEBUG_PIN = 1;
-		DEBUG_PIN = CMCONbits.C1OUT;
+		if (CMCONbits.C1OUT) {		// rising edge
+			timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
+			TMR0H = (unsigned char)(timer0_reload >> 8);
+			TMR0L = (unsigned char)timer0_reload;
+
+			DEBUG_PIN = 1;
+//		_debug2();
+//		sprintf(buffer, "%d\n", timer_0);
+//		usart_puts(buffer);
+//		fifo_put((unsigned char)(timer_0 >> 8));
+			if ((timer_0 > 340) && (timer_0 < 476)) {
+			DEBUG2_PIN = 1;
+			__asm;
+				nop
+				nop
+				nop
+				nop
+				nop
+				nop
+				nop
+				nop
+			__endasm;
+			DEBUG2_PIN = 0;
+			}
+		}
+		else {					// faling edge
+			DEBUG_PIN = 0;
+		}
+
 		PIR2bits.CMIF = 0;
 	}
 //	if (PIR1bits.TMR2IF) {
@@ -800,7 +831,7 @@ void rs232_tx_disable() {
 
 }
 
-void hijack_tx_enable() {
+void fsk_tx_enable() {
 	// PWM
 	PR2 = 90;				// pwm period 22kHz
 	CCPR2L = 45;			// duty cycle msb
@@ -817,11 +848,23 @@ void hijack_tx_enable() {
 	
 }
 
-void hijack_tx_disable() {
+void fsk_tx_disable() {
 	T2CONbits.TMR2ON = 0;	// timer 2 off
 }
 
-void hijack_rx_enable() {
+void fsk_rx_enable() {
+	timer0_reload = 0;
+
+	// timer 0
+	T0CONbits.TMR0ON = 1;
+	T0CONbits.T0PS0 = 0;
+	T0CONbits.T0PS1 = 0;
+	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+	T0CONbits.T0CS = 0;			// internal clock source
+	T0CONbits.PSA = 1;			// disable timer0 prescaler
+	INTCONbits.T0IE = 0;		// Dont enable TMR0 Interrupt
+
 	// When CVRR = 1: CVREF = ((CVR3:CVR0)/24) x (CVRSRC), When CVRR = 0: CVREF = (CVRSRC/4) + (((CVR3:CVR0)/32) x CVRSRC)
 	CVRCONbits.CVREF = 0xf;	// 0V
 	// Comparator VREF Source Selection bit
@@ -833,17 +876,17 @@ void hijack_rx_enable() {
 	
 	CMCONbits.CM = 0x6;		// four inputs multiplexed to two comparators
 	CMCONbits.CIS = 0;		// multiplexed to RA0/AN0 and RA1/AN1
-	CMCONbits.C1INV = 1;	// inverted output, 1 = C1Vin+ < C1Vin-
+	CMCONbits.C1INV = 0;	// non-inverted output, 1 = C1 VIN+ > C1 VIN-
 
 	IPR2bits.CMIP = 1;		// high priority
 	PIE2bits.CMIE = 1;		// Enable comparator interrupt
 }
 
-void hijack_rx_disable() {
+void fsk_rx_disable() {
 	PIE2bits.CMIE = 0;		// Disable comparator interrupt
 }
 
-void send_hijack_carrier(void) {
+void send_fsk_carrier(void) {
 	PWM_PIN = 1;
 	__asm
 		nop
@@ -938,7 +981,7 @@ void send_hijack_carrier(void) {
 	__endasm;
 }
 
-void send_hijack_test(void) {
+void send_fsk_test(void) {
 	// the frame used consists of a start bit, eight data bits, one parity bits and one stop bit
 	
 	// start bit

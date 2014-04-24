@@ -1,5 +1,5 @@
 
-frequency 800000
+frequency 8000000
 
 #node ir_node
 #stimulus asynchronous_stimulus initial_state 1 start_cycle 0 period 855 {

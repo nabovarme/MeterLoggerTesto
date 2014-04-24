@@ -20,6 +20,9 @@
 #define TIMER2_RELOAD	0x00	// ~ 5 ms @ 8Mhz
 #define TIMER3_RELOAD	0x0000	// ~ 131 ms @ 4MHz
 
+#define SOFT_MODEM_BAUD_RATE	(1225)
+#define SOFT_MODEM_LOW_FREQ		(4900)
+#define SOFT_MODEM_HIGH_FREQ	(7350)
 
 #define OUTPUT_STATE 0
 #define INPUT_STATE 1
@@ -65,14 +68,14 @@ void testo_ir_disable();
 void rs232_tx_enable();
 void rs232_tx_disable();
 
-void hijack_tx_enable();
-void hijack_tx_disable();
+void fsk_tx_enable();
+void fsk_tx_disable();
 
-void hijack_rx_enable();
-void hijack_rx_disable();
+void fsk_rx_enable();
+void fsk_rx_disable();
 
-void send_hijack_carrier(void);
-void send_hijack_test(void);
+void send_fsk_carrier(void);
+void send_fsk_test(void);
 
 unsigned int fifo_in_use();
 unsigned char fifo_put(unsigned char c);
