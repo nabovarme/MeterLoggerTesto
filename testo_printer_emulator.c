@@ -519,6 +519,11 @@ static void isr_high_prio(void) __interrupt 1 {
 		
 		INTCONbits.TMR0IF = 0;
 	}
+	if (PIR2bits.CMIF) {
+		//DEBUG_PIN = 1;
+		DEBUG_PIN = CMCONbits.C1OUT;
+		PIR2bits.CMIF = 0;
+	}
 //	if (PIR1bits.TMR2IF) {
 //		PIR1bits.TMR2IF = 0;
 //		_debug();
@@ -563,6 +568,9 @@ void init_system() {
 	TRIS_DEBUG2_PIN = OUTPUT_STATE;	// as output
 	DEBUG2_PIN = 0;					// and clear
 	
+	TRIS_COMP1 = INPUT_STATE;		// as input
+	TRIS_COMP2 = INPUT_STATE;		// as input
+
 	// pwm
 //	TRIS_PWM_PIN = INPUT_STATE;		// disable output from pwm module at init
 	TRIS_PWM_PIN = OUTPUT_STATE;	// enable output from pwm module at init
@@ -814,17 +822,22 @@ void hijack_tx_disable() {
 }
 
 void hijack_rx_enable() {
-	// tris...
-	CVRCONbits.CVREF = 0xf;	// When CVRR = 1: CVREF = ((CVR3:CVR0)/24) x (CVRSRC), When CVRR = 0: CVREF = (CVRSRC/4) + (((CVR3:CVR0)/32) x CVRSRC)
-	CVRCONbits.CVRSS = 0;	// Comparator VREF Source Selection bit, Comparator reference source CVRSRC = VDD – VSS
+	// tris... + inputs
+	// When CVRR = 1: CVREF = ((CVR3:CVR0)/24) x (CVRSRC), When CVRR = 0: CVREF = (CVRSRC/4) + (((CVR3:CVR0)/32) x CVRSRC)
+	CVRCONbits.CVREF = 0xf;	// 0V
+	// Comparator VREF Source Selection bit
+	CVRCONbits.CVRSS = 0;	// VDD – VSS
 	CVRCONbits.CVRR = 1;	// low range, 0 to 0.667 CVRSRC, with CVRSRC/24 step size (low range)
+	CVRCONbits.CVR = 0;		// 0 V
 	CVRCONbits.CVROE = 0;	// Comparator VREF Output disabled, CVREF voltage is disconnected from the RA2/AN2/VREF-/CVREF pin
 	CVRCONbits.CVREN = 1;	// Comparator Voltage Reference Enable bit
 	
 	CMCONbits.CM = 0x6;		// four inputs multiplexed to two comparators
 	CMCONbits.CIS = 0;		// multiplexed to RA0/AN0 and RA1/AN1
+	CMCONbits.C1INV = 1;	// inverted output, 1 = C1Vin+ < C1Vin-
 
-	PIE2bits.CMIE=1;
+	IPR2bits.CMIP = 1;		// high priority
+	PIE2bits.CMIE=1;		// Interrupt enable
 }
 
 void send_hijack_carrier(void) {

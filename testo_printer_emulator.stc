@@ -1,14 +1,27 @@
 
 frequency 800000
 
-node ir_node
-stimulus asynchronous_stimulus initial_state 1 start_cycle 0 period 855 {
-	427, 0
-} name ir_stim end 
-attach ir_node ir_stim portb0
+#node ir_node
+#stimulus asynchronous_stimulus initial_state 1 start_cycle 0 period 855 {
+#	427, 0
+#} name ir_stim end 
+#attach ir_node ir_stim portb0
 
-scope.ch0 = "portd4"
-scope.ch1 = "portb0"
+
+stimulus asynchronous_stimulus initial_state 0 start_cycle 0 period 500000 analog {
+	3,	0.0,
+	30000,	1.2,
+	4000,	3.14159265,
+	6000,	1.61803399,
+	10000,	0.5772156649,
+	30000,	2.71828183
+} name asy_analog end
+node audio
+attach  audio asy_analog porta0
+scope.ch0 = "porta0"
+
+#scope.ch0 = "portd4"
+#scope.ch1 = "portb0"
 
 #scope.ch0 = "portd0"	# LCD E
 #scope.ch1 = "portd1"	# LCD DATA
@@ -84,8 +97,8 @@ D1.ypos = 36
 
 
 # Connections:
-node ir_node
-attach ir_node ir_stim portb0
+#node ir_node
+#attach ir_node ir_stim portb0
 
 #node zc_node
 #attach zc_node zc_stim portb0
@@ -97,7 +110,7 @@ node PIC_rx
 attach PIC_rx portc7 U1.TXPIN
 
 #node LED
-attach LED portc5 D1.in
+#attach LED portc5 D1.in
 
 #node MOTOR_1
 #attach MOTOR_1 portc1 MOTOR_1_LED.in

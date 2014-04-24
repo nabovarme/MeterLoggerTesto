@@ -24,6 +24,11 @@
 #define OUTPUT_STATE 0
 #define INPUT_STATE 1
 
+#define TRIS_COMP1		TRISAbits.RA0
+#define TRIS_COMP2		TRISAbits.RA1
+#define COMP1_PIN		PORTAbits.RA0
+#define COMP2_PIN		PORTAbits.RA1
+
 #define TRIS_IR_PIN		TRISBbits.RB0
 
 #define TRIS_DEBUG_PIN	TRISBbits.RB1 
