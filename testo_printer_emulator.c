@@ -827,8 +827,8 @@ void hijack_rx_enable() {
 	CVRCONbits.CVREF = 0xf;	// 0V
 	// Comparator VREF Source Selection bit
 	CVRCONbits.CVRSS = 0;	// VDD – VSS
-	CVRCONbits.CVRR = 1;	// low range, 0 to 0.667 CVRSRC, with CVRSRC/24 step size (low range)
-	CVRCONbits.CVR = 0;		// 0 V
+	CVRCONbits.CVRR = 0;	// high range, 0.25 CVRSRC to 0.75 CVRSRC, with CVRSRC/32 step size
+	CVRCONbits.CVR = 9;		// 2,65625 V
 	CVRCONbits.CVROE = 0;	// Comparator VREF Output disabled, CVREF voltage is disconnected from the RA2/AN2/VREF-/CVREF pin
 	CVRCONbits.CVREN = 1;	// Comparator Voltage Reference Enable bit
 	
