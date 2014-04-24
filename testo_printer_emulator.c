@@ -822,7 +822,6 @@ void hijack_tx_disable() {
 }
 
 void hijack_rx_enable() {
-	// tris... + inputs
 	// When CVRR = 1: CVREF = ((CVR3:CVR0)/24) x (CVRSRC), When CVRR = 0: CVREF = (CVRSRC/4) + (((CVR3:CVR0)/32) x CVRSRC)
 	CVRCONbits.CVREF = 0xf;	// 0V
 	// Comparator VREF Source Selection bit
@@ -837,7 +836,11 @@ void hijack_rx_enable() {
 	CMCONbits.C1INV = 1;	// inverted output, 1 = C1Vin+ < C1Vin-
 
 	IPR2bits.CMIP = 1;		// high priority
-	PIE2bits.CMIE=1;		// Interrupt enable
+	PIE2bits.CMIE = 1;		// Enable comparator interrupt
+}
+
+void hijack_rx_disable() {
+	PIE2bits.CMIE = 0;		// Disable comparator interrupt
 }
 
 void send_hijack_carrier(void) {

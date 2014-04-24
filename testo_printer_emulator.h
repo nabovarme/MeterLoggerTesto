@@ -69,6 +69,7 @@ void hijack_tx_enable();
 void hijack_tx_disable();
 
 void hijack_rx_enable();
+void hijack_rx_disable();
 
 void send_hijack_carrier(void);
 void send_hijack_test(void);
