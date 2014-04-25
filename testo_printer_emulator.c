@@ -26,7 +26,9 @@ enum codec_type_t {
 	NONE,
 	TESTO,
 	RS232_RX,
-	RS232_TX
+	RS232_TX,
+	FSK_RX,
+	FSK_TX
 };
 enum codec_type_t codec_type;
 
@@ -58,8 +60,21 @@ typedef struct {
 	unsigned char stop_bit;
 } rs232_ir_proto_t;
 
+typedef struct {
+	enum state_t state;
+	unsigned char start_bit;
+	unsigned int start_bit_time;
+	unsigned char data;
+	unsigned char data_len;
+	unsigned char parity;
+	unsigned char stop_bit;
+} fsk_proto_t;
+
 volatile testo_ir_proto_t testo_ir_proto;
 volatile rs232_ir_proto_t rs232_ir_proto;
+//volatile fsk_proto_t fsk_proto;
+fsk_proto_t fsk_proto;
+
 unsigned int timer_0;
 
 void main(void) {
@@ -74,14 +89,15 @@ void main(void) {
 	
 	init_system();
 
+#ifdef DEBUG
+	usart_puts("Testo printer emulator... serial working\n\r");
+	sleep_ms(100);
+#endif
+
 //	testo_ir_enable();
 //	rs232_tx_enable();	
 //	fsk_tx_enable();
 	fsk_rx_enable();
-
-#ifdef DEBUG
-	usart_puts("Testo printer emulator... serial working\n\r");
-#endif
 
 	while (1) {
 //		T2CONbits.T2CKPS = 0;
@@ -485,11 +501,11 @@ static void isr_high_prio(void) __interrupt 1 {
 		TMR0L = (unsigned char)timer0_reload;
 
 		switch (codec_type) {
-			case TESTO:
+			case TESTO:							// rx timeout
 				T0CONbits.TMR0ON = 0;			// Stop TMR0
 				testo_ir_proto.state = INIT_STATE;
 				sleep();						// sleep until we receive next bit via interrupt on INT0
-				if (testo_ir_proto.state != INIT_STATE) {
+				if (testo_ir_proto.state != INIT_STATE) {	// DEBUG - MISSING SOMETHING HERE?
 				}
 				break;
 			case RS232_TX:
@@ -519,6 +535,70 @@ static void isr_high_prio(void) __interrupt 1 {
 						break;
 				}
 				break;
+			case FSK_RX:						// rx timeout
+				//T0CONbits.TMR0ON = 0;			// Stop TMR0
+				fsk_proto.state = START_BIT_WAIT;
+#ifdef DEBUG
+				DEBUG2_PIN = 1;
+				__asm;
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+				__endasm;
+				DEBUG2_PIN = 0;
+				__asm;
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+				__endasm;
+				DEBUG2_PIN = 1;
+				__asm;
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+				__endasm;
+				DEBUG2_PIN = 0;
+				__asm;
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+				__endasm;
+				DEBUG2_PIN = 1;
+				__asm;
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+					nop
+				__endasm;
+				DEBUG2_PIN = 0;
+#endif
+				//sleep();						// sleep until we receive next bit via interrupt on INT0
+				
+				break;
 		}
 		
 		INTCONbits.TMR0IF = 0;
@@ -528,30 +608,114 @@ static void isr_high_prio(void) __interrupt 1 {
 			timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
 			TMR0H = (unsigned char)(timer0_reload >> 8);
 			TMR0L = (unsigned char)timer0_reload;
+			fsk_proto.start_bit_time += timer_0;
 
+#ifdef DEBUG
 			DEBUG_PIN = 1;
-//		_debug2();
-//		sprintf(buffer, "%d\n", timer_0);
-//		usart_puts(buffer);
-//		fifo_put((unsigned char)(timer_0 >> 8));
-			if ((timer_0 > 340) && (timer_0 < 476)) {
-			DEBUG2_PIN = 1;
-			__asm;
-				nop
-				nop
-				nop
-				nop
-				nop
-				nop
-				nop
-				nop
-			__endasm;
-			DEBUG2_PIN = 0;
+#endif
+
+			switch (fsk_proto.state) {
+				case START_BIT_WAIT:
+					if ((timer_0 > 340) && (timer_0 < 476)) {
+						// start bits received, set state to DATA_WAIT
+						fsk_proto.start_bit_time = 0;
+						fsk_proto.data = 0;
+						fsk_proto.data_len = 0;
+						fsk_proto.state = DATA_WAIT;
+
+						DEBUG2_PIN = 1;
+						__asm;
+							nop
+							nop
+							nop
+							nop
+							nop
+							nop
+							nop
+							nop
+						__endasm;
+						DEBUG2_PIN = 0;
+					}
+
+					break;
+				case DATA_WAIT:
+					if (fsk_proto.start_bit_time > 1300) {
+						fsk_proto.data_len++;
+
+						if ((timer_0 > 340) && (timer_0 < 476)) {
+							fsk_proto.data = fsk_proto.data << 1;		// bitshift once to left
+							fsk_proto.data &= 0b111111111110;			// and clear bit 0
+							/*
+							DEBUG2_PIN = 1;
+							__asm;
+								nop
+								nop
+								nop
+								nop
+								nop
+								nop
+								nop
+								nop
+							__endasm;
+							DEBUG2_PIN = 0;
+							*/
+						}
+						else {
+							fsk_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
+							fsk_proto.data |= 0b0000000000001;				// and set bit 0
+							/*
+							DEBUG2_PIN = 1;
+							__asm;
+								nop
+								nop
+								nop
+								nop
+								nop
+								nop
+								nop
+								nop
+							__endasm;
+							DEBUG2_PIN = 0;
+							__asm;
+								nop
+								nop
+								nop
+								nop
+								nop
+								nop
+								nop
+								nop
+							__endasm;
+							DEBUG2_PIN = 1;
+							__asm;
+								nop
+								nop
+								nop
+								nop
+								nop
+								nop
+								nop
+								nop
+							__endasm;
+							DEBUG2_PIN = 0;
+							*/
+						}
+
+						if (fsk_proto.data_len > 8) {
+							fsk_proto.state = START_BIT_WAIT;
+						}
+						
+						fsk_proto.start_bit_time = 0;
+						//fsk_proto.state = START_BIT_WAIT;
+					} 
+					break;
 			}
 		}
+#ifdef DEBUG
 		else {					// faling edge
 			DEBUG_PIN = 0;
 		}
+#endif
 
 		PIR2bits.CMIF = 0;
 	}
@@ -853,8 +1017,13 @@ void fsk_tx_disable() {
 }
 
 void fsk_rx_enable() {
+	fsk_proto.state = START_BIT_WAIT;
+	fsk_proto.start_bit_time = 0;
+	
 	timer0_reload = 0;
 
+	codec_type = FSK_RX;
+	
 	// timer 0
 	T0CONbits.TMR0ON = 1;
 	T0CONbits.T0PS0 = 0;
@@ -863,7 +1032,8 @@ void fsk_rx_enable() {
 	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
 	T0CONbits.T0CS = 0;			// internal clock source
 	T0CONbits.PSA = 1;			// disable timer0 prescaler
-	INTCONbits.T0IE = 0;		// Dont enable TMR0 Interrupt
+	INTCON2bits.TMR0IP = 1;		// high priority
+	INTCONbits.T0IE = 1;		// Enable TMR0 Interrupt
 
 	// When CVRR = 1: CVREF = ((CVR3:CVR0)/24) x (CVRSRC), When CVRR = 0: CVREF = (CVRSRC/4) + (((CVR3:CVR0)/32) x CVRSRC)
 	CVRCONbits.CVREF = 0xf;	// 0V
@@ -884,6 +1054,7 @@ void fsk_rx_enable() {
 
 void fsk_rx_disable() {
 	PIE2bits.CMIE = 0;		// Disable comparator interrupt
+	codec_type = NONE;
 }
 
 void send_fsk_carrier(void) {
