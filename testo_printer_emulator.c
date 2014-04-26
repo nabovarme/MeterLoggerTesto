@@ -415,7 +415,7 @@ void main(void) {
 
 static void isr_high_prio(void) __interrupt 1 {
 	// external interrupt handler
-	if (INTCONbits.INT0IF) {
+	if (INTCONbits.INT0IF && INTCONbits.INT0IE) {
 		timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
 		TMR0H = (unsigned char)(timer0_reload >> 8);
 		TMR0L = (unsigned char)timer0_reload;
@@ -543,77 +543,52 @@ static void isr_high_prio(void) __interrupt 1 {
 				}
 				break;
 			case FSK_RX:
-				if (fsk_proto.state != START_BIT_WAIT) {
-				//T0CONbits.TMR0ON = 0;						// Stop TMR0
-//				fsk_proto.state = START_BIT_WAIT;
-#ifdef DEBUG
-					DEBUG2_PIN = 1;
-					__asm;
-						nop
-					__endasm;
-					DEBUG2_PIN = 0;
-					fsk_proto.data_len++;
-					//sprintf(buffer, "%u\n", diff);//"h: %u l: %u\n", high_count, low_count);
+				switch (fsk_proto.state) {
+					case START_BIT_WAIT:
+						break;
+					case DATA_WAIT:
+						fsk_proto.data_len++;
+					//sprintf(buffer, "h: %u l: %u\n", high_count, low_count);
 					//usart_puts(buffer);
-					if (fsk_proto.data_len >= 9) {			// 8 bit + 1 stop bit
-						fsk_proto.state == START_BIT_WAIT;
-						fsk_proto.data_len = 0;
-						//T0CONbits.TMR0ON = 0;
-						INTCONbits.TMR0IE = 0;
-						
-					}
+						if (fsk_proto.data_len >= 9) {			// 8 bit + 1 stop bit
+							fsk_proto.data_len = 0;
+							fsk_proto.state == START_BIT_WAIT;
+							//T0CONbits.TMR0ON = 0;
+							INTCONbits.TMR0IE = 0;						
+						}
 					
-					if ((diff > 850) && (diff < 1190)) {
-					//if (high_count > low_count) {
-						//high_count = 0;
-						//low_count = 0;
-        	
-						DEBUG2_PIN = 1;
-						__asm;
-							nop
-						__endasm;
-						DEBUG2_PIN = 0;
-					}
-					else {
-						//high_count = 0;
-						//low_count = 0;
-        	
-						DEBUG3_PIN = 1;
-						__asm;
-							nop
-						__endasm;
-						DEBUG3_PIN = 0;
-					}
+						if ((diff > 850) && (diff < 1190)) {
+						//if (high_count > low_count) {
+							//high_count = 0;
+							//low_count = 0;
+        	        	
+							DEBUG2_PIN = 1;
+							__asm;
+								nop
+							__endasm;
+							DEBUG2_PIN = 0;
+						}
+						else {
+							//high_count = 0;
+							//low_count = 0;
+        	        	
+							DEBUG3_PIN = 1;
+							__asm;
+								nop
+							__endasm;
+							DEBUG3_PIN = 0;
+						}
 					
 					
+						break;
 				}
-				/*
-				DEBUG2_PIN = 1;
-				__asm;
-					nop
-				__endasm;
-				DEBUG2_PIN = 0;
-				__asm;
-					nop
-				__endasm;
-				DEBUG2_PIN = 1;
-				__asm;
-					nop
-				__endasm;
-				DEBUG2_PIN = 0;
-				*/
-				//INTCONbits.TMR0IE = 0;		// Disable TMR0 Interrupt
-				
-#endif
-				//sleep();						// sleep until we receive next bit via interrupt on INT0
-				
 				break;
 		}
 		
 		INTCONbits.TMR0IF = 0;
-//		return;
 	}
-	if (PIR2bits.CMIF) {
+
+	if (PIR2bits.CMIF && PIE2bits.CMIE) {
 		if (CMCONbits.C1OUT) {		// rising edge
 			timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
 			//TMR0H = (unsigned char)(timer0_reload >> 8);
@@ -640,15 +615,30 @@ static void isr_high_prio(void) __interrupt 1 {
 						DEBUG3_PIN = 1;
 						__asm;
 							nop
+							nop
+							nop
 						__endasm;
 						DEBUG3_PIN = 0;
-						INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+						__asm;
+							nop
+							nop
+							nop
+						__endasm;
+						DEBUG3_PIN = 1;
+						__asm;
+							nop
+							nop
+							nop
+						__endasm;
+						DEBUG3_PIN = 0;
 						low_count = 0;
 						high_count = 0;
 //						fsk_proto.start_bit_time = 0;
 						fsk_proto.data = 0;
 						fsk_proto.data_len = 0;
 						fsk_proto.state = DATA_WAIT;
+						INTCONbits.TMR0IF = 0;		// clear flag so it dont enter isr now
+						INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
 					}
 				}
 
