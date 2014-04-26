@@ -72,20 +72,22 @@ typedef struct {
 
 volatile testo_ir_proto_t testo_ir_proto;
 volatile rs232_ir_proto_t rs232_ir_proto;
-//volatile fsk_proto_t fsk_proto;
-fsk_proto_t fsk_proto;
+volatile fsk_proto_t fsk_proto;
+//fsk_proto_t fsk_proto;
 
 unsigned int timer_0;
 unsigned int last_timer_0;
 unsigned int diff;
 unsigned int last_diff;
-unsigned int low_count;
-unsigned int high_count;
+volatile unsigned int low_count;
+volatile unsigned int high_count;
 
 void main(void) {
 	unsigned char foo;
-    OSCCONbits.SCS = 0x10;
+//    OSCCONbits.SCS = 0x10;
+    OSCCONbits.SCS = 0x00;	// external osc
     OSCCONbits.IRCF = 0x7;	// 8 MHz
+	
 
 	timer_1_ms = 0;
 
@@ -96,7 +98,7 @@ void main(void) {
 
 #ifdef DEBUG
 	usart_puts("Testo printer emulator... serial working\n\r");
-//	sleep_ms(100);
+	sleep_ms(100);
 #endif
 
 //	testo_ir_enable();
@@ -496,11 +498,11 @@ static void isr_high_prio(void) __interrupt 1 {
 				// do nothing
 				break;
 		}
-				
 		INTCONbits.INT0IF = 0;	/* Clear Interrupt Flag */
 	}
+	
 	// timer interrupt handler
-	if (INTCONbits.TMR0IF) {
+	if (INTCONbits.TMR0IF && INTCONbits.TMR0IE) {
 		// if timer overflow occurs - reset state
 		TMR0H = (unsigned char)(timer0_reload >> 8);
 		TMR0L = (unsigned char)timer0_reload;
@@ -540,18 +542,51 @@ static void isr_high_prio(void) __interrupt 1 {
 						break;
 				}
 				break;
-			case FSK_RX:						// rx timeout
-				//T0CONbits.TMR0ON = 0;			// Stop TMR0
-				fsk_proto.state = START_BIT_WAIT;
+			case FSK_RX:
+				if (fsk_proto.state != START_BIT_WAIT) {
+				//T0CONbits.TMR0ON = 0;						// Stop TMR0
+//				fsk_proto.state = START_BIT_WAIT;
 #ifdef DEBUG
-				DEBUG2_PIN = 1;
-				__asm;
-					nop
-				__endasm;
-				DEBUG2_PIN = 0;
-				__asm;
-					nop
-				__endasm;
+					DEBUG2_PIN = 1;
+					__asm;
+						nop
+					__endasm;
+					DEBUG2_PIN = 0;
+					fsk_proto.data_len++;
+					//sprintf(buffer, "%u\n", diff);//"h: %u l: %u\n", high_count, low_count);
+					//usart_puts(buffer);
+					if (fsk_proto.data_len >= 9) {			// 8 bit + 1 stop bit
+						fsk_proto.state == START_BIT_WAIT;
+						fsk_proto.data_len = 0;
+						//T0CONbits.TMR0ON = 0;
+						INTCONbits.TMR0IE = 0;
+						
+					}
+					
+					if ((diff > 850) && (diff < 1190)) {
+					//if (high_count > low_count) {
+						//high_count = 0;
+						//low_count = 0;
+        	
+						DEBUG2_PIN = 1;
+						__asm;
+							nop
+						__endasm;
+						DEBUG2_PIN = 0;
+					}
+					else {
+						//high_count = 0;
+						//low_count = 0;
+        	
+						DEBUG3_PIN = 1;
+						__asm;
+							nop
+						__endasm;
+						DEBUG3_PIN = 0;
+					}
+					
+					
+				}
 				/*
 				DEBUG2_PIN = 1;
 				__asm;
@@ -576,6 +611,7 @@ static void isr_high_prio(void) __interrupt 1 {
 		}
 		
 		INTCONbits.TMR0IF = 0;
+//		return;
 	}
 	if (PIR2bits.CMIF) {
 		if (CMCONbits.C1OUT) {		// rising edge
@@ -583,51 +619,36 @@ static void isr_high_prio(void) __interrupt 1 {
 			//TMR0H = (unsigned char)(timer0_reload >> 8);
 			//TMR0L = (unsigned char)timer0_reload;
 			//fsk_proto.start_bit_time += timer_0;
-			diff = timer_0 - last_timer_0;
-			last_timer_0 = timer_0;
-
 #ifdef DEBUG
 			DEBUG_PIN = 1;
 #endif
+			diff = timer_0 - last_timer_0;
+			last_timer_0 = timer_0;
 
 			//switch (fsk_proto.state) {
 			//	case START_BIT_WAIT:
 			
-			if ((diff > 340) && (diff < 476)) {
+//			sprintf(buffer, "%u\n", diff);//"h: %u l: %u\n", high_count, low_count);
+//			usart_puts(buffer);
+			if ((diff > 850) && (diff < 1190)) {
 				low_count += diff;
 				if (fsk_proto.state == START_BIT_WAIT) {
-//					DEBUG2_PIN = 1;
-//					__asm;
-//						nop
-//					__endasm;
-//					DEBUG2_PIN = 0;
-					if (low_count >= 900) {
+					if (low_count >= 3000) {								// start bit received
 						// start bits received, set state to DATA_WAIT
-						fsk_proto.start_bit_time = 0;
+						TMR0H = (unsigned char)(timer0_reload >> 8);
+						TMR0L = (unsigned char)timer0_reload;
+						DEBUG3_PIN = 1;
+						__asm;
+							nop
+						__endasm;
+						DEBUG3_PIN = 0;
+						INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+						low_count = 0;
+						high_count = 0;
+//						fsk_proto.start_bit_time = 0;
 						fsk_proto.data = 0;
 						fsk_proto.data_len = 0;
 						fsk_proto.state = DATA_WAIT;
-						TMR0H = (unsigned char)(timer0_reload >> 8);
-						TMR0L = (unsigned char)timer0_reload;
-						INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
-						/*
-						DEBUG2_PIN = 1;
-						__asm;
-							nop
-							nop
-						__endasm;
-						DEBUG2_PIN = 0;
-						__asm;
-							nop
-							nop
-						__endasm;
-						DEBUG2_PIN = 1;
-						__asm;
-							nop
-							nop
-						__endasm;
-						DEBUG2_PIN = 0;
-						*/
 					}
 				}
 
@@ -693,6 +714,8 @@ void init_system() {
 	DEBUG_PIN = 0;					// and clear
 	TRIS_DEBUG2_PIN = OUTPUT_STATE;	// as output
 	DEBUG2_PIN = 0;					// and clear
+	TRIS_DEBUG3_PIN = OUTPUT_STATE;	// as output
+	DEBUG3_PIN = 0;					// and clear
 	
 	TRIS_COMP1 = INPUT_STATE;		// as input
 	TRIS_COMP2 = INPUT_STATE;		// as input
@@ -709,7 +732,6 @@ void init_system() {
 
 	// TIMERS
 	// timer 1
-	/*
 	T1CONbits.TMR1ON = 1;
 	T1CONbits.RD16 = 1;
 	T1CONbits.TMR1CS = 0;   // internal clock source
@@ -719,7 +741,6 @@ void init_system() {
 	IPR1bits.TMR1IP = 0;	// low priority
 	PIE1bits.TMR1IE = 1;	// Ensure that TMR1 Interrupt is enabled
 	PIR1bits.TMR1IF = 1;	// Force Instant entry to Timer 1 Interrupt
-	*/
 
 	/*
     // timer 2
@@ -777,10 +798,9 @@ void init_system() {
 }
 
 void my_usart_open() {
-	SPBRG = 103;					// 8MHz => 19230 baud
-	TXSTAbits.BRGH = 1;	// (1 = high speed)
+	SPBRG = 16;					// 8MHz => 19230 baud
+	TXSTAbits.BRGH = 0;	// (0 = low speed)
 	TXSTAbits.SYNC = 0;	// (0 = asynchronous)
-	BAUDCONbits.BRG16 = 1;
 	
 	// SPEN - Serial Port Enable Bit 
 	RCSTAbits.SPEN = 1; // (1 = serial port enabled)
