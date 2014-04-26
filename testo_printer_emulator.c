@@ -76,6 +76,11 @@ volatile rs232_ir_proto_t rs232_ir_proto;
 fsk_proto_t fsk_proto;
 
 unsigned int timer_0;
+unsigned int last_timer_0;
+unsigned int diff;
+unsigned int last_diff;
+unsigned int low_count;
+unsigned int high_count;
 
 void main(void) {
 	unsigned char foo;
@@ -91,7 +96,7 @@ void main(void) {
 
 #ifdef DEBUG
 	usart_puts("Testo printer emulator... serial working\n\r");
-	sleep_ms(100);
+//	sleep_ms(100);
 #endif
 
 //	testo_ir_enable();
@@ -542,59 +547,28 @@ static void isr_high_prio(void) __interrupt 1 {
 				DEBUG2_PIN = 1;
 				__asm;
 					nop
-					nop
-					nop
-					nop
-					nop
-					nop
-					nop
-					nop
 				__endasm;
 				DEBUG2_PIN = 0;
 				__asm;
 					nop
+				__endasm;
+				/*
+				DEBUG2_PIN = 1;
+				__asm;
 					nop
-					nop
-					nop
-					nop
-					nop
-					nop
+				__endasm;
+				DEBUG2_PIN = 0;
+				__asm;
 					nop
 				__endasm;
 				DEBUG2_PIN = 1;
 				__asm;
 					nop
-					nop
-					nop
-					nop
-					nop
-					nop
-					nop
-					nop
 				__endasm;
 				DEBUG2_PIN = 0;
-				__asm;
-					nop
-					nop
-					nop
-					nop
-					nop
-					nop
-					nop
-					nop
-				__endasm;
-				DEBUG2_PIN = 1;
-				__asm;
-					nop
-					nop
-					nop
-					nop
-					nop
-					nop
-					nop
-					nop
-				__endasm;
-				DEBUG2_PIN = 0;
+				*/
+				//INTCONbits.TMR0IE = 0;		// Disable TMR0 Interrupt
+				
 #endif
 				//sleep();						// sleep until we receive next bit via interrupt on INT0
 				
@@ -606,109 +580,66 @@ static void isr_high_prio(void) __interrupt 1 {
 	if (PIR2bits.CMIF) {
 		if (CMCONbits.C1OUT) {		// rising edge
 			timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
-			TMR0H = (unsigned char)(timer0_reload >> 8);
-			TMR0L = (unsigned char)timer0_reload;
-			fsk_proto.start_bit_time += timer_0;
+			//TMR0H = (unsigned char)(timer0_reload >> 8);
+			//TMR0L = (unsigned char)timer0_reload;
+			//fsk_proto.start_bit_time += timer_0;
+			diff = timer_0 - last_timer_0;
+			last_timer_0 = timer_0;
 
 #ifdef DEBUG
 			DEBUG_PIN = 1;
 #endif
 
-			switch (fsk_proto.state) {
-				case START_BIT_WAIT:
-					if ((timer_0 > 340) && (timer_0 < 476)) {
+			//switch (fsk_proto.state) {
+			//	case START_BIT_WAIT:
+			
+			if ((diff > 340) && (diff < 476)) {
+				low_count += diff;
+				if (fsk_proto.state == START_BIT_WAIT) {
+//					DEBUG2_PIN = 1;
+//					__asm;
+//						nop
+//					__endasm;
+//					DEBUG2_PIN = 0;
+					if (low_count >= 900) {
 						// start bits received, set state to DATA_WAIT
 						fsk_proto.start_bit_time = 0;
 						fsk_proto.data = 0;
 						fsk_proto.data_len = 0;
 						fsk_proto.state = DATA_WAIT;
-
+						TMR0H = (unsigned char)(timer0_reload >> 8);
+						TMR0L = (unsigned char)timer0_reload;
+						INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+						/*
 						DEBUG2_PIN = 1;
 						__asm;
 							nop
 							nop
+						__endasm;
+						DEBUG2_PIN = 0;
+						__asm;
 							nop
 							nop
-							nop
-							nop
+						__endasm;
+						DEBUG2_PIN = 1;
+						__asm;
 							nop
 							nop
 						__endasm;
 						DEBUG2_PIN = 0;
+						*/
 					}
+				}
 
-					break;
-				case DATA_WAIT:
-					if (fsk_proto.start_bit_time > 1300) {
-						fsk_proto.data_len++;
-
-						if ((timer_0 > 340) && (timer_0 < 476)) {
-							fsk_proto.data = fsk_proto.data << 1;		// bitshift once to left
-							fsk_proto.data &= 0b111111111110;			// and clear bit 0
-							/*
-							DEBUG2_PIN = 1;
-							__asm;
-								nop
-								nop
-								nop
-								nop
-								nop
-								nop
-								nop
-								nop
-							__endasm;
-							DEBUG2_PIN = 0;
-							*/
-						}
-						else {
-							fsk_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
-							fsk_proto.data |= 0b0000000000001;				// and set bit 0
-							/*
-							DEBUG2_PIN = 1;
-							__asm;
-								nop
-								nop
-								nop
-								nop
-								nop
-								nop
-								nop
-								nop
-							__endasm;
-							DEBUG2_PIN = 0;
-							__asm;
-								nop
-								nop
-								nop
-								nop
-								nop
-								nop
-								nop
-								nop
-							__endasm;
-							DEBUG2_PIN = 1;
-							__asm;
-								nop
-								nop
-								nop
-								nop
-								nop
-								nop
-								nop
-								nop
-							__endasm;
-							DEBUG2_PIN = 0;
-							*/
-						}
-
-						if (fsk_proto.data_len > 8) {
-							fsk_proto.state = START_BIT_WAIT;
-						}
-						
-						fsk_proto.start_bit_time = 0;
-						//fsk_proto.state = START_BIT_WAIT;
-					} 
-					break;
+			}
+			else {
+				if (fsk_proto.state == START_BIT_WAIT) {
+					low_count = 0;
+					high_count = 0;
+				}
+				else {
+					high_count += diff;
+				}
 			}
 		}
 #ifdef DEBUG
@@ -778,6 +709,7 @@ void init_system() {
 
 	// TIMERS
 	// timer 1
+	/*
 	T1CONbits.TMR1ON = 1;
 	T1CONbits.RD16 = 1;
 	T1CONbits.TMR1CS = 0;   // internal clock source
@@ -787,6 +719,7 @@ void init_system() {
 	IPR1bits.TMR1IP = 0;	// low priority
 	PIE1bits.TMR1IE = 1;	// Ensure that TMR1 Interrupt is enabled
 	PIR1bits.TMR1IF = 1;	// Force Instant entry to Timer 1 Interrupt
+	*/
 
 	/*
     // timer 2
@@ -953,7 +886,7 @@ void testo_ir_enable() {
 	T0CONbits.T0CS = 0;			// internal clock source
 	T0CONbits.PSA = 1;			// disable timer0 prescaler
 	INTCON2bits.TMR0IP = 1;		// high priority
-	INTCONbits.T0IE = 1;		// Enable TMR0 Interrupt
+	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
 	INTCONbits.TMR0IF = 0;
 
 	INTCONbits.INT0IE = 1;		// enable ext int
@@ -984,7 +917,7 @@ void rs232_tx_enable() {
 	T0CONbits.T0CS = 0;			// internal clock source
 	T0CONbits.PSA = 1;			// disable timer0 prescaler
 	INTCON2bits.TMR0IP = 1;		// high priority
-	INTCONbits.T0IE = 1;		// Enable TMR0 Interrupt
+	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
 	INTCONbits.TMR0IF = 0;
 
 	INTCONbits.INT0IE = 0;		// disable ext int while sending with software uart
@@ -1020,7 +953,7 @@ void fsk_rx_enable() {
 	fsk_proto.state = START_BIT_WAIT;
 	fsk_proto.start_bit_time = 0;
 	
-	timer0_reload = 0;
+	timer0_reload = TIMER0_FSK;
 
 	codec_type = FSK_RX;
 	
@@ -1032,8 +965,8 @@ void fsk_rx_enable() {
 	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
 	T0CONbits.T0CS = 0;			// internal clock source
 	T0CONbits.PSA = 1;			// disable timer0 prescaler
-	INTCON2bits.TMR0IP = 1;		// high priority
-	INTCONbits.T0IE = 1;		// Enable TMR0 Interrupt
+	//INTCON2bits.TMR0IP = 1;		// high priority
+	INTCONbits.TMR0IE = 0;		// Dont enable TMR0 Interrupt
 
 	// When CVRR = 1: CVREF = ((CVR3:CVR0)/24) x (CVRSRC), When CVRR = 0: CVREF = (CVRSRC/4) + (((CVR3:CVR0)/32) x CVRSRC)
 	CVRCONbits.CVREF = 0xf;	// 0V
