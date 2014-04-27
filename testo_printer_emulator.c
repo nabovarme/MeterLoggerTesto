@@ -115,8 +115,8 @@ void main(void) {
 			sprintf(buffer, "%d ", foo);
 			usart_puts(buffer);
 		}
-		usart_puts(".");
-		sleep_ms(10000);
+//		usart_puts(".");
+//		sleep_ms(10000);
 /*		
 		T2CONbits.T2CKPS = 0;	// timer 2 clock prescaler is 1
 		__asm
@@ -578,8 +578,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						break;
 						
 					case STOP_BIT_WAIT:
-						sprintf(buffer, "%u ", fsk_proto.data);
-						usart_puts(buffer);
+						fifo_put(fsk_proto.data);
 						fsk_proto.data = 0;
 						fsk_proto.state = START_BIT_WAIT;
 						//T0CONbits.TMR0ON = 0;
