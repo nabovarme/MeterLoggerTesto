@@ -1,0 +1,36 @@
+------------------------
+       testo 310
+ V3.3       42803600/2
+------------------------
+Company_________________
+
+Address_________________
+
+Phone___________________
+
+ 15.4.2014   Pm10:14:32
+------------------------
+Fuel        Wood pellets
+CO2MAX             20.7%
+------------------------
+-.----      Ratio
+--.-%       CO2
+--.-%       O2
+--.-ppm     CO
+--.-°C      Fluegas temp
+--.-%       Excess air
+--.-mmH2O   Draught
+--.-%       EFF net
+--.-ppm     Ambient CO
+--.-%       EFF gross
+--.-mmH2O   Diff. press.
+18.7°C      Ambient temp
+--.-ppm     Undiluted CO
+------------------------
+Smoke no.          _ _ _
+
+Smoke no.Ø         _
+
+HCT               ____°C
+------------------------
+Forquestion call-_______
