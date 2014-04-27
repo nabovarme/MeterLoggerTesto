@@ -585,6 +585,37 @@ static void isr_high_prio(void) __interrupt 1 {
 						break;
 				}
 				break;
+			case FSK_TX:
+				T2CONbits.TMR2ON = 0;
+				TMR2 = 0;
+				fsk_proto.data ^= 1;
+				if (fsk_proto.data & 1) {
+					PR2 = 16;				// pwm period ~ 7350Hz
+					CCPR2L = 8;				// duty cycle msb
+					T2CONbits.T2CKPS = 0b10;	// timer 2 clock prescaler is 16
+#ifdef DEBUG
+					DEBUG2_PIN = 1;
+					__asm;
+						nop
+					__endasm;
+					DEBUG2_PIN = 0;
+#endif
+				}
+				else {
+					PR2 = 100;				// pwm period ~ 4900Hz
+					CCPR2L = 50;				// duty cycle msb
+					T2CONbits.T2CKPS = 0b01;	// timer 2 clock prescaler is 4
+#ifdef DEBUG
+					DEBUG3_PIN = 1;
+					__asm;
+						nop
+					__endasm;
+					DEBUG3_PIN = 0;
+#endif
+				}
+				T2CONbits.TMR2ON = 1;
+				
+				break;
 		}
 		
 		INTCONbits.TMR0IF = 0;
@@ -931,7 +962,7 @@ void fsk_tx_enable() {
 	T0CONbits.T0CS = 0;			// internal clock source
 	T0CONbits.PSA = 1;			// disable timer0 prescaler
 	INTCON2bits.TMR0IP = 1;		// high priority
-	INTCONbits.TMR0IE = 0;		// Dont enable TMR0 Interrupt
+	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
 
 	// PWM
 	PR2 = 16;				// pwm period ~ 7350Hz
@@ -941,12 +972,11 @@ void fsk_tx_enable() {
 //	PIE1bits.TMR2IE = 1;
 //	PIR1bits.TMR2IF = 0;
 
-	T2CONbits.T2CKPS = 0b111;	// timer 2 clock prescaler is 16
+	T2CONbits.T2CKPS = 0b10;	// timer 2 clock prescaler is 16
 	T2CONbits.T2OUTPS = 0;	// timer2 output 1:1 postscaler
 	T2CONbits.TMR2ON = 1;	// timer 2 on
 	
 	CCP2CONbits.CCP2M = 0xc;// pwm mode: P1A, P1C active-high; P1B, P1D active-high
-	
 }
 
 void fsk_tx_disable() {
