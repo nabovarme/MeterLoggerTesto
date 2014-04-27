@@ -17,11 +17,10 @@ testo_printer_emulator: testo_printer_emulator.c
 	-m$(MODEL) \
 	--use-crt=crt0.o \
 	--use-non-free \
-	-Wl '-m' \
+	-Wl '-m -s18f2550.lkr' \
 	-p$(PROCESSOR) \
 	--debug-info \
 	$<
-#	-Wl '-m -s18f4620.lkr' \
 #	-I"./" glcd.o menu_system.o \
 
 

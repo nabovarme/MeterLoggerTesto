@@ -6,16 +6,14 @@
 #include "config.h"
 #include "testo_printer_emulator.h"
 
-#define DEBUG
+//#define DEBUG
 
 #define QUEUE_SIZE 256
 
 // Global variables
 unsigned long timer_1_ms;
 volatile unsigned int timer0_reload;
-#ifdef DEBUG
 unsigned char buffer[64];
-#endif
 
 // command queue
 volatile unsigned int fifo_head, fifo_tail;
@@ -84,8 +82,8 @@ volatile unsigned int high_count;
 
 void main(void) {
 	unsigned char foo;
-//    OSCCONbits.SCS = 0x10;
-    OSCCONbits.SCS = 0x00;	// external osc
+    OSCCONbits.SCS = 0x10;
+//    OSCCONbits.SCS = 0x00;	// external osc
     OSCCONbits.IRCF = 0x7;	// 8 MHz
 	
 
@@ -549,7 +547,7 @@ static void isr_high_prio(void) __interrupt 1 {
 					case DATA_WAIT:
 						fsk_proto.data_len++;						
 						if (fsk_proto.data_len <= 8) {
-							if ((diff > 850) && (diff < 1190)) {
+							if ((diff > 340) && (diff < 476)) {
 							//if (high_count > low_count) {
 								fsk_proto.data >>= 1;
 								
@@ -603,10 +601,10 @@ static void isr_high_prio(void) __interrupt 1 {
 			diff = timer_0 - last_timer_0;
 			last_timer_0 = timer_0;
 
-			if ((diff > 850) && (diff < 1190)) {
+			if ((diff > 340) && (diff < 476)) {
 				low_count += diff;
 				if (fsk_proto.state == START_BIT_WAIT) {
-					if (low_count >= 3000) {								// start bit received
+					if (low_count >= 1300) {								// start bit received
 						// start bits received, set state to DATA_WAIT
 						TMR0H = (unsigned char)(timer0_reload >> 8);
 						TMR0L = (unsigned char)timer0_reload;
@@ -767,9 +765,10 @@ void init_system() {
 }
 
 void my_usart_open() {
-	SPBRG = 16;					// 8MHz => 19230 baud
-	TXSTAbits.BRGH = 0;	// (0 = low speed)
+	SPBRG = 103;					// 8MHz => 19230 baud
+	TXSTAbits.BRGH = 1;	// (0 = low speed)
 	TXSTAbits.SYNC = 0;	// (0 = asynchronous)
+	BAUDCONbits.BRG16 = 1;
 	
 	// SPEN - Serial Port Enable Bit 
 	RCSTAbits.SPEN = 1; // (1 = serial port enabled)

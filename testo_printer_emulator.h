@@ -15,8 +15,8 @@
 //#define TIMER0_RELOAD 0xF000	// ~ 2ms @ 8MHz
 #define TIMER0_RELOAD 0xF323	// ~ 4 * 427us @ 8MHz
 #define TIMER0_RS232_2400	0xfcf2
-//#define TIMER0_FSK			0xF99F	// @ 8MHz
-#define TIMER0_FSK			0xF00F
+#define TIMER0_FSK			0xF99F	// @ 8MHz
+//#define TIMER0_FSK			0xF00F
 //#define TIMER0_RELOAD 0x0000
 #define TIMER1_RELOAD 0xF853    // 1 ms @ 8MHz
 #define TIMER2_RELOAD	0x00	// ~ 5 ms @ 8Mhz
