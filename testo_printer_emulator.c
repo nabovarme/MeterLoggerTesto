@@ -552,13 +552,6 @@ static void isr_high_prio(void) __interrupt 1 {
 						//fsk_proto.data_len = 0;
 						//fsk_proto.state == START_BIT_WAIT;
 						if (fsk_proto.data_len < 8) {				// 8 bit + 1 stop bit
-							/*
-							DEBUG2_PIN = 1;
-							__asm;
-								nop
-							__endasm;
-							DEBUG2_PIN = 0;
-							*/
 							fsk_proto.data_len++;
 						}
 						else {
@@ -604,11 +597,6 @@ static void isr_high_prio(void) __interrupt 1 {
 			diff = timer_0 - last_timer_0;
 			last_timer_0 = timer_0;
 
-			//switch (fsk_proto.state) {
-			//	case START_BIT_WAIT:
-			
-//			sprintf(buffer, "%u\n", diff);//"h: %u l: %u\n", high_count, low_count);
-//			usart_puts(buffer);
 			if ((diff > 850) && (diff < 1190)) {
 				low_count += diff;
 				if (fsk_proto.state == START_BIT_WAIT) {
