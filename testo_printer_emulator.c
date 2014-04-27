@@ -546,37 +546,44 @@ static void isr_high_prio(void) __interrupt 1 {
 				break;
 			case FSK_RX:
 				switch (fsk_proto.state) {
-					case START_BIT_WAIT:
-						break;
 					case DATA_WAIT:
-						//fsk_proto.data_len = 0;
-						//fsk_proto.state == START_BIT_WAIT;
-						if (fsk_proto.data_len < 8) {				// 8 bit + 1 stop bit
-							fsk_proto.data_len++;
+						fsk_proto.data_len++;						
+						if (fsk_proto.data_len <= 8) {
+							if ((diff > 850) && (diff < 1190)) {
+							//if (high_count > low_count) {
+								fsk_proto.data >>= 1;
+								
+								DEBUG2_PIN = 1;
+								__asm;
+									nop
+								__endasm;
+								DEBUG2_PIN = 0;
+							}
+							else {
+								fsk_proto.data >>= 1;
+								fsk_proto.data |= 0x80;
+
+								DEBUG3_PIN = 1;
+								__asm;
+									nop
+								__endasm;
+								DEBUG3_PIN = 0;
+							}
+
 						}
-						else {
-							fsk_proto.data_len = 0;
-							fsk_proto.state = START_BIT_WAIT;
-							//T0CONbits.TMR0ON = 0;
-							INTCONbits.TMR0IE = 0;						
-						}
-					
-						if ((diff > 850) && (diff < 1190)) {
-						//if (high_count > low_count) {
-							DEBUG2_PIN = 1;
-							__asm;
-								nop
-							__endasm;
-							DEBUG2_PIN = 0;
-						}
-						else {
-							DEBUG3_PIN = 1;
-							__asm;
-								nop
-							__endasm;
-							DEBUG3_PIN = 0;
-						}
-					
+						else {	// stop bit
+							// check it...
+							fsk_proto.state = STOP_BIT_WAIT;
+						}					
+						break;
+						
+					case STOP_BIT_WAIT:
+						sprintf(buffer, "%u ", fsk_proto.data);
+						usart_puts(buffer);
+						fsk_proto.data = 0;
+						fsk_proto.state = START_BIT_WAIT;
+						//T0CONbits.TMR0ON = 0;
+						INTCONbits.TMR0IE = 0;						
 						break;
 				}
 				break;
@@ -604,30 +611,11 @@ static void isr_high_prio(void) __interrupt 1 {
 						// start bits received, set state to DATA_WAIT
 						TMR0H = (unsigned char)(timer0_reload >> 8);
 						TMR0L = (unsigned char)timer0_reload;
-						DEBUG3_PIN = 1;
-						__asm;
-							nop
-							nop
-							nop
-						__endasm;
-						DEBUG3_PIN = 0;
-						__asm;
-							nop
-							nop
-							nop
-						__endasm;
-						DEBUG3_PIN = 1;
-						__asm;
-							nop
-							nop
-							nop
-						__endasm;
-						DEBUG3_PIN = 0;
 						low_count = 0;
 						high_count = 0;
 //						fsk_proto.start_bit_time = 0;
-						fsk_proto.data = 0;
 						fsk_proto.data_len = 0;
+						fsk_proto.data = 0;
 						fsk_proto.state = DATA_WAIT;
 						INTCONbits.TMR0IF = 0;		// clear flag so it dont enter isr now
 						INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
