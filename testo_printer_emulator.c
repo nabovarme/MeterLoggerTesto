@@ -115,6 +115,8 @@ void main(void) {
 			sprintf(buffer, "%d ", foo);
 			usart_puts(buffer);
 		}
+		usart_puts(".");
+		sleep_ms(10000);
 /*		
 		T2CONbits.T2CKPS = 0;	// timer 2 clock prescaler is 1
 		__asm
@@ -547,21 +549,27 @@ static void isr_high_prio(void) __interrupt 1 {
 					case START_BIT_WAIT:
 						break;
 					case DATA_WAIT:
-						fsk_proto.data_len++;
-					//sprintf(buffer, "h: %u l: %u\n", high_count, low_count);
-					//usart_puts(buffer);
-						if (fsk_proto.data_len >= 9) {			// 8 bit + 1 stop bit
+						//fsk_proto.data_len = 0;
+						//fsk_proto.state == START_BIT_WAIT;
+						if (fsk_proto.data_len < 8) {				// 8 bit + 1 stop bit
+							/*
+							DEBUG2_PIN = 1;
+							__asm;
+								nop
+							__endasm;
+							DEBUG2_PIN = 0;
+							*/
+							fsk_proto.data_len++;
+						}
+						else {
 							fsk_proto.data_len = 0;
-							fsk_proto.state == START_BIT_WAIT;
+							fsk_proto.state = START_BIT_WAIT;
 							//T0CONbits.TMR0ON = 0;
 							INTCONbits.TMR0IE = 0;						
 						}
 					
 						if ((diff > 850) && (diff < 1190)) {
 						//if (high_count > low_count) {
-							//high_count = 0;
-							//low_count = 0;
-        	        	
 							DEBUG2_PIN = 1;
 							__asm;
 								nop
@@ -569,16 +577,12 @@ static void isr_high_prio(void) __interrupt 1 {
 							DEBUG2_PIN = 0;
 						}
 						else {
-							//high_count = 0;
-							//low_count = 0;
-        	        	
 							DEBUG3_PIN = 1;
 							__asm;
 								nop
 							__endasm;
 							DEBUG3_PIN = 0;
 						}
-					
 					
 						break;
 				}
