@@ -604,7 +604,7 @@ static void isr_high_prio(void) __interrupt 1 {
 			if ((diff > 340) && (diff < 476)) {
 				low_count += diff;
 				if (fsk_proto.state == START_BIT_WAIT) {
-					if (low_count >= 1300) {								// start bit received
+					if (low_count >= 1000) {								// start bit received
 						// start bits received, set state to DATA_WAIT
 						TMR0H = (unsigned char)(timer0_reload >> 8);
 						TMR0L = (unsigned char)timer0_reload;
