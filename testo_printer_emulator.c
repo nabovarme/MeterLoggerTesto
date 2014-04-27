@@ -934,14 +934,14 @@ void fsk_tx_enable() {
 	INTCONbits.TMR0IE = 0;		// Dont enable TMR0 Interrupt
 
 	// PWM
-	PR2 = 90;				// pwm period 22kHz
-	CCPR2L = 45;			// duty cycle msb
+	PR2 = 16;				// pwm period ~ 7350Hz
+	CCPR2L = 8;				// duty cycle msb
 	
 //	IPR1bits.TMR2IP = 1;	// high priority
 //	PIE1bits.TMR2IE = 1;
 //	PIR1bits.TMR2IF = 0;
 
-	T2CONbits.T2CKPS = 0;	// timer 2 clock prescaler is 1
+	T2CONbits.T2CKPS = 0b111;	// timer 2 clock prescaler is 16
 	T2CONbits.T2OUTPS = 0;	// timer2 output 1:1 postscaler
 	T2CONbits.TMR2ON = 1;	// timer 2 on
 	
