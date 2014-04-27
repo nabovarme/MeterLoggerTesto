@@ -6,7 +6,7 @@
 #include "config.h"
 #include "testo_printer_emulator.h"
 
-//#define DEBUG
+#define DEBUG
 
 #define QUEUE_SIZE 256
 
@@ -102,7 +102,8 @@ void main(void) {
 //	testo_ir_enable();
 //	rs232_tx_enable();	
 //	fsk_tx_enable();
-	fsk_rx_enable();
+//	fsk_rx_enable();
+	fsk_tx_enable();
 
 	while (1) {
 //		T2CONbits.T2CKPS = 0;
@@ -917,6 +918,21 @@ void rs232_tx_disable() {
 }
 
 void fsk_tx_enable() {
+	timer0_reload = TIMER0_FSK;
+
+	codec_type = FSK_TX;
+	
+	// timer 0
+	T0CONbits.TMR0ON = 1;
+	T0CONbits.T0PS0 = 0;
+	T0CONbits.T0PS1 = 0;
+	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+	T0CONbits.T0CS = 0;			// internal clock source
+	T0CONbits.PSA = 1;			// disable timer0 prescaler
+	INTCON2bits.TMR0IP = 1;		// high priority
+	INTCONbits.TMR0IE = 0;		// Dont enable TMR0 Interrupt
+
 	// PWM
 	PR2 = 90;				// pwm period 22kHz
 	CCPR2L = 45;			// duty cycle msb
@@ -953,7 +969,7 @@ void fsk_rx_enable() {
 	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
 	T0CONbits.T0CS = 0;			// internal clock source
 	T0CONbits.PSA = 1;			// disable timer0 prescaler
-	//INTCON2bits.TMR0IP = 1;		// high priority
+	INTCON2bits.TMR0IP = 1;		// high priority
 	INTCONbits.TMR0IE = 0;		// Dont enable TMR0 Interrupt
 
 	// When CVRR = 1: CVREF = ((CVR3:CVR0)/24) x (CVRSRC), When CVRR = 0: CVREF = (CVRSRC/4) + (((CVR3:CVR0)/32) x CVRSRC)
