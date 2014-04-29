@@ -81,7 +81,7 @@ void fsk_rx_disable();
 
 void send_fsk_high(void);
 void send_fsk_low(void);
-void send_fsk_test(void);
+void fsk_tx_byte(unsigned char c);
 
 unsigned int fifo_in_use();
 unsigned char fifo_put(unsigned char c);
