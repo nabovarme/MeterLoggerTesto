@@ -12,6 +12,8 @@
 #define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
 
 // Global variables
+unsigned int timer_0;
+unsigned int last_timer_0;
 unsigned long timer_1_ms;
 volatile unsigned int timer0_reload;
 unsigned char buffer[64];
@@ -65,6 +67,10 @@ typedef struct {
 
 typedef struct {
 	enum state_t state;
+	unsigned int diff;
+	unsigned int last_diff;
+	volatile unsigned int low_count;
+	volatile unsigned int high_count;
 	unsigned char start_bit;
 	unsigned int start_bit_time;
 	unsigned char data;
@@ -77,14 +83,6 @@ volatile testo_ir_proto_t testo_ir_proto;
 volatile rs232_ir_proto_t rs232_ir_proto;
 volatile fsk_proto_t fsk_proto;
 //fsk_proto_t fsk_proto;
-
-// DEBUG these vars should go to fsk_proto_t struct
-unsigned int timer_0;
-unsigned int last_timer_0;
-unsigned int diff;
-unsigned int last_diff;
-volatile unsigned int low_count;
-volatile unsigned int high_count;
 
 void main(void) {
 	unsigned int i;
@@ -269,7 +267,7 @@ static void isr_high_prio(void) __interrupt 1 {
 					case DATA_WAIT:
 						fsk_proto.data_len++;						
 						if (fsk_proto.data_len <= 8) {
-							if ((diff > 340) && (diff < 476)) {
+							if ((fsk_proto.diff > 340) && (fsk_proto.diff < 476)) {
 							//if (high_count > low_count) {
 								fsk_proto.data >>= 1;
 #ifdef DEBUG								
@@ -373,18 +371,18 @@ static void isr_high_prio(void) __interrupt 1 {
 #ifdef DEBUG
 			DEBUG_PIN = 1;
 #endif
-			diff = timer_0 - last_timer_0;
+			fsk_proto.diff = timer_0 - last_timer_0;
 			last_timer_0 = timer_0;
 
-			if ((diff > 340) && (diff < 476)) {
-				low_count += diff;
+			if ((fsk_proto.diff > 340) && (fsk_proto.diff < 476)) {
+				fsk_proto.low_count += fsk_proto.diff;
 				if (fsk_proto.state == START_BIT_WAIT) {
-					if (low_count >= 1000) {								// start bit received
+					if (fsk_proto.low_count >= 1000) {								// start bit received
 						// start bits received, set state to DATA_WAIT
 						TMR0H = (unsigned char)(timer0_reload >> 8);
 						TMR0L = (unsigned char)timer0_reload;
-						low_count = 0;
-						high_count = 0;
+						fsk_proto.low_count = 0;
+						fsk_proto.high_count = 0;
 //						fsk_proto.start_bit_time = 0;
 						fsk_proto.data_len = 0;
 						fsk_proto.data = 0;
@@ -397,11 +395,11 @@ static void isr_high_prio(void) __interrupt 1 {
 			}
 			else {
 				if (fsk_proto.state == START_BIT_WAIT) {
-					low_count = 0;
-					high_count = 0;
+					fsk_proto.low_count = 0;
+					fsk_proto.high_count = 0;
 				}
 				else {
-					high_count += diff;
+					fsk_proto.high_count += fsk_proto.diff;
 				}
 			}
 		}
