@@ -18,7 +18,8 @@ stimulus asynchronous_stimulus initial_state 0 start_cycle 0 period 500000 analo
 } name asy_analog end
 node audio
 attach  audio asy_analog porta0
-scope.ch0 = "porta0"
+#scope.ch0 = "porta0"
+scope.ch1 = "portc1"
 
 #scope.ch0 = "portd4"
 #scope.ch1 = "portb0"
@@ -135,7 +136,7 @@ attach PIC_rx portc7 U1.TXPIN
 #break e 0x90d
 #break e 0x2358 #low prio int
 #break e 0x1538 #high prio int
-break e 0x5e
+break e 0x13e4
 
 #break c 300000
 #run

@@ -79,7 +79,8 @@ void fsk_tx_disable();
 void fsk_rx_enable();
 void fsk_rx_disable();
 
-void send_fsk_carrier(void);
+void send_fsk_high(void);
+void send_fsk_low(void);
 void send_fsk_test(void);
 
 unsigned int fifo_in_use();
