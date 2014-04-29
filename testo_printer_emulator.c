@@ -9,6 +9,7 @@
 #define DEBUG
 
 #define QUEUE_SIZE 256
+#define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
 
 // Global variables
 unsigned long timer_1_ms;
@@ -16,9 +17,12 @@ volatile unsigned int timer0_reload;
 unsigned char buffer[64];
 
 // command queue
-volatile unsigned int fifo_head, fifo_tail;
-volatile unsigned char fifo_buffer[QUEUE_SIZE];
-volatile unsigned char c;
+unsigned int fifo_head, fifo_tail;
+unsigned char fifo_buffer_0[QUEUE_SIZE];
+unsigned char fifo_buffer_1[QUEUE_SIZE];
+unsigned char fifo_buffer_2[QUEUE_SIZE];
+unsigned char fifo_buffer_3[QUEUE_SIZE];
+unsigned char c;
 
 enum codec_type_t {
 	NONE,
@@ -73,6 +77,7 @@ volatile rs232_ir_proto_t rs232_ir_proto;
 volatile fsk_proto_t fsk_proto;
 //fsk_proto_t fsk_proto;
 
+// DEBUG these vars should go to fsk_proto_t struct
 unsigned int timer_0;
 unsigned int last_timer_0;
 unsigned int diff;
@@ -81,6 +86,7 @@ volatile unsigned int low_count;
 volatile unsigned int high_count;
 
 void main(void) {
+	unsigned int i;
 	unsigned char foo;
     OSCCONbits.SCS = 0x10;
 //    OSCCONbits.SCS = 0x00;	// external osc
@@ -99,20 +105,25 @@ void main(void) {
 	sleep_ms(100);
 #endif
 
-//	testo_ir_enable();
+	testo_ir_enable();
+	sleep_ms(30000);
 //	rs232_tx_enable();	
 //	fsk_tx_enable();
 //	fsk_rx_enable();
-	fsk_tx_enable();
-
+//	fsk_tx_enable();
+	
+//	for (i = 0; i < 800; i++) {
+//		fifo_put('.');
+//	}
 	while (1) {
 //		T2CONbits.T2CKPS = 0;
 //		sleep_ms(2);
 //		T2CONbits.T2CKPS = 1;
 //		sleep_ms(2);
 		if (fifo_get(&foo)) {
-			sprintf(buffer, "%d ", foo);
+			sprintf(buffer, "%c", foo);
 			usart_puts(buffer);
+			//usart_putc(foo);
 		}
 //		usart_puts(".");
 //		sleep_ms(10000);
@@ -487,7 +498,8 @@ static void isr_high_prio(void) __interrupt 1 {
 								// frame received!
 								// calculate error correction and send via serial port
 								if (valid_err_corr(testo_ir_proto.data & 0xffff)) {
-									usart_putc(testo_ir_proto.data & 0xff);
+									//usart_putc(testo_ir_proto.data & 0xff);
+									fifo_put(testo_ir_proto.data & 0xff);
 								}
 								testo_ir_proto.state = INIT_STATE;
 							}
@@ -2061,8 +2073,22 @@ unsigned int fifo_in_use() {
 }
 
 unsigned char fifo_put(unsigned char c) {
-	if (fifo_in_use() != QUEUE_SIZE) {
-		fifo_buffer[fifo_head++ % QUEUE_SIZE] = c;
+	if (fifo_in_use() != QUEUE_SIZE_COMBINED) {
+        switch (fifo_head/QUEUE_SIZE) {
+            case 0:
+                fifo_buffer_0[fifo_head % QUEUE_SIZE] = c;
+                break;
+            case 1:
+                fifo_buffer_1[fifo_head % QUEUE_SIZE] = c;
+                break;
+            case 2:
+                fifo_buffer_2[fifo_head % QUEUE_SIZE] = c;
+                break;
+            case 3:
+                fifo_buffer_3[fifo_head % QUEUE_SIZE] = c;
+                break;
+        }
+        fifo_head++;
 		return 1;
 	}
 	else {
@@ -2072,7 +2098,21 @@ unsigned char fifo_put(unsigned char c) {
 
 unsigned char fifo_get(unsigned char *c) {
 	if (fifo_in_use() != 0) {
-		*c = fifo_buffer[fifo_tail++ % QUEUE_SIZE];
+        switch (fifo_tail/QUEUE_SIZE) {
+            case 0:
+                *c = fifo_buffer_0[fifo_tail % QUEUE_SIZE];
+                break;
+            case 1:
+                *c = fifo_buffer_1[fifo_tail % QUEUE_SIZE];
+                break;
+            case 2:
+                *c = fifo_buffer_2[fifo_tail % QUEUE_SIZE];
+                break;
+            case 3:
+                *c = fifo_buffer_3[fifo_tail % QUEUE_SIZE];
+                break;
+        }
+        fifo_tail++;
 		return 1;
 	}
 	else {
@@ -2080,9 +2120,22 @@ unsigned char fifo_get(unsigned char *c) {
 	}
 }
 
-unsigned char fifo_snoop(unsigned char *c, unsigned char pos) {
+unsigned char fifo_snoop(unsigned char *c, unsigned int pos) {
 	if (fifo_in_use() > (pos)) {
-		*c = fifo_buffer[(fifo_tail + pos) % QUEUE_SIZE];
+        switch (fifo_tail/QUEUE_SIZE) {
+            case 0:
+                *c = fifo_buffer_0[(fifo_tail + pos) % QUEUE_SIZE];
+                break;
+            case 1:
+                *c = fifo_buffer_1[(fifo_tail + pos) % QUEUE_SIZE];
+                break;
+            case 2:
+                *c = fifo_buffer_2[(fifo_tail + pos) % QUEUE_SIZE];
+                break;
+            case 3:
+                *c = fifo_buffer_3[(fifo_tail + pos) % QUEUE_SIZE];
+                break;
+        }
 		return 1;
 	}
 	else {

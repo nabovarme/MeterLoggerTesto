@@ -85,7 +85,7 @@ void send_fsk_test(void);
 unsigned int fifo_in_use();
 unsigned char fifo_put(unsigned char c);
 unsigned char fifo_get(unsigned char  *c);
-unsigned char fifo_snoop(unsigned char *c, unsigned char pos);
+unsigned char fifo_snoop(unsigned char *c, unsigned int pos);
 
 void _debug();
 void _debug2();

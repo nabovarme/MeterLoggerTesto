@@ -17,11 +17,25 @@ testo_printer_emulator: testo_printer_emulator.c
 	-m$(MODEL) \
 	--use-crt=crt0.o \
 	--use-non-free \
-	-Wl '-m -s18f2550.lkr' \
 	-p$(PROCESSOR) \
 	--debug-info \
 	$<
 #	-I"./" glcd.o menu_system.o \
+#	-Wl '-m -s18f2550_g.lkr' \
+
+
+fifo_test: fifo_test.c
+	$(SDCC) \
+	--verbose \
+	-V \
+	-m$(MODEL) \
+	--use-crt=crt0.o \
+	--use-non-free \
+	-p$(PROCESSOR) \
+	--debug-info \
+	$<
+#	-I"./" glcd.o menu_system.o \
+#	-Wl '-m -s18f2550_g.lkr' \
 
 
 testo_printer_emulator.hex: testo_printer_emulator.o
@@ -66,6 +80,9 @@ flash_erase:
 
 flash_master:
 	$(PK2CMD) -F testo_printer_emulator_master.hex -M
+
+flash_fifo_test:
+	$(PK2CMD) -F fifo_test.hex -M
 
 on:
 	$(PK2CMD) -R -T
