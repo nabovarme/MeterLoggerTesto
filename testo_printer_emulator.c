@@ -6,7 +6,7 @@
 #include "config.h"
 #include "testo_printer_emulator.h"
 
-#define DEBUG
+//#define DEBUG
 
 #define QUEUE_SIZE 256
 #define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
@@ -3755,6 +3755,10 @@ unsigned char fifo_put(unsigned char c) {
                 break;
         }
         fifo_head++;
+		// wrap
+		if (fifo_head == QUEUE_SIZE_COMBINED) {
+			fifo_head = 0;
+		}
 		return 1;
 	}
 	else {
@@ -3779,6 +3783,10 @@ unsigned char fifo_get(unsigned char *c) {
                 break;
         }
         fifo_tail++;
+		// wrap
+		if (fifo_tail == QUEUE_SIZE_COMBINED) {
+			fifo_tail = 0;
+		}
 		return 1;
 	}
 	else {
