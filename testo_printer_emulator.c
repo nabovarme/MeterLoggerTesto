@@ -123,9 +123,9 @@ void main(void) {
 			sleep_ms(1);
 		}
 		*/
-		if (fifo_get(&foo)) {
-//			sprintf(buffer, "%c", foo);
-			sprintf(buffer, "%d ", foo);
+		if (fifo_get(&c)) {
+//			sprintf(buffer, "%c", c);
+			sprintf(buffer, "%d ", c);
 			usart_puts(buffer);
 			//usart_putc(foo);
 		}
