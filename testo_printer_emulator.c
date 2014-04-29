@@ -110,53 +110,27 @@ void main(void) {
 //	sleep_ms(30000);
 //	rs232_tx_enable();	
 //	fsk_tx_enable();
-//	fsk_rx_enable();
-	fsk_tx_enable();
-	
+	fsk_rx_enable();
+//	fsk_tx_enable();
+
+	/*	
 	for (i = 0; i < 800; i++) {
 		fifo_put((unsigned char)(i & 0xff));
 	}
+	*/
 	while (1) {
-//		fifo_put(0xa);
-//		fifo_put(0x5);
-		
+		/*
 		if (fifo_get(&foo)) {
 			fsk_tx_byte(foo);
 			sleep_ms(1);
 		}
-//		sleep_ms(100);
-//		T2CONbits.T2CKPS = 0;
-//		sleep_ms(2);
-//		T2CONbits.T2CKPS = 1;
-//		sleep_ms(2);
-//		if (fifo_get(&foo)) {
-			//sprintf(buffer, "%c", foo);
-//			sprintf(buffer, "%d ", foo);
-//			usart_puts(buffer);
-			//usart_putc(foo);
-//		}
-//		usart_puts(".");
-//		sleep_ms(10000);
-		// do nothing
-		/*
-		send_fsk_carrier();
-		send_fsk_test();
-		send_fsk_carrier();
-		send_fsk_carrier();
-		send_fsk_carrier();
-		send_fsk_carrier();
-		send_fsk_carrier();
-		send_fsk_carrier();
-		send_fsk_carrier();
-		send_fsk_carrier();
-		send_fsk_carrier();
-		send_fsk_carrier();
-		send_fsk_carrier();
 		*/
-//		TRIS_PWM_PIN = OUTPUT_STATE;
-//		sleep_ms(100);
-//		TRIS_PWM_PIN = INPUT_STATE;
-//		sleep_ms(100);
+		if (fifo_get(&foo)) {
+//			sprintf(buffer, "%c", foo);
+			sprintf(buffer, "%d ", foo);
+			usart_puts(buffer);
+			//usart_putc(foo);
+		}
 	}
 }
 
@@ -298,22 +272,24 @@ static void isr_high_prio(void) __interrupt 1 {
 							if ((diff > 340) && (diff < 476)) {
 							//if (high_count > low_count) {
 								fsk_proto.data >>= 1;
-								
+#ifdef DEBUG								
 								DEBUG2_PIN = 1;
 								__asm;
 									nop
 								__endasm;
 								DEBUG2_PIN = 0;
+#endif
 							}
 							else {
 								fsk_proto.data >>= 1;
 								fsk_proto.data |= 0x80;
-
+#ifdef DEBUG								
 								DEBUG3_PIN = 1;
 								__asm;
 									nop
 								__endasm;
 								DEBUG3_PIN = 0;
+#endif
 							}
 
 						}
@@ -388,6 +364,7 @@ static void isr_high_prio(void) __interrupt 1 {
 	}
 
 	if (PIR2bits.CMIF && PIE2bits.CMIE) {
+		// fsk demodulate
 		if (CMCONbits.C1OUT) {		// rising edge
 			timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
 			//TMR0H = (unsigned char)(timer0_reload >> 8);
