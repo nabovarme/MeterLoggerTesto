@@ -113,14 +113,18 @@ void main(void) {
 //	fsk_rx_enable();
 	fsk_tx_enable();
 	
-//	for (i = 0; i < 800; i++) {
-//		fifo_put('.');
-//	}
+	for (i = 0; i < 800; i++) {
+		fifo_put((unsigned char)(i & 0xff));
+	}
 	while (1) {
 //		fifo_put(0xa);
 //		fifo_put(0x5);
-		fsk_tx_byte(0xa5);
-		sleep_ms(100);
+		
+		if (fifo_get(&foo)) {
+			fsk_tx_byte(foo);
+			sleep_ms(1);
+		}
+//		sleep_ms(100);
 //		T2CONbits.T2CKPS = 0;
 //		sleep_ms(2);
 //		T2CONbits.T2CKPS = 1;
