@@ -24,7 +24,7 @@ unsigned char fifo_buffer_0[QUEUE_SIZE];
 unsigned char fifo_buffer_1[QUEUE_SIZE];
 unsigned char fifo_buffer_2[QUEUE_SIZE];
 unsigned char fifo_buffer_3[QUEUE_SIZE];
-unsigned char c;
+unsigned char c;	// used in interrupt as buffer for fifo stuff
 
 enum codec_type_t {
 	NONE,
@@ -86,7 +86,7 @@ volatile fsk_proto_t fsk_proto;
 
 void main(void) {
 	unsigned int i;
-	unsigned char foo;
+	unsigned char cmd;
     OSCCONbits.SCS = 0x10;
 //    OSCCONbits.SCS = 0x00;	// external osc
     OSCCONbits.IRCF = 0x7;	// 8 MHz
@@ -123,9 +123,9 @@ void main(void) {
 			sleep_ms(1);
 		}
 		*/
-		if (fifo_get(&c)) {
-//			sprintf(buffer, "%c", c);
-			sprintf(buffer, "%d ", c);
+		if (fifo_get(&cmd)) {
+//			sprintf(buffer, "%c", cmd);
+			sprintf(buffer, "%d ", cmd);
 			usart_puts(buffer);
 			//usart_putc(foo);
 		}
