@@ -109,7 +109,7 @@ void main(void) {
 	while (1) {
 		for (cmd = 0; cmd < 256; cmd++) {
 			fsk_tx_byte(cmd);
-			sleep_ms(15);
+			sleep_ms(4);
 		}
 	}
 
@@ -135,7 +135,7 @@ void main(void) {
 						//usart_putc(cmd);
 #else               	
 						fsk_tx_byte(cmd);
-						sleep_ms(1);
+						sleep_ms(4);
 #endif
 					}
 #ifndef OUTPUT_ON_SERIAL
