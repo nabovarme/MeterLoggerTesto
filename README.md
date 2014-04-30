@@ -3,7 +3,7 @@ Testo-IR-printer_emulator
 
 IR Printer emulator for Testo flue gas analysator <http://www.testousa.com/combustion/testo-310-residential-combustion-analyzer.html>.
 
-Coded for pic18f4685/pic18f2550 compiled with SDCC
+Coded for pic18f2550 compiled with SDCC
 
 send data at 19200 bps
 
