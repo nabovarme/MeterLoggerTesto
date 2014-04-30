@@ -7,7 +7,7 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG
-#define OUTPUT_ON_SERIAL
+//#define OUTPUT_ON_SERIAL
 
 #define QUEUE_SIZE 256
 #define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
@@ -303,7 +303,9 @@ static void isr_high_prio(void) __interrupt 1 {
 						if (fsk_proto.data_len <= 8) {
 							if ((fsk_proto.diff > 340) && (fsk_proto.diff < 476)) {
 							//if (high_count > low_count) {
+								// zero
 								fsk_proto.data >>= 1;
+								//fsk_proto.data <<= 1;
 #ifdef DEBUG								
 								DEBUG2_PIN = 1;
 								__asm;
@@ -313,8 +315,11 @@ static void isr_high_prio(void) __interrupt 1 {
 #endif
 							}
 							else {
+								// one
 								fsk_proto.data >>= 1;
 								fsk_proto.data |= 0x80;
+								//fsk_proto.data <<= 1;
+								//fsk_proto.data |= 1;
 #ifdef DEBUG								
 								DEBUG3_PIN = 1;
 								__asm;
