@@ -7,7 +7,7 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG
-#define OUTPUT_ON_SERIAL
+//#define OUTPUT_ON_SERIAL
 
 #define QUEUE_SIZE 256
 #define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
