@@ -7,7 +7,7 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG
-//#define OUTPUT_ON_SERIAL
+#define OUTPUT_ON_SERIAL
 
 #define QUEUE_SIZE 256
 #define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
@@ -87,7 +87,7 @@ volatile fsk_proto_t fsk_proto;
 
 void main(void) {
 	unsigned int i;
-	unsigned char cmd;
+	unsigned char cmd, sub_cmd;
     OSCCONbits.SCS = 0x10;
 //    OSCCONbits.SCS = 0x00;	// external osc
     OSCCONbits.IRCF = 0x7;	// 8 MHz
@@ -114,32 +114,60 @@ void main(void) {
 
 	while (1) {
 		if (fifo_get(&cmd)) {
-			if (cmd == 0) {
-				fsk_rx_disable;
-				usart_puts("press print on testo\n");
-				testo_ir_enable();
-				sleep_ms(40000);			// wait for data to arrive from testo 310
-				testo_ir_disable();
-				usart_puts("done receiving - sending via serial/fsk\n");
+			switch (cmd) {
+				case 0:
+					fsk_rx_disable();
+					usart_puts("press print on testo\n");
+					testo_ir_enable();
+					sleep_ms(40000);			// wait for data to arrive from testo 310
+					testo_ir_disable();
+					usart_puts("done receiving - sending via serial/fsk\n");
 #ifndef OUTPUT_ON_SERIAL
-				fsk_tx_enable();
+					fsk_tx_enable();
 #endif
-				while (fifo_get(&cmd)) {	// and print them to serial
+					while (fifo_get(&cmd)) {	// and print them to serial
 #ifdef OUTPUT_ON_SERIAL
-					sprintf(buffer, "%c", cmd);
-					//sprintf(buffer, "%d ", cmd);
-					usart_puts(buffer);
-					//usart_putc(cmd);
-#else
-					fsk_tx_byte(cmd);
-					sleep_ms(1);
+						sprintf(buffer, "%c", cmd);
+						//sprintf(buffer, "%d ", cmd);
+						usart_puts(buffer);
+						//usart_putc(cmd);
+#else               	
+						fsk_tx_byte(cmd);
+						sleep_ms(1);
 #endif
-				}
+					}
 #ifndef OUTPUT_ON_SERIAL
-				fsk_tx_disable();
+					fsk_tx_disable();
 #endif
-				usart_puts("waiting for new command\n");
-				fsk_rx_enable();
+					usart_puts("waiting for new command\n");
+					fsk_rx_enable();
+					break;
+				case 255:
+					fsk_rx_disable();
+					usart_puts("echo test - send some data the next 10 seconds\n");
+					fsk_rx_enable();
+					sleep_ms(10000);
+					fsk_rx_disable();
+#ifndef OUTPUT_ON_SERIAL
+					fsk_tx_enable();
+#endif
+					while (fifo_get(&sub_cmd)) {
+#ifdef OUTPUT_ON_SERIAL
+						//sprintf(buffer, "%c", sub_cmd);
+						sprintf(buffer, "%d ", sub_cmd);
+						usart_puts(buffer);
+						//usart_putc(cmd);
+#else               	
+						fsk_tx_byte(sub_cmd);
+						sleep_ms(1);
+#endif
+					}
+#ifndef OUTPUT_ON_SERIAL
+					fsk_tx_disable();
+#endif
+					usart_puts("\nwaiting for new command\n");
+					fsk_rx_enable();
+					break;
 			}
 		}
 	}
