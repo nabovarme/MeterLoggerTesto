@@ -18,6 +18,7 @@ unsigned int last_timer_0;
 unsigned long timer_1_ms;
 volatile unsigned int timer0_reload;
 unsigned char buffer[64];
+unsigned char c;	// used in interrupt as buffer for fifo stuff
 
 // command queue
 unsigned int fifo_head, fifo_tail;
@@ -25,7 +26,6 @@ unsigned char fifo_buffer_0[QUEUE_SIZE];
 unsigned char fifo_buffer_1[QUEUE_SIZE];
 unsigned char fifo_buffer_2[QUEUE_SIZE];
 unsigned char fifo_buffer_3[QUEUE_SIZE];
-unsigned char c;	// used in interrupt as buffer for fifo stuff
 
 enum codec_type_t {
 	NONE,
@@ -83,7 +83,6 @@ typedef struct {
 volatile testo_ir_proto_t testo_ir_proto;
 volatile rs232_ir_proto_t rs232_ir_proto;
 volatile fsk_proto_t fsk_proto;
-//fsk_proto_t fsk_proto;
 
 void main(void) {
 	unsigned int i;
