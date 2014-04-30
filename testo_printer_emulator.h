@@ -25,6 +25,8 @@
 #define SOFT_MODEM_BAUD_RATE	(1225)
 #define SOFT_MODEM_LOW_FREQ		(4900)
 #define SOFT_MODEM_HIGH_FREQ	(7350)
+		
+#define FSK_TX_SLEEP_AFTER		(4)
 
 #define OUTPUT_STATE 0
 #define INPUT_STATE 1

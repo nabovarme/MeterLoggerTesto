@@ -6,8 +6,8 @@
 #include "config.h"
 #include "testo_printer_emulator.h"
 
-#define DEBUG
-//#define OUTPUT_ON_SERIAL
+//#define DEBUG
+#define OUTPUT_ON_SERIAL
 
 #define QUEUE_SIZE 256
 #define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
@@ -104,16 +104,7 @@ void main(void) {
 	sleep_ms(100);
 #endif
 
-	//fsk_rx_enable();
-	fsk_tx_enable();
-	while (1) {
-		for (cmd = 0; cmd < 256; cmd++) {
-			fsk_tx_byte(cmd);
-			sleep_ms(4);
-		}
-	}
-
-	/*
+	fsk_rx_enable();
 	while (1) {
 		if (fifo_get(&cmd)) {
 			switch (cmd) {
@@ -135,7 +126,7 @@ void main(void) {
 						//usart_putc(cmd);
 #else               	
 						fsk_tx_byte(cmd);
-						sleep_ms(4);
+						sleep_ms(FSK_TX_SLEEP_AFTER);
 #endif
 					}
 #ifndef OUTPUT_ON_SERIAL
@@ -161,7 +152,7 @@ void main(void) {
 						//usart_putc(cmd);
 #else               	
 						fsk_tx_byte(sub_cmd);
-						sleep_ms(1);
+						sleep_ms(FSK_TX_SLEEP_AFTER);
 #endif
 					}
 #ifndef OUTPUT_ON_SERIAL
@@ -173,7 +164,6 @@ void main(void) {
 			}
 		}
 	}
-	*/
 }
 
 static void isr_high_prio(void) __interrupt 1 {
