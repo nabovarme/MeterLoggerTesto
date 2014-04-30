@@ -143,9 +143,9 @@ void main(void) {
 					break;
 				case 255:
 					fsk_rx_disable();
-					usart_puts("echo test - send some data the next 10 seconds\n");
+					usart_puts("echo test - send some data the next 20 seconds\n");
 					fsk_rx_enable();
-					sleep_ms(10000);
+					sleep_ms(20000);
 					fsk_rx_disable();
 #ifndef OUTPUT_ON_SERIAL
 					fsk_tx_enable();
