@@ -7,6 +7,7 @@
 #include "testo_printer_emulator.h"
 
 //#define DEBUG
+//#define OUTPUT_ON_SERIAL
 
 #define QUEUE_SIZE 256
 #define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
@@ -111,31 +112,33 @@ void main(void) {
 	fsk_rx_enable();
 //	fsk_tx_enable();
 
-	/*	
-	for (i = 0; i < 800; i++) {
-		fifo_put((unsigned char)(i & 0xff));
-	}
-	*/
 	while (1) {
-		/*
-		if (fifo_get(&foo)) {
-			fsk_tx_byte(foo);
-			sleep_ms(1);
-		}
-		*/
 		if (fifo_get(&cmd)) {
 			if (cmd == 0) {
 				fsk_rx_disable;
 				usart_puts("press print on testo\n");
 				testo_ir_enable();
 				sleep_ms(40000);			// wait for data to arrive from testo 310
+				testo_ir_disable();
+				usart_puts("done receiving - sending via serial/fsk\n");
+#ifndef OUTPUT_ON_SERIAL
+				fsk_tx_enable();
+#endif
 				while (fifo_get(&cmd)) {	// and print them to serial
+#ifdef OUTPUT_ON_SERIAL
 					sprintf(buffer, "%c", cmd);
 					//sprintf(buffer, "%d ", cmd);
 					usart_puts(buffer);
-					//usart_putc(foo);
+					//usart_putc(cmd);
+#else
+					fsk_tx_byte(cmd);
+					sleep_ms(1);
+#endif
 				}
-				testo_ir_disable();
+#ifndef OUTPUT_ON_SERIAL
+				fsk_tx_disable();
+#endif
+				usart_puts("waiting for new command\n");
 				fsk_rx_enable();
 			}
 		}
