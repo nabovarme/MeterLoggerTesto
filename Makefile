@@ -19,6 +19,7 @@ testo_printer_emulator: testo_printer_emulator.c
 	--use-non-free \
 	-p$(PROCESSOR) \
 	--obanksel=2 \
+	-Wl '-m' \
 	$<
 #	-I"./" glcd.o menu_system.o \
 #	-Wl '-m -s18f2550_g.lkr' \

@@ -6,7 +6,7 @@
 #include "config.h"
 #include "testo_printer_emulator.h"
 
-//#define DEBUG
+#define DEBUG
 #define OUTPUT_ON_SERIAL
 
 #define QUEUE_SIZE 256
@@ -417,7 +417,7 @@ static void isr_high_prio(void) __interrupt 1 {
 			if ((fsk_proto.diff > 340) && (fsk_proto.diff < 476)) {
 				fsk_proto.low_count += fsk_proto.diff;
 				if (fsk_proto.state == START_BIT_WAIT) {
-					if (fsk_proto.low_count >= 1000) {								// start bit received
+					if (fsk_proto.low_count >= 800) {								// start bit received
 						// start bits received, set state to DATA_WAIT
 						TMR0H = (unsigned char)(timer0_reload >> 8);
 						TMR0L = (unsigned char)timer0_reload;
