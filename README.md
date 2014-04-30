@@ -1,5 +1,8 @@
-Testo-IR-printer_emulator
-=========================
+MeterLogger
+===========
+
+Get data via IR and log it to iOS device via SoftModem FSK.
+https://code.google.com/p/arms22/source/browse/#svn%2Ftrunk%2FSoftModem
 
 Testo protocol
 --------------
@@ -14,7 +17,6 @@ protocol http://members.ziggo.nl/kees.van.der.sanden/downloads/82240bte.pdf (HP-
 http://www.keesvandersanden.nl/calculators/hp82240.php
 
 Video showing "printing": https://www.youtube.com/watch?v=RM3XE1EymNQ
-
 
 
 Kamstrup Meter Protocol
