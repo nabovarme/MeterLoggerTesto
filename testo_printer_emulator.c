@@ -124,10 +124,20 @@ void main(void) {
 		}
 		*/
 		if (fifo_get(&cmd)) {
-//			sprintf(buffer, "%c", cmd);
-			sprintf(buffer, "%d ", cmd);
-			usart_puts(buffer);
-			//usart_putc(foo);
+			if (cmd == 0) {
+				fsk_rx_disable;
+				usart_puts("press print on testo\n");
+				testo_ir_enable();
+				sleep_ms(40000);			// wait for data to arrive from testo 310
+				while (fifo_get(&cmd)) {	// and print them to serial
+					sprintf(buffer, "%c", cmd);
+					//sprintf(buffer, "%d ", cmd);
+					usart_puts(buffer);
+					//usart_putc(foo);
+				}
+				testo_ir_disable();
+				fsk_rx_enable();
+			}
 		}
 	}
 }
