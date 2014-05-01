@@ -70,8 +70,8 @@ typedef struct {
 	enum state_t state;
 	unsigned int diff;
 	unsigned int last_diff;
-	volatile unsigned int low_count;
-	volatile unsigned int high_count;
+	unsigned int low_count;
+	unsigned int high_count;
 	unsigned char start_bit;
 	unsigned int start_bit_time;
 	unsigned char data;
@@ -79,6 +79,18 @@ typedef struct {
 	unsigned char parity;
 	unsigned char stop_bit;
 } fsk_proto_t;
+
+// for led flasher
+enum led_flash_state_t {
+	LED_FLASH_RUN,
+	LED_FLASH_RUNNING,
+	LED_FLASH_STOPPED
+};
+typedef struct {
+	enum led_flash_state_t state;
+	unsigned char timer;
+} led_flash_t;
+volatile led_flash_t led_flash;
 
 volatile testo_ir_proto_t testo_ir_proto;
 volatile rs232_ir_proto_t rs232_ir_proto;
@@ -175,6 +187,7 @@ static void isr_high_prio(void) __interrupt 1 {
 
 		switch (codec_type) {
 			case TESTO:
+				flash_led(100);
 				switch (testo_ir_proto.state) {
 					case INIT_STATE:
 						T0CONbits.TMR0ON = 1;		// Start TMR0
@@ -241,6 +254,7 @@ static void isr_high_prio(void) __interrupt 1 {
 								if (valid_err_corr(testo_ir_proto.data & 0xffff)) {
 									//usart_putc(testo_ir_proto.data & 0xff);
 									fifo_put(testo_ir_proto.data & 0xff);
+									LED_PIN = 1;
 								}
 								testo_ir_proto.state = INIT_STATE;
 							}
@@ -266,8 +280,6 @@ static void isr_high_prio(void) __interrupt 1 {
 				T0CONbits.TMR0ON = 0;			// Stop TMR0
 				testo_ir_proto.state = INIT_STATE;
 				sleep();						// sleep until we receive next bit via interrupt on INT0
-				if (testo_ir_proto.state != INIT_STATE) {	// DEBUG - MISSING SOMETHING HERE?
-				}
 				break;
 			case RS232_TX:
 				switch (rs232_ir_proto.state) {
@@ -462,8 +474,21 @@ static void isr_low_prio(void) __interrupt 2 {
 	if (PIR1bits.TMR1IF) {
 		TMR1H = (unsigned char)(TIMER1_RELOAD >> 8);    // 262,158ms @ 8MHz
 		TMR1L = (unsigned char)TIMER1_RELOAD;
-		PIR1bits.TMR1IF = 0;    /* Clear the Timer Flag  */
+		// blink led if set to LED_FLASH_RUN
+		switch (led_flash.state) {
+			case LED_FLASH_RUN:
+				LED_PIN = 1;
+				led_flash.state = LED_FLASH_RUNNING;
+				break;
+			case LED_FLASH_RUNNING:
+				if (led_flash.timer-- == 0) {
+					LED_PIN = 0;
+					led_flash.state = LED_FLASH_STOPPED;
+				}
+				break;
+		}
 		timer_1_ms++;
+		PIR1bits.TMR1IF = 0;    /* Clear the Timer Flag  */
 	}
 
 	// serial rx interrupt
@@ -488,6 +513,8 @@ void sleep_ms(unsigned long ms) {
 void init_system() {
 	// PIN CONFIGURATION
 	TRIS_IR_PIN = INPUT_STATE;		// as input
+	TRIS_LED_PIN = OUTPUT_STATE;	// as output
+	LED_PIN = 0;					// and clear
 	
 	TRIS_DEBUG_PIN = OUTPUT_STATE;	// as output
 	DEBUG_PIN = 0;					// and clear
@@ -673,7 +700,7 @@ void testo_ir_enable() {
 	testo_ir_proto.state = INIT_STATE;
 	testo_ir_proto.start_bit_len = 0;
 
-	timer0_reload = TIMER0_RELOAD;
+	timer0_reload = TIMER0_TESTO;
 	
 	codec_type = TESTO;
 
@@ -3852,6 +3879,11 @@ unsigned char fifo_snoop(unsigned char *c, unsigned int pos) {
 	else {
 		return 0;
 	}
+}
+
+void flash_led(unsigned char ms) {
+	led_flash.timer = ms;
+	led_flash.state = LED_FLASH_RUN;
 }
 
 void _debug() {

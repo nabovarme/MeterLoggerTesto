@@ -13,7 +13,7 @@
 
 //#define TIMER0_RELOAD 0xFCC8	// 427us @ 8MHz
 //#define TIMER0_RELOAD 0xF000	// ~ 2ms @ 8MHz
-#define TIMER0_RELOAD 0xF323	// ~ 4 * 427us @ 8MHz
+#define TIMER0_TESTO 0xF323	// ~ 4 * 427us @ 8MHz
 #define TIMER0_RS232_2400	0xfcf2
 #define TIMER0_FSK			0xF99F	// @ 8MHz
 //#define TIMER0_FSK			0xF00F
@@ -28,8 +28,8 @@
 		
 #define FSK_TX_SLEEP_AFTER		(4)
 
-#define OUTPUT_STATE 0
-#define INPUT_STATE 1
+#define OUTPUT_STATE (0)
+#define INPUT_STATE (1)
 
 #define TRIS_COMP1		TRISAbits.RA0
 #define TRIS_COMP2		TRISAbits.RA1
@@ -37,6 +37,9 @@
 #define COMP2_PIN		PORTAbits.RA1
 
 #define TRIS_IR_PIN		TRISBbits.RB0
+
+#define TRIS_LED_PIN	TRISBbits.RB4
+#define LED_PIN			PORTBbits.RB4
 
 #define TRIS_DEBUG_PIN	TRISBbits.RB1 
 #define DEBUG_PIN		PORTBbits.RB1
@@ -89,6 +92,8 @@ unsigned int fifo_in_use();
 unsigned char fifo_put(unsigned char c);
 unsigned char fifo_get(unsigned char  *c);
 unsigned char fifo_snoop(unsigned char *c, unsigned int pos);
+
+void flash_led(unsigned char ms);
 
 void _debug();
 void _debug2();
