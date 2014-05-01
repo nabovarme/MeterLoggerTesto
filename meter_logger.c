@@ -205,13 +205,13 @@ static void isr_high_prio(void) __interrupt 1 {
 								// phase shift
 								if ((testo_ir_proto.data & 1) != 0) {
 									// previous bit is set
-									testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
-									testo_ir_proto.data &= 0b111111111110;	// and clear bit 0
+									testo_ir_proto.data <<= 1;		// bitshift once to left
+									//testo_ir_proto.data &= 0b111111111110;	// and clear bit 0
 								}
 								else {
 									// previous bit is zero
-									testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
-									testo_ir_proto.data |= 0b0000000000001;	// and set bit 0
+									testo_ir_proto.data <<= 1;		// bitshift once to left
+									testo_ir_proto.data |= 1;	// and set bit 0
 								}
 								testo_ir_proto.data_len++;
 							}
@@ -219,13 +219,13 @@ static void isr_high_prio(void) __interrupt 1 {
 								// in phase
 								if ((testo_ir_proto.data & 1) != 0) {
 									// previous bit is set
-									testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
-									testo_ir_proto.data |= 0b0000000000001;	// and set bit 0
+									testo_ir_proto.data <<= 1;		// bitshift once to left
+									testo_ir_proto.data |= 1;	// and set bit 0
 								}
 								else {
 									// previous bit is zero
-									testo_ir_proto.data = testo_ir_proto.data << 1;		// bitshift once to left
-									testo_ir_proto.data &= 0b111111111110;	// and clear bit 0
+									testo_ir_proto.data <<= 1;		// bitshift once to left
+									//testo_ir_proto.data &= 0b111111111110;	// and clear bit 0
 								}
 								testo_ir_proto.data_len++;
 							}
