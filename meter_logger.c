@@ -780,7 +780,7 @@ void fsk_rx_enable() {
 	
 	CMCONbits.CM = 0x6;		// four inputs multiplexed to two comparators
 	CMCONbits.CIS = 0;		// multiplexed to RA0/AN0 and RA1/AN1
-	CMCONbits.C1INV = 0;	// non-inverted output, 1 = C1 VIN+ > C1 VIN-
+	CMCONbits.C1INV = 1;	// inverted output, C1 VIN+ < C1 VIN-
 
 	IPR2bits.CMIP = 1;		// high priority
 	PIE2bits.CMIE = 1;		// Enable comparator interrupt
