@@ -18,3 +18,6 @@ Readout by the use of IEC1107 is in mode A.
 Communication with the meter uses serial communication according to the RS232 standard. Setup for serial communication is 300 baud, 1 start bit, 7 data bits, even parity and 1 stop bit.
 
 disable interrupts during interrupt handler processing
+
+- data compression
+- eeprom save

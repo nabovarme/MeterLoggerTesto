@@ -99,6 +99,7 @@ volatile fsk_proto_t fsk_proto;
 void main(void) {
 	unsigned int i;
 	unsigned char cmd, sub_cmd;
+	unsigned int fifo_size, last_fifo_size;
     OSCCONbits.SCS = 0x10;
 //    OSCCONbits.SCS = 0x00;	// external osc
     OSCCONbits.IRCF = 0x7;	// 8 MHz
@@ -123,8 +124,17 @@ void main(void) {
 				case 0:
 					fsk_rx_disable();
 					usart_puts("press print on testo\n");
+					//fifo_size = 0;
+					last_fifo_size = 0;
 					testo_ir_enable();
-					sleep_ms(40000);			// wait for data to arrive from testo 310
+					// wait for testo 310 stop sending data
+					sleep_ms(5000);							// 5 seconds to start printing
+					fifo_size = fifo_in_use();
+					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
+						last_fifo_size = fifo_size;
+						sleep_ms(100);
+						fifo_size = fifo_in_use();
+					}			
 					testo_ir_disable();
 					usart_puts("done receiving - sending via serial/fsk\n");
 #ifndef OUTPUT_ON_SERIAL

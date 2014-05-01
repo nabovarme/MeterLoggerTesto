@@ -67,6 +67,8 @@ meter_logger.asm: meter_logger.c
 	--use-non-free \
 	-p$(PROCESSOR) $<
 
+#flash_lib: flash/flash.c
+
 clean:
 	rm -f *.adb *.asm *.cod *.cof *.hex *.lst *.map *.o *.sym *.lib
 
