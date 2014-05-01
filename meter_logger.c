@@ -132,7 +132,7 @@ void main(void) {
 					fifo_size = fifo_in_use();
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 						last_fifo_size = fifo_size;
-						sleep_ms(100);
+						sleep_ms(50);						// return data when no data for 50 ms
 						fifo_size = fifo_in_use();
 					}			
 					testo_ir_disable();
