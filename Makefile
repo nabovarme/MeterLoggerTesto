@@ -8,9 +8,9 @@ GPLINK = /opt/local/bin/gplink
 GPASM = /opt/local/bin/gpasm
 GPSIM =/usr/local/bin/gpsim
 
-all:	testo_printer_emulator
+all:	meter_logger
 
-testo_printer_emulator: testo_printer_emulator.c
+meter_logger: meter_logger.c
 	$(SDCC) \
 	--verbose \
 	-V \
@@ -40,23 +40,23 @@ fifo_test: fifo_test.c
 #	-Wl '-m -s18f2550_g.lkr' \
 
 
-testo_printer_emulator.hex: testo_printer_emulator.o
+meter_logger.hex: meter_logger.o
 	$(GPLINK) \
 	-c \
 	-o $@ \
 	-m \
 	-r \
 	-d \
-	testo_printer_emulator testo_printer_emulator.o crt0.o \
+	meter_logger meter_logger.o crt0.o \
 	$^
 
-testo_printer_emulator.o: testo_printer_emulator.asm
+meter_logger.o: meter_logger.asm
 	$(GPASM) \
 	--extended \
 	-pp$(PROCESSOR) \
 	-c $<
 
-testo_printer_emulator.asm: testo_printer_emulator.c
+meter_logger.asm: meter_logger.c
 	$(SDCC) \
 	-V \
 	--verbose \
@@ -71,17 +71,17 @@ clean:
 	rm -f *.adb *.asm *.cod *.cof *.hex *.lst *.map *.o *.sym *.lib
 
 sim:
-	$(GPSIM) -p$(GPSIM_PROCESSOR) -c testo_printer_emulator.stc -s testo_printer_emulator.cod
+	$(GPSIM) -p$(GPSIM_PROCESSOR) -c meter_logger.stc -s meter_logger.cod
 	# && killall -9 X11.bin
 
 flash:
-	$(PK2CMD) -F testo_printer_emulator.hex -M
+	$(PK2CMD) -F meter_logger.hex -M
 
 flash_erase:
 	$(PK2CMD) -E
 
 flash_master:
-	$(PK2CMD) -F testo_printer_emulator_master.hex -M
+	$(PK2CMD) -F meter_logger_master.hex -M
 
 flash_fifo_test:
 	$(PK2CMD) -F fifo_test.hex -M

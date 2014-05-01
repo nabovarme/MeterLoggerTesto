@@ -4,10 +4,10 @@
 #include <string.h>
 #include <usart.h>
 #include "config.h"
-#include "testo_printer_emulator.h"
+#include "meter_logger.h"
 
-//#define DEBUG
-//#define OUTPUT_ON_SERIAL
+#define DEBUG
+#define OUTPUT_ON_SERIAL
 
 #define QUEUE_SIZE 256
 #define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
@@ -137,9 +137,9 @@ void main(void) {
 					break;
 				case 255:
 					fsk_rx_disable();
-					usart_puts("echo test - send some data the next 20 seconds\n");
+					usart_puts("echo test - send some data the next 10 seconds\n");
 					fsk_rx_enable();
-					sleep_ms(20000);
+					sleep_ms(10000);
 					fsk_rx_disable();
 #ifndef OUTPUT_ON_SERIAL
 					fsk_tx_enable();
