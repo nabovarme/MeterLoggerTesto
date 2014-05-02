@@ -124,10 +124,9 @@ void main(void) {
 				case 0:
 					fsk_rx_disable();
 					usart_puts("press print on testo\n");
-					//fifo_size = 0;
-					last_fifo_size = 0;
 					testo_ir_enable();
 					// wait for testo 310 stop sending data
+					last_fifo_size = 0;
 					sleep_ms(5000);							// 5 seconds to start printing
 					fifo_size = fifo_in_use();
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
@@ -159,9 +158,17 @@ void main(void) {
 					break;
 				case 255:
 					fsk_rx_disable();
-					usart_puts("echo test - send some data the next 10 seconds\n");
+					usart_puts("echo test - send some data\n");
 					fsk_rx_enable();
-					sleep_ms(10000);
+					// wait for iOS stop sending data
+					last_fifo_size = 0;
+					sleep_ms(1000);							// 1 second
+					fifo_size = fifo_in_use();
+					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
+						last_fifo_size = fifo_size;
+						sleep_ms(500);						// return data when no data for 500 ms
+						fifo_size = fifo_in_use();
+					}			
 					fsk_rx_disable();
 #ifndef OUTPUT_ON_SERIAL
 					fsk_tx_enable();
