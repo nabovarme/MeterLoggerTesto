@@ -21,10 +21,19 @@ Video showing "printing": https://www.youtube.com/watch?v=RM3XE1EymNQ
 
 Kamstrup Meter Protocol
 -----------------------
+http://www.kamstrup.com/media/2105/IEC61107_comprotocol.pdf
+
+300 baud, 1 start bit, 7 data bits, even parity and 1 stop bit
+
+To meter:
+/?![CR][LF]
+
 http://kamstrup.com/media/19757/file.pdf
 
 The protocol is based on half duplex serial asynchronous communication with the setup: 8 databits, no parity and 2 stopbits. The data bit rate is 1200 or 2400 baud. CRC16 is used in both request and response.
 
 http://ing.dk/blog/tal-med-din-elmaaler-og-ingenioeren-120524
+"300 bps, 7 databit, lige paritet"
+"/ ? ! CR NL"
 
 https://github.com/bsdphk/PyDLMS/blob/master/dlms.py
