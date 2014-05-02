@@ -24,3 +24,7 @@ Kamstrup Meter Protocol
 http://kamstrup.com/media/19757/file.pdf
 
 The protocol is based on half duplex serial asynchronous communication with the setup: 8 databits, no parity and 2 stopbits. The data bit rate is 1200 or 2400 baud. CRC16 is used in both request and response.
+
+http://ing.dk/blog/tal-med-din-elmaaler-og-ingenioeren-120524
+
+https://github.com/bsdphk/PyDLMS/blob/master/dlms.py
