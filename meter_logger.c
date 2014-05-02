@@ -6,8 +6,10 @@
 #include "config.h"
 #include "meter_logger.h"
 
-#define DEBUG
-#define OUTPUT_ON_SERIAL
+//#define DEBUG
+//#define OUTPUT_ON_SERIAL
+#define DEBUG_LED_ON_FSK_RX
+#define DEBUG_LED_ON_FSK_TX
 
 #define QUEUE_SIZE 256
 #define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
@@ -382,10 +384,16 @@ static void isr_high_prio(void) __interrupt 1 {
 							//fsk_proto.data_len = 8;
 							fsk_proto.state = IDLE;
 						}
+#ifdef DEBUG_LED_ON_FSK_TX
+						DEBUG_PIN = 0;
+#endif
 						break;
 					case IDLE:
 						send_fsk_low();
 						fsk_proto.state = START_BIT_SENT;
+#ifdef DEBUG_LED_ON_FSK_TX
+						DEBUG_PIN = 1;
+#endif
 						break;
 					case START_BIT_SENT:
 						if (fsk_proto.data_len--) {
@@ -398,6 +406,9 @@ static void isr_high_prio(void) __interrupt 1 {
 								DEBUG2_PIN = 0;
 #endif              			
 								send_fsk_high();
+#ifdef DEBUG_LED_ON_FSK_TX
+								DEBUG_PIN = 0;
+#endif
 							}
 							else {
 #ifdef DEBUG        		
@@ -408,6 +419,9 @@ static void isr_high_prio(void) __interrupt 1 {
 								DEBUG3_PIN = 0;
 #endif              		
 								send_fsk_low();
+#ifdef DEBUG_LED_ON_FSK_TX
+								DEBUG_PIN = 1;
+#endif
 							}
 						}
 						if (fsk_proto.data_len == 0) {
@@ -417,10 +431,16 @@ static void isr_high_prio(void) __interrupt 1 {
 					case DATA_SENT:
 						send_fsk_high();
 						fsk_proto.state = STOP_BIT_SENT;
+#ifdef DEBUG_LED_ON_FSK_TX
+						DEBUG_PIN = 0;
+#endif
 						break;
 					case STOP_BIT_SENT:
 						send_fsk_high();
 						fsk_proto.state = INIT_STATE;
+#ifdef DEBUG_LED_ON_FSK_TX
+						DEBUG_PIN = 0;
+#endif
 						break;
 				}
 				break;
@@ -436,7 +456,7 @@ static void isr_high_prio(void) __interrupt 1 {
 			//TMR0H = (unsigned char)(timer0_reload >> 8);
 			//TMR0L = (unsigned char)timer0_reload;
 			//fsk_proto.start_bit_time += timer_0;
-#ifdef DEBUG
+#ifdef DEBUG_LED_ON_FSK_RX
 			DEBUG_PIN = 1;
 #endif
 			fsk_proto.diff = timer_0 - last_timer_0;
@@ -471,7 +491,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				}
 			}
 		}
-#ifdef DEBUG
+#ifdef DEBUG_LED_ON_FSK_RX
 		else {					// faling edge
 			DEBUG_PIN = 0;
 		}
