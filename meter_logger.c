@@ -129,11 +129,11 @@ void main(void) {
 					testo_ir_enable();
 					// wait for testo 310 stop sending data
 					last_fifo_size = 0;
-					sleep_ms(5000);							// 5 seconds to start printing
+					sleep_ms(10000);						// 10 seconds to start printing
 					fifo_size = fifo_in_use();
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 						last_fifo_size = fifo_size;
-						sleep_ms(100);						// return data when no data for 100 ms
+						sleep_ms(200);						// return data when no data for 200 ms
 						fifo_size = fifo_in_use();
 					}			
 					testo_ir_disable();
