@@ -1,0 +1,59 @@
+
+# This file was written by gpsim.
+
+# You can use this file for example like this:
+#     gpsim -s mycode.cod -c netlist.stc
+
+# If you want to add commands, you can create another .stc file
+# and load this file from it. Something like this:
+# ----------- myproject.stc ---------------
+# load s mycode.cod
+# frequency 12000000
+# load c netlist.stc
+# -----------------------------------------
+# You can then just load this new file:
+#     gpsim -c myproject.stc
+# and use netlist.stc whenever you save from the breadboard.
+#
+
+
+# Processor position:
+module library libgpsim_modules
+
+
+# Modules:
+p18f2455.BreakOnReset = true
+p18f2455.SafeMode = true
+p18f2455.UnknownMode = true
+p18f2455.WarnMode = true
+p18f2455.tmr1_freq = 32768
+p18f2455.xpos = 72
+p18f2455.ypos = 72
+
+module load usart U1
+U1.rxbaud = 19200
+U1.txbaud = 19200
+U1.xpos = 168
+U1.ypos = 360
+
+module load led D1
+D1.ActiveState = high
+D1.color = red
+D1.xpos = 240
+D1.ypos = 36
+
+
+
+# Connections:
+node ir_node
+attach ir_node ir_stim portb0
+
+node PIC_tx
+attach PIC_tx portc6 U1.RXPIN
+
+node PIC_rx
+attach PIC_rx portc7 U1.TXPIN
+
+
+
+# End.

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>41E8CA25-0E41-462D-918B-D8872C39E709</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ir_proto_test</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>579F8BCC-311F-47DF-8D20-F02FC44E9773</key>
+		<string>https://github.com/st0ff3r/Testo-IR-printer_emulator.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ir_proto_test/ir_proto_test/ir_proto_test.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>579F8BCC-311F-47DF-8D20-F02FC44E9773</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/st0ff3r/Testo-IR-printer_emulator.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>579F8BCC-311F-47DF-8D20-F02FC44E9773</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>579F8BCC-311F-47DF-8D20-F02FC44E9773</string>
+			<key>IDESourceControlWCCName</key>
+			<string>testo_printer_emulator</string>
+		</dict>
+	</array>
+</dict>
+</plist>

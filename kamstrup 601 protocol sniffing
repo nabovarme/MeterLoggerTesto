@@ -49,4 +49,12 @@ set time:
 80	3f	9	0	2	24	dc	0	0	79	e0	99	9a	\r	(08-05-2014 03:12)
 80	3f	9	0	2	24	dc	0	0	7a	a8	5	5	\r	(08-05-2014 03:14)
 
+# http://kamstrup.com/media/19757/file.pdf p.103
+
+# 1				1						1		0-?		2		1
+# Start byte	Destination address		CID		Data	CRC		Stop byte
+
+# looks like this but not really
+# http://blog.bangbits.com/2013/08/talking-to-kamstrup-685-382-electricity.html
+
 #  while [ true ]; do ./kamstrup_serial.k|perl -MData::Dumper -e 'use Data::Dumper; $_ = <>; print join("\t", map(sprintf("%x", ord($_)), split(//, $_))) . "\t"' && perl -MPOSIX -e 'use POSIX qw(strftime); print strftime("(%d-%m-%Y %H:%M)", localtime) . "\n";'; sleep 60; done;
