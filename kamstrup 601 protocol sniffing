@@ -49,7 +49,9 @@ set time:
 80	3f	9	0	2	24	dc	0	0	79	e0	99	9a	\r	(08-05-2014 03:12)
 80	3f	9	0	2	24	dc	0	0	7a	a8	5	5	\r	(08-05-2014 03:14)
 
+
 # http://kamstrup.com/media/19757/file.pdf p.103
+# 8 databits, no parity and 2 stopbits. The data bit rate is 1200 or 2400 baud. CRC16 is used in both request and response.
 
 # 1				1						1		0-?		2		1
 # Start byte	Destination address		CID		Data	CRC		Stop byte
