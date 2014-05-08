@@ -1,0 +1,52 @@
+meter type command:
+80	3f	1	5	8a	\r
+
+meter type result:
+40	3f	10	0	9a	33	4	0	0	0	a1	aa	c	ea	\r
+-
+40	3f	1	1	7	1	fe	58	\r
+
+time command:
+80	3f	10	2	3	eb	3	ea	4f	48	\r
+
+time result:
+40	3f	10	3	eb	30	4	0	0	2	24	dc	3	ea	2f	4 	0	0	0	54	c4	29	f3	\r
+40	3f	10	3	eb	30	4	0	0	2	24	dc	3	ea	2f	4 	0	0	0	5d	c0	d3	ef	\r	(08-05-2014 02:40)
+-
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	7f	58	b1	da	\r
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	1b	7f	e8	15	fe	\r	Thu May  8 03:31:34 CEST 2014
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	81	4c	d3	a1	\r	Thu May  8 03:32:20 CEST 2014
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	81	b0	fd	32	\r	Thu May  8 03:33:11 CEST 2014
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	82	14	5d	f	\r	Thu May  8 03:34:14 CEST 2014
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	82	78	f0	25	\r	Thu May  8 03:35:05 CEST 2014
+
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	86	60	af	d8	\r	(08-05-2014 03:45)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	86	c4	5a	b6	\r	(08-05-2014 03:46)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	87	28	55	25	\r	(08-05-2014 03:47)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	87	8c	a0	4b	\r	(08-05-2014 03:48)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	87	f0	1f	50	\r	(08-05-2014 03:49)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	88	54	fa	d	(08-05-2014 03:50)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	88	b8	c6	a2	\r	(08-05-2014 03:51)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	89	1c	fd	d	(08-05-2014 03:52)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	89	1b	7f	42	c8	\r	(08-05-2014 03:53)
+
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	8a	48	4f	df	\r	(08-05-2014 03:55)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	8a	ac	f2	75	\r	(08-05-2014 03:56)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	8b	10	a7	13	\r	(08-05-2014 03:57)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	8b	74	8b	31	\r	(08-05-2014 03:58)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	8b	d8	ff	57	\r	(08-05-2014 03:59)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	8c	3c	db	6a	\r	(08-05-2014 04:00)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	9c	a4	da	a8	\r	(08-05-2014 04:01)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	9d	8	9d	ff	\r	(08-05-2014 04:02)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	9d	6c	b1	dd	\r	(08-05-2014 04:03)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	9d	d0	d7	8a	\r	(08-05-2014 04:04)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	9e	34	3f	73	\r	(08-05-2014 04:05)
+40	3f	10	3	eb	30	4	2	24	dc	3	ea	2f	4	9e	98	4b	15	\r	(08-05-2014 04:06)
+
+
+set time:
+80	3f	9	0	2	24	dc	0	0	77	24	23	5d	\r	(08-05-2014 03:05)
+80	3f	9	0	2	24	dc	0	0	79	e0	99	9a	\r	(08-05-2014 03:12)
+80	3f	9	0	2	24	dc	0	0	7a	a8	5	5	\r	(08-05-2014 03:14)
+
+#  while [ true ]; do ./kamstrup_serial.k|perl -MData::Dumper -e 'use Data::Dumper; $_ = <>; print join("\t", map(sprintf("%x", ord($_)), split(//, $_))) . "\t"' && perl -MPOSIX -e 'use POSIX qw(strftime); print strftime("(%d-%m-%Y %H:%M)", localtime) . "\n";'; sleep 60; done;
