@@ -8,29 +8,29 @@ Address_________________
 
 Phone___________________
 
- 15.4.2014   Pm10:14:32
+ 26.4.2014   Pm11:33:27
 ------------------------
 Fuel        Wood pellets
 CO2MAX             20.7%
 ------------------------
--.----      Ratio
---.-%       CO2
---.-%       O2
---.-ppm     CO
---.-°C      Fluegas temp
---.-%       Excess air
+0.0034      Ratio
+5.82%       CO2
+15.1%       O2
+198ppm      CO
+61.8°C      Fluegas temp
+255.9%      Excess air
 --.-mmH2O   Draught
---.-%       EFF net
+93.6%       EFF net
 --.-ppm     Ambient CO
---.-%       EFF gross
+86.0%       EFF gross
 --.-mmH2O   Diff. press.
-18.7°C      Ambient temp
---.-ppm     Undiluted CO
+18.6°C      Ambient temp
+706ppm      Undiluted CO
 ------------------------
 Smoke no.          _ _ _
 
-Smoke no.          _
+Smoke no.Ø             _
 
 HCT               ____°C
 ------------------------
-Forquestion call-_______
+For question call-______
