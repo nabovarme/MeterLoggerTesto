@@ -59,4 +59,11 @@ set time:
 # looks like this but not really
 # http://blog.bangbits.com/2013/08/talking-to-kamstrup-685-382-electricity.html
 
+http://forum.abok.ru/lofiversion/index.php/t48005.html
+For heat meters the destination address is 3Fh. The logger top module use 7Fh and the logger base module use BFh. 
+Included in the data link layer is a CRC with reference to the CCITT-standard using the polynomial 1021h. 
+Only deviation from the standard is the initial value, which is 0000h instead of FFFFh. 
+The CRC result is calculated for destination address, CID and data. CRC is transmitted with MSByte first and LSByte last. " 
+Follows that of CRC-16 CCITT, Poly: 0x1021 x ^ 16 + x ^ 12 + x ^ 5 + 1, Init: 0x0000 Revert: false XorOut: 0xFFFF / "That I understand you correctly?" 
+
 #  while [ true ]; do ./kamstrup_serial.k|perl -MData::Dumper -e 'use Data::Dumper; $_ = <>; print join("\t", map(sprintf("%x", ord($_)), split(//, $_))) . "\t"' && perl -MPOSIX -e 'use POSIX qw(strftime); print strftime("(%d-%m-%Y %H:%M)", localtime) . "\n";'; sleep 60; done;
