@@ -2,7 +2,7 @@ meter type command:
 80	3f	1	5	8a	\r
 
 meter type result:
-40	3f	10	0	9a	33	4	0	0	0	a1	aa	c	ea	\r
+40	3f	1	0	0	9a	33	4	0	0	0	a1	aa	c	ea	\r
 -
 40	3f	1	1	7	1	fe	58	\r
 
