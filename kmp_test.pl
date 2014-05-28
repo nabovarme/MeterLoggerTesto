@@ -1,23 +1,38 @@
-#! /opt/local/bin/perl -w
+#! /usr/bin/perl -w
 
 use strict;
 use Data::Dumper;
+use Data::Hexdumper;
+use Device::SerialPort;
 use Digest::CRC;
 
-#my @t = qw[3f 01];
-#my @crc = qw[05 8a];
 
 my $tmp = kmpGetType();
-for (0..(length($tmp) - 1)) {
-	print sprintf("%02x", ord(substr($tmp, $_, 1)));
-}
-print "\n";
+warn hexdump(data => $tmp, suppress_warnings => 1);
 
-$tmp = kmpByteStuff(chr(0x04) . chr(0x0d) . chr(0x00) . chr(0x06));
-for (0..(length($tmp) - 1)) {
-	print sprintf("%02x", ord(substr($tmp, $_, 1)));
-}
-print "\n";
+my $port_obj = new Device::SerialPort('/dev/ttyUSB0') || die "$!\n";
+$port_obj->baudrate(1200);
+$port_obj->databits(8);
+$port_obj->stopbits(2);
+$port_obj->parity("none");
+
+# send
+$port_obj->write($tmp);
+
+
+# receive
+my $res = '';
+my ($c, $s);
+do {
+	($c, $s) = $port_obj->read(255);
+	if ($c) {
+		$res .= $s;
+	}
+} while (ord($s) != 13);
+
+warn hexdump(data => $res, suppress_warnings => 1);
+
+
 
 sub kmpGetType {
 	my $ctx = Digest::CRC->new(width=>16, init=>0x0000, xorout=>0x0000, 
@@ -26,6 +41,7 @@ sub kmpGetType {
 	my $start_byte = chr(0x80);
 	my $dst = chr(0x3f);
 	my $cid = chr(0x01);
+	my $stop_byte = chr(0x0d);
 	
 	my $i;
 	my $data = $dst . $cid;
@@ -35,7 +51,7 @@ sub kmpGetType {
 	my $calculated_crc = $ctx->digest;
 	my $calculated_crc_low = chr($calculated_crc & 0xff);
 	my $calculated_crc_high = chr($calculated_crc >> 8);
-	return $start_byte . $dst . $cid . $calculated_crc_high . $calculated_crc_low;
+	return $start_byte . $dst . $cid . $calculated_crc_high . $calculated_crc_low . $stop_byte;
 }
 
 sub kmpGetSerialNo {
