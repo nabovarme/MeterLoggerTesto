@@ -13,15 +13,15 @@ $port_obj->databits(8);
 $port_obj->stopbits(2);
 $port_obj->parity("none");
 
-kmpGetType();
-kmpGetSerialNo();
-kmpSetClock({'year' => 2007,
-			 'month' => 7,
-			 'day' => 30,
-			 'hour' => 16,
-			 'min' => 15,
-			 'sec' => 57});
-
+#kmpGetType();
+#kmpGetSerialNo();
+#kmpSetClock({'year' => 2014,
+#			 'month' => 5,
+#			 'day' => 29,
+#			 'hour' => 18,
+#			 'min' => 40,
+#			 'sec' => 57});
+kmpGetRegister({'rid' => 0x98});
 
 
 sub kmpGetType {
@@ -151,13 +151,58 @@ sub kmpSetClock {
 }
 
 sub kmpGetRegister {
+	$_ = shift;
+	my ($rid);
+	$rid = $_->{'rid'};
 	
+	my $ctx = Digest::CRC->new(width=>16, init=>0x0000, xorout=>0x0000, 
+							refout=>0, poly=>0x1021, refin=>0, cont=>0);
+	
+	my $start_byte = chr(0x80);
+	my $dst = chr(0x3f);
+	my $cid = chr(0x10);
+	my $regs = chr(0x01);
+	my $rid_low = chr($rid & 0xff);
+	my $rid_high = chr($rid >> 8);
+	my $stop_byte = chr(0x0d);
+	
+	# calculate crc
+	my $i;
+	my $data = $dst . $cid . $regs . $rid_high . $rid_low;
+	
+	for ($i = 0; $i < length($data); $i++) {
+		$ctx->add(substr($data, $i, 1));
+	}
+	my $calculated_crc = $ctx->digest;
+	my $calculated_crc_low = chr($calculated_crc & 0xff);
+	my $calculated_crc_high = chr($calculated_crc >> 8);
+	
+	# send
+	warn hexdump(data => $start_byte . kmpByteStuff($data . $calculated_crc_high . $calculated_crc_low) . $stop_byte, suppress_warnings => 1);
+	$port_obj->write($start_byte . kmpByteStuff($data . $calculated_crc_high . $calculated_crc_low) . $stop_byte);
+
+	# receive
+	my $res = '';
+	my ($c, $s);
+	do {
+		($c, $s) = $port_obj->read(255);
+		if ($c) {
+			$res .= $s;
+		}
+	} while (ord($s) != 0x0d);
+
+	warn hexdump(data => kmpByteUnstuff($res), suppress_warnings => 1);
+	return kmpByteUnstuff($res);
+
 }
 
 sub kmpPutRegister {
 	
 }
 
+
+
+# helper functions
 
 sub kmpByteStuff {
 	my $i;
