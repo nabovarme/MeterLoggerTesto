@@ -13,8 +13,8 @@ $port_obj->databits(8);
 $port_obj->stopbits(2);
 $port_obj->parity("none");
 
-#kmpGetType();
-#kmpGetSerialNo();
+kmpGetType();
+kmpGetSerialNo();
 #kmpSetClock({'year' => 2014,
 #			 'month' => 5,
 #			 'day' => 29,
