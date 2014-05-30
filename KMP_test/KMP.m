@@ -11,6 +11,12 @@
 @implementation KMP
 
 @synthesize frame;
+@synthesize startByte;
+@synthesize dst;
+@synthesize cid;
+@synthesize rid;
+@synthesize crc;
+@synthesize stopByte;
 @synthesize crc16Table;
 
 
@@ -162,9 +168,20 @@
 	
 }
 
--(void)decodeFrame:(NSData *)theData {
-    [self.frame appendData:theData];
-    NSLog(@"%@ %@", theData, self.frame);
+-(void)decodeFrame:(NSData *)theFrame {
+    [self.frame appendData:theFrame];
+    if ([theFrame isEqualToData:[[NSData alloc] initWithBytes:(unsigned char[]){0x0d} length:1]]) {
+        // end of data
+        unsigned char *bytes = self.frame.bytes;
+        self.startByte = bytes[0];
+        self.dst = bytes[1];
+        self.cid = bytes[2];
+        self.crc = (bytes[self.frame.length - 3] << 8) + bytes[self.frame.length - 2];
+        self.stopByte = bytes[self.frame.length - 1];
+        
+
+        NSLog(@"%@ %@", self.frame, self.description);
+    }
 }
 
 

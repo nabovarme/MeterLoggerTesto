@@ -90,7 +90,7 @@
 - (void)serialPort:(ORSSerialPort *)serialPort didReceiveData:(NSData *)data
 {
     [self.kmp decodeFrame:data.mutableCopy];
-	NSString *string = self.kmp.frame.description; //[[NSString alloc] initWithData:self.kmp.frame encoding:NSUTF8StringEncoding];
+	NSString *string = self.kmp.frame.description;
 	if ([string length] == 0) return;
 	[self.receivedDataTextView.textStorage.mutableString appendString:string];
 	[self.receivedDataTextView setNeedsDisplay:YES];

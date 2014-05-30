@@ -11,6 +11,12 @@
 @interface KMP : NSObject;
 
 @property NSMutableData *frame;
+@property unsigned char startByte;
+@property unsigned char dst;
+@property unsigned char cid;
+@property int16_t rid;
+@property int16_t crc;
+@property unsigned char stopByte;
 @property NSArray *crc16Table;
 
 
@@ -20,7 +26,7 @@
 -(void)getRegister;
 -(void)putRegister;
 
--(void)decodeFrame:(NSData *)theData;
+-(void)decodeFrame:(NSData *)theFrame;
 
 -(NSData *)crc16ForData:(NSData *)data;
 -(NSData *)kmpDate:(NSDate *)theDate;
