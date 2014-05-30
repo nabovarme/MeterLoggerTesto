@@ -232,4 +232,12 @@
     return result;
 }
 
+-(NSData *)kmpByteStuff:(NSData *)theData {
+    return theData;
+}
+
+-(NSData *)kmpByteUnstuff:(NSData *)theData {
+    return theData;
+}
+
 @end

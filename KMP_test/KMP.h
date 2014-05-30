@@ -23,5 +23,8 @@
 -(NSData *)crc16ForData:(NSData *)data;
 -(NSData *)kmpDate:(NSDate *)theDate;
 -(NSData *)kmpTime:(NSDate *)theDate;
+-(NSData *)kmpByteStuff:(NSData *)theData;
+-(NSData *)kmpByteUnstuff:(NSData *)theData;
+
 
 @end
