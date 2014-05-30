@@ -60,13 +60,25 @@
 
 - (IBAction)send:(id)sender
 {
-	NSData *dataToSend = [self.sendTextField.stringValue dataUsingEncoding:NSUTF8StringEncoding];
-    self.kmp = [[KMP alloc] init];
-//    [kmp getType];
-    [self.kmp getSerialNo];
-//    [kmp setClock:[NSDate date]];
+//	NSData *dataToSend = [self.sendTextField.stringValue dataUsingEncoding:NSUTF8StringEncoding];
+    //self.kmp = [[KMP alloc] init];
+
+    [self.kmp getType];
     [self.serialPort sendData:self.kmp.frame];
     self.kmp.frame = [[NSMutableData alloc] initWithBytes:nil length:0];
+
+    /*
+    [self.kmp getSerialNo];
+    [self.serialPort sendData:self.kmp.frame];
+    self.kmp.frame = [[NSMutableData alloc] initWithBytes:nil length:0];
+    */
+
+    /*
+    [self.kmp setClock:[NSDate date]];
+    [self.serialPort sendData:self.kmp.frame];
+    self.kmp.frame = [[NSMutableData alloc] initWithBytes:nil length:0];
+    */
+     
 	//[self.serialPort sendData:dataToSend];
 }
 

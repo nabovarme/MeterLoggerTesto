@@ -145,8 +145,8 @@
     NSMutableData *data = [[NSMutableData alloc] initWithBytes:(unsigned char[]){0x3f, 0x09} length:2];
     
     NSMutableData *kmpDateTime = [[NSMutableData alloc] init];
-    [kmpDateTime appendData:[self kmpDate:theDate]];
-    [kmpDateTime appendData:[self kmpTime:theDate]];
+    [kmpDateTime appendData:[self kmpDateWithDate:theDate]];
+    [kmpDateTime appendData:[self kmpTimeWithDate:theDate]];
     [data appendData:kmpDateTime];
     NSLog(@"%@", data);
     
@@ -171,16 +171,54 @@
 -(void)decodeFrame:(NSData *)theFrame {
     [self.frame appendData:theFrame];
     if ([theFrame isEqualToData:[[NSData alloc] initWithBytes:(unsigned char[]){0x0d} length:1]]) {
-        // end of data
+        // end of data - get params from frame
         unsigned char *bytes = self.frame.bytes;
+        
         self.startByte = bytes[0];
-        self.dst = bytes[1];
-        self.cid = bytes[2];
-        self.crc = (bytes[self.frame.length - 3] << 8) + bytes[self.frame.length - 2];
         self.stopByte = bytes[self.frame.length - 1];
         
+        NSRange range = NSMakeRange(1, self.frame.length - 2);
+        NSData *unstuffedFrame = [self kmpByteUnstuff:[self.frame subdataWithRange:range]];
+        bytes = unstuffedFrame.bytes;
 
-        NSLog(@"%@ %@", self.frame, self.description);
+        self.dst = bytes[0];
+        self.cid = bytes[1];
+        self.crc = (bytes[unstuffedFrame.length - 2] << 8) + bytes[unstuffedFrame.length - 1];
+
+        // calculate crc
+        range = NSMakeRange(0, unstuffedFrame.length - 2);
+        NSData *data = [unstuffedFrame subdataWithRange:range];
+
+        bytes = [[self crc16ForData:data] bytes];
+        int16_t calculatedCrc = (bytes[0] << 8) + bytes[1];
+        
+        if (calculatedCrc == crc) {
+            NSLog(@"crc ok");
+        }
+
+        switch (self.cid) {
+            case 0x01:
+                NSLog(@"GetType");
+                range = NSMakeRange(2, data.length - 2);
+                NSLog(@"\nframe: %@\nstart: %02x\ndst: %02x\ncid: %02x\ncrc: %04x", self.frame, self.startByte, self.dst, self.cid, (self.crc & 0xffff));
+                NSLog(@"%@", [data subdataWithRange:range]);
+                break;
+            case 0x02:
+                NSLog(@"GetSerialNo");
+                NSLog(@"\nframe: %@\nstart: %02x\ndst: %02x\ncid: %02x\nrid: %02x\ncrc: %04x", self.frame, self.startByte, self.dst, self.cid, self.rid, (self.crc & 0xffff));
+                break;
+            case 0x10:
+                NSLog(@"GetRegister");
+                NSLog(@"\nframe: %@\nstart: %02x\ndst: %02x\ncid: %02x\nrid: %02x\ncrc: %04x", self.frame, self.startByte, self.dst, self.cid, self.rid, (self.crc & 0xffff));
+                break;
+            case 0x11:
+                NSLog(@"PutRegister");
+                NSLog(@"\nframe: %@\nstart: %02x\ndst: %02x\ncid: %02x\nrid: %02x\ncrc: %04x", self.frame, self.startByte, self.dst, self.cid, self.rid, (self.crc & 0xffff));
+                break;
+        }
+    }
+    else if ([theFrame isEqualToData:[[NSData alloc] initWithBytes:(unsigned char[]){0x06} length:1]]) {
+        NSLog(@"SetClock no CRC");
     }
 }
 
@@ -191,18 +229,17 @@
     char *buf = (char *)theData.bytes;
 
     int counter;
-    unsigned short crc = 0;
+    unsigned short crc16 = 0;
     for (counter = 0; counter < theData.length; counter++) {
-        crc = (crc << 8) ^ [crc16Table[((crc >> 8) ^ *(char *)buf++) & 0x00FF] intValue];
+        crc16 = (crc16 << 8) ^ [crc16Table[((crc16 >> 8) ^ *(char *)buf++) & 0x00FF] intValue];
     }
-    //return crc;
-    unsigned char crc_high = (unsigned char)(crc >> 8);
-    unsigned char crc_low = (unsigned char)(crc & 0xff);
+    unsigned char crc_high = (unsigned char)(crc16 >> 8);
+    unsigned char crc_low = (unsigned char)(crc16 & 0xff);
 
     return [[NSData alloc] initWithBytes:(unsigned char[]){crc_high, crc_low} length:2];
 }
 
--(NSData *)kmpDate:(NSDate *)theDate {
+-(NSData *)kmpDateWithDate:(NSDate *)theDate {
     NSCalendar* calendar = [NSCalendar currentCalendar];
     NSDateComponents* components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:theDate];
     
@@ -228,7 +265,7 @@
     return result;
 }
 
--(NSData *)kmpTime:(NSDate *)theDate {
+-(NSData *)kmpTimeWithDate:(NSDate *)theDate {
     NSCalendar* calendar = [NSCalendar currentCalendar];
     NSDateComponents* components = [calendar components:NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:theDate];
     
@@ -254,11 +291,20 @@
     return result;
 }
 
+-(NSDate *)dateWithKmpDate:(NSData *)theData {
+    return [NSDate date];
+}
+
+-(NSDate *)dateWithKmpTime:(NSData *)theData {
+    return [NSDate date];
+}
+
 -(NSData *)kmpByteStuff:(NSData *)theData {
     return theData;
 }
 
 -(NSData *)kmpByteUnstuff:(NSData *)theData {
+    NSLog(@"unstuffed %@", theData);
     return theData;
 }
 
