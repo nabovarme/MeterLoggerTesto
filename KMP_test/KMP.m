@@ -172,14 +172,14 @@
     [self.frame appendData:theFrame];
     if ([theFrame isEqualToData:[[NSData alloc] initWithBytes:(unsigned char[]){0x0d} length:1]]) {
         // end of data - get params from frame
-        unsigned char *bytes = self.frame.bytes;
+        unsigned char *bytes = (unsigned char*)self.frame.bytes;
         
         self.startByte = bytes[0];
         self.stopByte = bytes[self.frame.length - 1];
         
         NSRange range = NSMakeRange(1, self.frame.length - 2);
         NSData *unstuffedFrame = [self kmpByteUnstuff:[self.frame subdataWithRange:range]];
-        bytes = unstuffedFrame.bytes;
+        bytes = (unsigned char*)unstuffedFrame.bytes;
 
         self.dst = bytes[0];
         self.cid = bytes[1];
@@ -189,36 +189,40 @@
         range = NSMakeRange(0, unstuffedFrame.length - 2);
         NSData *data = [unstuffedFrame subdataWithRange:range];
 
-        bytes = [[self crc16ForData:data] bytes];
+        bytes = (unsigned char*)[[self crc16ForData:data] bytes];
         int16_t calculatedCrc = (bytes[0] << 8) + bytes[1];
         
         if (calculatedCrc == crc) {
             NSLog(@"crc ok");
         }
 
-        switch (self.cid) {
-            case 0x01:
-                NSLog(@"GetType");
-                range = NSMakeRange(2, data.length - 2);
-                NSLog(@"\nframe: %@\nstart: %02x\ndst: %02x\ncid: %02x\ncrc: %04x", self.frame, self.startByte, self.dst, self.cid, (self.crc & 0xffff));
-                NSLog(@"%@", [data subdataWithRange:range]);
-                break;
-            case 0x02:
-                NSLog(@"GetSerialNo");
-                NSLog(@"\nframe: %@\nstart: %02x\ndst: %02x\ncid: %02x\nrid: %02x\ncrc: %04x", self.frame, self.startByte, self.dst, self.cid, self.rid, (self.crc & 0xffff));
-                break;
-            case 0x10:
-                NSLog(@"GetRegister");
-                NSLog(@"\nframe: %@\nstart: %02x\ndst: %02x\ncid: %02x\nrid: %02x\ncrc: %04x", self.frame, self.startByte, self.dst, self.cid, self.rid, (self.crc & 0xffff));
-                break;
-            case 0x11:
-                NSLog(@"PutRegister");
-                NSLog(@"\nframe: %@\nstart: %02x\ndst: %02x\ncid: %02x\nrid: %02x\ncrc: %04x", self.frame, self.startByte, self.dst, self.cid, self.rid, (self.crc & 0xffff));
-                break;
+        // decode application layer
+        if (self.cid == 0x01) {         // GetType
+            NSLog(@"GetType");
+            range = NSMakeRange(2, data.length - 2);
+            NSLog(@"%@", [data subdataWithRange:range]);
+        }
+        else if (self.cid == 0x02) {
+            NSLog(@"GetSerialNo");      // GetSerialNo
+            range = NSMakeRange(2, data.length - 2);
+            
+            bytes = (unsigned char*)[[data subdataWithRange:range] bytes];
+            unsigned int serialNo = (bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3];
+            NSLog(@"%d", serialNo);
+        }
+        else if (self.cid == 0x10) {    // GetRegister
+            NSLog(@"GetRegister");
+            range = NSMakeRange(2, data.length - 2);
+            NSLog(@"%@", [data subdataWithRange:range]);
+        }
+        else if (self.cid == 0x11) {    // PutRegister
+            NSLog(@"PutRegister");
+            range = NSMakeRange(2, data.length - 2);
+            NSLog(@"%@", [data subdataWithRange:range]);
         }
     }
     else if ([theFrame isEqualToData:[[NSData alloc] initWithBytes:(unsigned char[]){0x06} length:1]]) {
-        NSLog(@"SetClock no CRC");
+        NSLog(@"SetClock no CRC");      // SetClock
     }
 }
 
