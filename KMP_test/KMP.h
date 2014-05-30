@@ -20,6 +20,8 @@
 -(void)getRegister;
 -(void)putRegister;
 
+-(void)decodeFrame:(NSData *)theData;
+
 -(NSData *)crc16ForData:(NSData *)data;
 -(NSData *)kmpDate:(NSDate *)theDate;
 -(NSData *)kmpTime:(NSDate *)theDate;

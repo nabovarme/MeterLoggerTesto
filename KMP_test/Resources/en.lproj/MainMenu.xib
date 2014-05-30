@@ -680,15 +680,15 @@
                     <popUpButton verticalHuggingPriority="750" id="546">
                         <rect key="frame" x="177" y="565" width="137" height="26"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <popUpButtonCell key="cell" type="push" title="4800" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="628" id="547">
+                        <popUpButtonCell key="cell" type="push" title="1200" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="626" id="547">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
                             <menu key="menu" title="OtherViews" id="548">
                                 <items>
                                     <menuItem title="300" id="549"/>
-                                    <menuItem title="1200" id="626"/>
+                                    <menuItem title="1200" state="on" id="626"/>
                                     <menuItem title="2400" id="627"/>
-                                    <menuItem title="4800" state="on" id="628"/>
+                                    <menuItem title="4800" id="628"/>
                                     <menuItem title="9600" id="629">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                     </menuItem>
@@ -867,13 +867,13 @@
                         </buttonCell>
                         <cells>
                             <column>
-                                <buttonCell type="radio" title="1" imagePosition="left" alignment="left" state="on" tag="1" inset="2" id="604">
+                                <buttonCell type="radio" title="1" imagePosition="left" alignment="left" tag="1" inset="2" id="604">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                             </column>
                             <column>
-                                <buttonCell type="radio" title="2" imagePosition="left" alignment="left" tag="2" inset="2" id="606">
+                                <buttonCell type="radio" title="2" imagePosition="left" alignment="left" state="on" tag="2" inset="2" id="606">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>

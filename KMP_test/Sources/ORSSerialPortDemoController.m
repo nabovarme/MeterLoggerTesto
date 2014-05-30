@@ -46,6 +46,7 @@
 #if (MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_7)
 		[[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
 #endif
+        self.kmp = [[KMP alloc] init];
     }
     return self;
 }
@@ -60,11 +61,12 @@
 - (IBAction)send:(id)sender
 {
 	NSData *dataToSend = [self.sendTextField.stringValue dataUsingEncoding:NSUTF8StringEncoding];
-    KMP *kmp = [[KMP alloc] init];
+    self.kmp = [[KMP alloc] init];
 //    [kmp getType];
-    [kmp getSerialNo];
+    [self.kmp getSerialNo];
 //    [kmp setClock:[NSDate date]];
-    [self.serialPort sendData:kmp.frame];
+    [self.serialPort sendData:self.kmp.frame];
+    self.kmp.frame = [[NSMutableData alloc] initWithBytes:nil length:0];
 	//[self.serialPort sendData:dataToSend];
 }
 
@@ -87,7 +89,8 @@
 
 - (void)serialPort:(ORSSerialPort *)serialPort didReceiveData:(NSData *)data
 {
-	NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    [self.kmp decodeFrame:data.mutableCopy];
+	NSString *string = self.kmp.frame.description; //[[NSString alloc] initWithData:self.kmp.frame encoding:NSUTF8StringEncoding];
 	if ([string length] == 0) return;
 	[self.receivedDataTextView.textStorage.mutableString appendString:string];
 	[self.receivedDataTextView setNeedsDisplay:YES];

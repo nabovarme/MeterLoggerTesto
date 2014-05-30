@@ -26,6 +26,7 @@
 
 @import Foundation;
 #import "ORSSerialPort.h"
+#import "KMP.h"
 
 @class ORSSerialPortManager;
 
@@ -46,5 +47,6 @@
 @property (nonatomic, strong) ORSSerialPortManager *serialPortManager;
 @property (nonatomic, strong) ORSSerialPort *serialPort;
 @property (nonatomic, strong) NSArray *availableBaudRates;
+@property KMP *kmp;
 
 @end

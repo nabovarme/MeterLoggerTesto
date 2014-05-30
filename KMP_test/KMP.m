@@ -162,6 +162,11 @@
 	
 }
 
+-(void)decodeFrame:(NSData *)theData {
+    [self.frame appendData:theData];
+    NSLog(@"%@ %@", theData, self.frame);
+}
+
 
 #pragma mark - Helper methods
 
