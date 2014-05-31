@@ -66,7 +66,8 @@
 //    [self.kmp getType];
 //    [self.kmp getSerialNo];
 //    [self.kmp setClock:[NSDate date]];
-    [self.kmp getRegister:@0x03EC];
+//    [self.kmp getRegister:@0x03EC];
+    [self.kmp getRegister:[NSNumber numberWithInteger:self.sendTextField.integerValue]];
     [self.serialPort sendData:self.kmp.frame];
     self.kmp.frame = [[NSMutableData alloc] initWithBytes:nil length:0];
 
@@ -94,7 +95,7 @@
 - (void)serialPort:(ORSSerialPort *)serialPort didReceiveData:(NSData *)data
 {
     [self.kmp decodeFrame:data.mutableCopy];
-	NSString *string = self.kmp.frame.description;
+	NSString *string = self.kmp.responseData.description;
 	if ([string length] == 0) return;
 	[self.receivedDataTextView.textStorage.mutableString appendString:string];
 	[self.receivedDataTextView setNeedsDisplay:YES];
