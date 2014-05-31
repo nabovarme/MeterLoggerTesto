@@ -139,7 +139,7 @@
 			attributes = {
 				CLASSPREFIX = ORS;
 				LastUpgradeCheck = 0450;
-				ORGANIZATIONNAME = "Open Reel Software";
+				ORGANIZATIONNAME = "SKULP Industries";
 			};
 			buildConfigurationList = 9D66D808159BCAB800EE6D09 /* Build configuration list for PBXProject "ORSSerialPortCocoaDemo" */;
 			compatibilityVersion = "Xcode 3.2";
