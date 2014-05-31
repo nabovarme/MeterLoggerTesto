@@ -75,6 +75,9 @@
     // append crc 16 to data
     [data appendData:[self crc16ForData:data]];
     
+    // stuff data
+    data = [[self kmpByteStuff:data] mutableCopy];
+    
     // create frame
     [self.frame appendData:data];
     [self.frame appendData:[[NSMutableData alloc] initWithBytes:(unsigned char[]){0x0d} length:1]];
@@ -90,6 +93,9 @@
 
     // append crc 16 to data
     [data appendData:[self crc16ForData:data]];
+    
+    // stuff data
+    data = [[self kmpByteStuff:data] mutableCopy];
     
     // create frame
     [self.frame appendData:data];
@@ -113,14 +119,44 @@
     // append crc 16 to data
     [data appendData:[self crc16ForData:data]];
     
+    // stuff data
+    data = [[self kmpByteStuff:data] mutableCopy];
+    
     // create frame
     [self.frame appendData:data];
     [self.frame appendData:[[NSMutableData alloc] initWithBytes:(unsigned char[]){0x0d} length:1]];
     NSLog(@"%@", self.frame);
-
 }
 
--(void)getRegister {
+-(void)getRegister:(NSNumber *)theRegister {
+    // start byte
+    self.frame = [[NSMutableData alloc] initWithBytes:(unsigned char[]){0x80} length:1];
+    
+    // data
+    NSMutableData *data = [[NSMutableData alloc] initWithBytes:(unsigned char[]){0x3f, 0x10} length:2];
+    [data appendBytes:(unsigned char[]){0x01} length:1];  // number of registers
+    
+//    NSMutableData *kmpDateTime = [[NSMutableData alloc] init];
+//    [kmpDateTime appendData:[self kmpDateWithDate:theDate]];
+//    [kmpDateTime appendData:[self kmpTimeWithDate:theDate]];
+//    [data appendData:kmpDateTime];
+    unsigned char registerHigh = (unsigned char)(theRegister.intValue >> 8);
+    unsigned char registerLow = (unsigned char)(theRegister.intValue & 0xff);
+    
+    [data appendData:[NSData dataWithBytes:(unsigned char[]){registerHigh, registerLow} length:2]];
+    NSLog(@"%@", data);
+    
+    // append crc 16 to data
+    [data appendData:[self crc16ForData:data]];
+    
+    // stuff data
+    data = [[self kmpByteStuff:data] mutableCopy];
+    
+    // create frame
+    [self.frame appendData:data];
+    [self.frame appendData:[[NSMutableData alloc] initWithBytes:(unsigned char[]){0x0d} length:1]];
+    NSLog(@"%@", self.frame);
+    
 	
 }
 
@@ -186,9 +222,12 @@
             range = NSMakeRange(2, data.length - 2);
             NSLog(@"%@", [data subdataWithRange:range]);
         }
+        CFShow((__bridge CFTypeRef)(self.responseData));
+
     }
     else if ([theFrame isEqualToData:[[NSData alloc] initWithBytes:(unsigned char[]){0x06} length:1]]) {
         NSLog(@"SetClock no CRC");      // SetClock
+        CFShow((__bridge CFTypeRef)(self.responseData));
     }
 }
 
@@ -203,10 +242,10 @@
     for (counter = 0; counter < theData.length; counter++) {
         crc16 = (crc16 << 8) ^ [crc16Table[((crc16 >> 8) ^ *(char *)buf++) & 0x00FF] intValue];
     }
-    unsigned char crc_high = (unsigned char)(crc16 >> 8);
-    unsigned char crc_low = (unsigned char)(crc16 & 0xff);
+    unsigned char crcHigh = (unsigned char)(crc16 >> 8);
+    unsigned char crcLow = (unsigned char)(crc16 & 0xff);
 
-    return [[NSData alloc] initWithBytes:(unsigned char[]){crc_high, crc_low} length:2];
+    return [[NSData alloc] initWithBytes:(unsigned char[]){crcHigh, crcLow} length:2];
 }
 
 -(NSData *)kmpDateWithDate:(NSDate *)theDate {
@@ -270,7 +309,38 @@
 }
 
 -(NSData *)kmpByteStuff:(NSData *)theData {
-    return theData;
+    unsigned char *bytes = (unsigned char *)theData.bytes;
+    unsigned long len = theData.length;
+    
+    NSMutableData *stuffedData = [[NSMutableData alloc] init];
+    
+    unsigned long i;
+    for (i = 0; i < len; i++) {
+        if (bytes[i] == 0x80) {
+            [stuffedData appendBytes:(unsigned char[]){0x1b, 0x7f} length:2];
+            NSLog(@"0x80 stuffed");
+        }
+        else if (bytes[i] == 0x40) {
+            [stuffedData appendBytes:(unsigned char[]){0x1b, 0xbf} length:2];
+            NSLog(@"0x40 stuffed");
+        }
+        else if (bytes[i] == 0x0d) {
+            [stuffedData appendBytes:(unsigned char[]){0x1b, 0xf2} length:2];
+            NSLog(@"0x0d stuffed");
+        }
+        else if (bytes[i] == 0x06) {
+            [stuffedData appendBytes:(unsigned char[]){0x1b, 0xf9} length:2];
+            NSLog(@"0x06 stuffed");
+        }
+        else if (bytes[i] == 0x1b) {
+            [stuffedData appendBytes:(unsigned char[]){0x1b, 0xe4} length:2];
+            NSLog(@"0x1b stuffed");
+        }
+        else {
+            [stuffedData appendBytes:(bytes + i) length:1];
+        }
+    }
+    return stuffedData;
 }
 
 -(NSData *)kmpByteUnstuff:(NSData *)theData {

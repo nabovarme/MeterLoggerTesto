@@ -19,12 +19,12 @@
 -(void)getType;
 -(void)getSerialNo;
 -(void)setClock:(NSDate *)theDate;
--(void)getRegister;
+-(void)getRegister:(NSNumber *)theRegister;
 -(void)putRegister;
 
 -(void)decodeFrame:(NSData *)theFrame;
 
--(NSData *)crc16ForData:(NSData *)data;
+-(NSData *)crc16ForData:(NSData *)theData;
 
 -(NSData *)kmpDateWithDate:(NSDate *)theDate;
 -(NSData *)kmpTimeWithDate:(NSDate *)theDate;
