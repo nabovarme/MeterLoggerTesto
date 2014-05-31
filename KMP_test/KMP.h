@@ -11,12 +11,8 @@
 @interface KMP : NSObject;
 
 @property NSMutableData *frame;
-@property unsigned char startByte;
-@property unsigned char dst;
-@property unsigned char cid;
-@property int16_t rid;
-@property int16_t crc;
-@property unsigned char stopByte;
+
+@property NSMutableDictionary *responseData;
 @property NSArray *crc16Table;
 
 

@@ -11,12 +11,8 @@
 @implementation KMP
 
 @synthesize frame;
-@synthesize startByte;
-@synthesize dst;
-@synthesize cid;
-@synthesize rid;
-@synthesize crc;
-@synthesize stopByte;
+
+@synthesize responseData;
 @synthesize crc16Table;
 
 
@@ -26,6 +22,8 @@
     self = [super init];
     
     self.frame = [[NSMutableData alloc] init];
+    self.responseData = [[NSMutableDictionary alloc] init];
+    
     self.crc16Table = @[
                         @0x0000, @0x1021, @0x2042, @0x3063, @0x4084, @0x50a5, @0x60c6, @0x70e7,
                         @0x8108, @0x9129, @0xa14a, @0xb16b, @0xc18c, @0xd1ad, @0xe1ce, @0xf1ef,
@@ -81,44 +79,6 @@
     [self.frame appendData:data];
     [self.frame appendData:[[NSMutableData alloc] initWithBytes:(unsigned char[]){0x0d} length:1]];
     NSLog(@"%@", self.frame);
-
-    /*
-	my $ctx = Digest::CRC->new(width=>16, init=>0x0000, xorout=>0x0000,
-                               refout=>0, poly=>0x1021, refin=>0, cont=>0);
-	
-	my $start_byte = chr(0x80);
-	my $dst = chr(0x3f);
-	my $cid = chr(0x01);
-	my $stop_byte = chr(0x0d);
-	
-	# calculate crc
-	my $i;
-	my $data = $dst . $cid;
-	for ($i = 0; $i < length($data); $i++) {
-		$ctx->add(substr($data, $i, 1));
-	}
-	my $calculated_crc = $ctx->digest;
-	my $calculated_crc_low = chr($calculated_crc & 0xff);
-	my $calculated_crc_high = chr($calculated_crc >> 8);
-    
-	# send
-	warn hexdump(data => $start_byte . $dst . $cid . $calculated_crc_high . $calculated_crc_low . $stop_byte, suppress_warnings => 1);
-	$port_obj->write($start_byte . $dst . $cid . $calculated_crc_high . $calculated_crc_low . $stop_byte);
-    
-	# receive
-	my $res = '';
-	my ($c, $s);
-	do {
-		($c, $s) = $port_obj->read(255);
-		if ($c) {
-			$res .= $s;
-		}
-	} while (ord($s) != 0x0d);
-    
-	warn hexdump(data => kmpByteUnstuff($res), suppress_warnings => 1);
-	return kmpByteUnstuff($res);
-    */
- 
 }
 
 -(void)getSerialNo {
@@ -174,48 +134,54 @@
         // end of data - get params from frame
         unsigned char *bytes = (unsigned char*)self.frame.bytes;
         
-        self.startByte = bytes[0];
-        self.stopByte = bytes[self.frame.length - 1];
-        
+        [self.responseData setObject:[NSData dataWithBytes:bytes length:1] forKey:@"starByte"];
+        [self.responseData setObject:[NSData dataWithBytes:(bytes + self.frame.length - 1) length:1] forKey:@"stopByte"];
+
+        // unstuff data
         NSRange range = NSMakeRange(1, self.frame.length - 2);
         NSData *unstuffedFrame = [self kmpByteUnstuff:[self.frame subdataWithRange:range]];
         bytes = (unsigned char*)unstuffedFrame.bytes;
 
-        self.dst = bytes[0];
-        self.cid = bytes[1];
-        self.crc = (bytes[unstuffedFrame.length - 2] << 8) + bytes[unstuffedFrame.length - 1];
+        [self.responseData setObject:[NSData dataWithBytes:bytes length:1] forKey:@"dst"];
+        [self.responseData setObject:[NSData dataWithBytes:(bytes + 1) length:1] forKey:@"cid"];
+        range = NSMakeRange(unstuffedFrame.length - 2, 2);
+        [self.responseData setObject:[unstuffedFrame subdataWithRange:range] forKey:@"crc"];
 
         // calculate crc
         range = NSMakeRange(0, unstuffedFrame.length - 2);
         NSData *data = [unstuffedFrame subdataWithRange:range];
 
-        bytes = (unsigned char*)[[self crc16ForData:data] bytes];
-        int16_t calculatedCrc = (bytes[0] << 8) + bytes[1];
-        
-        if (calculatedCrc == crc) {
+        if ([[self crc16ForData:data] isEqualToData:responseData[@"crc"]]) {
             NSLog(@"crc ok");
         }
 
         // decode application layer
-        if (self.cid == 0x01) {         // GetType
+        unsigned char *cid_ptr = (unsigned char *)[self.responseData[@"cid"] bytes];
+        unsigned char cid = cid_ptr[0];
+        if (cid == 0x01) {         // GetType
             NSLog(@"GetType");
-            range = NSMakeRange(2, data.length - 2);
-            NSLog(@"%@", [data subdataWithRange:range]);
+            
+            range = NSMakeRange(2, 2);
+            [self.responseData setObject:[data subdataWithRange:range] forKey:@"meterType"];
+            
+            range = NSMakeRange(4, 2);
+            [self.responseData setObject:[data subdataWithRange:range] forKey:@"swRevision"];
         }
-        else if (self.cid == 0x02) {
-            NSLog(@"GetSerialNo");      // GetSerialNo
+        else if (cid == 0x02) {
+            NSLog(@"GetSerialNo"); // GetSerialNo
             range = NSMakeRange(2, data.length - 2);
             
             bytes = (unsigned char*)[[data subdataWithRange:range] bytes];
             unsigned int serialNo = (bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3];
+            [self.responseData setObject:[NSNumber numberWithUnsignedInt:serialNo] forKey:@"serialNo"] ;
             NSLog(@"%d", serialNo);
         }
-        else if (self.cid == 0x10) {    // GetRegister
+        else if (cid == 0x10) {    // GetRegister
             NSLog(@"GetRegister");
             range = NSMakeRange(2, data.length - 2);
             NSLog(@"%@", [data subdataWithRange:range]);
         }
-        else if (self.cid == 0x11) {    // PutRegister
+        else if (cid == 0x11) {    // PutRegister
             NSLog(@"PutRegister");
             range = NSMakeRange(2, data.length - 2);
             NSLog(@"%@", [data subdataWithRange:range]);

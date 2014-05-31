@@ -63,8 +63,8 @@
 //	NSData *dataToSend = [self.sendTextField.stringValue dataUsingEncoding:NSUTF8StringEncoding];
     //self.kmp = [[KMP alloc] init];
 
-//    [self.kmp getType];
-    [self.kmp getSerialNo];
+    [self.kmp getType];
+//    [self.kmp getSerialNo];
 //    [self.kmp setClock:[NSDate date]];
     [self.serialPort sendData:self.kmp.frame];
     self.kmp.frame = [[NSMutableData alloc] initWithBytes:nil length:0];
