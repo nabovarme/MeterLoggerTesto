@@ -206,16 +206,35 @@
         else if (cid == 0x02) {
             NSLog(@"GetSerialNo"); // GetSerialNo
             range = NSMakeRange(2, data.length - 2);
-            
-            bytes = (unsigned char*)[[data subdataWithRange:range] bytes];
+            bytes = (unsigned char *)[[data subdataWithRange:range] bytes];
             unsigned int serialNo = (bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3];
             [self.responseData setObject:[NSNumber numberWithUnsignedInt:serialNo] forKey:@"serialNo"] ;
             NSLog(@"%d", serialNo);
         }
         else if (cid == 0x10) {    // GetRegister
             NSLog(@"GetRegister");
-            range = NSMakeRange(2, data.length - 2);
-            NSLog(@"%@", [data subdataWithRange:range]);
+            range = NSMakeRange(2, 2);
+            bytes = (unsigned char *)[[data subdataWithRange:range] bytes];
+            unsigned int rid = (bytes[0] << 8) + bytes[1];
+            [self.responseData setObject:[NSNumber numberWithUnsignedInt:rid] forKey:@"rid"];
+
+            range = NSMakeRange(4, 1);
+            bytes = (unsigned char *)[[data subdataWithRange:range] bytes];
+            unsigned int unit = bytes[0];
+            [self.responseData setObject:[NSNumber numberWithUnsignedInt:unit] forKey:@"unit"];
+
+            range = NSMakeRange(5, 1);
+            bytes = (unsigned char *)[[data subdataWithRange:range] bytes];
+            unsigned int length = bytes[0];
+            [self.responseData setObject:[NSNumber numberWithUnsignedInt:length] forKey:@"length"];
+            
+            range = NSMakeRange(6, 1);
+            bytes = (unsigned char *)[[data subdataWithRange:range] bytes];
+            unsigned int siEx = bytes[0];
+            [self.responseData setObject:[NSNumber numberWithUnsignedInt:siEx] forKey:@"siEx"];
+            
+            range = NSMakeRange(7, 4);
+            [self.responseData setObject:[data subdataWithRange:range] forKey:@"value"];
         }
         else if (cid == 0x11) {    // PutRegister
             NSLog(@"PutRegister");
