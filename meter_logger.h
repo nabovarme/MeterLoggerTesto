@@ -14,6 +14,7 @@
 //#define TIMER0_RELOAD 0xFCC8	// 427us @ 8MHz
 //#define TIMER0_RELOAD 0xF000	// ~ 2ms @ 8MHz
 #define TIMER0_TESTO 0xF323	// ~ 4 * 427us @ 8MHz
+#define TIMER0_RS232_1200	0xf9e5
 #define TIMER0_RS232_2400	0xfcf2
 #define TIMER0_FSK			0xF99F	// @ 8MHz
 //#define TIMER0_FSK			0xF00F
@@ -62,6 +63,10 @@
 #define TICK 855
 #define TICK_ADJ 200
 
+#define PROTO_TESTO			(0)
+#define PROTO_TESTO_DEMO	(255)
+#define PROTO_KAMSTRUP		(1)
+
 void sleep_ms(unsigned long ms);
 
 void init_system();
@@ -70,7 +75,7 @@ void my_usart_open();
 
 unsigned char reverse(unsigned char b);
 
-unsigned char valid_err_corr(unsigned int c);
+unsigned char testo_valid_err_corr(unsigned int c);
 
 void testo_ir_enable();
 void testo_ir_disable();

@@ -123,7 +123,7 @@ void main(void) {
 	while (1) {
 		if (fifo_get(&cmd)) {
 			switch (cmd) {
-				case 0:
+				case PROTO_TESTO:
 					fsk_rx_disable();
 					usart_puts("press print on testo\n");
 					testo_ir_enable();
@@ -158,9 +158,45 @@ void main(void) {
 					usart_puts("waiting for new command\n");
 					fsk_rx_enable();
 					break;
-				case 255:
+
+				case PROTO_TESTO_DEMO:
 					fsk_rx_disable();
 					usart_puts("echo test - send some data\n");
+					fsk_rx_enable();
+					// wait for iOS stop sending data
+					last_fifo_size = 0;
+					sleep_ms(1000);							// 1 second
+					fifo_size = fifo_in_use();
+					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
+						last_fifo_size = fifo_size;
+						sleep_ms(500);						// return data when no data for 500 ms
+						fifo_size = fifo_in_use();
+					}			
+					fsk_rx_disable();
+#ifndef OUTPUT_ON_SERIAL
+					fsk_tx_enable();
+#endif
+					while (fifo_get(&sub_cmd)) {
+#ifdef OUTPUT_ON_SERIAL
+						//sprintf(buffer, "%c", sub_cmd);
+						sprintf(buffer, "%d ", sub_cmd);
+						usart_puts(buffer);
+						//usart_putc(cmd);
+#else               	
+						fsk_tx_byte(sub_cmd);
+						sleep_ms(FSK_TX_SLEEP_AFTER);
+#endif
+					}
+#ifndef OUTPUT_ON_SERIAL
+					fsk_tx_disable();
+#endif
+					usart_puts("\nwaiting for new command\n");
+					fsk_rx_enable();
+					break;
+
+				case PROTO_KAMSTRUP:
+					fsk_rx_disable();
+					usart_puts("kamstrup - send kmp frame data\n");
 					fsk_rx_enable();
 					// wait for iOS stop sending data
 					last_fifo_size = 0;
@@ -270,7 +306,7 @@ static void isr_high_prio(void) __interrupt 1 {
 							if (testo_ir_proto.data_len == 12) {
 								// frame received!
 								// calculate error correction and send via serial port
-								if (valid_err_corr(testo_ir_proto.data & 0xffff)) {
+								if (testo_valid_err_corr(testo_ir_proto.data & 0xffff)) {
 									//usart_putc(testo_ir_proto.data & 0xff);
 									fifo_put(testo_ir_proto.data & 0xff);
 									LED_PIN = 1;
@@ -678,7 +714,7 @@ unsigned char reverse(unsigned char b) {
 	return(c);
 }
 
-unsigned char valid_err_corr(unsigned int c) {
+unsigned char testo_valid_err_corr(unsigned int c) {
     unsigned char calculated_err_corr, calculated_err_corr_bit;
     unsigned char i;
     
@@ -766,7 +802,7 @@ void rs232_tx_enable() {
 	rs232_ir_proto.state = INIT_STATE;
 //	rs232_ir_proto.start_bit_len = 0;
 	
-	timer0_reload = TIMER0_RS232_2400;
+	timer0_reload = TIMER0_RS232_1200;
 
 	PWM_PIN = 1;
 
