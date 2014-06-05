@@ -6,8 +6,8 @@
 #include "config.h"
 #include "meter_logger.h"
 
-//#define DEBUG
-//#define OUTPUT_ON_SERIAL
+#define DEBUG
+#define OUTPUT_ON_SERIAL
 #define DEBUG_LED_ON_FSK_RX
 #define DEBUG_LED_ON_FSK_TX
 
@@ -115,7 +115,7 @@ void main(void) {
 	init_system();
 
 #ifdef DEBUG
-	usart_puts("Testo printer emulator... serial working\n\r");
+	usart_puts("MeterLogger... serial working\n\r");
 	sleep_ms(100);
 #endif
 
