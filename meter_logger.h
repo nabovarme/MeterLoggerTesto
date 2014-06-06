@@ -16,7 +16,7 @@
 //#define TIMER0_RELOAD 0xFCC8	// 427us @ 8MHz
 //#define TIMER0_RELOAD 0xF000	// ~ 2ms @ 8MHz
 #define TIMER0_TESTO 0xF323	// ~ 4 * 427us @ 8MHz
-#define TIMER0_RS232_1200	0xf9e5
+#define TIMER0_RS232_1200	0xf9ae
 #define TIMER0_RS232_2400	0xfcf2
 #define TIMER0_FSK			0xF99F	// @ 8MHz
 //#define TIMER0_FSK			0xF00F
@@ -30,7 +30,7 @@
 #define SOFT_MODEM_HIGH_FREQ	(7350)
 		
 #define FSK_TX_SLEEP_AFTER		(4)
-#define RS232_TX_SLEEP_AFTER	(10)
+#define RS232_TX_SLEEP_AFTER	(8)
 
 #define OUTPUT_STATE (0)
 #define INPUT_STATE (1)

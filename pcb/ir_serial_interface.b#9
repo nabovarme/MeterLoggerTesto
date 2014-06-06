@@ -1611,9 +1611,10 @@ design rules under a new name.</description>
 <element name="R5" library="resistor" package="M0805" value="2k" x="58.42" y="41.91" rot="R90"/>
 <element name="R6" library="resistor" package="M0805" value="2k" x="58.42" y="36.83" rot="R270"/>
 <element name="R7" library="resistor" package="M0805" value="10k" x="55.88" y="34.29" rot="R270"/>
-<element name="D1" library="SparkFun-LED" package="LED-1206" value="RED" x="40.64" y="44.45" rot="R90">
-<attribute name="PROD_ID" value="DIO-09912" x="40.64" y="44.45" size="1.778" layer="27" rot="R90" display="off"/>
+<element name="D1" library="SparkFun-LED" package="LED-1206" value="RED" x="40.64" y="49.53" rot="R90">
+<attribute name="PROD_ID" value="DIO-09912" x="40.64" y="49.53" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
+<element name="R8" library="resistor" package="M0805" value="190" x="40.64" y="44.45" rot="R90"/>
 </elements>
 <signals>
 <signal name="+5V">
@@ -1655,11 +1656,11 @@ design rules under a new name.</description>
 <contactref element="D1" pad="C"/>
 <wire x1="58.42" y1="37.78" x2="58.42" y2="40.96" width="0" layer="19" extent="1-1"/>
 <wire x1="48.26" y1="40.34" x2="58.42" y2="40.96" width="0" layer="19" extent="1-1"/>
-<wire x1="40.64" y1="45.95" x2="48.26" y2="40.34" width="0" layer="19" extent="1-1"/>
-<wire x1="26.67" y1="43.5" x2="40.64" y2="45.95" width="0" layer="19" extent="1-1"/>
+<wire x1="40.64" y1="51.03" x2="48.26" y2="40.34" width="0" layer="19" extent="1-1"/>
+<wire x1="26.67" y1="43.5" x2="40.64" y2="51.03" width="0" layer="19" extent="1-1"/>
 <wire x1="31.75" y1="30.8" x2="26.67" y2="43.5" width="0" layer="19" extent="1-1"/>
 <wire x1="35.93" y1="27.94" x2="31.75" y2="30.8" width="0" layer="19" extent="1-1"/>
-<wire x1="38.1" y1="64.77" x2="40.64" y2="45.95" width="0" layer="19" extent="1-1"/>
+<wire x1="38.1" y1="64.77" x2="40.64" y2="51.03" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$1">
 <contactref element="R2" pad="2"/>
@@ -1722,14 +1723,19 @@ design rules under a new name.</description>
 <wire x1="50.8" y1="30.78" x2="55.88" y2="33.34" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$10">
-<contactref element="IC1" pad="25"/>
 <contactref element="D1" pad="A"/>
-<wire x1="40.64" y1="40.34" x2="40.64" y2="42.95" width="0" layer="19" extent="1-1"/>
+<contactref element="R8" pad="2"/>
+<wire x1="40.64" y1="45.4" x2="40.64" y2="48.03" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$5">
 <contactref element="LEFT" pad="MP"/>
 <contactref element="C1" pad="2"/>
 <wire x1="34.6075" y1="38.0475" x2="30.48" y2="64.77" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="N$11">
+<contactref element="IC1" pad="25"/>
+<contactref element="R8" pad="1"/>
+<wire x1="40.64" y1="43.5" x2="40.64" y2="40.34" width="0" layer="19" extent="1-1"/>
 </signal>
 </signals>
 </board>

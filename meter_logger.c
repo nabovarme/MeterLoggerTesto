@@ -203,23 +203,25 @@ void main(void) {
 					
 					// wait for iOS stop sending kmp command
 					last_fifo_size = 0;
-					sleep_ms(1000);							// 1 second
+					sleep_ms(100);							// 100 ms
 					fifo_size = fifo_in_use();
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 						last_fifo_size = fifo_size;
-						sleep_ms(500);						// return data when no data for 500 ms
+						sleep_ms(100);						// return data when no data for 100 ms
 						fifo_size = fifo_in_use();
 					}			
 					fsk_rx_disable();
 					
 					usart_puts("kamstrup - kmp frame:\n");
 					rs232_tx_enable();
+					sleep_ms(RS232_TX_SLEEP_AFTER);		// DEBUG: should be its own #define
 					while (fifo_get(&sub_cmd)) {
-						rs232_tx_byte(sub_cmd);
 						sprintf(debug_buffer, "%d\n", sub_cmd);
 						usart_puts(debug_buffer);
+						rs232_tx_byte(sub_cmd);
 						sleep_ms(RS232_TX_SLEEP_AFTER);
 					}
+					sleep_ms(RS232_TX_SLEEP_AFTER);
 					rs232_tx_disable();
 		
 					
@@ -352,16 +354,8 @@ static void isr_high_prio(void) __interrupt 1 {
 				switch (rs232_proto.state) {
 					case INIT_STATE:
 						if (rs232_proto.data_len == 8) {
-							DEBUG3_PIN = 1;
-							__asm
-								nop
-							__endasm;
-							DEBUG3_PIN = 0;
-						
 							IR_LED_PIN = 0;
 							rs232_proto.state = START_BIT_SENT;
-							//rs232_proto.data_len = 8;
-							//rs232_proto.data = c;
 						}
 						break;
 					case START_BIT_SENT:
