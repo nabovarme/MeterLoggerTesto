@@ -354,27 +354,27 @@ static void isr_high_prio(void) __interrupt 1 {
 				switch (rs232_proto.state) {
 					case INIT_STATE:
 						if (rs232_proto.data_len == 8) {
-							IR_LED_PIN = 0;
+							IR_LED_PIN = 1;		// inverted rs232 output on ir, start bit = ir light
 							rs232_proto.state = START_BIT_SENT;
 						}
 						break;
 					case START_BIT_SENT:
 						if (rs232_proto.data_len >= 1) {
-							IR_LED_PIN = (rs232_proto.data & 1) != 0;
+							IR_LED_PIN = (rs232_proto.data & 1) == 0;	// inverted rs232 output on ir
 							rs232_proto.data = rs232_proto.data >> 1;
 							rs232_proto.data_len--;
 						}
 						else {
-							IR_LED_PIN = 1;							
+							IR_LED_PIN = 0;								// inverted rs232 output on ir					
 							rs232_proto.state = STOP_BIT_SENT;
 						}
 						break;
 					case STOP_BIT_SENT:
-						IR_LED_PIN = 1;
+						IR_LED_PIN = 0;									// inverted rs232 output on ir
 						rs232_proto.state = STOP_BIT2_SENT;
 						break;
  	 				case STOP_BIT2_SENT:
-						IR_LED_PIN = 1;
+						IR_LED_PIN = 0;									// inverted rs232 output on ir
 						rs232_proto.state = INIT_STATE;
 						break;
 				}
@@ -791,7 +791,7 @@ void rs232_tx_enable() {
 	rs232_proto.state = INIT_STATE;
 	rs232_proto.data_len = 0;
 	
-	IR_LED_PIN = 1;
+	IR_LED_PIN = 0;				// inverted rs232 output on ir, idle = no ir light
 
 	codec_type = RS232_TX;
 
@@ -813,7 +813,7 @@ void rs232_tx_enable() {
 
 void rs232_tx_disable() {
 	codec_type = NONE;
-	IR_LED_PIN = 0;
+	IR_LED_PIN = 0;				// no need to set it to inverted idle
 }
 
 void rs232_rx_enable() {

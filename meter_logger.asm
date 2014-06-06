@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.4.0 #8981 (Jun  6 2014) (Mac OS X x86_64)
-; This file was generated Fri Jun  6 21:31:52 2014
+; This file was generated Fri Jun  6 22:18:21 2014
 ;--------------------------------------------------------
 ; PIC16 port for the Microchip 16-bit core micros
 ;--------------------------------------------------------
@@ -5049,7 +5049,7 @@ _rs232_tx_disable:
 	BANKSEL	_codec_type
 ;	.line	815; meter_logger.c	codec_type = NONE;
 	CLRF	_codec_type, B
-;	.line	816; meter_logger.c	IR_LED_PIN = 0;
+;	.line	816; meter_logger.c	IR_LED_PIN = 0;				// no need to set it to inverted idle
 	BCF	_PORTBbits, 1
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -5073,8 +5073,8 @@ _rs232_tx_enable:
 ; removed redundant BANKSEL
 ;	.line	792; meter_logger.c	rs232_proto.data_len = 0;
 	CLRF	(_rs232_proto + 3), B
-;	.line	794; meter_logger.c	IR_LED_PIN = 1;
-	BSF	_PORTBbits, 1
+;	.line	794; meter_logger.c	IR_LED_PIN = 0;				// inverted rs232 output on ir, idle = no ir light
+	BCF	_PORTBbits, 1
 ;	.line	796; meter_logger.c	codec_type = RS232_TX;
 	MOVLW	0x03
 	BANKSEL	_codec_type
@@ -6380,8 +6380,8 @@ _00239_DS_:
 	BZ	_00498_DS_
 	BRA	_00276_DS_
 _00498_DS_:
-;	.line	357; meter_logger.c	IR_LED_PIN = 0;
-	BCF	_PORTBbits, 1
+;	.line	357; meter_logger.c	IR_LED_PIN = 1;		// inverted rs232 output on ir, start bit = ir light
+	BSF	_PORTBbits, 1
 ;	.line	358; meter_logger.c	rs232_proto.state = START_BIT_SENT;
 	MOVLW	0x03
 	BANKSEL	_rs232_proto
@@ -6394,11 +6394,17 @@ _00242_DS_:
 	BANKSEL	(_rs232_proto + 3)
 	SUBWF	(_rs232_proto + 3), W, B
 	BNC	_00244_DS_
-;	.line	363; meter_logger.c	IR_LED_PIN = (rs232_proto.data & 1) != 0;
+;	.line	363; meter_logger.c	IR_LED_PIN = (rs232_proto.data & 1) == 0;	// inverted rs232 output on ir
 	MOVLW	0x01
 ; removed redundant BANKSEL
 	ANDWF	(_rs232_proto + 2), W, B
 	MOVWF	r0x00
+	MOVF	r0x00, W
+	BSF	STATUS, 0
+	TSTFSZ	WREG
+	BCF	STATUS, 0
+	CLRF	r0x00
+	RLCF	r0x00, F
 	MOVF	r0x00, W
 	ANDLW	0x01
 	RLNCF	WREG, W
@@ -6423,8 +6429,8 @@ _00242_DS_:
 	MOVWF	(_rs232_proto + 3), B
 	BRA	_00276_DS_
 _00244_DS_:
-;	.line	368; meter_logger.c	IR_LED_PIN = 1;							
-	BSF	_PORTBbits, 1
+;	.line	368; meter_logger.c	IR_LED_PIN = 0;								// inverted rs232 output on ir					
+	BCF	_PORTBbits, 1
 ;	.line	369; meter_logger.c	rs232_proto.state = STOP_BIT_SENT;
 	MOVLW	0x08
 	BANKSEL	_rs232_proto
@@ -6432,8 +6438,8 @@ _00244_DS_:
 ;	.line	371; meter_logger.c	break;
 	BRA	_00276_DS_
 _00246_DS_:
-;	.line	373; meter_logger.c	IR_LED_PIN = 1;
-	BSF	_PORTBbits, 1
+;	.line	373; meter_logger.c	IR_LED_PIN = 0;									// inverted rs232 output on ir
+	BCF	_PORTBbits, 1
 ;	.line	374; meter_logger.c	rs232_proto.state = STOP_BIT2_SENT;
 	MOVLW	0x09
 	BANKSEL	_rs232_proto
@@ -6441,8 +6447,8 @@ _00246_DS_:
 ;	.line	375; meter_logger.c	break;
 	BRA	_00276_DS_
 _00247_DS_:
-;	.line	377; meter_logger.c	IR_LED_PIN = 1;
-	BSF	_PORTBbits, 1
+;	.line	377; meter_logger.c	IR_LED_PIN = 0;									// inverted rs232 output on ir
+	BCF	_PORTBbits, 1
 	BANKSEL	_rs232_proto
 ;	.line	378; meter_logger.c	rs232_proto.state = INIT_STATE;
 	CLRF	_rs232_proto, B
@@ -6905,8 +6911,8 @@ ___str_8:
 
 
 ; Statistics:
-; code size:	12010 (0x2eea) bytes ( 9.16%)
-;           	 6005 (0x1775) words
+; code size:	12022 (0x2ef6) bytes ( 9.17%)
+;           	 6011 (0x177b) words
 ; udata size:	 1200 (0x04b0) bytes (66.96%)
 ; access size:	   16 (0x0010) bytes
 
