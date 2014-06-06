@@ -7,7 +7,7 @@
 #include "meter_logger.h"
 
 #define DEBUG
-#define OUTPUT_ON_SERIAL
+//#define OUTPUT_ON_SERIAL
 #define DEBUG_LED_ON_FSK_RX
 #define DEBUG_LED_ON_FSK_TX
 
@@ -48,7 +48,8 @@ enum state_t {
 	DATA_SENT,
 	PARITY_WAIT,
 	STOP_BIT_WAIT,
-	STOP_BIT_SENT
+	STOP_BIT_SENT,
+	STOP_BIT2_SENT
 };
 
 typedef struct {
@@ -66,7 +67,7 @@ typedef struct {
 	unsigned char data_len;
 	unsigned char parity;
 	unsigned char stop_bit;
-} rs232_ir_proto_t;
+} rs232_proto_t;
 
 typedef struct {
 	enum state_t state;
@@ -95,7 +96,7 @@ typedef struct {
 volatile led_flash_t led_flash;
 
 volatile testo_ir_proto_t testo_ir_proto;
-volatile rs232_ir_proto_t rs232_ir_proto;
+volatile rs232_proto_t rs232_proto;
 volatile fsk_proto_t fsk_proto;
 
 void main(void) {
@@ -198,7 +199,8 @@ void main(void) {
 					fsk_rx_disable();
 					usart_puts("kamstrup - send kmp frame data\n");
 					fsk_rx_enable();
-					// wait for iOS stop sending data
+					
+					// wait for iOS stop sending kmp command
 					last_fifo_size = 0;
 					sleep_ms(1000);							// 1 second
 					fifo_size = fifo_in_use();
@@ -208,23 +210,32 @@ void main(void) {
 						fifo_size = fifo_in_use();
 					}			
 					fsk_rx_disable();
-#ifndef OUTPUT_ON_SERIAL
-					fsk_tx_enable();
-#endif
+					
+					// Send kmp command via ÍR
+					usart_puts("kamstrup - kmp frame:\n");
+					rs232_tx_enable();
 					while (fifo_get(&sub_cmd)) {
-#ifdef OUTPUT_ON_SERIAL
-						//sprintf(buffer, "%c", sub_cmd);
+						rs232_tx_byte(sub_cmd);
 						sprintf(buffer, "%d ", sub_cmd);
 						usart_puts(buffer);
-						//usart_putc(cmd);
-#else               	
-						fsk_tx_byte(sub_cmd);
-						sleep_ms(FSK_TX_SLEEP_AFTER);
-#endif
 					}
-#ifndef OUTPUT_ON_SERIAL
+					rs232_tx_disable();
+		
+					
+					// Wait for kmp reply
+					rs232_rx_enable();
+					
+					rs232_rx_disable();
+			
+					
+					// Send reply back to iOS
+					fsk_tx_enable();
+					//while (fifo_get(&sub_cmd)) {
+					//	fsk_tx_byte(sub_cmd);
+					//	sleep_ms(FSK_TX_SLEEP_AFTER);
+					//}
 					fsk_tx_disable();
-#endif
+
 					usart_puts("\nwaiting for new command\n");
 					fsk_rx_enable();
 					break;
@@ -337,29 +348,33 @@ static void isr_high_prio(void) __interrupt 1 {
 				sleep();						// sleep until we receive next bit via interrupt on INT0
 				break;
 			case RS232_TX:
-				switch (rs232_ir_proto.state) {
+				switch (rs232_proto.state) {
 					case INIT_STATE:
 						if (fifo_get(&c)) {
-							PWM_PIN = 0;
-							rs232_ir_proto.state = START_BIT_SENT;
-							rs232_ir_proto.data_len = 8;
-							rs232_ir_proto.data = c;
+							IR_LED_PIN = 0;
+							rs232_proto.state = START_BIT_SENT;
+							rs232_proto.data_len = 8;
+							rs232_proto.data = c;
 						}
 						break;
 					case START_BIT_SENT:
-						if (rs232_ir_proto.data_len >= 1) {
-							PWM_PIN = (rs232_ir_proto.data & 1) != 0;
-							rs232_ir_proto.data = rs232_ir_proto.data >> 1;
-							rs232_ir_proto.data_len--;
+						if (rs232_proto.data_len >= 1) {
+							IR_LED_PIN = (rs232_proto.data & 1) != 0;
+							rs232_proto.data = rs232_proto.data >> 1;
+							rs232_proto.data_len--;
 						}
 						else {
-							PWM_PIN = 1;							
-							rs232_ir_proto.state = STOP_BIT_SENT;
+							IR_LED_PIN = 1;							
+							rs232_proto.state = STOP_BIT_SENT;
 						}
 						break;
 					case STOP_BIT_SENT:
-						PWM_PIN = 1;
-						rs232_ir_proto.state = INIT_STATE;
+						IR_LED_PIN = 1;
+						rs232_proto.state = STOP_BIT2_SENT;
+						break;
+ 	 				case STOP_BIT2_SENT:
+						IR_LED_PIN = 1;
+						rs232_proto.state = INIT_STATE;
 						break;
 				}
 				break;
@@ -373,13 +388,6 @@ static void isr_high_prio(void) __interrupt 1 {
 								// zero
 								fsk_proto.data >>= 1;
 								//fsk_proto.data <<= 1;
-#ifdef DEBUG								
-								DEBUG2_PIN = 1;
-								__asm;
-									nop
-								__endasm;
-								DEBUG2_PIN = 0;
-#endif
 							}
 							else {
 								// one
@@ -387,13 +395,6 @@ static void isr_high_prio(void) __interrupt 1 {
 								fsk_proto.data |= 0x80;
 								//fsk_proto.data <<= 1;
 								//fsk_proto.data |= 1;
-#ifdef DEBUG								
-								DEBUG3_PIN = 1;
-								__asm;
-									nop
-								__endasm;
-								DEBUG3_PIN = 0;
-#endif
 							}
 
 						}
@@ -434,26 +435,12 @@ static void isr_high_prio(void) __interrupt 1 {
 					case START_BIT_SENT:
 						if (fsk_proto.data_len--) {
 							if (fsk_proto.data & (0x80 >> fsk_proto.data_len)) {
-#ifdef DEBUG        	
-								DEBUG2_PIN = 1;
-								__asm;
-									nop
-								__endasm;
-								DEBUG2_PIN = 0;
-#endif              			
 								send_fsk_high();
 #ifdef DEBUG_LED_ON_FSK_TX
 								DEBUG_PIN = 0;
 #endif
 							}
 							else {
-#ifdef DEBUG        		
-								DEBUG3_PIN = 1;
-								__asm;
-									nop
-								__endasm;
-								DEBUG3_PIN = 0;
-#endif              		
 								send_fsk_low();
 #ifdef DEBUG_LED_ON_FSK_TX
 								DEBUG_PIN = 1;
@@ -591,8 +578,8 @@ void init_system() {
 	
 	TRIS_DEBUG_PIN = OUTPUT_STATE;	// as output
 	DEBUG_PIN = 0;					// and clear
-	TRIS_DEBUG2_PIN = OUTPUT_STATE;	// as output
-	DEBUG2_PIN = 0;					// and clear
+	TRIS_IR_LED_PIN = OUTPUT_STATE;	// as output
+	IR_LED_PIN = 0;					// and clear
 	TRIS_DEBUG3_PIN = OUTPUT_STATE;	// as output
 	DEBUG3_PIN = 0;					// and clear
 	
@@ -799,12 +786,12 @@ void testo_ir_disable() {
 }
 
 void rs232_tx_enable() {
-	rs232_ir_proto.state = INIT_STATE;
-//	rs232_ir_proto.start_bit_len = 0;
+	rs232_proto.state = INIT_STATE;
+//	rs232_proto.start_bit_len = 0;
 	
 	timer0_reload = TIMER0_RS232_1200;
 
-	PWM_PIN = 1;
+	IR_LED_PIN = 1;
 
 	codec_type = RS232_TX;
 
@@ -825,7 +812,21 @@ void rs232_tx_enable() {
 }
 
 void rs232_tx_disable() {
+	codec_type = NONE;
+}
 
+void rs232_rx_enable() {
+	
+}
+
+void rs232_rx_disable() {
+	INTCONbits.INT0IE = 0;		// disable ext int
+	codec_type = NONE;
+}
+
+void rs232_tx_byte(unsigned char c) {
+	rs232_proto.data = c;
+	rs232_proto.data_len = 8;
 }
 
 void fsk_tx_enable() {
@@ -847,7 +848,7 @@ void fsk_tx_enable() {
 }
 
 void fsk_tx_disable() {
-	T2CONbits.TMR2ON = 0;	// timer 2 off
+	codec_type = NONE;
 }
 
 void fsk_rx_enable() {

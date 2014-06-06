@@ -28,6 +28,7 @@
 #define SOFT_MODEM_HIGH_FREQ	(7350)
 		
 #define FSK_TX_SLEEP_AFTER		(4)
+#define RS232_TX_SLEEP_AFTER	(4)
 
 #define OUTPUT_STATE (0)
 #define INPUT_STATE (1)
@@ -42,14 +43,17 @@
 #define TRIS_LED_PIN	TRISBbits.RB4
 #define LED_PIN			PORTBbits.RB4
 
-#define TRIS_DEBUG_PIN	TRISBbits.RB1 
-#define DEBUG_PIN		PORTBbits.RB1
+#define TRIS_IR_LED_PIN	TRISBbits.RB1 
+#define IR_LED_PIN		PORTBbits.RB1
 
-#define TRIS_DEBUG2_PIN	TRISBbits.RB2
-#define DEBUG2_PIN		PORTBbits.RB2
+#define TRIS_DEBUG_PIN	TRISBbits.RB2
+#define DEBUG_PIN		PORTBbits.RB2
 
-#define TRIS_DEBUG3_PIN	TRISBbits.RB3
-#define DEBUG3_PIN		PORTBbits.RB3
+#define TRIS_DEBUG2_PIN	TRISBbits.RB3
+#define DEBUG2_PIN		PORTBbits.RB3
+
+#define TRIS_DEBUG3_PIN	TRISBbits.RB4
+#define DEBUG3_PIN		PORTBbits.RB4
 
 #define TRIS_PWM_PIN	TRISCbits.RC1
 #define PWM_PIN			PORTCbits.RC1
@@ -82,6 +86,10 @@ void testo_ir_disable();
 
 void rs232_tx_enable();
 void rs232_tx_disable();
+
+void rs232_rx_enable();
+void rs232_rx_disable();
+void rs232_tx_byte(unsigned char c);
 
 void fsk_tx_enable();
 void fsk_tx_disable();
