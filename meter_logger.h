@@ -1,3 +1,5 @@
+#define DEBUG_BUFFER_MAX (128)
+
 #define BYTETOBINARYPATTERN "%d%d%d%d%d%d%d%d"
 #define BYTETOBINARY(byte)  \
 	(byte & 0x80 ? 1 : 0), \
@@ -28,7 +30,7 @@
 #define SOFT_MODEM_HIGH_FREQ	(7350)
 		
 #define FSK_TX_SLEEP_AFTER		(4)
-#define RS232_TX_SLEEP_AFTER	(4)
+#define RS232_TX_SLEEP_AFTER	(10)
 
 #define OUTPUT_STATE (0)
 #define INPUT_STATE (1)

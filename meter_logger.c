@@ -19,7 +19,8 @@ unsigned int timer_0;
 unsigned int last_timer_0;
 unsigned long timer_1_ms;
 volatile unsigned int timer0_reload;
-unsigned char buffer[64];
+
+unsigned char debug_buffer[DEBUG_BUFFER_MAX];
 unsigned char c;	// used in interrupt as buffer for fifo stuff
 
 // command queue
@@ -144,9 +145,9 @@ void main(void) {
 #endif
 					while (fifo_get(&cmd)) {	// and print them to serial
 #ifdef OUTPUT_ON_SERIAL
-						sprintf(buffer, "%c", cmd);
-						//sprintf(buffer, "%d ", cmd);
-						usart_puts(buffer);
+						sprintf(debug_buffer, "%c", cmd);
+						//sprintf(debug_buffer, "%d ", cmd);
+						usart_puts(debug_buffer);
 						//usart_putc(cmd);
 #else               	
 						fsk_tx_byte(cmd);
@@ -179,9 +180,9 @@ void main(void) {
 #endif
 					while (fifo_get(&sub_cmd)) {
 #ifdef OUTPUT_ON_SERIAL
-						//sprintf(buffer, "%c", sub_cmd);
-						sprintf(buffer, "%d ", sub_cmd);
-						usart_puts(buffer);
+						//sprintf(debug_buffer, "%c", sub_cmd);
+						sprintf(debug_buffer, "%d ", sub_cmd);
+						usart_puts(debug_buffer);
 						//usart_putc(cmd);
 #else               	
 						fsk_tx_byte(sub_cmd);
@@ -211,13 +212,13 @@ void main(void) {
 					}			
 					fsk_rx_disable();
 					
-					// Send kmp command via ÍR
 					usart_puts("kamstrup - kmp frame:\n");
 					rs232_tx_enable();
 					while (fifo_get(&sub_cmd)) {
 						rs232_tx_byte(sub_cmd);
-						sprintf(buffer, "%d ", sub_cmd);
-						usart_puts(buffer);
+						sprintf(debug_buffer, "%d\n", sub_cmd);
+						usart_puts(debug_buffer);
+						sleep_ms(RS232_TX_SLEEP_AFTER);
 					}
 					rs232_tx_disable();
 		
@@ -350,11 +351,17 @@ static void isr_high_prio(void) __interrupt 1 {
 			case RS232_TX:
 				switch (rs232_proto.state) {
 					case INIT_STATE:
-						if (fifo_get(&c)) {
+						if (rs232_proto.data_len == 8) {
+							DEBUG3_PIN = 1;
+							__asm
+								nop
+							__endasm;
+							DEBUG3_PIN = 0;
+						
 							IR_LED_PIN = 0;
 							rs232_proto.state = START_BIT_SENT;
-							rs232_proto.data_len = 8;
-							rs232_proto.data = c;
+							//rs232_proto.data_len = 8;
+							//rs232_proto.data = c;
 						}
 						break;
 					case START_BIT_SENT:
@@ -417,8 +424,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				switch (fsk_proto.state) {
 					case INIT_STATE:
 						send_fsk_high();
-						if (fsk_proto.data_len == 8) {//fifo_get(&fsk_proto.data)) {
-							//fsk_proto.data_len = 8;
+						if (fsk_proto.data_len == 8) {
 							fsk_proto.state = IDLE;
 						}
 #ifdef DEBUG_LED_ON_FSK_TX
@@ -739,12 +745,12 @@ unsigned char testo_valid_err_corr(unsigned int c) {
     calculated_err_corr |= calculated_err_corr_bit;
 
 #ifdef DEBUG_SERIAL_ERROR_CORRECTION
-	sprintf(buffer, "\nbyte:\t"BYTETOBINARYPATTERN, BYTETOBINARY(c));
-	usart_puts(buffer);
-	sprintf(buffer, "\nerr_corr:\t"BYTETOBINARYPATTERN, BYTETOBINARY((c >> 8)));
-	usart_puts(buffer);
-	sprintf(buffer, "\ncalc_err_corr:\t"BYTETOBINARYPATTERN, BYTETOBINARY(calculated_err_corr));
-	usart_puts(buffer);
+	sprintf(debug_buffer, "\nbyte:\t"BYTETOBINARYPATTERN, BYTETOBINARY(c));
+	usart_puts(debug_buffer);
+	sprintf(debug_buffer, "\nerr_corr:\t"BYTETOBINARYPATTERN, BYTETOBINARY((c >> 8)));
+	usart_puts(debug_buffer);
+	sprintf(debug_buffer, "\ncalc_err_corr:\t"BYTETOBINARYPATTERN, BYTETOBINARY(calculated_err_corr));
+	usart_puts(debug_buffer);
 	return 0;
 #else
     if ((c >> 8) == calculated_err_corr) {
@@ -786,11 +792,11 @@ void testo_ir_disable() {
 }
 
 void rs232_tx_enable() {
-	rs232_proto.state = INIT_STATE;
-//	rs232_proto.start_bit_len = 0;
-	
 	timer0_reload = TIMER0_RS232_1200;
 
+	rs232_proto.state = INIT_STATE;
+	rs232_proto.data_len = 0;
+	
 	IR_LED_PIN = 1;
 
 	codec_type = RS232_TX;
@@ -813,6 +819,7 @@ void rs232_tx_enable() {
 
 void rs232_tx_disable() {
 	codec_type = NONE;
+	IR_LED_PIN = 0;
 }
 
 void rs232_rx_enable() {
