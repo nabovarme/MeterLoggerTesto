@@ -7,7 +7,7 @@
 #include "meter_logger.h"
 
 #define DEBUG
-//#define OUTPUT_ON_SERIAL
+#define OUTPUT_ON_SERIAL
 #define DEBUG_LED_ON_FSK_RX
 #define DEBUG_LED_ON_FSK_TX
 
@@ -213,8 +213,8 @@ void main(void) {
 					rs232_tx_enable();
 					sleep_ms(RS232_TX_SLEEP_AFTER);		// DEBUG: should be its own #define
 					while (fifo_get(&sub_cmd)) {
-						sprintf(debug_buffer, "%d ", sub_cmd);
-						usart_puts(debug_buffer);
+						//sprintf(debug_buffer, "%d ", sub_cmd);
+						//usart_puts(debug_buffer);
 						rs232_tx_byte(sub_cmd);
 						sleep_ms(RS232_TX_SLEEP_AFTER);
 					}
@@ -389,6 +389,12 @@ static void isr_high_prio(void) __interrupt 1 {
 				sleep();						// sleep until we receive next bit via interrupt on INT0
 				break;
 			case RS232_TX:
+				DEBUG3_PIN = 1;
+				__asm
+					nop
+					nop
+				__endasm;
+				DEBUG3_PIN = 0;
 				switch (rs232_proto.state) {
 					case INIT_STATE:
 						if (rs232_proto.data_len == 8) {
@@ -414,6 +420,7 @@ static void isr_high_prio(void) __interrupt 1 {
  	 				case STOP_BIT2_SENT:
 						IR_LED_PIN = 0;									// inverted rs232 output on ir
 						rs232_proto.state = INIT_STATE;
+						T0CONbits.TMR0ON = 0;							// stop timer 0
 						break;
 				}
 				break;
@@ -904,12 +911,13 @@ void rs232_tx_enable() {
 	INTCONbits.TMR0IF = 0;
 
 	INTCONbits.INT0IE = 0;		// disable ext int while sending with software uart
-	T0CONbits.TMR0ON = 1;		// start timer 0
+	T0CONbits.TMR0ON = 0;		// timer 0 started in rs232_tx_byte()
 }
 
 void rs232_tx_disable() {
 	codec_type = NONE;
 	IR_LED_PIN = 0;				// no need to set it to inverted idle
+	T0CONbits.TMR0ON = 0;
 }
 
 void rs232_rx_enable() {
@@ -944,6 +952,7 @@ void rs232_rx_disable() {
 void rs232_tx_byte(unsigned char c) {
 	rs232_proto.data = c;
 	rs232_proto.data_len = 8;
+	T0CONbits.TMR0ON = 1;
 }
 
 void fsk_tx_enable() {
