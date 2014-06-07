@@ -15,10 +15,11 @@
 
 //#define TIMER0_RELOAD 0xFCC8	// 427us @ 8MHz
 //#define TIMER0_RELOAD 0xF000	// ~ 2ms @ 8MHz
-#define TIMER0_TESTO 0xF323	// ~ 4 * 427us @ 8MHz
-#define TIMER0_RS232_1200	0xf9ae
-#define TIMER0_RS232_2400	0xfcf2
-#define TIMER0_FSK			0xF99F	// @ 8MHz
+#define TIMER0_TESTO			 0xF323	// ~ 4 * 427us @ 8MHz
+#define TIMER0_RS232_1200		0xf9ae
+#define TIMER0_RS232_1200_START	0xf700
+#define TIMER0_RS232_2400		0xfcf2
+#define TIMER0_FSK				0xF99F	// @ 8MHz
 //#define TIMER0_FSK			0xF00F
 //#define TIMER0_RELOAD 0x0000
 #define TIMER1_RELOAD 0xF853    // 1 ms @ 8MHz
@@ -41,6 +42,7 @@
 #define COMP2_PIN		PORTAbits.RA1
 
 #define TRIS_IR_PIN		TRISBbits.RB0
+#define IR_PIN			PORTBbits.RB0
 
 #define TRIS_LED_PIN	TRISBbits.RB4
 #define LED_PIN			PORTBbits.RB4

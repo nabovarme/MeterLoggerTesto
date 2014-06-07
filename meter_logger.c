@@ -49,6 +49,7 @@ enum state_t {
 	DATA_SENT,
 	PARITY_WAIT,
 	STOP_BIT_WAIT,
+	STOP_BIT2_WAIT,
 	STOP_BIT_SENT,
 	STOP_BIT2_SENT
 };
@@ -227,6 +228,7 @@ void main(void) {
 					
 					// Wait for kmp reply
 					rs232_rx_enable();
+					sleep_ms(1000);
 					
 					rs232_rx_disable();
 			
@@ -331,8 +333,33 @@ static void isr_high_prio(void) __interrupt 1 {
 						break;
 				}
 				break;
-			case RS232_TX:
-				// do nothing
+			case RS232_RX:
+				switch (rs232_proto.state) {
+					case START_BIT_WAIT:
+						DEBUG3_PIN = 1;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG3_PIN = 0;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG3_PIN = 1;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG3_PIN = 0;
+						// sample data half bit time after...
+						TMR0H = (unsigned char)(TIMER0_RS232_1200_START >> 8);
+						TMR0L = (unsigned char)TIMER0_RS232_1200_START;
+						INTCONbits.INT0IE = 0;		// disable ext int while we are using timer to receive data bits
+						T0CONbits.TMR0ON = 1;		// Start TMR0
+						rs232_proto.state = DATA_WAIT;
+						break;
+				}
 				break;
 		}
 		INTCONbits.INT0IF = 0;	/* Clear Interrupt Flag */
@@ -376,6 +403,57 @@ static void isr_high_prio(void) __interrupt 1 {
  	 				case STOP_BIT2_SENT:
 						IR_LED_PIN = 0;									// inverted rs232 output on ir
 						rs232_proto.state = INIT_STATE;
+						break;
+				}
+				break;
+			case RS232_RX:
+				switch (rs232_proto.state) {
+					case DATA_WAIT:
+						rs232_proto.data_len++;
+						if (rs232_proto.data_len <= 8) {
+							if (IR_PIN) {
+								DEBUG3_PIN = 1;
+								__asm
+									nop
+									nop
+								__endasm;
+								DEBUG3_PIN = 0;
+							}
+							else {
+								DEBUG3_PIN = 1;
+								__asm
+									nop
+									nop
+								__endasm;
+								DEBUG3_PIN = 0;
+								__asm
+									nop
+									nop
+								__endasm;
+								DEBUG3_PIN = 1;
+								__asm
+									nop
+									nop
+								__endasm;
+								DEBUG3_PIN = 0;
+							}
+						}
+						else {
+							rs232_proto.state = STOP_BIT_WAIT;
+						}
+						break;
+					case STOP_BIT_WAIT:
+					//	rs232_proto.state = STOP_BIT2_WAIT;
+					//	break;
+					// kamstrup meter does not realy send 2 stop bits... 
+					//case STOP_BIT2_WAIT:
+						// DEBUG: save it
+						rs232_proto.data = 0;
+						rs232_proto.data_len = 0;
+						rs232_proto.state = START_BIT_WAIT;
+						T0CONbits.TMR0ON = 0;
+						INTCONbits.INT0IF = 0;		// dont enter ext int now
+						INTCONbits.INT0IE = 1;		// enable ext int again
 						break;
 				}
 				break;
@@ -817,7 +895,27 @@ void rs232_tx_disable() {
 }
 
 void rs232_rx_enable() {
+	rs232_proto.state = START_BIT_WAIT;
+	rs232_proto.data_len = 0;
+
+	timer0_reload = TIMER0_RS232_1200;
 	
+	codec_type = RS232_RX;
+
+	// timer 0
+	T0CONbits.TMR0ON = 0;
+	T0CONbits.T0PS0 = 0;
+	T0CONbits.T0PS1 = 0;
+	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+	T0CONbits.T0CS = 0;			// internal clock source
+	T0CONbits.PSA = 1;			// disable timer0 prescaler
+	INTCON2bits.TMR0IP = 1;		// high priority
+	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+	INTCONbits.TMR0IF = 0;
+
+	INTCONbits.INT0IE = 1;		// enable ext int
+	INTCON2bits.INTEDG0 = 1;	// rising edge
 }
 
 void rs232_rx_disable() {
