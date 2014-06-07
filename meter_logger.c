@@ -118,7 +118,7 @@ void main(void) {
 	init_system();
 
 #ifdef DEBUG
-	usart_puts("MeterLogger... serial working\n\r");
+	usart_puts("\n\rMeterLogger... serial working\n\r");
 	sleep_ms(100);
 #endif
 
@@ -128,7 +128,7 @@ void main(void) {
 			switch (cmd) {
 				case PROTO_TESTO:
 					fsk_rx_disable();
-					usart_puts("press print on testo\n");
+					usart_puts("\n\rpress print on testo\n\r");
 					testo_ir_enable();
 					// wait for testo 310 stop sending data
 					last_fifo_size = 0;
@@ -140,7 +140,7 @@ void main(void) {
 						fifo_size = fifo_in_use();
 					}			
 					testo_ir_disable();
-					usart_puts("done receiving - sending via serial/fsk\n");
+					usart_puts("\n\rdone receiving - sending via serial/fsk\n\r");
 #ifndef OUTPUT_ON_SERIAL
 					fsk_tx_enable();
 #endif
@@ -158,13 +158,13 @@ void main(void) {
 #ifndef OUTPUT_ON_SERIAL
 					fsk_tx_disable();
 #endif
-					usart_puts("waiting for new command\n");
+					usart_puts("\n\rwaiting for new command\n\r");
 					fsk_rx_enable();
 					break;
 
 				case PROTO_TESTO_DEMO:
 					fsk_rx_disable();
-					usart_puts("echo test - send some data\n");
+					usart_puts("\n\recho test - send some data\n\r");
 					fsk_rx_enable();
 					// wait for iOS stop sending data
 					last_fifo_size = 0;
@@ -193,13 +193,13 @@ void main(void) {
 #ifndef OUTPUT_ON_SERIAL
 					fsk_tx_disable();
 #endif
-					usart_puts("\nwaiting for new command\n");
+					usart_puts("\n\rwaiting for new command\n\r");
 					fsk_rx_enable();
 					break;
 
 				case PROTO_KAMSTRUP:
 					fsk_rx_disable();
-					usart_puts("kamstrup - send kmp frame data\n");
+					usart_puts("\n\rkamstrup - send kmp frame data\n\r");
 					fsk_rx_enable();
 					
 					// wait for iOS stop sending kmp command
@@ -213,11 +213,11 @@ void main(void) {
 					}			
 					fsk_rx_disable();
 					
-					usart_puts("kamstrup - kmp frame:\n");
+					usart_puts("\n\rkamstrup - kmp frame:\n\r");
 					rs232_tx_enable();
 					sleep_ms(RS232_TX_SLEEP_AFTER);		// DEBUG: should be its own #define
 					while (fifo_get(&sub_cmd)) {
-						sprintf(debug_buffer, "%d\n", sub_cmd);
+						sprintf(debug_buffer, "%d ", sub_cmd);
 						usart_puts(debug_buffer);
 						rs232_tx_byte(sub_cmd);
 						sleep_ms(RS232_TX_SLEEP_AFTER);
@@ -232,6 +232,13 @@ void main(void) {
 					
 					rs232_rx_disable();
 			
+					usart_puts("\n\rkamstrup - kmp reply:\n\r");
+					while (fifo_get(&sub_cmd)) {
+						sprintf(debug_buffer, "%d ", sub_cmd);
+						usart_puts(debug_buffer);
+						//rs232_tx_byte(sub_cmd);
+						//sleep_ms(RS232_TX_SLEEP_AFTER);
+					}
 					
 					// Send reply back to iOS
 					fsk_tx_enable();
@@ -241,7 +248,7 @@ void main(void) {
 					//}
 					fsk_tx_disable();
 
-					usart_puts("\nwaiting for new command\n");
+					usart_puts("\n\rwaiting for new command\n\r");
 					fsk_rx_enable();
 					break;
 			}
@@ -411,7 +418,10 @@ static void isr_high_prio(void) __interrupt 1 {
 					case DATA_WAIT:
 						rs232_proto.data_len++;
 						if (rs232_proto.data_len <= 8) {
-							if (IR_PIN) {
+							if (IR_PIN) {		
+								// logical 0, ir input inverted
+								rs232_proto.data >>= 1;
+
 								DEBUG3_PIN = 1;
 								__asm
 									nop
@@ -419,7 +429,11 @@ static void isr_high_prio(void) __interrupt 1 {
 								__endasm;
 								DEBUG3_PIN = 0;
 							}
-							else {
+							else {				
+								// logical 1, ir input inverted
+								rs232_proto.data >>= 1;
+								rs232_proto.data |= 0x80;
+								
 								DEBUG3_PIN = 1;
 								__asm
 									nop
@@ -447,7 +461,7 @@ static void isr_high_prio(void) __interrupt 1 {
 					//	break;
 					// kamstrup meter does not realy send 2 stop bits... 
 					//case STOP_BIT2_WAIT:
-						// DEBUG: save it
+						fifo_put(rs232_proto.data);
 						rs232_proto.data = 0;
 						rs232_proto.data_len = 0;
 						rs232_proto.state = START_BIT_WAIT;
