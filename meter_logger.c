@@ -232,20 +232,15 @@ void main(void) {
 					
 					rs232_rx_disable();
 			
-					usart_puts("\n\rkamstrup - kmp reply:\n\r");
-					while (fifo_get(&sub_cmd)) {
-						sprintf(debug_buffer, "%d ", sub_cmd);
-						usart_puts(debug_buffer);
-						//rs232_tx_byte(sub_cmd);
-						//sleep_ms(RS232_TX_SLEEP_AFTER);
-					}
-					
 					// Send reply back to iOS
+					//usart_puts("\n\rkamstrup - kmp reply:\n\r");
 					fsk_tx_enable();
-					//while (fifo_get(&sub_cmd)) {
-					//	fsk_tx_byte(sub_cmd);
-					//	sleep_ms(FSK_TX_SLEEP_AFTER);
-					//}
+					while (fifo_get(&sub_cmd)) {
+						//sprintf(debug_buffer, "%d ", sub_cmd);
+						//usart_puts(debug_buffer);
+						fsk_tx_byte(sub_cmd);
+						sleep_ms(FSK_TX_SLEEP_AFTER);
+					}
 					fsk_tx_disable();
 
 					usart_puts("\n\rwaiting for new command\n\r");
