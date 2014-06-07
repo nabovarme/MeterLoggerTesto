@@ -147,9 +147,7 @@ void main(void) {
 					while (fifo_get(&cmd)) {	// and print them to serial
 #ifdef OUTPUT_ON_SERIAL
 						sprintf(debug_buffer, "%c", cmd);
-						//sprintf(debug_buffer, "%d ", cmd);
 						usart_puts(debug_buffer);
-						//usart_putc(cmd);
 #else               	
 						fsk_tx_byte(cmd);
 						sleep_ms(FSK_TX_SLEEP_AFTER);
@@ -181,10 +179,8 @@ void main(void) {
 #endif
 					while (fifo_get(&sub_cmd)) {
 #ifdef OUTPUT_ON_SERIAL
-						//sprintf(debug_buffer, "%c", sub_cmd);
 						sprintf(debug_buffer, "%d ", sub_cmd);
 						usart_puts(debug_buffer);
-						//usart_putc(cmd);
 #else               	
 						fsk_tx_byte(sub_cmd);
 						sleep_ms(FSK_TX_SLEEP_AFTER);
@@ -228,21 +224,34 @@ void main(void) {
 					
 					// Wait for kmp reply
 					rs232_rx_enable();
-					sleep_ms(1000);
+					last_fifo_size = 0;
+					sleep_ms(100);							// 100 ms
+					fifo_size = fifo_in_use();
+					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
+						last_fifo_size = fifo_size;
+						sleep_ms(100);						// return data when no data for 100 ms
+						fifo_size = fifo_in_use();
+					}			
 					
 					rs232_rx_disable();
 			
 					// Send reply back to iOS
-					//usart_puts("\n\rkamstrup - kmp reply:\n\r");
+					usart_puts("\n\rkamstrup - kmp reply:\n\r");
+#ifndef OUTPUT_ON_SERIAL
 					fsk_tx_enable();
+#endif
 					while (fifo_get(&sub_cmd)) {
-						//sprintf(debug_buffer, "%d ", sub_cmd);
-						//usart_puts(debug_buffer);
+#ifdef OUTPUT_ON_SERIAL
+						sprintf(debug_buffer, "%d ", sub_cmd);
+						usart_puts(debug_buffer);
+#else
 						fsk_tx_byte(sub_cmd);
 						sleep_ms(FSK_TX_SLEEP_AFTER);
+#endif
 					}
+#ifndef OUTPUT_ON_SERIAL
 					fsk_tx_disable();
-
+#endif
 					usart_puts("\n\rwaiting for new command\n\r");
 					fsk_rx_enable();
 					break;
