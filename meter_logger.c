@@ -7,7 +7,7 @@
 #include "meter_logger.h"
 
 #define DEBUG
-#define OUTPUT_ON_SERIAL
+//#define OUTPUT_ON_SERIAL
 #define DEBUG_LED_ON_FSK_RX
 #define DEBUG_LED_ON_FSK_TX
 
@@ -211,16 +211,15 @@ void main(void) {
 					
 					usart_puts("\n\rkamstrup - kmp frame:\n\r");
 					rs232_tx_enable();
-					sleep_ms(RS232_TX_SLEEP_AFTER);		// DEBUG: should be its own #define
 					while (fifo_get(&sub_cmd)) {
-						//sprintf(debug_buffer, "%d ", sub_cmd);
-						//usart_puts(debug_buffer);
+#ifdef OUTPUT_ON_SERIAL
+						sprintf(debug_buffer, "%d ", sub_cmd);
+						usart_puts(debug_buffer);
+#endif
 						rs232_tx_byte(sub_cmd);
 						sleep_ms(RS232_TX_SLEEP_AFTER);
 					}
-					sleep_ms(RS232_TX_SLEEP_AFTER);
 					rs232_tx_disable();
-		
 					
 					// Wait for kmp reply
 					rs232_rx_enable();
@@ -347,22 +346,12 @@ static void isr_high_prio(void) __interrupt 1 {
 			case RS232_RX:
 				switch (rs232_proto.state) {
 					case START_BIT_WAIT:
-						DEBUG3_PIN = 1;
+						DEBUG2_PIN = 1;
 						__asm
 							nop
 							nop
 						__endasm;
-						DEBUG3_PIN = 0;
-						__asm
-							nop
-							nop
-						__endasm;
-						DEBUG3_PIN = 1;
-						__asm
-							nop
-							nop
-						__endasm;
-						DEBUG3_PIN = 0;
+						DEBUG2_PIN = 0;
 						// sample data half bit time after...
 						TMR0H = (unsigned char)(TIMER0_RS232_1200_START >> 8);
 						TMR0L = (unsigned char)TIMER0_RS232_1200_START;
@@ -389,12 +378,6 @@ static void isr_high_prio(void) __interrupt 1 {
 				sleep();						// sleep until we receive next bit via interrupt on INT0
 				break;
 			case RS232_TX:
-				DEBUG3_PIN = 1;
-				__asm
-					nop
-					nop
-				__endasm;
-				DEBUG3_PIN = 0;
 				switch (rs232_proto.state) {
 					case INIT_STATE:
 						if (rs232_proto.data_len == 8) {
@@ -675,20 +658,26 @@ void sleep_ms(unsigned long ms) {
 
 void init_system() {
 	// PIN CONFIGURATION
-	TRIS_IR_PIN = INPUT_STATE;		// as input
-	TRIS_LED_PIN = OUTPUT_STATE;	// as output
-	LED_PIN = 0;					// and clear
-	
-	TRIS_DEBUG_PIN = OUTPUT_STATE;	// as output
-	DEBUG_PIN = 0;					// and clear
-	TRIS_IR_LED_PIN = OUTPUT_STATE;	// as output
-	IR_LED_PIN = 0;					// and clear
-	TRIS_DEBUG3_PIN = OUTPUT_STATE;	// as output
-	DEBUG3_PIN = 0;					// and clear
-	
 	TRIS_COMP1 = INPUT_STATE;		// as input
 	TRIS_COMP2 = INPUT_STATE;		// as input
 
+	TRIS_IR_PIN = INPUT_STATE;		// as input
+
+	TRIS_LED_PIN = OUTPUT_STATE;	// as output
+	LED_PIN = 0;					// and clear
+	
+	TRIS_IR_LED_PIN = OUTPUT_STATE;	// as output
+	IR_LED_PIN = 0;					// and clear
+
+	TRIS_DEBUG_PIN = OUTPUT_STATE;	// as output
+	DEBUG_PIN = 0;					// and clear
+
+	TRIS_DEBUG2_PIN = OUTPUT_STATE;	// as output
+	DEBUG2_PIN = 0;					// and clear
+
+	TRIS_DEBUG3_PIN = OUTPUT_STATE;	// as output
+	DEBUG3_PIN = 0;					// and clear
+	
 	// pwm
 //	TRIS_PWM_PIN = INPUT_STATE;		// disable output from pwm module at init
 	TRIS_PWM_PIN = OUTPUT_STATE;	// enable output from pwm module at init
@@ -910,7 +899,7 @@ void rs232_tx_enable() {
 	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
 	INTCONbits.TMR0IF = 0;
 
-	INTCONbits.INT0IE = 0;		// disable ext int while sending with software uart
+//	INTCONbits.INT0IE = 0;		// disable ext int while sending with software uart
 	T0CONbits.TMR0ON = 0;		// timer 0 started in rs232_tx_byte()
 }
 
@@ -947,12 +936,14 @@ void rs232_rx_enable() {
 void rs232_rx_disable() {
 	INTCONbits.INT0IE = 0;		// disable ext int
 	codec_type = NONE;
+	T0CONbits.TMR0ON = 0;
 }
 
 void rs232_tx_byte(unsigned char c) {
 	rs232_proto.data = c;
 	rs232_proto.data_len = 8;
-	T0CONbits.TMR0ON = 1;
+	T0CONbits.TMR0ON = 1;		// start timer 0
+	INTCONbits.TMR0IF = 1;		// enter timer interrupt handler now
 }
 
 void fsk_tx_enable() {
@@ -975,6 +966,8 @@ void fsk_tx_enable() {
 
 void fsk_tx_disable() {
 	codec_type = NONE;
+	T0CONbits.TMR0ON = 0;	// Disable TMR0 
+	PIE2bits.CMIE = 1;		// Disable comparator interrupt
 }
 
 void fsk_rx_enable() {
