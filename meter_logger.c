@@ -209,7 +209,7 @@ void main(void) {
 					}			
 					fsk_rx_disable();
 					
-					usart_puts("\n\rkamstrup - kmp frame:\n\r");
+					usart_puts("\n\rkamstrup - kmp frame received:\n\r");
 					rs232_tx_enable();
 					while (fifo_get(&sub_cmd)) {
 #ifdef OUTPUT_ON_SERIAL
@@ -222,9 +222,10 @@ void main(void) {
 					rs232_tx_disable();
 					
 					// Wait for kmp reply
+					usart_puts("\n\rkamstrup - waiting for reply:\n\r");
 					rs232_rx_enable();
 					last_fifo_size = 0;
-					sleep_ms(100);							// 100 ms
+					sleep_ms(100);							// sleep 100 ms to let some data come in
 					fifo_size = fifo_in_use();
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 						last_fifo_size = fifo_size;
@@ -235,7 +236,7 @@ void main(void) {
 					rs232_rx_disable();
 			
 					// Send reply back to iOS
-					usart_puts("\n\rkamstrup - kmp reply:\n\r");
+					usart_puts("\n\rkamstrup - kmp reply received:\n\r");
 #ifndef OUTPUT_ON_SERIAL
 					fsk_tx_enable();
 #endif
