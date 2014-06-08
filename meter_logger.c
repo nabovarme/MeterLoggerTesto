@@ -200,7 +200,7 @@ void main(void) {
 					
 					// wait for iOS stop sending kmp command
 					last_fifo_size = 0;
-					sleep_ms(100);							// 100 ms
+					sleep_ms(200);							// sleep 200 ms to let some data come in
 					fifo_size = fifo_in_use();
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 						last_fifo_size = fifo_size;
@@ -225,7 +225,7 @@ void main(void) {
 					usart_puts("\n\rkamstrup - waiting for reply:\n\r");
 					rs232_rx_enable();
 					last_fifo_size = 0;
-					sleep_ms(100);							// sleep 100 ms to let some data come in
+					sleep_ms(200);							// sleep 200 ms to let some data come in
 					fifo_size = fifo_in_use();
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 						last_fifo_size = fifo_size;
