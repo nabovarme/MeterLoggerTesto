@@ -246,7 +246,7 @@ void main(void) {
 						usart_puts(debug_buffer);
 #else
 						fsk_tx_byte(sub_cmd);
-						sleep_ms(FSK_TX_SLEEP_AFTER);
+						sleep_ms(FSK_TX_SLEEP_AFTER);	// <- BUG HERE: actually delay is 60-70ms
 #endif
 					}
 #ifndef OUTPUT_ON_SERIAL
