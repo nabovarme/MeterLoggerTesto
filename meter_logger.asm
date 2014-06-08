@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.4.0 #8981 (Jun  6 2014) (Mac OS X x86_64)
-; This file was generated Sun Jun  8 21:37:04 2014
+; This file was generated Sun Jun  8 22:11:45 2014
 ;--------------------------------------------------------
 ; PIC16 port for the Microchip 16-bit core micros
 ;--------------------------------------------------------
@@ -864,14 +864,14 @@ _00119_DS_:
 ;	.line	202; meter_logger.c	last_fifo_size = 0;
 	CLRF	r0x00
 	CLRF	r0x01
-;	.line	203; meter_logger.c	sleep_ms(200);							// sleep 200 ms to let some data come in
+;	.line	203; meter_logger.c	sleep_ms(400);							// sleep 400 ms to let some data come in
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x00
+	MOVLW	0x01
 	MOVWF	POSTDEC1
-	MOVLW	0xc8
+	MOVLW	0x90
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVLW	0x04
@@ -892,14 +892,14 @@ _00211_DS_:
 ;	.line	206; meter_logger.c	last_fifo_size = fifo_size;
 	MOVFF	r0x02, r0x00
 	MOVFF	r0x03, r0x01
-;	.line	207; meter_logger.c	sleep_ms(100);						// return data when no data for 100 ms
+;	.line	207; meter_logger.c	sleep_ms(200);						// return data when no data for 100 ms
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x64
+	MOVLW	0xc8
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVLW	0x04

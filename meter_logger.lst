@@ -1,6 +1,6 @@
 gplink-1.2.0 #980 (Jul 31 2013)
 Copyright (c) 1998-2013 gputils project
-Listing File Generated: 6-8-2014  21:37:04
+Listing File Generated: 6-8-2014  22:11:45
  
  
 Address  Value    Disassembly              Source
@@ -8,7 +8,7 @@ Address  Value    Disassembly              Source
                                            ;--------------------------------------------------------
                                            ; File Created by SDCC : free open source ANSI-C Compiler
                                            ; Version 3.4.0 #8981 (Jun  6 2014) (Mac OS X x86_64)
-                                           ; This file was generated Sun Jun  8 21:37:04 2014
+                                           ; This file was generated Sun Jun  8 22:11:45 2014
                                            ;--------------------------------------------------------
                                            ; PIC16 port for the Microchip 16-bit core micros
                                            ;--------------------------------------------------------
@@ -920,14 +920,14 @@ Address  Value    Disassembly              Source
                                            ;	.line	202; meter_logger.c	last_fifo_size = 0;
 002214   6a00     clrf    0, 0             	CLRF	r0x00
 002216   6a01     clrf    0x1, 0           	CLRF	r0x01
-                                           ;	.line	203; meter_logger.c	sleep_ms(200);							// sleep 200 ms to let some data come in
+                                           ;	.line	203; meter_logger.c	sleep_ms(400);							// sleep 400 ms to let some data come in
 002218   0e00     movlw   0                	MOVLW	0x00
 00221a   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
 00221c   0e00     movlw   0                	MOVLW	0x00
 00221e   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
-002220   0e00     movlw   0                	MOVLW	0x00
+002220   0e01     movlw   0x1              	MOVLW	0x01
 002222   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
-002224   0ec8     movlw   0xc8             	MOVLW	0xc8
+002224   0e90     movlw   0x90             	MOVLW	0x90
 002226   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
 002228   eca0     call    0x2b40, 0        	CALL	_sleep_ms
 00222a   f015
@@ -953,14 +953,14 @@ Address  Value    Disassembly              Source
 002248   f000
 00224a   c003     movff   0x3, 0x1         	MOVFF	r0x03, r0x01
 00224c   f001
-                                           ;	.line	207; meter_logger.c	sleep_ms(100);						// return data when no data for 100 ms
+                                           ;	.line	207; meter_logger.c	sleep_ms(200);						// return data when no data for 100 ms
 00224e   0e00     movlw   0                	MOVLW	0x00
 002250   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
 002252   0e00     movlw   0                	MOVLW	0x00
 002254   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
 002256   0e00     movlw   0                	MOVLW	0x00
 002258   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
-00225a   0e64     movlw   0x64             	MOVLW	0x64
+00225a   0ec8     movlw   0xc8             	MOVLW	0xc8
 00225c   6ee5     movwf   0xe5, 0          	MOVWF	POSTDEC1
 00225e   eca0     call    0x2b40, 0        	CALL	_sleep_ms
 002260   f015

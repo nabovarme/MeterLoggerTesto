@@ -200,11 +200,11 @@ void main(void) {
 					
 					// wait for iOS stop sending kmp command
 					last_fifo_size = 0;
-					sleep_ms(200);							// sleep 200 ms to let some data come in
+					sleep_ms(400);							// sleep 400 ms to let some data come in
 					fifo_size = fifo_in_use();
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 						last_fifo_size = fifo_size;
-						sleep_ms(100);						// return data when no data for 100 ms
+						sleep_ms(200);						// return data when no data for 100 ms
 						fifo_size = fifo_in_use();
 					}			
 					fsk_rx_disable();
