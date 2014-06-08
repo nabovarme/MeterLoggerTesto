@@ -261,12 +261,6 @@ void main(void) {
 }
 
 static void isr_high_prio(void) __interrupt 1 {
-	DEBUG2_PIN = 1;
-	__asm
-		nop
-		nop
-	__endasm;
-	DEBUG2_PIN = 0;
 	// external interrupt handler
 	if (INTCONbits.INT0IF && INTCONbits.INT0IE) {
 		timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
