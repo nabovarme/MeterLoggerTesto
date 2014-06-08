@@ -6,7 +6,7 @@
 #include "config.h"
 #include "meter_logger.h"
 
-#define DEBUG
+//#define DEBUG
 //#define OUTPUT_ON_SERIAL
 #define DEBUG_LED_ON_FSK_RX
 #define DEBUG_LED_ON_FSK_TX
@@ -195,7 +195,9 @@ void main(void) {
 
 				case PROTO_KAMSTRUP:
 					fsk_rx_disable();
+#ifdef DEBUG
 					usart_puts("\n\rkamstrup - send kmp frame data\n\r");
+#endif
 					fsk_rx_enable();
 					
 					// wait for iOS stop sending kmp command
@@ -209,7 +211,9 @@ void main(void) {
 					}			
 					fsk_rx_disable();
 					
+#ifdef DEBUG
 					usart_puts("\n\rkamstrup - kmp frame received:\n\r");
+#endif
 					rs232_tx_enable();
 					while (fifo_get(&sub_cmd)) {
 #ifdef OUTPUT_ON_SERIAL
@@ -222,7 +226,9 @@ void main(void) {
 					rs232_tx_disable();
 					
 					// Wait for kmp reply
+#ifdef DEBUG
 					usart_puts("\n\rkamstrup - waiting for reply:\n\r");
+#endif
 					rs232_rx_enable();
 					last_fifo_size = 0;
 					sleep_ms(200);							// sleep 200 ms to let some data come in
@@ -236,7 +242,9 @@ void main(void) {
 					rs232_rx_disable();
 			
 					// Send reply back to iOS
+#ifdef DEBUG
 					usart_puts("\n\rkamstrup - kmp reply received:\n\r");
+#endif
 #ifndef OUTPUT_ON_SERIAL
 					fsk_tx_enable();
 #endif
@@ -252,7 +260,9 @@ void main(void) {
 #ifndef OUTPUT_ON_SERIAL
 					fsk_tx_disable();
 #endif
+#ifdef DEBUG
 					usart_puts("\n\rwaiting for new command\n\r");
+#endif
 					fsk_rx_enable();
 					break;
 			}
