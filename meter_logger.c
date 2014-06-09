@@ -233,6 +233,7 @@ void main(void) {
 					last_fifo_size = 0;
 					sleep_ms(200);							// sleep 200 ms to let some data come in
 					fifo_size = fifo_in_use();
+					// BUG: sometimes it does not wait for data...
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 						last_fifo_size = fifo_size;
 						sleep_ms(100);						// return data when no data for 100 ms
@@ -246,6 +247,22 @@ void main(void) {
 					usart_puts("\n\rkamstrup - kmp reply received:\n\r");
 #endif
 #ifndef OUTPUT_ON_SERIAL
+					DEBUG2_PIN = 1;
+					__asm
+						nop
+						nop
+					__endasm;
+					DEBUG2_PIN = 0;
+					__asm
+						nop
+						nop
+					__endasm;
+					DEBUG2_PIN = 1;
+					__asm
+						nop
+						nop
+					__endasm;
+					DEBUG2_PIN = 0;
 					fsk_tx_enable();
 #endif
 					while (fifo_get(&sub_cmd)) {
