@@ -1,5 +1,5 @@
 gplink-1.2.0 #980 (Jul 31 2013)
-Map File - Created 6-10-2014  14:52:02
+Map File - Created 6-10-2014  22:47:59
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
@@ -24,44 +24,44 @@ S_meter_logger_ivec_0x1_isr_high_prio       code   0x000008    program   0x00000
 S_meter_logger_ivec_0x2_isr_low_prio       code   0x000018    program   0x000004
 S_meter_logger__send_fsk_high       code   0x00001c    program   0x000bc0
 S_meter_logger__send_fsk_low       code   0x000bdc    program   0x000b46
-S_meter_logger__isr_high_prio       code   0x001722    program   0x0007fc
-     S_meter_logger__main       code   0x001f1e    program   0x000520
-      S_mullong___mullong       code   0x00243e    program   0x000214
-S_meter_logger__testo_valid_err_corr       code   0x002652    program   0x000200
-S_meter_logger__fifo_snoop       code   0x002852    program   0x0001a0
- S_meter_logger__fifo_get       code   0x0029f2    program   0x00017e
- S_meter_logger__sleep_ms       code   0x002b70    program   0x00014a
- S_meter_logger__fifo_put       code   0x002cba    program   0x00011e
-S_meter_logger__isr_low_prio       code   0x002dd8    program   0x0000cc
-  S_meter_logger___debug2       code   0x002ea4    program   0x0000c6
-   S_meter_logger___debug       code   0x002f6a    program   0x0000c6
-  S_meter_logger__reverse       code   0x003030    program   0x00008c
-      S_uputs__usart_puts       code   0x0030bc    program   0x000078
-S_meter_logger__fsk_rx_enable       code   0x003134    program   0x00005c
-S_meter_logger__init_system       code   0x003190    program   0x000054
-S_meter_logger__rs232_rx_enable       code   0x0031e4    program   0x00003e
-S_meter_logger__rs232_tx_enable       code   0x003222    program   0x00003c
-S_meter_logger__testo_ir_enable       code   0x00325e    program   0x00003c
-S_meter_logger__fifo_in_use       code   0x00329a    program   0x000038
-S_meter_logger__fsk_tx_enable       code   0x0032d2    program   0x000034
-S_meter_logger__rs232_tx_byte       code   0x003306    program   0x00002a
-S_meter_logger__my_usart_open       code   0x003330    program   0x00002a
-      S_ugetc__usart_getc       code   0x00335a    program   0x000028
-S_meter_logger__fsk_tx_byte       code   0x003382    program   0x000026
-S_meter_logger__flash_led       code   0x0033a8    program   0x000024
-    S_gptrget1___gptrget1       code   0x0033cc    program   0x000022
-S_eeprom8_gptrput1____eeprom8_gptrput1       code   0x0033ee    program   0x000020
-S_eeprom8_gptrget1____eeprom8_gptrget1       code   0x00340e    program   0x000018
-S_meter_logger__fsk_tx_disable       code   0x003426    program   0x000016
-S_meter_logger__rs232_rx_disable       code   0x00343c    program   0x000016
-S_meter_logger__rs232_tx_disable       code   0x003452    program   0x000016
-    S_gptrput1___gptrput1       code   0x003468    program   0x000016
-S_meter_logger__fsk_rx_disable       code   0x00347e    program   0x000014
-S_meter_logger__testo_ir_disable       code   0x003492    program   0x000014
-         S_crt0___startup       code   0x0034a6    program   0x000014
-      S_uputc__usart_putc       code   0x0034ba    program   0x000010
-S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
-      S_udrdy__usart_drdy       code   0x0034da    program   0x000008
+S_meter_logger__isr_high_prio       code   0x001722    program   0x000746
+     S_meter_logger__main       code   0x001e68    program   0x000480
+      S_mullong___mullong       code   0x0022e8    program   0x000214
+S_meter_logger__testo_valid_err_corr       code   0x0024fc    program   0x000200
+S_meter_logger__fifo_snoop       code   0x0026fc    program   0x0001a0
+ S_meter_logger__fifo_get       code   0x00289c    program   0x00017e
+ S_meter_logger__sleep_ms       code   0x002a1a    program   0x00014a
+ S_meter_logger__fifo_put       code   0x002b64    program   0x00011e
+S_meter_logger__isr_low_prio       code   0x002c82    program   0x0000cc
+  S_meter_logger___debug2       code   0x002d4e    program   0x0000c6
+   S_meter_logger___debug       code   0x002e14    program   0x0000c6
+  S_meter_logger__reverse       code   0x002eda    program   0x00008c
+      S_uputs__usart_puts       code   0x002f66    program   0x000078
+S_meter_logger__fsk_rx_enable       code   0x002fde    program   0x00005c
+S_meter_logger__init_system       code   0x00303a    program   0x000054
+S_meter_logger__rs232_rx_enable       code   0x00308e    program   0x00003e
+S_meter_logger__rs232_tx_enable       code   0x0030cc    program   0x00003c
+S_meter_logger__testo_ir_enable       code   0x003108    program   0x00003c
+S_meter_logger__fifo_in_use       code   0x003144    program   0x000038
+S_meter_logger__fsk_tx_enable       code   0x00317c    program   0x000034
+S_meter_logger__rs232_tx_byte       code   0x0031b0    program   0x00002a
+S_meter_logger__my_usart_open       code   0x0031da    program   0x00002a
+      S_ugetc__usart_getc       code   0x003204    program   0x000028
+S_meter_logger__fsk_tx_byte       code   0x00322c    program   0x000026
+S_meter_logger__flash_led       code   0x003252    program   0x000024
+    S_gptrget1___gptrget1       code   0x003276    program   0x000022
+S_eeprom8_gptrput1____eeprom8_gptrput1       code   0x003298    program   0x000020
+S_eeprom8_gptrget1____eeprom8_gptrget1       code   0x0032b8    program   0x000018
+S_meter_logger__fsk_tx_disable       code   0x0032d0    program   0x000016
+S_meter_logger__rs232_rx_disable       code   0x0032e6    program   0x000016
+S_meter_logger__rs232_tx_disable       code   0x0032fc    program   0x000016
+    S_gptrput1___gptrput1       code   0x003312    program   0x000016
+S_meter_logger__fsk_rx_disable       code   0x003328    program   0x000014
+S_meter_logger__testo_ir_disable       code   0x00333c    program   0x000014
+         S_crt0___startup       code   0x003350    program   0x000014
+      S_uputc__usart_putc       code   0x003364    program   0x000010
+S_eeprom8_write____eeprom8_write       code   0x003374    program   0x000010
+      S_udrdy__usart_drdy       code   0x003384    program   0x000008
                .registers      udata   0x000000       data   0x000010
      udata_meter_logger_0      udata   0x000060       data   0x000080
     udata_meter_logger_11      udata   0x0000e0       data   0x000010
@@ -107,35 +107,35 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                            ---------   ---------
                             0x000008    0x00000b
                             0x000018    0x00001b
-                            0x001f1e    0x00243d
-                            0x002ea4    0x002f69
-                            0x002f6a    0x00302f
-                            0x0033a8    0x0033cb
-                            0x002852    0x0029f1
-                            0x0029f2    0x002b6f
-                            0x002cba    0x002dd7
-                            0x00329a    0x0032d1
-                            0x003382    0x0033a7
+                            0x001e68    0x0022e7
+                            0x002d4e    0x002e13
+                            0x002e14    0x002ed9
+                            0x003252    0x003275
+                            0x0026fc    0x00289b
+                            0x00289c    0x002a19
+                            0x002b64    0x002c81
+                            0x003144    0x00317b
+                            0x00322c    0x003251
                             0x000bdc    0x001721
                             0x00001c    0x000bdb
-                            0x00347e    0x003491
-                            0x003134    0x00318f
-                            0x003426    0x00343b
-                            0x0032d2    0x003305
-                            0x003306    0x00332f
-                            0x00343c    0x003451
-                            0x0031e4    0x003221
-                            0x003452    0x003467
-                            0x003222    0x00325d
-                            0x003492    0x0034a5
-                            0x00325e    0x003299
-                            0x002652    0x002851
-                            0x003030    0x0030bb
-                            0x003330    0x003359
-                            0x003190    0x0031e3
-                            0x002b70    0x002cb9
-                            0x002dd8    0x002ea3
-                            0x001722    0x001f1d
+                            0x003328    0x00333b
+                            0x002fde    0x003039
+                            0x0032d0    0x0032e5
+                            0x00317c    0x0031af
+                            0x0031b0    0x0031d9
+                            0x0032e6    0x0032fb
+                            0x00308e    0x0030cb
+                            0x0032fc    0x003311
+                            0x0030cc    0x003107
+                            0x00333c    0x00334f
+                            0x003108    0x003143
+                            0x0024fc    0x0026fb
+                            0x002eda    0x002f65
+                            0x0031da    0x003203
+                            0x00303a    0x00308d
+                            0x002a1a    0x002b63
+                            0x002c82    0x002d4d
+                            0x001722    0x001e67
                             0x300000    0x300000
                             0x300001    0x300001
                             0x300002    0x300002
@@ -149,57 +149,57 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                             0x30000c    0x30000c
                             0x30000d    0x30000d
                             0x000000    0x000003
-                            0x0034a6    0x0034b9
-                            0x00243e    0x002651
-                            0x003468    0x00347d
-                            0x0034ba    0x0034c9
-                            0x0030bc    0x003133
+                            0x003350    0x003363
+                            0x0022e8    0x0024fb
+                            0x003312    0x003327
+                            0x003364    0x003373
+                            0x002f66    0x002fdd
                             0x00000c    0x000013
-                            0x00335a    0x003381
-                            0x0034da    0x0034e1
+                            0x003204    0x00322b
+                            0x003384    0x00338b
                             0x000004    0x000007
-                            0x0033ee    0x00340d
-                            0x0033cc    0x0033ed
-                            0x0034ca    0x0034d9
+                            0x003298    0x0032b7
+                            0x003276    0x003297
+                            0x003374    0x003383
                             0x000014    0x000017
-                            0x00340e    0x003425
-                            13550 program addresses used
+                            0x0032b8    0x0032cf
+                            13208 program addresses used
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File
                 ---------  ---------  ---------  --------- ---------
-               _00105_DS_   0x0030e6    program     static libio18f2550_a-uputs.asm
-               _00105_DS_   0x001fe0    program     static meter_logger.asm
-               _00106_DS_   0x00202e    program     static meter_logger.asm
-               _00108_DS_   0x00336e    program     static libio18f2550_a-ugetc.asm
-               _00108_DS_   0x002066    program     static meter_logger.asm
-               _00109_DS_   0x00208e    program     static meter_logger.asm
-               _00110_DS_   0x003376    program     static libio18f2550_a-ugetc.asm
-               _00111_DS_   0x0020da    program     static meter_logger.asm
-               _00112_DS_   0x00337e    program     static libio18f2550_a-ugetc.asm
-               _00112_DS_   0x002104    program     static meter_logger.asm
-               _00113_DS_   0x002152    program     static meter_logger.asm
-               _00115_DS_   0x00218a    program     static meter_logger.asm
-               _00116_DS_   0x002192    program     static meter_logger.asm
-               _00118_DS_   0x0021de    program     static meter_logger.asm
-               _00119_DS_   0x002208    program     static meter_logger.asm
-               _00120_DS_   0x00311a    program     static libio18f2550_a-uputs.asm
-               _00120_DS_   0x002256    program     static meter_logger.asm
-               _00122_DS_   0x00228e    program     static meter_logger.asm
-               _00123_DS_   0x0022b6    program     static meter_logger.asm
-               _00125_DS_   0x002302    program     static meter_logger.asm
-               _00126_DS_   0x002350    program     static meter_logger.asm
-               _00128_DS_   0x002388    program     static meter_logger.asm
-               _00129_DS_   0x0023c4    program     static meter_logger.asm
-               _00131_DS_   0x002410    program     static meter_logger.asm
-               _00136_DS_   0x001f82    program     static meter_logger.asm
-               _00198_DS_   0x001fd4    program     static meter_logger.asm
-               _00199_DS_   0x002038    program     static meter_logger.asm
-               _00200_DS_   0x00215c    program     static meter_logger.asm
-               _00201_DS_   0x002260    program     static meter_logger.asm
-               _00202_DS_   0x00235a    program     static meter_logger.asm
+               _00105_DS_   0x001f2a    program     static meter_logger.asm
+               _00105_DS_   0x002f90    program     static libio18f2550_a-uputs.asm
+               _00106_DS_   0x001f78    program     static meter_logger.asm
+               _00108_DS_   0x003218    program     static libio18f2550_a-ugetc.asm
+               _00108_DS_   0x001fb0    program     static meter_logger.asm
+               _00109_DS_   0x001fd8    program     static meter_logger.asm
+               _00110_DS_   0x003220    program     static libio18f2550_a-ugetc.asm
+               _00111_DS_   0x002024    program     static meter_logger.asm
+               _00112_DS_   0x00204e    program     static meter_logger.asm
+               _00112_DS_   0x003228    program     static libio18f2550_a-ugetc.asm
+               _00113_DS_   0x00209c    program     static meter_logger.asm
+               _00115_DS_   0x0020d4    program     static meter_logger.asm
+               _00116_DS_   0x0020dc    program     static meter_logger.asm
+               _00118_DS_   0x002128    program     static meter_logger.asm
+               _00119_DS_   0x002152    program     static meter_logger.asm
+               _00120_DS_   0x002180    program     static meter_logger.asm
+               _00120_DS_   0x002fc4    program     static libio18f2550_a-uputs.asm
+               _00122_DS_   0x0021b8    program     static meter_logger.asm
+               _00123_DS_   0x0021c0    program     static meter_logger.asm
+               _00125_DS_   0x00220c    program     static meter_logger.asm
+               _00126_DS_   0x00223a    program     static meter_logger.asm
+               _00128_DS_   0x002272    program     static meter_logger.asm
+               _00129_DS_   0x00228e    program     static meter_logger.asm
+               _00131_DS_   0x0022da    program     static meter_logger.asm
+               _00136_DS_   0x001ecc    program     static meter_logger.asm
+               _00198_DS_   0x001f1e    program     static meter_logger.asm
+               _00199_DS_   0x001f82    program     static meter_logger.asm
+               _00200_DS_   0x0020a6    program     static meter_logger.asm
+               _00201_DS_   0x00218a    program     static meter_logger.asm
+               _00202_DS_   0x002244    program     static meter_logger.asm
                _00207_DS_   0x0017b0    program     static meter_logger.asm
                _00208_DS_   0x0017d6    program     static meter_logger.asm
                _00209_DS_   0x0017e4    program     static meter_logger.asm
@@ -217,41 +217,41 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                _00233_DS_   0x00188c    program     static meter_logger.asm
                _00235_DS_   0x0019d6    program     static meter_logger.asm
                _00241_DS_   0x0019dc    program     static meter_logger.asm
-               _00244_DS_   0x0019fc    program     static meter_logger.asm
-               _00246_DS_   0x0019fe    program     static meter_logger.asm
-               _00248_DS_   0x001a5e    program     static meter_logger.asm
-               _00249_DS_   0x001a68    program     static meter_logger.asm
-               _00250_DS_   0x001a88    program     static meter_logger.asm
-               _00253_DS_   0x001a9c    program     static meter_logger.asm
-               _00255_DS_   0x001adc    program     static meter_logger.asm
-               _00257_DS_   0x001ae6    program     static meter_logger.asm
-               _00258_DS_   0x001af0    program     static meter_logger.asm
-               _00260_DS_   0x001afa    program     static meter_logger.asm
-               _00261_DS_   0x001b0c    program     static meter_logger.asm
-               _00263_DS_   0x001b36    program     static meter_logger.asm
-               _00266_DS_   0x001b62    program     static meter_logger.asm
-               _00268_DS_   0x001b6a    program     static meter_logger.asm
-               _00270_DS_   0x001b88    program     static meter_logger.asm
-               _00271_DS_   0x001b9a    program     static meter_logger.asm
-               _00273_DS_   0x001bd4    program     static meter_logger.asm
-               _00277_DS_   0x001bec    program     static meter_logger.asm
-               _00279_DS_   0x001bf4    program     static meter_logger.asm
-               _00281_DS_   0x001c0c    program     static meter_logger.asm
-               _00282_DS_   0x001c36    program     static meter_logger.asm
-               _00284_DS_   0x001c48    program     static meter_logger.asm
-               _00285_DS_   0x001c4c    program     static meter_logger.asm
-               _00286_DS_   0x001c5a    program     static meter_logger.asm
-               _00288_DS_   0x001c90    program     static meter_logger.asm
-               _00291_DS_   0x001c96    program     static meter_logger.asm
-               _00294_DS_   0x001ca2    program     static meter_logger.asm
-               _00295_DS_   0x001cb0    program     static meter_logger.asm
-               _00297_DS_   0x001cba    program     static meter_logger.asm
-               _00299_DS_   0x001cbc    program     static meter_logger.asm
-               _00306_DS_   0x001d90    program     static meter_logger.asm
-               _00309_DS_   0x001d7c    program     static meter_logger.asm
-               _00313_DS_   0x001da8    program     static meter_logger.asm
-               _00314_DS_   0x001daa    program     static meter_logger.asm
-               _00318_DS_   0x001dac    program     static meter_logger.asm
+               _00244_DS_   0x0019f4    program     static meter_logger.asm
+               _00246_DS_   0x0019f6    program     static meter_logger.asm
+               _00248_DS_   0x001a56    program     static meter_logger.asm
+               _00249_DS_   0x001a60    program     static meter_logger.asm
+               _00250_DS_   0x001a80    program     static meter_logger.asm
+               _00253_DS_   0x001a94    program     static meter_logger.asm
+               _00255_DS_   0x001ad4    program     static meter_logger.asm
+               _00257_DS_   0x001ade    program     static meter_logger.asm
+               _00258_DS_   0x001ae8    program     static meter_logger.asm
+               _00260_DS_   0x001af2    program     static meter_logger.asm
+               _00261_DS_   0x001b04    program     static meter_logger.asm
+               _00263_DS_   0x001b26    program     static meter_logger.asm
+               _00266_DS_   0x001b3e    program     static meter_logger.asm
+               _00268_DS_   0x001b46    program     static meter_logger.asm
+               _00270_DS_   0x001b64    program     static meter_logger.asm
+               _00271_DS_   0x001b76    program     static meter_logger.asm
+               _00273_DS_   0x001bb0    program     static meter_logger.asm
+               _00277_DS_   0x001bc8    program     static meter_logger.asm
+               _00279_DS_   0x001bd0    program     static meter_logger.asm
+               _00281_DS_   0x001be8    program     static meter_logger.asm
+               _00282_DS_   0x001c12    program     static meter_logger.asm
+               _00284_DS_   0x001c20    program     static meter_logger.asm
+               _00285_DS_   0x001c24    program     static meter_logger.asm
+               _00286_DS_   0x001c32    program     static meter_logger.asm
+               _00288_DS_   0x001c68    program     static meter_logger.asm
+               _00291_DS_   0x001c6e    program     static meter_logger.asm
+               _00294_DS_   0x001c7a    program     static meter_logger.asm
+               _00295_DS_   0x001c88    program     static meter_logger.asm
+               _00297_DS_   0x001c92    program     static meter_logger.asm
+               _00299_DS_   0x001c94    program     static meter_logger.asm
+               _00306_DS_   0x001d68    program     static meter_logger.asm
+               _00309_DS_   0x001d54    program     static meter_logger.asm
+               _00313_DS_   0x001d80    program     static meter_logger.asm
+               _00314_DS_   0x001d82    program     static meter_logger.asm
+               _00318_DS_   0x001d84    program     static meter_logger.asm
                _00490_DS_   0x0017a4    program     static meter_logger.asm
                _00492_DS_   0x0017ae    program     static meter_logger.asm
                _00498_DS_   0x0017d4    program     static meter_logger.asm
@@ -264,92 +264,92 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                _00509_DS_   0x00192c    program     static meter_logger.asm
                _00510_DS_   0x001948    program     static meter_logger.asm
                _00514_DS_   0x0019aa    program     static meter_logger.asm
-               _00520_DS_   0x001a4a    program     static meter_logger.asm
-               _00530_DS_   0x001a92    program     static meter_logger.asm
-               _00544_DS_   0x001bb6    program     static meter_logger.asm
-               _00545_DS_   0x001bc4    program     static meter_logger.asm
-               _00554_DS_   0x001c2c    program     static meter_logger.asm
-               _00556_DS_   0x001c34    program     static meter_logger.asm
-               _00559_DS_   0x001c7e    program     static meter_logger.asm
-               _00560_DS_   0x001c78    program     static meter_logger.asm
-               _00562_DS_   0x001d1a    program     static meter_logger.asm
-               _00563_DS_   0x001d28    program     static meter_logger.asm
-               _00566_DS_   0x001d52    program     static meter_logger.asm
-               _00568_DS_   0x001d84    program     static meter_logger.asm
-               _00573_DS_   0x002e2a    program     static meter_logger.asm
-               _00574_DS_   0x002e34    program     static meter_logger.asm
-               _00577_DS_   0x002e4c    program     static meter_logger.asm
-               _00579_DS_   0x002e5e    program     static meter_logger.asm
-               _00582_DS_   0x002e74    program     static meter_logger.asm
-               _00603_DS_   0x002e5c    program     static meter_logger.asm
-               _00608_DS_   0x002be0    program     static meter_logger.asm
-               _00613_DS_   0x002c4a    program     static meter_logger.asm
-               _00614_DS_   0x002c5a    program     static meter_logger.asm
-               _00621_DS_   0x002c70    program     static meter_logger.asm
-               _00646_DS_   0x002826    program     static meter_logger.asm
-               _00648_DS_   0x002696    program     static meter_logger.asm
-               _00650_DS_   0x0026f6    program     static meter_logger.asm
-               _00652_DS_   0x002758    program     static meter_logger.asm
-               _00654_DS_   0x0027ba    program     static meter_logger.asm
-               _00656_DS_   0x002828    program     static meter_logger.asm
-               _00690_DS_   0x0026ae    program     static meter_logger.asm
-               _00691_DS_   0x0026a6    program     static meter_logger.asm
-               _00693_DS_   0x0026c4    program     static meter_logger.asm
-               _00694_DS_   0x0026c6    program     static meter_logger.asm
-               _00698_DS_   0x00270e    program     static meter_logger.asm
-               _00699_DS_   0x002706    program     static meter_logger.asm
-               _00701_DS_   0x002724    program     static meter_logger.asm
-               _00702_DS_   0x002726    program     static meter_logger.asm
-               _00707_DS_   0x002770    program     static meter_logger.asm
-               _00708_DS_   0x002768    program     static meter_logger.asm
-               _00710_DS_   0x002786    program     static meter_logger.asm
-               _00711_DS_   0x002788    program     static meter_logger.asm
-               _00716_DS_   0x0027d2    program     static meter_logger.asm
-               _00717_DS_   0x0027ca    program     static meter_logger.asm
-               _00719_DS_   0x0027e8    program     static meter_logger.asm
-               _00720_DS_   0x0027ea    program     static meter_logger.asm
-               _00724_DS_   0x002820    program     static meter_logger.asm
-               _00725_DS_   0x002822    program     static meter_logger.asm
-               _00805_DS_   0x002d2e    program     static meter_logger.asm
-               _00806_DS_   0x002d4c    program     static meter_logger.asm
-               _00807_DS_   0x002d6a    program     static meter_logger.asm
-               _00808_DS_   0x002d88    program     static meter_logger.asm
-               _00809_DS_   0x002da4    program     static meter_logger.asm
-               _00811_DS_   0x002dc0    program     static meter_logger.asm
-               _00813_DS_   0x002dc4    program     static meter_logger.asm
-               _00815_DS_   0x002dc6    program     static meter_logger.asm
-               _00827_DS_   0x002cea    program     static meter_logger.asm
-               _00828_DS_   0x002cfc    program     static meter_logger.asm
-               _00829_DS_   0x002d1e    program     static meter_logger.asm
-               _00834_DS_   0x002db8    program     static meter_logger.asm
-               _00835_DS_   0x002dba    program     static meter_logger.asm
-               _00840_DS_   0x002a76    program     static meter_logger.asm
-               _00841_DS_   0x002aa6    program     static meter_logger.asm
-               _00842_DS_   0x002ad6    program     static meter_logger.asm
-               _00843_DS_   0x002b06    program     static meter_logger.asm
-               _00844_DS_   0x002b34    program     static meter_logger.asm
-               _00846_DS_   0x002b50    program     static meter_logger.asm
-               _00848_DS_   0x002b54    program     static meter_logger.asm
-               _00850_DS_   0x002b56    program     static meter_logger.asm
-               _00861_DS_   0x002a44    program     static meter_logger.asm
-               _00862_DS_   0x002a66    program     static meter_logger.asm
-               _00867_DS_   0x002b48    program     static meter_logger.asm
-               _00868_DS_   0x002b4a    program     static meter_logger.asm
-               _00873_DS_   0x0028f0    program     static meter_logger.asm
-               _00874_DS_   0x002928    program     static meter_logger.asm
-               _00875_DS_   0x002960    program     static meter_logger.asm
-               _00876_DS_   0x002998    program     static meter_logger.asm
-               _00877_DS_   0x0029ca    program     static meter_logger.asm
-               _00879_DS_   0x0029ce    program     static meter_logger.asm
-               _00881_DS_   0x0029d0    program     static meter_logger.asm
-               _00889_DS_   0x0028a8    program     static meter_logger.asm
-               _00890_DS_   0x0028be    program     static meter_logger.asm
-               _00891_DS_   0x0028e0    program     static meter_logger.asm
-                     _01_   0x0034c6    program     static libio18f2550_a-uputc.asm
-               _10105_DS_   0x00336e    program     static libio18f2550_a-ugetc.asm
-               _10906_DS_   0x002b3c    program     static meter_logger.asm
-               _20907_DS_   0x002dac    program     static meter_logger.asm
-               _30908_DS_   0x002e5c    program     static meter_logger.asm
+               _00520_DS_   0x001a42    program     static meter_logger.asm
+               _00530_DS_   0x001a8a    program     static meter_logger.asm
+               _00544_DS_   0x001b92    program     static meter_logger.asm
+               _00545_DS_   0x001ba0    program     static meter_logger.asm
+               _00554_DS_   0x001c08    program     static meter_logger.asm
+               _00556_DS_   0x001c10    program     static meter_logger.asm
+               _00559_DS_   0x001c56    program     static meter_logger.asm
+               _00560_DS_   0x001c50    program     static meter_logger.asm
+               _00562_DS_   0x001cf2    program     static meter_logger.asm
+               _00563_DS_   0x001d00    program     static meter_logger.asm
+               _00566_DS_   0x001d2a    program     static meter_logger.asm
+               _00568_DS_   0x001d5c    program     static meter_logger.asm
+               _00573_DS_   0x002cd4    program     static meter_logger.asm
+               _00574_DS_   0x002cde    program     static meter_logger.asm
+               _00577_DS_   0x002cf6    program     static meter_logger.asm
+               _00579_DS_   0x002d08    program     static meter_logger.asm
+               _00582_DS_   0x002d1e    program     static meter_logger.asm
+               _00603_DS_   0x002d06    program     static meter_logger.asm
+               _00608_DS_   0x002a8a    program     static meter_logger.asm
+               _00613_DS_   0x002af4    program     static meter_logger.asm
+               _00614_DS_   0x002b04    program     static meter_logger.asm
+               _00621_DS_   0x002b1a    program     static meter_logger.asm
+               _00646_DS_   0x0026d0    program     static meter_logger.asm
+               _00648_DS_   0x002540    program     static meter_logger.asm
+               _00650_DS_   0x0025a0    program     static meter_logger.asm
+               _00652_DS_   0x002602    program     static meter_logger.asm
+               _00654_DS_   0x002664    program     static meter_logger.asm
+               _00656_DS_   0x0026d2    program     static meter_logger.asm
+               _00690_DS_   0x002558    program     static meter_logger.asm
+               _00691_DS_   0x002550    program     static meter_logger.asm
+               _00693_DS_   0x00256e    program     static meter_logger.asm
+               _00694_DS_   0x002570    program     static meter_logger.asm
+               _00698_DS_   0x0025b8    program     static meter_logger.asm
+               _00699_DS_   0x0025b0    program     static meter_logger.asm
+               _00701_DS_   0x0025ce    program     static meter_logger.asm
+               _00702_DS_   0x0025d0    program     static meter_logger.asm
+               _00707_DS_   0x00261a    program     static meter_logger.asm
+               _00708_DS_   0x002612    program     static meter_logger.asm
+               _00710_DS_   0x002630    program     static meter_logger.asm
+               _00711_DS_   0x002632    program     static meter_logger.asm
+               _00716_DS_   0x00267c    program     static meter_logger.asm
+               _00717_DS_   0x002674    program     static meter_logger.asm
+               _00719_DS_   0x002692    program     static meter_logger.asm
+               _00720_DS_   0x002694    program     static meter_logger.asm
+               _00724_DS_   0x0026ca    program     static meter_logger.asm
+               _00725_DS_   0x0026cc    program     static meter_logger.asm
+               _00805_DS_   0x002bd8    program     static meter_logger.asm
+               _00806_DS_   0x002bf6    program     static meter_logger.asm
+               _00807_DS_   0x002c14    program     static meter_logger.asm
+               _00808_DS_   0x002c32    program     static meter_logger.asm
+               _00809_DS_   0x002c4e    program     static meter_logger.asm
+               _00811_DS_   0x002c6a    program     static meter_logger.asm
+               _00813_DS_   0x002c6e    program     static meter_logger.asm
+               _00815_DS_   0x002c70    program     static meter_logger.asm
+               _00827_DS_   0x002b94    program     static meter_logger.asm
+               _00828_DS_   0x002ba6    program     static meter_logger.asm
+               _00829_DS_   0x002bc8    program     static meter_logger.asm
+               _00834_DS_   0x002c62    program     static meter_logger.asm
+               _00835_DS_   0x002c64    program     static meter_logger.asm
+               _00840_DS_   0x002920    program     static meter_logger.asm
+               _00841_DS_   0x002950    program     static meter_logger.asm
+               _00842_DS_   0x002980    program     static meter_logger.asm
+               _00843_DS_   0x0029b0    program     static meter_logger.asm
+               _00844_DS_   0x0029de    program     static meter_logger.asm
+               _00846_DS_   0x0029fa    program     static meter_logger.asm
+               _00848_DS_   0x0029fe    program     static meter_logger.asm
+               _00850_DS_   0x002a00    program     static meter_logger.asm
+               _00861_DS_   0x0028ee    program     static meter_logger.asm
+               _00862_DS_   0x002910    program     static meter_logger.asm
+               _00867_DS_   0x0029f2    program     static meter_logger.asm
+               _00868_DS_   0x0029f4    program     static meter_logger.asm
+               _00873_DS_   0x00279a    program     static meter_logger.asm
+               _00874_DS_   0x0027d2    program     static meter_logger.asm
+               _00875_DS_   0x00280a    program     static meter_logger.asm
+               _00876_DS_   0x002842    program     static meter_logger.asm
+               _00877_DS_   0x002874    program     static meter_logger.asm
+               _00879_DS_   0x002878    program     static meter_logger.asm
+               _00881_DS_   0x00287a    program     static meter_logger.asm
+               _00889_DS_   0x002752    program     static meter_logger.asm
+               _00890_DS_   0x002768    program     static meter_logger.asm
+               _00891_DS_   0x00278a    program     static meter_logger.asm
+                     _01_   0x003370    program     static libio18f2550_a-uputc.asm
+               _10105_DS_   0x003218    program     static libio18f2550_a-ugetc.asm
+               _10906_DS_   0x0029e6    program     static meter_logger.asm
+               _20907_DS_   0x002c56    program     static meter_logger.asm
+               _30908_DS_   0x002d06    program     static meter_logger.asm
                   _ADCON0   0x000fc2       data     extern libdev18f2550_a-pic18f2550.asm
               _ADCON0bits   0x000fc2       data     extern libdev18f2550_a-pic18f2550.asm
                   _ADCON1   0x000fc1       data     extern libdev18f2550_a-pic18f2550.asm
@@ -578,32 +578,28 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                   _WDTCON   0x000fd1       data     extern libdev18f2550_a-pic18f2550.asm
               _WDTCONbits   0x000fd1       data     extern libdev18f2550_a-pic18f2550.asm
                     _WREG   0x000fe8       data     extern libdev18f2550_a-pic18f2550.asm
-      ___eeprom8_gptrget1   0x00340e    program     extern eeprom8_gptrget1.asm
-      ___eeprom8_gptrput1   0x0033ee    program     extern eeprom8_gptrput1.asm
-         ___eeprom8_write   0x0034ca    program     extern eeprom8_write.asm
+      ___eeprom8_gptrget1   0x0032b8    program     extern eeprom8_gptrget1.asm
+      ___eeprom8_gptrput1   0x003298    program     extern eeprom8_gptrput1.asm
+         ___eeprom8_write   0x003374    program     extern eeprom8_write.asm
        ___eeprom_gptrget1   0x000014    program     extern gptr/eeprom8_gptrget1_dispatch.S
        ___eeprom_gptrput1   0x000004    program     extern gptr/eeprom8_gptrput1_dispatch.S
-                 ___str_0   0x001dec    program     static meter_logger.asm
-                 ___str_1   0x001e0e    program     static meter_logger.asm
-                 ___str_2   0x001e28    program     static meter_logger.asm
-                 ___str_3   0x001e54    program     static meter_logger.asm
-                 ___str_4   0x001e70    program     static meter_logger.asm
-                 ___str_5   0x001e90    program     static meter_logger.asm
-                 ___str_6   0x001eb4    program     static meter_logger.asm
-                 ___str_7   0x001ed8    program     static meter_logger.asm
-                 ___str_8   0x001efa    program     static meter_logger.asm
-                  __debug   0x002f6a    program     extern meter_logger.asm
-                 __debug2   0x002ea4    program     extern meter_logger.asm
+                 ___str_0   0x001dc4    program     static meter_logger.asm
+                 ___str_1   0x001de6    program     static meter_logger.asm
+                 ___str_2   0x001e00    program     static meter_logger.asm
+                 ___str_3   0x001e2c    program     static meter_logger.asm
+                 ___str_4   0x001e48    program     static meter_logger.asm
+                  __debug   0x002e14    program     extern meter_logger.asm
+                 __debug2   0x002d4e    program     extern meter_logger.asm
                   __entry   0x000000    program     extern crt0.asm
-               __gptrget1   0x0033cc    program     extern gptrget1.asm
-               __gptrput1   0x003468    program     extern gptrput1.asm
-                __mullong   0x00243e    program     extern mullong.asm
+               __gptrget1   0x003276    program     extern gptrget1.asm
+               __gptrput1   0x003312    program     extern gptrput1.asm
+                __mullong   0x0022e8    program     extern mullong.asm
          __mullong_t1_1_2   0x00050c       data     static mullong.asm
          __mullong_t2_1_2   0x000510       data     static mullong.asm
           __mullong_t_1_2   0x000508       data     static mullong.asm
           __mullong_x_1_2   0x000500       data     static mullong.asm
           __mullong_y_1_2   0x000504       data     static mullong.asm
-                __startup   0x0034a6    program     extern crt0.asm
+                __startup   0x003350    program     extern crt0.asm
                        _c   0x000520       data     extern meter_logger.asm
               _codec_type   0x000523       data     extern meter_logger.asm
             _debug_buffer   0x000060       data     extern meter_logger.asm
@@ -611,69 +607,69 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
            _fifo_buffer_1   0x000100       data     extern meter_logger.asm
            _fifo_buffer_2   0x000200       data     extern meter_logger.asm
            _fifo_buffer_3   0x000300       data     extern meter_logger.asm
-                _fifo_get   0x0029f2    program     extern meter_logger.asm
+                _fifo_get   0x00289c    program     extern meter_logger.asm
                _fifo_head   0x000514       data     extern meter_logger.asm
-             _fifo_in_use   0x00329a    program     extern meter_logger.asm
-                _fifo_put   0x002cba    program     extern meter_logger.asm
-              _fifo_snoop   0x002852    program     extern meter_logger.asm
+             _fifo_in_use   0x003144    program     extern meter_logger.asm
+                _fifo_put   0x002b64    program     extern meter_logger.asm
+              _fifo_snoop   0x0026fc    program     extern meter_logger.asm
                _fifo_tail   0x000516       data     extern meter_logger.asm
-               _flash_led   0x0033a8    program     extern meter_logger.asm
+               _flash_led   0x003252    program     extern meter_logger.asm
                _fsk_proto   0x0000e0       data     extern meter_logger.asm
-          _fsk_rx_disable   0x00347e    program     extern meter_logger.asm
-           _fsk_rx_enable   0x003134    program     extern meter_logger.asm
-             _fsk_tx_byte   0x003382    program     extern meter_logger.asm
-          _fsk_tx_disable   0x003426    program     extern meter_logger.asm
-           _fsk_tx_enable   0x0032d2    program     extern meter_logger.asm
-             _init_system   0x003190    program     extern meter_logger.asm
+          _fsk_rx_disable   0x003328    program     extern meter_logger.asm
+           _fsk_rx_enable   0x002fde    program     extern meter_logger.asm
+             _fsk_tx_byte   0x00322c    program     extern meter_logger.asm
+          _fsk_tx_disable   0x0032d0    program     extern meter_logger.asm
+           _fsk_tx_enable   0x00317c    program     extern meter_logger.asm
+             _init_system   0x00303a    program     extern meter_logger.asm
            _isr_high_prio   0x001722    program     static meter_logger.asm
-            _isr_low_prio   0x002dd8    program     static meter_logger.asm
-                 _lab_01_   0x003476    program     static gptrput1.asm
-                 _lab_01_   0x0033d8    program     static gptrget1.asm
+            _isr_low_prio   0x002c82    program     static meter_logger.asm
+                 _lab_01_   0x003320    program     static gptrput1.asm
+                 _lab_01_   0x003282    program     static gptrget1.asm
             _last_timer_0   0x00051c       data     extern meter_logger.asm
                _led_flash   0x00051e       data     extern meter_logger.asm
-                    _main   0x001f1e    program     extern meter_logger.asm
+                    _main   0x001e68    program     extern meter_logger.asm
            _main_cmd_1_79   0x000521       data     static meter_logger.asm
        _main_sub_cmd_1_79   0x000522       data     static meter_logger.asm
-           _my_usart_open   0x003330    program     extern meter_logger.asm
-                 _reverse   0x003030    program     extern meter_logger.asm
+           _my_usart_open   0x0031da    program     extern meter_logger.asm
+                 _reverse   0x002eda    program     extern meter_logger.asm
              _rs232_proto   0x0000f6       data     extern meter_logger.asm
-        _rs232_rx_disable   0x00343c    program     extern meter_logger.asm
-         _rs232_rx_enable   0x0031e4    program     extern meter_logger.asm
-           _rs232_tx_byte   0x003306    program     extern meter_logger.asm
-        _rs232_tx_disable   0x003452    program     extern meter_logger.asm
-         _rs232_tx_enable   0x003222    program     extern meter_logger.asm
+        _rs232_rx_disable   0x0032e6    program     extern meter_logger.asm
+         _rs232_rx_enable   0x00308e    program     extern meter_logger.asm
+           _rs232_tx_byte   0x0031b0    program     extern meter_logger.asm
+        _rs232_tx_disable   0x0032fc    program     extern meter_logger.asm
+         _rs232_tx_enable   0x0030cc    program     extern meter_logger.asm
            _send_fsk_high   0x00001c    program     extern meter_logger.asm
             _send_fsk_low   0x000bdc    program     extern meter_logger.asm
-                _sleep_ms   0x002b70    program     extern meter_logger.asm
+                _sleep_ms   0x002a1a    program     extern meter_logger.asm
                    _stack   0x000400       data     extern stack/stack.S
                _stack_end   0x0004ff       data     extern stack/stack.S
-        _testo_ir_disable   0x003492    program     extern meter_logger.asm
-         _testo_ir_enable   0x00325e    program     extern meter_logger.asm
+        _testo_ir_disable   0x00333c    program     extern meter_logger.asm
+         _testo_ir_enable   0x003108    program     extern meter_logger.asm
           _testo_ir_proto   0x0000f0       data     extern meter_logger.asm
-    _testo_valid_err_corr   0x002652    program     extern meter_logger.asm
+    _testo_valid_err_corr   0x0024fc    program     extern meter_logger.asm
            _timer0_reload   0x00051a       data     extern meter_logger.asm
                  _timer_0   0x000518       data     extern meter_logger.asm
               _timer_1_ms   0x0000fc       data     extern meter_logger.asm
               _usart_busy   0x00000c    program     extern libio18f2550_a-ubusy.asm
-              _usart_drdy   0x0034da    program     extern libio18f2550_a-udrdy.asm
-              _usart_getc   0x00335a    program     extern libio18f2550_a-ugetc.asm
-              _usart_putc   0x0034ba    program     extern libio18f2550_a-uputc.asm
-              _usart_puts   0x0030bc    program     extern libio18f2550_a-uputs.asm
+              _usart_drdy   0x003384    program     extern libio18f2550_a-udrdy.asm
+              _usart_getc   0x003204    program     extern libio18f2550_a-ugetc.asm
+              _usart_putc   0x003364    program     extern libio18f2550_a-uputc.asm
+              _usart_puts   0x002f66    program     extern libio18f2550_a-uputs.asm
    ivec_0x1_isr_high_prio   0x000008    program     static meter_logger.asm
     ivec_0x2_isr_low_prio   0x000018    program     static meter_logger.asm
-                   lockup   0x0034b8    program     static crt0.asm
-                    r0x00   0x000000       data     static meter_logger.asm
+                   lockup   0x003362    program     static crt0.asm
                     r0x00   0x000000       data     static libio18f2550_a-uputs.asm
+                    r0x00   0x000000       data     static meter_logger.asm
                     r0x00   0x000000       data     static mullong.asm
-                    r0x01   0x000001       data     static mullong.asm
                     r0x01   0x000001       data     static meter_logger.asm
+                    r0x01   0x000001       data     static mullong.asm
                     r0x01   0x000001       data     static libio18f2550_a-uputs.asm
-                    r0x02   0x000002       data     static libio18f2550_a-uputs.asm
-                    r0x02   0x000002       data     static meter_logger.asm
                     r0x02   0x000002       data     static mullong.asm
-                    r0x03   0x000003       data     static libio18f2550_a-uputs.asm
+                    r0x02   0x000002       data     static meter_logger.asm
+                    r0x02   0x000002       data     static libio18f2550_a-uputs.asm
                     r0x03   0x000003       data     static meter_logger.asm
                     r0x03   0x000003       data     static mullong.asm
+                    r0x03   0x000003       data     static libio18f2550_a-uputs.asm
                     r0x04   0x000004       data     static mullong.asm
                     r0x04   0x000004       data     static meter_logger.asm
                     r0x05   0x000005       data     static meter_logger.asm
@@ -690,7 +686,7 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                     r0x0d   0x00000d       data     static meter_logger.asm
                     r0x0e   0x00000e       data     static meter_logger.asm
                     r0x0f   0x00000f       data     static meter_logger.asm
-           wait_till_done   0x0034d4    program     static eeprom8_write.asm
+           wait_till_done   0x00337e    program     static eeprom8_write.asm
 
 
 
@@ -698,18 +694,18 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                      Name    Address   Location    Storage File
                 ---------  ---------  ---------  --------- ---------
                     r0x00   0x000000       data     static meter_logger.asm
-                  __entry   0x000000    program     extern crt0.asm
                     r0x00   0x000000       data     static mullong.asm
+                  __entry   0x000000    program     extern crt0.asm
                     r0x00   0x000000       data     static libio18f2550_a-uputs.asm
                     r0x01   0x000001       data     static mullong.asm
                     r0x01   0x000001       data     static libio18f2550_a-uputs.asm
                     r0x01   0x000001       data     static meter_logger.asm
-                    r0x02   0x000002       data     static libio18f2550_a-uputs.asm
-                    r0x02   0x000002       data     static meter_logger.asm
                     r0x02   0x000002       data     static mullong.asm
-                    r0x03   0x000003       data     static mullong.asm
+                    r0x02   0x000002       data     static meter_logger.asm
+                    r0x02   0x000002       data     static libio18f2550_a-uputs.asm
                     r0x03   0x000003       data     static libio18f2550_a-uputs.asm
                     r0x03   0x000003       data     static meter_logger.asm
+                    r0x03   0x000003       data     static mullong.asm
        ___eeprom_gptrput1   0x000004    program     extern gptr/eeprom8_gptrput1_dispatch.S
                     r0x04   0x000004       data     static meter_logger.asm
                     r0x04   0x000004       data     static mullong.asm
@@ -763,14 +759,14 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                     _UFRM   0x000f66       data     extern libdev18f2550_a-pic18f2550.asm
                    _UFRML   0x000f66       data     extern libdev18f2550_a-pic18f2550.asm
                _UFRMLbits   0x000f66       data     extern libdev18f2550_a-pic18f2550.asm
-                   _UFRMH   0x000f67       data     extern libdev18f2550_a-pic18f2550.asm
                _UFRMHbits   0x000f67       data     extern libdev18f2550_a-pic18f2550.asm
+                   _UFRMH   0x000f67       data     extern libdev18f2550_a-pic18f2550.asm
                  _UIRbits   0x000f68       data     extern libdev18f2550_a-pic18f2550.asm
                      _UIR   0x000f68       data     extern libdev18f2550_a-pic18f2550.asm
                      _UIE   0x000f69       data     extern libdev18f2550_a-pic18f2550.asm
                  _UIEbits   0x000f69       data     extern libdev18f2550_a-pic18f2550.asm
-                _UEIRbits   0x000f6a       data     extern libdev18f2550_a-pic18f2550.asm
                     _UEIR   0x000f6a       data     extern libdev18f2550_a-pic18f2550.asm
+                _UEIRbits   0x000f6a       data     extern libdev18f2550_a-pic18f2550.asm
                     _UEIE   0x000f6b       data     extern libdev18f2550_a-pic18f2550.asm
                 _UEIEbits   0x000f6b       data     extern libdev18f2550_a-pic18f2550.asm
                _USTATbits   0x000f6c       data     extern libdev18f2550_a-pic18f2550.asm
@@ -779,20 +775,20 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                     _UCON   0x000f6d       data     extern libdev18f2550_a-pic18f2550.asm
                _UADDRbits   0x000f6e       data     extern libdev18f2550_a-pic18f2550.asm
                    _UADDR   0x000f6e       data     extern libdev18f2550_a-pic18f2550.asm
-                    _UCFG   0x000f6f       data     extern libdev18f2550_a-pic18f2550.asm
                 _UCFGbits   0x000f6f       data     extern libdev18f2550_a-pic18f2550.asm
+                    _UCFG   0x000f6f       data     extern libdev18f2550_a-pic18f2550.asm
                 _UEP0bits   0x000f70       data     extern libdev18f2550_a-pic18f2550.asm
                     _UEP0   0x000f70       data     extern libdev18f2550_a-pic18f2550.asm
-                _UEP1bits   0x000f71       data     extern libdev18f2550_a-pic18f2550.asm
                     _UEP1   0x000f71       data     extern libdev18f2550_a-pic18f2550.asm
+                _UEP1bits   0x000f71       data     extern libdev18f2550_a-pic18f2550.asm
                     _UEP2   0x000f72       data     extern libdev18f2550_a-pic18f2550.asm
                 _UEP2bits   0x000f72       data     extern libdev18f2550_a-pic18f2550.asm
                 _UEP3bits   0x000f73       data     extern libdev18f2550_a-pic18f2550.asm
                     _UEP3   0x000f73       data     extern libdev18f2550_a-pic18f2550.asm
-                _UEP4bits   0x000f74       data     extern libdev18f2550_a-pic18f2550.asm
                     _UEP4   0x000f74       data     extern libdev18f2550_a-pic18f2550.asm
-                    _UEP5   0x000f75       data     extern libdev18f2550_a-pic18f2550.asm
+                _UEP4bits   0x000f74       data     extern libdev18f2550_a-pic18f2550.asm
                 _UEP5bits   0x000f75       data     extern libdev18f2550_a-pic18f2550.asm
+                    _UEP5   0x000f75       data     extern libdev18f2550_a-pic18f2550.asm
                     _UEP6   0x000f76       data     extern libdev18f2550_a-pic18f2550.asm
                 _UEP6bits   0x000f76       data     extern libdev18f2550_a-pic18f2550.asm
                 _UEP7bits   0x000f77       data     extern libdev18f2550_a-pic18f2550.asm
@@ -801,12 +797,12 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                 _UEP8bits   0x000f78       data     extern libdev18f2550_a-pic18f2550.asm
                     _UEP9   0x000f79       data     extern libdev18f2550_a-pic18f2550.asm
                 _UEP9bits   0x000f79       data     extern libdev18f2550_a-pic18f2550.asm
-               _UEP10bits   0x000f7a       data     extern libdev18f2550_a-pic18f2550.asm
                    _UEP10   0x000f7a       data     extern libdev18f2550_a-pic18f2550.asm
-                   _UEP11   0x000f7b       data     extern libdev18f2550_a-pic18f2550.asm
+               _UEP10bits   0x000f7a       data     extern libdev18f2550_a-pic18f2550.asm
                _UEP11bits   0x000f7b       data     extern libdev18f2550_a-pic18f2550.asm
-               _UEP12bits   0x000f7c       data     extern libdev18f2550_a-pic18f2550.asm
+                   _UEP11   0x000f7b       data     extern libdev18f2550_a-pic18f2550.asm
                    _UEP12   0x000f7c       data     extern libdev18f2550_a-pic18f2550.asm
+               _UEP12bits   0x000f7c       data     extern libdev18f2550_a-pic18f2550.asm
                    _UEP13   0x000f7d       data     extern libdev18f2550_a-pic18f2550.asm
                _UEP13bits   0x000f7d       data     extern libdev18f2550_a-pic18f2550.asm
                    _UEP14   0x000f7e       data     extern libdev18f2550_a-pic18f2550.asm
@@ -815,14 +811,14 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                    _UEP15   0x000f7f       data     extern libdev18f2550_a-pic18f2550.asm
                _PORTAbits   0x000f80       data     extern libdev18f2550_a-pic18f2550.asm
                    _PORTA   0x000f80       data     extern libdev18f2550_a-pic18f2550.asm
-               _PORTBbits   0x000f81       data     extern libdev18f2550_a-pic18f2550.asm
                    _PORTB   0x000f81       data     extern libdev18f2550_a-pic18f2550.asm
+               _PORTBbits   0x000f81       data     extern libdev18f2550_a-pic18f2550.asm
                _PORTCbits   0x000f82       data     extern libdev18f2550_a-pic18f2550.asm
                    _PORTC   0x000f82       data     extern libdev18f2550_a-pic18f2550.asm
                    _PORTE   0x000f84       data     extern libdev18f2550_a-pic18f2550.asm
                _PORTEbits   0x000f84       data     extern libdev18f2550_a-pic18f2550.asm
-                _LATAbits   0x000f89       data     extern libdev18f2550_a-pic18f2550.asm
                     _LATA   0x000f89       data     extern libdev18f2550_a-pic18f2550.asm
+                _LATAbits   0x000f89       data     extern libdev18f2550_a-pic18f2550.asm
                 _LATBbits   0x000f8a       data     extern libdev18f2550_a-pic18f2550.asm
                     _LATB   0x000f8a       data     extern libdev18f2550_a-pic18f2550.asm
                 _LATCbits   0x000f8b       data     extern libdev18f2550_a-pic18f2550.asm
@@ -831,24 +827,24 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                 _DDRAbits   0x000f92       data     extern libdev18f2550_a-pic18f2550.asm
                     _DDRA   0x000f92       data     extern libdev18f2550_a-pic18f2550.asm
                _TRISAbits   0x000f92       data     extern libdev18f2550_a-pic18f2550.asm
-                    _DDRB   0x000f93       data     extern libdev18f2550_a-pic18f2550.asm
-               _TRISBbits   0x000f93       data     extern libdev18f2550_a-pic18f2550.asm
                    _TRISB   0x000f93       data     extern libdev18f2550_a-pic18f2550.asm
+               _TRISBbits   0x000f93       data     extern libdev18f2550_a-pic18f2550.asm
+                    _DDRB   0x000f93       data     extern libdev18f2550_a-pic18f2550.asm
                 _DDRBbits   0x000f93       data     extern libdev18f2550_a-pic18f2550.asm
                 _DDRCbits   0x000f94       data     extern libdev18f2550_a-pic18f2550.asm
-               _TRISCbits   0x000f94       data     extern libdev18f2550_a-pic18f2550.asm
                    _TRISC   0x000f94       data     extern libdev18f2550_a-pic18f2550.asm
+               _TRISCbits   0x000f94       data     extern libdev18f2550_a-pic18f2550.asm
                     _DDRC   0x000f94       data     extern libdev18f2550_a-pic18f2550.asm
-                 _OSCTUNE   0x000f9b       data     extern libdev18f2550_a-pic18f2550.asm
              _OSCTUNEbits   0x000f9b       data     extern libdev18f2550_a-pic18f2550.asm
-                _PIE1bits   0x000f9d       data     extern libdev18f2550_a-pic18f2550.asm
+                 _OSCTUNE   0x000f9b       data     extern libdev18f2550_a-pic18f2550.asm
                     _PIE1   0x000f9d       data     extern libdev18f2550_a-pic18f2550.asm
-                    _PIR1   0x000f9e       data     extern libdev18f2550_a-pic18f2550.asm
+                _PIE1bits   0x000f9d       data     extern libdev18f2550_a-pic18f2550.asm
                 _PIR1bits   0x000f9e       data     extern libdev18f2550_a-pic18f2550.asm
+                    _PIR1   0x000f9e       data     extern libdev18f2550_a-pic18f2550.asm
                 _IPR1bits   0x000f9f       data     extern libdev18f2550_a-pic18f2550.asm
                     _IPR1   0x000f9f       data     extern libdev18f2550_a-pic18f2550.asm
-                    _PIE2   0x000fa0       data     extern libdev18f2550_a-pic18f2550.asm
                 _PIE2bits   0x000fa0       data     extern libdev18f2550_a-pic18f2550.asm
+                    _PIE2   0x000fa0       data     extern libdev18f2550_a-pic18f2550.asm
                     _PIR2   0x000fa1       data     extern libdev18f2550_a-pic18f2550.asm
                 _PIR2bits   0x000fa1       data     extern libdev18f2550_a-pic18f2550.asm
                     _IPR2   0x000fa2       data     extern libdev18f2550_a-pic18f2550.asm
@@ -858,44 +854,44 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                   _EECON2   0x000fa7       data     extern libdev18f2550_a-pic18f2550.asm
                   _EEDATA   0x000fa8       data     extern libdev18f2550_a-pic18f2550.asm
                    _EEADR   0x000fa9       data     extern libdev18f2550_a-pic18f2550.asm
-                   _RCSTA   0x000fab       data     extern libdev18f2550_a-pic18f2550.asm
                _RCSTAbits   0x000fab       data     extern libdev18f2550_a-pic18f2550.asm
+                   _RCSTA   0x000fab       data     extern libdev18f2550_a-pic18f2550.asm
                _TXSTAbits   0x000fac       data     extern libdev18f2550_a-pic18f2550.asm
                    _TXSTA   0x000fac       data     extern libdev18f2550_a-pic18f2550.asm
                    _TXREG   0x000fad       data     extern libdev18f2550_a-pic18f2550.asm
                    _RCREG   0x000fae       data     extern libdev18f2550_a-pic18f2550.asm
                    _SPBRG   0x000faf       data     extern libdev18f2550_a-pic18f2550.asm
                   _SPBRGH   0x000fb0       data     extern libdev18f2550_a-pic18f2550.asm
-               _T3CONbits   0x000fb1       data     extern libdev18f2550_a-pic18f2550.asm
                    _T3CON   0x000fb1       data     extern libdev18f2550_a-pic18f2550.asm
-                   _TMR3L   0x000fb2       data     extern libdev18f2550_a-pic18f2550.asm
+               _T3CONbits   0x000fb1       data     extern libdev18f2550_a-pic18f2550.asm
                     _TMR3   0x000fb2       data     extern libdev18f2550_a-pic18f2550.asm
+                   _TMR3L   0x000fb2       data     extern libdev18f2550_a-pic18f2550.asm
                    _TMR3H   0x000fb3       data     extern libdev18f2550_a-pic18f2550.asm
-                   _CMCON   0x000fb4       data     extern libdev18f2550_a-pic18f2550.asm
                _CMCONbits   0x000fb4       data     extern libdev18f2550_a-pic18f2550.asm
-              _CVRCONbits   0x000fb5       data     extern libdev18f2550_a-pic18f2550.asm
+                   _CMCON   0x000fb4       data     extern libdev18f2550_a-pic18f2550.asm
                   _CVRCON   0x000fb5       data     extern libdev18f2550_a-pic18f2550.asm
-             _ECCP1ASbits   0x000fb6       data     extern libdev18f2550_a-pic18f2550.asm
+              _CVRCONbits   0x000fb5       data     extern libdev18f2550_a-pic18f2550.asm
                  _ECCP1AS   0x000fb6       data     extern libdev18f2550_a-pic18f2550.asm
-              _CCP1ASbits   0x000fb6       data     extern libdev18f2550_a-pic18f2550.asm
                   _CCP1AS   0x000fb6       data     extern libdev18f2550_a-pic18f2550.asm
-                 _CCP1DEL   0x000fb7       data     extern libdev18f2550_a-pic18f2550.asm
-                _ECCP1DEL   0x000fb7       data     extern libdev18f2550_a-pic18f2550.asm
-            _ECCP1DELbits   0x000fb7       data     extern libdev18f2550_a-pic18f2550.asm
+              _CCP1ASbits   0x000fb6       data     extern libdev18f2550_a-pic18f2550.asm
+             _ECCP1ASbits   0x000fb6       data     extern libdev18f2550_a-pic18f2550.asm
              _CCP1DELbits   0x000fb7       data     extern libdev18f2550_a-pic18f2550.asm
+            _ECCP1DELbits   0x000fb7       data     extern libdev18f2550_a-pic18f2550.asm
+                _ECCP1DEL   0x000fb7       data     extern libdev18f2550_a-pic18f2550.asm
+                 _CCP1DEL   0x000fb7       data     extern libdev18f2550_a-pic18f2550.asm
              _BAUDCONbits   0x000fb8       data     extern libdev18f2550_a-pic18f2550.asm
-                 _BAUDCON   0x000fb8       data     extern libdev18f2550_a-pic18f2550.asm
-                 _BAUDCTL   0x000fb8       data     extern libdev18f2550_a-pic18f2550.asm
              _BAUDCTLbits   0x000fb8       data     extern libdev18f2550_a-pic18f2550.asm
+                 _BAUDCTL   0x000fb8       data     extern libdev18f2550_a-pic18f2550.asm
+                 _BAUDCON   0x000fb8       data     extern libdev18f2550_a-pic18f2550.asm
                  _CCP2CON   0x000fba       data     extern libdev18f2550_a-pic18f2550.asm
              _CCP2CONbits   0x000fba       data     extern libdev18f2550_a-pic18f2550.asm
-                  _CCPR2L   0x000fbb       data     extern libdev18f2550_a-pic18f2550.asm
                    _CCPR2   0x000fbb       data     extern libdev18f2550_a-pic18f2550.asm
+                  _CCPR2L   0x000fbb       data     extern libdev18f2550_a-pic18f2550.asm
                   _CCPR2H   0x000fbc       data     extern libdev18f2550_a-pic18f2550.asm
                  _CCP1CON   0x000fbd       data     extern libdev18f2550_a-pic18f2550.asm
              _CCP1CONbits   0x000fbd       data     extern libdev18f2550_a-pic18f2550.asm
-                   _CCPR1   0x000fbe       data     extern libdev18f2550_a-pic18f2550.asm
                   _CCPR1L   0x000fbe       data     extern libdev18f2550_a-pic18f2550.asm
+                   _CCPR1   0x000fbe       data     extern libdev18f2550_a-pic18f2550.asm
                   _CCPR1H   0x000fbf       data     extern libdev18f2550_a-pic18f2550.asm
               _ADCON2bits   0x000fc0       data     extern libdev18f2550_a-pic18f2550.asm
                   _ADCON2   0x000fc0       data     extern libdev18f2550_a-pic18f2550.asm
@@ -903,8 +899,8 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                   _ADCON1   0x000fc1       data     extern libdev18f2550_a-pic18f2550.asm
               _ADCON0bits   0x000fc2       data     extern libdev18f2550_a-pic18f2550.asm
                   _ADCON0   0x000fc2       data     extern libdev18f2550_a-pic18f2550.asm
-                   _ADRES   0x000fc3       data     extern libdev18f2550_a-pic18f2550.asm
                   _ADRESL   0x000fc3       data     extern libdev18f2550_a-pic18f2550.asm
+                   _ADRES   0x000fc3       data     extern libdev18f2550_a-pic18f2550.asm
                   _ADRESH   0x000fc4       data     extern libdev18f2550_a-pic18f2550.asm
              _SSPCON2bits   0x000fc5       data     extern libdev18f2550_a-pic18f2550.asm
                  _SSPCON2   0x000fc5       data     extern libdev18f2550_a-pic18f2550.asm
@@ -920,16 +916,16 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                     _TMR2   0x000fcc       data     extern libdev18f2550_a-pic18f2550.asm
                _T1CONbits   0x000fcd       data     extern libdev18f2550_a-pic18f2550.asm
                    _T1CON   0x000fcd       data     extern libdev18f2550_a-pic18f2550.asm
-                    _TMR1   0x000fce       data     extern libdev18f2550_a-pic18f2550.asm
                    _TMR1L   0x000fce       data     extern libdev18f2550_a-pic18f2550.asm
+                    _TMR1   0x000fce       data     extern libdev18f2550_a-pic18f2550.asm
                    _TMR1H   0x000fcf       data     extern libdev18f2550_a-pic18f2550.asm
                 _RCONbits   0x000fd0       data     extern libdev18f2550_a-pic18f2550.asm
                     _RCON   0x000fd0       data     extern libdev18f2550_a-pic18f2550.asm
               _WDTCONbits   0x000fd1       data     extern libdev18f2550_a-pic18f2550.asm
                   _WDTCON   0x000fd1       data     extern libdev18f2550_a-pic18f2550.asm
-                  _LVDCON   0x000fd2       data     extern libdev18f2550_a-pic18f2550.asm
                  _HLVDCON   0x000fd2       data     extern libdev18f2550_a-pic18f2550.asm
              _HLVDCONbits   0x000fd2       data     extern libdev18f2550_a-pic18f2550.asm
+                  _LVDCON   0x000fd2       data     extern libdev18f2550_a-pic18f2550.asm
               _LVDCONbits   0x000fd2       data     extern libdev18f2550_a-pic18f2550.asm
                   _OSCCON   0x000fd3       data     extern libdev18f2550_a-pic18f2550.asm
               _OSCCONbits   0x000fd3       data     extern libdev18f2550_a-pic18f2550.asm
@@ -963,14 +959,14 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                 _POSTDEC0   0x000fed       data     extern libdev18f2550_a-pic18f2550.asm
                 _POSTINC0   0x000fee       data     extern libdev18f2550_a-pic18f2550.asm
                    _INDF0   0x000fef       data     extern libdev18f2550_a-pic18f2550.asm
-                 _INTCON3   0x000ff0       data     extern libdev18f2550_a-pic18f2550.asm
              _INTCON3bits   0x000ff0       data     extern libdev18f2550_a-pic18f2550.asm
+                 _INTCON3   0x000ff0       data     extern libdev18f2550_a-pic18f2550.asm
              _INTCON2bits   0x000ff1       data     extern libdev18f2550_a-pic18f2550.asm
                  _INTCON2   0x000ff1       data     extern libdev18f2550_a-pic18f2550.asm
               _INTCONbits   0x000ff2       data     extern libdev18f2550_a-pic18f2550.asm
                   _INTCON   0x000ff2       data     extern libdev18f2550_a-pic18f2550.asm
-                   _PRODL   0x000ff3       data     extern libdev18f2550_a-pic18f2550.asm
                     _PROD   0x000ff3       data     extern libdev18f2550_a-pic18f2550.asm
+                   _PRODL   0x000ff3       data     extern libdev18f2550_a-pic18f2550.asm
                    _PRODH   0x000ff4       data     extern libdev18f2550_a-pic18f2550.asm
                   _TABLAT   0x000ff5       data     extern libdev18f2550_a-pic18f2550.asm
                  _TBLPTRL   0x000ff6       data     extern libdev18f2550_a-pic18f2550.asm
@@ -981,8 +977,8 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                       _PC   0x000ff9       data     extern libdev18f2550_a-pic18f2550.asm
                   _PCLATH   0x000ffa       data     extern libdev18f2550_a-pic18f2550.asm
                   _PCLATU   0x000ffb       data     extern libdev18f2550_a-pic18f2550.asm
-              _STKPTRbits   0x000ffc       data     extern libdev18f2550_a-pic18f2550.asm
                   _STKPTR   0x000ffc       data     extern libdev18f2550_a-pic18f2550.asm
+              _STKPTRbits   0x000ffc       data     extern libdev18f2550_a-pic18f2550.asm
                      _TOS   0x000ffd       data     extern libdev18f2550_a-pic18f2550.asm
                     _TOSL   0x000ffd       data     extern libdev18f2550_a-pic18f2550.asm
                     _TOSH   0x000ffe       data     extern libdev18f2550_a-pic18f2550.asm
@@ -1017,206 +1013,202 @@ S_eeprom8_write____eeprom8_write       code   0x0034ca    program   0x000010
                _00514_DS_   0x0019aa    program     static meter_logger.asm
                _00235_DS_   0x0019d6    program     static meter_logger.asm
                _00241_DS_   0x0019dc    program     static meter_logger.asm
-               _00244_DS_   0x0019fc    program     static meter_logger.asm
-               _00246_DS_   0x0019fe    program     static meter_logger.asm
-               _00520_DS_   0x001a4a    program     static meter_logger.asm
-               _00248_DS_   0x001a5e    program     static meter_logger.asm
-               _00249_DS_   0x001a68    program     static meter_logger.asm
-               _00250_DS_   0x001a88    program     static meter_logger.asm
-               _00530_DS_   0x001a92    program     static meter_logger.asm
-               _00253_DS_   0x001a9c    program     static meter_logger.asm
-               _00255_DS_   0x001adc    program     static meter_logger.asm
-               _00257_DS_   0x001ae6    program     static meter_logger.asm
-               _00258_DS_   0x001af0    program     static meter_logger.asm
-               _00260_DS_   0x001afa    program     static meter_logger.asm
-               _00261_DS_   0x001b0c    program     static meter_logger.asm
-               _00263_DS_   0x001b36    program     static meter_logger.asm
-               _00266_DS_   0x001b62    program     static meter_logger.asm
-               _00268_DS_   0x001b6a    program     static meter_logger.asm
-               _00270_DS_   0x001b88    program     static meter_logger.asm
-               _00271_DS_   0x001b9a    program     static meter_logger.asm
-               _00544_DS_   0x001bb6    program     static meter_logger.asm
-               _00545_DS_   0x001bc4    program     static meter_logger.asm
-               _00273_DS_   0x001bd4    program     static meter_logger.asm
-               _00277_DS_   0x001bec    program     static meter_logger.asm
-               _00279_DS_   0x001bf4    program     static meter_logger.asm
-               _00281_DS_   0x001c0c    program     static meter_logger.asm
-               _00554_DS_   0x001c2c    program     static meter_logger.asm
-               _00556_DS_   0x001c34    program     static meter_logger.asm
-               _00282_DS_   0x001c36    program     static meter_logger.asm
-               _00284_DS_   0x001c48    program     static meter_logger.asm
-               _00285_DS_   0x001c4c    program     static meter_logger.asm
-               _00286_DS_   0x001c5a    program     static meter_logger.asm
-               _00560_DS_   0x001c78    program     static meter_logger.asm
-               _00559_DS_   0x001c7e    program     static meter_logger.asm
-               _00288_DS_   0x001c90    program     static meter_logger.asm
-               _00291_DS_   0x001c96    program     static meter_logger.asm
-               _00294_DS_   0x001ca2    program     static meter_logger.asm
-               _00295_DS_   0x001cb0    program     static meter_logger.asm
-               _00297_DS_   0x001cba    program     static meter_logger.asm
-               _00299_DS_   0x001cbc    program     static meter_logger.asm
-               _00562_DS_   0x001d1a    program     static meter_logger.asm
-               _00563_DS_   0x001d28    program     static meter_logger.asm
-               _00566_DS_   0x001d52    program     static meter_logger.asm
-               _00309_DS_   0x001d7c    program     static meter_logger.asm
-               _00568_DS_   0x001d84    program     static meter_logger.asm
-               _00306_DS_   0x001d90    program     static meter_logger.asm
-               _00313_DS_   0x001da8    program     static meter_logger.asm
-               _00314_DS_   0x001daa    program     static meter_logger.asm
-               _00318_DS_   0x001dac    program     static meter_logger.asm
-                 ___str_0   0x001dec    program     static meter_logger.asm
-                 ___str_1   0x001e0e    program     static meter_logger.asm
-                 ___str_2   0x001e28    program     static meter_logger.asm
-                 ___str_3   0x001e54    program     static meter_logger.asm
-                 ___str_4   0x001e70    program     static meter_logger.asm
-                 ___str_5   0x001e90    program     static meter_logger.asm
-                 ___str_6   0x001eb4    program     static meter_logger.asm
-                 ___str_7   0x001ed8    program     static meter_logger.asm
-                 ___str_8   0x001efa    program     static meter_logger.asm
-                    _main   0x001f1e    program     extern meter_logger.asm
-               _00136_DS_   0x001f82    program     static meter_logger.asm
-               _00198_DS_   0x001fd4    program     static meter_logger.asm
-               _00105_DS_   0x001fe0    program     static meter_logger.asm
-               _00106_DS_   0x00202e    program     static meter_logger.asm
-               _00199_DS_   0x002038    program     static meter_logger.asm
-               _00108_DS_   0x002066    program     static meter_logger.asm
-               _00109_DS_   0x00208e    program     static meter_logger.asm
-               _00111_DS_   0x0020da    program     static meter_logger.asm
-               _00112_DS_   0x002104    program     static meter_logger.asm
-               _00113_DS_   0x002152    program     static meter_logger.asm
-               _00200_DS_   0x00215c    program     static meter_logger.asm
-               _00115_DS_   0x00218a    program     static meter_logger.asm
-               _00116_DS_   0x002192    program     static meter_logger.asm
-               _00118_DS_   0x0021de    program     static meter_logger.asm
-               _00119_DS_   0x002208    program     static meter_logger.asm
-               _00120_DS_   0x002256    program     static meter_logger.asm
-               _00201_DS_   0x002260    program     static meter_logger.asm
-               _00122_DS_   0x00228e    program     static meter_logger.asm
-               _00123_DS_   0x0022b6    program     static meter_logger.asm
-               _00125_DS_   0x002302    program     static meter_logger.asm
-               _00126_DS_   0x002350    program     static meter_logger.asm
-               _00202_DS_   0x00235a    program     static meter_logger.asm
-               _00128_DS_   0x002388    program     static meter_logger.asm
-               _00129_DS_   0x0023c4    program     static meter_logger.asm
-               _00131_DS_   0x002410    program     static meter_logger.asm
-                __mullong   0x00243e    program     extern mullong.asm
-    _testo_valid_err_corr   0x002652    program     extern meter_logger.asm
-               _00648_DS_   0x002696    program     static meter_logger.asm
-               _00691_DS_   0x0026a6    program     static meter_logger.asm
-               _00690_DS_   0x0026ae    program     static meter_logger.asm
-               _00693_DS_   0x0026c4    program     static meter_logger.asm
-               _00694_DS_   0x0026c6    program     static meter_logger.asm
-               _00650_DS_   0x0026f6    program     static meter_logger.asm
-               _00699_DS_   0x002706    program     static meter_logger.asm
-               _00698_DS_   0x00270e    program     static meter_logger.asm
-               _00701_DS_   0x002724    program     static meter_logger.asm
-               _00702_DS_   0x002726    program     static meter_logger.asm
-               _00652_DS_   0x002758    program     static meter_logger.asm
-               _00708_DS_   0x002768    program     static meter_logger.asm
-               _00707_DS_   0x002770    program     static meter_logger.asm
-               _00710_DS_   0x002786    program     static meter_logger.asm
-               _00711_DS_   0x002788    program     static meter_logger.asm
-               _00654_DS_   0x0027ba    program     static meter_logger.asm
-               _00717_DS_   0x0027ca    program     static meter_logger.asm
-               _00716_DS_   0x0027d2    program     static meter_logger.asm
-               _00719_DS_   0x0027e8    program     static meter_logger.asm
-               _00720_DS_   0x0027ea    program     static meter_logger.asm
-               _00724_DS_   0x002820    program     static meter_logger.asm
-               _00725_DS_   0x002822    program     static meter_logger.asm
-               _00646_DS_   0x002826    program     static meter_logger.asm
-               _00656_DS_   0x002828    program     static meter_logger.asm
-              _fifo_snoop   0x002852    program     extern meter_logger.asm
-               _00889_DS_   0x0028a8    program     static meter_logger.asm
-               _00890_DS_   0x0028be    program     static meter_logger.asm
-               _00891_DS_   0x0028e0    program     static meter_logger.asm
-               _00873_DS_   0x0028f0    program     static meter_logger.asm
-               _00874_DS_   0x002928    program     static meter_logger.asm
-               _00875_DS_   0x002960    program     static meter_logger.asm
-               _00876_DS_   0x002998    program     static meter_logger.asm
-               _00877_DS_   0x0029ca    program     static meter_logger.asm
-               _00879_DS_   0x0029ce    program     static meter_logger.asm
-               _00881_DS_   0x0029d0    program     static meter_logger.asm
-                _fifo_get   0x0029f2    program     extern meter_logger.asm
-               _00861_DS_   0x002a44    program     static meter_logger.asm
-               _00862_DS_   0x002a66    program     static meter_logger.asm
-               _00840_DS_   0x002a76    program     static meter_logger.asm
-               _00841_DS_   0x002aa6    program     static meter_logger.asm
-               _00842_DS_   0x002ad6    program     static meter_logger.asm
-               _00843_DS_   0x002b06    program     static meter_logger.asm
-               _00844_DS_   0x002b34    program     static meter_logger.asm
-               _10906_DS_   0x002b3c    program     static meter_logger.asm
-               _00867_DS_   0x002b48    program     static meter_logger.asm
-               _00868_DS_   0x002b4a    program     static meter_logger.asm
-               _00846_DS_   0x002b50    program     static meter_logger.asm
-               _00848_DS_   0x002b54    program     static meter_logger.asm
-               _00850_DS_   0x002b56    program     static meter_logger.asm
-                _sleep_ms   0x002b70    program     extern meter_logger.asm
-               _00608_DS_   0x002be0    program     static meter_logger.asm
-               _00613_DS_   0x002c4a    program     static meter_logger.asm
-               _00614_DS_   0x002c5a    program     static meter_logger.asm
-               _00621_DS_   0x002c70    program     static meter_logger.asm
-                _fifo_put   0x002cba    program     extern meter_logger.asm
-               _00827_DS_   0x002cea    program     static meter_logger.asm
-               _00828_DS_   0x002cfc    program     static meter_logger.asm
-               _00829_DS_   0x002d1e    program     static meter_logger.asm
-               _00805_DS_   0x002d2e    program     static meter_logger.asm
-               _00806_DS_   0x002d4c    program     static meter_logger.asm
-               _00807_DS_   0x002d6a    program     static meter_logger.asm
-               _00808_DS_   0x002d88    program     static meter_logger.asm
-               _00809_DS_   0x002da4    program     static meter_logger.asm
-               _20907_DS_   0x002dac    program     static meter_logger.asm
-               _00834_DS_   0x002db8    program     static meter_logger.asm
-               _00835_DS_   0x002dba    program     static meter_logger.asm
-               _00811_DS_   0x002dc0    program     static meter_logger.asm
-               _00813_DS_   0x002dc4    program     static meter_logger.asm
-               _00815_DS_   0x002dc6    program     static meter_logger.asm
-            _isr_low_prio   0x002dd8    program     static meter_logger.asm
-               _00573_DS_   0x002e2a    program     static meter_logger.asm
-               _00574_DS_   0x002e34    program     static meter_logger.asm
-               _00577_DS_   0x002e4c    program     static meter_logger.asm
-               _30908_DS_   0x002e5c    program     static meter_logger.asm
-               _00603_DS_   0x002e5c    program     static meter_logger.asm
-               _00579_DS_   0x002e5e    program     static meter_logger.asm
-               _00582_DS_   0x002e74    program     static meter_logger.asm
-                 __debug2   0x002ea4    program     extern meter_logger.asm
-                  __debug   0x002f6a    program     extern meter_logger.asm
-                 _reverse   0x003030    program     extern meter_logger.asm
-              _usart_puts   0x0030bc    program     extern libio18f2550_a-uputs.asm
-               _00105_DS_   0x0030e6    program     static libio18f2550_a-uputs.asm
-               _00120_DS_   0x00311a    program     static libio18f2550_a-uputs.asm
-           _fsk_rx_enable   0x003134    program     extern meter_logger.asm
-             _init_system   0x003190    program     extern meter_logger.asm
-         _rs232_rx_enable   0x0031e4    program     extern meter_logger.asm
-         _rs232_tx_enable   0x003222    program     extern meter_logger.asm
-         _testo_ir_enable   0x00325e    program     extern meter_logger.asm
-             _fifo_in_use   0x00329a    program     extern meter_logger.asm
-           _fsk_tx_enable   0x0032d2    program     extern meter_logger.asm
-           _rs232_tx_byte   0x003306    program     extern meter_logger.asm
-           _my_usart_open   0x003330    program     extern meter_logger.asm
-              _usart_getc   0x00335a    program     extern libio18f2550_a-ugetc.asm
-               _00108_DS_   0x00336e    program     static libio18f2550_a-ugetc.asm
-               _10105_DS_   0x00336e    program     static libio18f2550_a-ugetc.asm
-               _00110_DS_   0x003376    program     static libio18f2550_a-ugetc.asm
-               _00112_DS_   0x00337e    program     static libio18f2550_a-ugetc.asm
-             _fsk_tx_byte   0x003382    program     extern meter_logger.asm
-               _flash_led   0x0033a8    program     extern meter_logger.asm
-               __gptrget1   0x0033cc    program     extern gptrget1.asm
-                 _lab_01_   0x0033d8    program     static gptrget1.asm
-      ___eeprom8_gptrput1   0x0033ee    program     extern eeprom8_gptrput1.asm
-      ___eeprom8_gptrget1   0x00340e    program     extern eeprom8_gptrget1.asm
-          _fsk_tx_disable   0x003426    program     extern meter_logger.asm
-        _rs232_rx_disable   0x00343c    program     extern meter_logger.asm
-        _rs232_tx_disable   0x003452    program     extern meter_logger.asm
-               __gptrput1   0x003468    program     extern gptrput1.asm
-                 _lab_01_   0x003476    program     static gptrput1.asm
-          _fsk_rx_disable   0x00347e    program     extern meter_logger.asm
-        _testo_ir_disable   0x003492    program     extern meter_logger.asm
-                __startup   0x0034a6    program     extern crt0.asm
-                   lockup   0x0034b8    program     static crt0.asm
-              _usart_putc   0x0034ba    program     extern libio18f2550_a-uputc.asm
-                     _01_   0x0034c6    program     static libio18f2550_a-uputc.asm
-         ___eeprom8_write   0x0034ca    program     extern eeprom8_write.asm
-           wait_till_done   0x0034d4    program     static eeprom8_write.asm
-              _usart_drdy   0x0034da    program     extern libio18f2550_a-udrdy.asm
+               _00244_DS_   0x0019f4    program     static meter_logger.asm
+               _00246_DS_   0x0019f6    program     static meter_logger.asm
+               _00520_DS_   0x001a42    program     static meter_logger.asm
+               _00248_DS_   0x001a56    program     static meter_logger.asm
+               _00249_DS_   0x001a60    program     static meter_logger.asm
+               _00250_DS_   0x001a80    program     static meter_logger.asm
+               _00530_DS_   0x001a8a    program     static meter_logger.asm
+               _00253_DS_   0x001a94    program     static meter_logger.asm
+               _00255_DS_   0x001ad4    program     static meter_logger.asm
+               _00257_DS_   0x001ade    program     static meter_logger.asm
+               _00258_DS_   0x001ae8    program     static meter_logger.asm
+               _00260_DS_   0x001af2    program     static meter_logger.asm
+               _00261_DS_   0x001b04    program     static meter_logger.asm
+               _00263_DS_   0x001b26    program     static meter_logger.asm
+               _00266_DS_   0x001b3e    program     static meter_logger.asm
+               _00268_DS_   0x001b46    program     static meter_logger.asm
+               _00270_DS_   0x001b64    program     static meter_logger.asm
+               _00271_DS_   0x001b76    program     static meter_logger.asm
+               _00544_DS_   0x001b92    program     static meter_logger.asm
+               _00545_DS_   0x001ba0    program     static meter_logger.asm
+               _00273_DS_   0x001bb0    program     static meter_logger.asm
+               _00277_DS_   0x001bc8    program     static meter_logger.asm
+               _00279_DS_   0x001bd0    program     static meter_logger.asm
+               _00281_DS_   0x001be8    program     static meter_logger.asm
+               _00554_DS_   0x001c08    program     static meter_logger.asm
+               _00556_DS_   0x001c10    program     static meter_logger.asm
+               _00282_DS_   0x001c12    program     static meter_logger.asm
+               _00284_DS_   0x001c20    program     static meter_logger.asm
+               _00285_DS_   0x001c24    program     static meter_logger.asm
+               _00286_DS_   0x001c32    program     static meter_logger.asm
+               _00560_DS_   0x001c50    program     static meter_logger.asm
+               _00559_DS_   0x001c56    program     static meter_logger.asm
+               _00288_DS_   0x001c68    program     static meter_logger.asm
+               _00291_DS_   0x001c6e    program     static meter_logger.asm
+               _00294_DS_   0x001c7a    program     static meter_logger.asm
+               _00295_DS_   0x001c88    program     static meter_logger.asm
+               _00297_DS_   0x001c92    program     static meter_logger.asm
+               _00299_DS_   0x001c94    program     static meter_logger.asm
+               _00562_DS_   0x001cf2    program     static meter_logger.asm
+               _00563_DS_   0x001d00    program     static meter_logger.asm
+               _00566_DS_   0x001d2a    program     static meter_logger.asm
+               _00309_DS_   0x001d54    program     static meter_logger.asm
+               _00568_DS_   0x001d5c    program     static meter_logger.asm
+               _00306_DS_   0x001d68    program     static meter_logger.asm
+               _00313_DS_   0x001d80    program     static meter_logger.asm
+               _00314_DS_   0x001d82    program     static meter_logger.asm
+               _00318_DS_   0x001d84    program     static meter_logger.asm
+                 ___str_0   0x001dc4    program     static meter_logger.asm
+                 ___str_1   0x001de6    program     static meter_logger.asm
+                 ___str_2   0x001e00    program     static meter_logger.asm
+                 ___str_3   0x001e2c    program     static meter_logger.asm
+                 ___str_4   0x001e48    program     static meter_logger.asm
+                    _main   0x001e68    program     extern meter_logger.asm
+               _00136_DS_   0x001ecc    program     static meter_logger.asm
+               _00198_DS_   0x001f1e    program     static meter_logger.asm
+               _00105_DS_   0x001f2a    program     static meter_logger.asm
+               _00106_DS_   0x001f78    program     static meter_logger.asm
+               _00199_DS_   0x001f82    program     static meter_logger.asm
+               _00108_DS_   0x001fb0    program     static meter_logger.asm
+               _00109_DS_   0x001fd8    program     static meter_logger.asm
+               _00111_DS_   0x002024    program     static meter_logger.asm
+               _00112_DS_   0x00204e    program     static meter_logger.asm
+               _00113_DS_   0x00209c    program     static meter_logger.asm
+               _00200_DS_   0x0020a6    program     static meter_logger.asm
+               _00115_DS_   0x0020d4    program     static meter_logger.asm
+               _00116_DS_   0x0020dc    program     static meter_logger.asm
+               _00118_DS_   0x002128    program     static meter_logger.asm
+               _00119_DS_   0x002152    program     static meter_logger.asm
+               _00120_DS_   0x002180    program     static meter_logger.asm
+               _00201_DS_   0x00218a    program     static meter_logger.asm
+               _00122_DS_   0x0021b8    program     static meter_logger.asm
+               _00123_DS_   0x0021c0    program     static meter_logger.asm
+               _00125_DS_   0x00220c    program     static meter_logger.asm
+               _00126_DS_   0x00223a    program     static meter_logger.asm
+               _00202_DS_   0x002244    program     static meter_logger.asm
+               _00128_DS_   0x002272    program     static meter_logger.asm
+               _00129_DS_   0x00228e    program     static meter_logger.asm
+               _00131_DS_   0x0022da    program     static meter_logger.asm
+                __mullong   0x0022e8    program     extern mullong.asm
+    _testo_valid_err_corr   0x0024fc    program     extern meter_logger.asm
+               _00648_DS_   0x002540    program     static meter_logger.asm
+               _00691_DS_   0x002550    program     static meter_logger.asm
+               _00690_DS_   0x002558    program     static meter_logger.asm
+               _00693_DS_   0x00256e    program     static meter_logger.asm
+               _00694_DS_   0x002570    program     static meter_logger.asm
+               _00650_DS_   0x0025a0    program     static meter_logger.asm
+               _00699_DS_   0x0025b0    program     static meter_logger.asm
+               _00698_DS_   0x0025b8    program     static meter_logger.asm
+               _00701_DS_   0x0025ce    program     static meter_logger.asm
+               _00702_DS_   0x0025d0    program     static meter_logger.asm
+               _00652_DS_   0x002602    program     static meter_logger.asm
+               _00708_DS_   0x002612    program     static meter_logger.asm
+               _00707_DS_   0x00261a    program     static meter_logger.asm
+               _00710_DS_   0x002630    program     static meter_logger.asm
+               _00711_DS_   0x002632    program     static meter_logger.asm
+               _00654_DS_   0x002664    program     static meter_logger.asm
+               _00717_DS_   0x002674    program     static meter_logger.asm
+               _00716_DS_   0x00267c    program     static meter_logger.asm
+               _00719_DS_   0x002692    program     static meter_logger.asm
+               _00720_DS_   0x002694    program     static meter_logger.asm
+               _00724_DS_   0x0026ca    program     static meter_logger.asm
+               _00725_DS_   0x0026cc    program     static meter_logger.asm
+               _00646_DS_   0x0026d0    program     static meter_logger.asm
+               _00656_DS_   0x0026d2    program     static meter_logger.asm
+              _fifo_snoop   0x0026fc    program     extern meter_logger.asm
+               _00889_DS_   0x002752    program     static meter_logger.asm
+               _00890_DS_   0x002768    program     static meter_logger.asm
+               _00891_DS_   0x00278a    program     static meter_logger.asm
+               _00873_DS_   0x00279a    program     static meter_logger.asm
+               _00874_DS_   0x0027d2    program     static meter_logger.asm
+               _00875_DS_   0x00280a    program     static meter_logger.asm
+               _00876_DS_   0x002842    program     static meter_logger.asm
+               _00877_DS_   0x002874    program     static meter_logger.asm
+               _00879_DS_   0x002878    program     static meter_logger.asm
+               _00881_DS_   0x00287a    program     static meter_logger.asm
+                _fifo_get   0x00289c    program     extern meter_logger.asm
+               _00861_DS_   0x0028ee    program     static meter_logger.asm
+               _00862_DS_   0x002910    program     static meter_logger.asm
+               _00840_DS_   0x002920    program     static meter_logger.asm
+               _00841_DS_   0x002950    program     static meter_logger.asm
+               _00842_DS_   0x002980    program     static meter_logger.asm
+               _00843_DS_   0x0029b0    program     static meter_logger.asm
+               _00844_DS_   0x0029de    program     static meter_logger.asm
+               _10906_DS_   0x0029e6    program     static meter_logger.asm
+               _00867_DS_   0x0029f2    program     static meter_logger.asm
+               _00868_DS_   0x0029f4    program     static meter_logger.asm
+               _00846_DS_   0x0029fa    program     static meter_logger.asm
+               _00848_DS_   0x0029fe    program     static meter_logger.asm
+               _00850_DS_   0x002a00    program     static meter_logger.asm
+                _sleep_ms   0x002a1a    program     extern meter_logger.asm
+               _00608_DS_   0x002a8a    program     static meter_logger.asm
+               _00613_DS_   0x002af4    program     static meter_logger.asm
+               _00614_DS_   0x002b04    program     static meter_logger.asm
+               _00621_DS_   0x002b1a    program     static meter_logger.asm
+                _fifo_put   0x002b64    program     extern meter_logger.asm
+               _00827_DS_   0x002b94    program     static meter_logger.asm
+               _00828_DS_   0x002ba6    program     static meter_logger.asm
+               _00829_DS_   0x002bc8    program     static meter_logger.asm
+               _00805_DS_   0x002bd8    program     static meter_logger.asm
+               _00806_DS_   0x002bf6    program     static meter_logger.asm
+               _00807_DS_   0x002c14    program     static meter_logger.asm
+               _00808_DS_   0x002c32    program     static meter_logger.asm
+               _00809_DS_   0x002c4e    program     static meter_logger.asm
+               _20907_DS_   0x002c56    program     static meter_logger.asm
+               _00834_DS_   0x002c62    program     static meter_logger.asm
+               _00835_DS_   0x002c64    program     static meter_logger.asm
+               _00811_DS_   0x002c6a    program     static meter_logger.asm
+               _00813_DS_   0x002c6e    program     static meter_logger.asm
+               _00815_DS_   0x002c70    program     static meter_logger.asm
+            _isr_low_prio   0x002c82    program     static meter_logger.asm
+               _00573_DS_   0x002cd4    program     static meter_logger.asm
+               _00574_DS_   0x002cde    program     static meter_logger.asm
+               _00577_DS_   0x002cf6    program     static meter_logger.asm
+               _00603_DS_   0x002d06    program     static meter_logger.asm
+               _30908_DS_   0x002d06    program     static meter_logger.asm
+               _00579_DS_   0x002d08    program     static meter_logger.asm
+               _00582_DS_   0x002d1e    program     static meter_logger.asm
+                 __debug2   0x002d4e    program     extern meter_logger.asm
+                  __debug   0x002e14    program     extern meter_logger.asm
+                 _reverse   0x002eda    program     extern meter_logger.asm
+              _usart_puts   0x002f66    program     extern libio18f2550_a-uputs.asm
+               _00105_DS_   0x002f90    program     static libio18f2550_a-uputs.asm
+               _00120_DS_   0x002fc4    program     static libio18f2550_a-uputs.asm
+           _fsk_rx_enable   0x002fde    program     extern meter_logger.asm
+             _init_system   0x00303a    program     extern meter_logger.asm
+         _rs232_rx_enable   0x00308e    program     extern meter_logger.asm
+         _rs232_tx_enable   0x0030cc    program     extern meter_logger.asm
+         _testo_ir_enable   0x003108    program     extern meter_logger.asm
+             _fifo_in_use   0x003144    program     extern meter_logger.asm
+           _fsk_tx_enable   0x00317c    program     extern meter_logger.asm
+           _rs232_tx_byte   0x0031b0    program     extern meter_logger.asm
+           _my_usart_open   0x0031da    program     extern meter_logger.asm
+              _usart_getc   0x003204    program     extern libio18f2550_a-ugetc.asm
+               _10105_DS_   0x003218    program     static libio18f2550_a-ugetc.asm
+               _00108_DS_   0x003218    program     static libio18f2550_a-ugetc.asm
+               _00110_DS_   0x003220    program     static libio18f2550_a-ugetc.asm
+               _00112_DS_   0x003228    program     static libio18f2550_a-ugetc.asm
+             _fsk_tx_byte   0x00322c    program     extern meter_logger.asm
+               _flash_led   0x003252    program     extern meter_logger.asm
+               __gptrget1   0x003276    program     extern gptrget1.asm
+                 _lab_01_   0x003282    program     static gptrget1.asm
+      ___eeprom8_gptrput1   0x003298    program     extern eeprom8_gptrput1.asm
+      ___eeprom8_gptrget1   0x0032b8    program     extern eeprom8_gptrget1.asm
+          _fsk_tx_disable   0x0032d0    program     extern meter_logger.asm
+        _rs232_rx_disable   0x0032e6    program     extern meter_logger.asm
+        _rs232_tx_disable   0x0032fc    program     extern meter_logger.asm
+               __gptrput1   0x003312    program     extern gptrput1.asm
+                 _lab_01_   0x003320    program     static gptrput1.asm
+          _fsk_rx_disable   0x003328    program     extern meter_logger.asm
+        _testo_ir_disable   0x00333c    program     extern meter_logger.asm
+                __startup   0x003350    program     extern crt0.asm
+                   lockup   0x003362    program     static crt0.asm
+              _usart_putc   0x003364    program     extern libio18f2550_a-uputc.asm
+                     _01_   0x003370    program     static libio18f2550_a-uputc.asm
+         ___eeprom8_write   0x003374    program     extern eeprom8_write.asm
+           wait_till_done   0x00337e    program     static eeprom8_write.asm
+              _usart_drdy   0x003384    program     extern libio18f2550_a-udrdy.asm
 
 

@@ -6,7 +6,7 @@
 #include "config.h"
 #include "meter_logger.h"
 
-#define DEBUG
+//#define DEBUG
 //#define OUTPUT_ON_SERIAL
 #define DEBUG_LED_ON_FSK_RX
 #define DEBUG_LED_ON_FSK_TX
@@ -117,10 +117,8 @@ void main(void) {
 	
 	init_system();
 
-#ifdef DEBUG
 	usart_puts("\n\rMeterLogger... serial working\n\r");
 	sleep_ms(100);
-#endif
 
 	fsk_rx_enable();
 	while (1) {
@@ -231,12 +229,12 @@ void main(void) {
 #endif
 					rs232_rx_enable();
 					last_fifo_size = 0;
-					sleep_ms(200);							// sleep 200 ms to let some data come in
+					sleep_ms(400);							// sleep 200 ms to let some data come in
 					fifo_size = fifo_in_use();
 					// BUG: sometimes it does not wait for data...
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 						last_fifo_size = fifo_size;
-						sleep_ms(100);						// return data when no data for 100 ms
+						sleep_ms(200);						// return data when no data for 100 ms
 						fifo_size = fifo_in_use();
 					}			
 					
@@ -374,12 +372,14 @@ static void isr_high_prio(void) __interrupt 1 {
 			case RS232_RX:
 				switch (rs232_proto.state) {
 					case START_BIT_WAIT:
+						/*
 						DEBUG2_PIN = 1;
 						__asm
 							nop
 							nop
 						__endasm;
 						DEBUG2_PIN = 0;
+						*/
 						// sample data half bit time after...
 						TMR0H = (unsigned char)(TIMER0_RS232_1200_START >> 8);
 						TMR0L = (unsigned char)TIMER0_RS232_1200_START;
@@ -443,19 +443,20 @@ static void isr_high_prio(void) __interrupt 1 {
 							if (IR_PIN) {		
 								// logical 0, ir input inverted
 								rs232_proto.data >>= 1;
-
+								/*
 								DEBUG3_PIN = 1;
 								__asm
 									nop
 									nop
 								__endasm;
 								DEBUG3_PIN = 0;
+								*/
 							}
 							else {				
 								// logical 1, ir input inverted
 								rs232_proto.data >>= 1;
 								rs232_proto.data |= 0x80;
-								
+								/*								
 								DEBUG3_PIN = 1;
 								__asm
 									nop
@@ -472,6 +473,7 @@ static void isr_high_prio(void) __interrupt 1 {
 									nop
 								__endasm;
 								DEBUG3_PIN = 0;
+								*/
 							}
 						}
 						else {
@@ -530,8 +532,8 @@ static void isr_high_prio(void) __interrupt 1 {
 				break;
 			case FSK_TX:
 				switch (fsk_proto.state) {
-					case INIT_STATE:
-						send_fsk_high();
+					case INIT_STATE://***
+						//send_fsk_high(); <- not needed - takes too much cpu
 						if (fsk_proto.data_len == 8) {
 							fsk_proto.state = IDLE;
 						}
