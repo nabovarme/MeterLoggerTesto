@@ -6,7 +6,7 @@
 #include "config.h"
 #include "meter_logger.h"
 
-//#define DEBUG
+#define DEBUG
 //#define OUTPUT_ON_SERIAL
 #define DEBUG_LED_ON_FSK_RX
 #define DEBUG_LED_ON_FSK_TX

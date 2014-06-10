@@ -71,9 +71,9 @@
 #define TICK 855
 #define TICK_ADJ 200
 
-#define PROTO_TESTO			(0)
+#define PROTO_TESTO			(254)
 #define PROTO_TESTO_DEMO	(255)
-#define PROTO_KAMSTRUP		(1)
+#define PROTO_KAMSTRUP		(253)
 
 void sleep_ms(unsigned long ms);
 
