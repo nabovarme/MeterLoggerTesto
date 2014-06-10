@@ -141,6 +141,7 @@ void main(void) {
 					usart_puts("\n\rdone receiving - sending via serial/fsk\n\r");
 #ifndef OUTPUT_ON_SERIAL
 					fsk_tx_enable();
+					sleep_ms(FSK_TX_SLEEP);
 #endif
 					while (fifo_get(&cmd)) {	// and print them to serial
 #ifdef OUTPUT_ON_SERIAL
@@ -148,7 +149,7 @@ void main(void) {
 						usart_puts(debug_buffer);
 #else               	
 						fsk_tx_byte(cmd);
-						sleep_ms(FSK_TX_SLEEP_AFTER);
+						sleep_ms(FSK_TX_SLEEP);
 #endif
 					}
 #ifndef OUTPUT_ON_SERIAL
@@ -174,6 +175,7 @@ void main(void) {
 					fsk_rx_disable();
 #ifndef OUTPUT_ON_SERIAL
 					fsk_tx_enable();
+					sleep_ms(FSK_TX_SLEEP);
 #endif
 					while (fifo_get(&sub_cmd)) {
 #ifdef OUTPUT_ON_SERIAL
@@ -181,7 +183,7 @@ void main(void) {
 						usart_puts(debug_buffer);
 #else               	
 						fsk_tx_byte(sub_cmd);
-						sleep_ms(FSK_TX_SLEEP_AFTER);
+						sleep_ms(FSK_TX_SLEEP);
 #endif
 					}
 #ifndef OUTPUT_ON_SERIAL
@@ -219,7 +221,7 @@ void main(void) {
 						usart_puts(debug_buffer);
 #endif
 						rs232_tx_byte(sub_cmd);
-						sleep_ms(RS232_TX_SLEEP_AFTER);
+						sleep_ms(RS232_TX_SLEEP);
 					}
 					rs232_tx_disable();
 					
@@ -261,20 +263,61 @@ void main(void) {
 						nop
 					__endasm;
 					DEBUG2_PIN = 0;
-					fsk_tx_enable();
+#endif					
+					if (fifo_in_use()) {
+						// if there was a reply from kamstrup meter...
+						DEBUG2_PIN = 1;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG2_PIN = 0;
+#ifndef OUTPUT_ON_SERIAL
+						fsk_tx_enable();
 #endif
-					while (fifo_get(&sub_cmd)) {
+						sleep_ms(FSK_TX_SLEEP);
+						while (fifo_get(&sub_cmd)) {
 #ifdef OUTPUT_ON_SERIAL
-						sprintf(debug_buffer, "%d ", sub_cmd);
-						usart_puts(debug_buffer);
+							sprintf(debug_buffer, "%d ", sub_cmd);
+							usart_puts(debug_buffer);
 #else
-						fsk_tx_byte(sub_cmd);
-						sleep_ms(FSK_TX_SLEEP_AFTER);
+							fsk_tx_byte(sub_cmd);
+							sleep_ms(FSK_TX_SLEEP);
+#endif
+						}
+#ifndef OUTPUT_ON_SERIAL
+						fsk_tx_disable();
 #endif
 					}
-#ifndef OUTPUT_ON_SERIAL
-					fsk_tx_disable();
+					else {
+						// no reply from kamstrup meter...
+						DEBUG2_PIN = 1;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG2_PIN = 0;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG2_PIN = 1;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG2_PIN = 0;
+#ifdef OUTPUT_ON_SERIAL
+						sprintf(debug_buffer, "\n\rno reply from meter\n\r");
+						usart_puts(debug_buffer);
+#else
+						fsk_tx_enable();
+						sleep_ms(FSK_TX_SLEEP);
+						fsk_tx_byte(0x0d);
+						sleep_ms(FSK_TX_SLEEP);
+						fsk_tx_disable();
 #endif
+					}
 #ifdef DEBUG
 					usart_puts("\n\rwaiting for new command\n\r");
 #endif
