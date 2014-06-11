@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.4.0 #8981 (Jun  6 2014) (Mac OS X x86_64)
-; This file was generated Wed Jun 11 01:20:31 2014
+; This file was generated Wed Jun 11 21:04:41 2014
 ;--------------------------------------------------------
 ; PIC16 port for the Microchip 16-bit core micros
 ;--------------------------------------------------------
@@ -659,7 +659,7 @@ _00108_DS_:
 	MOVWF	POSTDEC1
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x04
+	MOVLW	0x0c
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVLW	0x04
@@ -697,7 +697,7 @@ _00109_DS_:
 	MOVWF	POSTDEC1
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x04
+	MOVLW	0x0c
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVLW	0x04
@@ -807,7 +807,7 @@ _00115_DS_:
 	MOVWF	POSTDEC1
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x04
+	MOVLW	0x0c
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVLW	0x04
@@ -845,7 +845,7 @@ _00116_DS_:
 	MOVWF	POSTDEC1
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x04
+	MOVLW	0x0c
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVLW	0x04
@@ -1068,7 +1068,7 @@ _00128_DS_:
 	MOVWF	POSTDEC1
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x04
+	MOVLW	0x0c
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVLW	0x04
@@ -1106,7 +1106,7 @@ _00129_DS_:
 	MOVWF	POSTDEC1
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x04
+	MOVLW	0x0c
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVLW	0x04
@@ -1143,7 +1143,7 @@ _00133_DS_:
 	MOVWF	POSTDEC1
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x04
+	MOVLW	0x0c
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVLW	0x04
@@ -1160,7 +1160,7 @@ _00133_DS_:
 	MOVWF	POSTDEC1
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x04
+	MOVLW	0x0c
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVLW	0x04
