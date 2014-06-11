@@ -17,7 +17,7 @@
 // Global variables
 unsigned int timer_0;
 unsigned int last_timer_0;
-unsigned long timer_1_ms;
+unsigned int timer_1_ms;
 volatile unsigned int timer0_reload;
 
 unsigned char debug_buffer[DEBUG_BUFFER_MAX];
@@ -576,7 +576,7 @@ static void isr_high_prio(void) __interrupt 1 {
 			case FSK_TX:
 				switch (fsk_proto.state) {
 					case INIT_STATE://***
-						//send_fsk_high(); <- not needed - takes too much cpu
+						//send_fsk_high(); //<- not needed - takes too much cpu
 						if (fsk_proto.data_len == 8) {
 							fsk_proto.state = IDLE;
 						}
@@ -719,14 +719,24 @@ static void isr_low_prio(void) __interrupt 2 {
 
 }
 
-void sleep_ms(unsigned long ms) {
-	unsigned long start_timer_1_ms;
+void sleep_ms(unsigned int ms) {
+	unsigned int start_timer_1_ms;
+	int diff;
 	start_timer_1_ms = timer_1_ms;	
 
 // while the absolute value of the time diff < ms
-	while ( (((signed long)(timer_1_ms - start_timer_1_ms) < 0) ? (-1 * (timer_1_ms - start_timer_1_ms)) : (timer_1_ms - start_timer_1_ms)) < ms) {
+    do {
+        if (start_timer_1_ms <= timer_1_ms) {
+            diff = timer_1_ms - start_timer_1_ms;
+        }
+        else {
+            // timer_1_ms wrapped
+            diff = 0xffff - start_timer_1_ms + timer_1_ms;
+        }
+    } while (diff < ms);
+//	while ( (((signed int)(timer_1_ms - start_timer_1_ms) < 0) ? (-(timer_1_ms - start_timer_1_ms)) : (timer_1_ms - start_timer_1_ms)) < ms) {
 		// do nothing
-	}
+//	}
 }
 
 void init_system() {

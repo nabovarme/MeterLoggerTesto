@@ -75,7 +75,7 @@
 #define PROTO_TESTO_DEMO	(255)
 #define PROTO_KAMSTRUP		(253)
 
-void sleep_ms(unsigned long ms);
+void sleep_ms(unsigned int ms);
 
 void init_system();
 
