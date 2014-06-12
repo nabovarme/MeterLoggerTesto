@@ -6,8 +6,8 @@
 #include "config.h"
 #include "meter_logger.h"
 
-//#define DEBUG
-//#define OUTPUT_ON_SERIAL
+#define DEBUG
+#define OUTPUT_ON_SERIAL
 #define DEBUG_LED_ON_FSK_RX
 #define DEBUG_LED_ON_FSK_TX
 
@@ -117,7 +117,9 @@ void main(void) {
 	
 	init_system();
 
+#ifdef DEBUG
 	usart_puts("\n\rMeterLogger... serial working\n\r");
+#endif
 	sleep_ms(100);
 
 	fsk_rx_enable();
@@ -138,31 +140,41 @@ void main(void) {
 						fifo_size = fifo_in_use();
 					}			
 					testo_ir_disable();
+
+#ifdef DEBUG					
 					usart_puts("\n\rdone receiving - sending via serial/fsk\n\r");
-#ifndef OUTPUT_ON_SERIAL
+#endif
+#ifdef OUTPUT_ON_SERIAL
+					for (i = 0; i < fifo_in_use(); i++) {
+						// get every data from fifo...
+						fifo_get(&sub_cmd);
+						// ...print it...
+						sprintf(debug_buffer, "%d ", sub_cmd);
+						usart_puts(debug_buffer);
+						// ...and put it back
+						fifo_put(sub_cmd);
+					}
+#endif
 					fsk_tx_enable();
 					sleep_ms(FSK_TX_SLEEP);
-#endif
 					while (fifo_get(&cmd)) {	// and print them to serial
-#ifdef OUTPUT_ON_SERIAL
-						sprintf(debug_buffer, "%c", cmd);
-						usart_puts(debug_buffer);
-#else               	
 						fsk_tx_byte(cmd);
 						sleep_ms(FSK_TX_SLEEP);
-#endif
 					}
-#ifndef OUTPUT_ON_SERIAL
 					fsk_tx_disable();
-#endif
+#ifdef DEBUG					
 					usart_puts("\n\rwaiting for new command\n\r");
+#endif
 					fsk_rx_enable();
 					break;
 
 				case PROTO_TESTO_DEMO:
+#ifdef DEBUG					
 					fsk_rx_disable();
 					usart_puts("\n\recho test - send some data\n\r");
 					fsk_rx_enable();
+#endif
+
 					// wait for iOS stop sending data
 					last_fifo_size = 0;
 					sleep_ms(1000);							// 1 second
@@ -173,23 +185,31 @@ void main(void) {
 						fifo_size = fifo_in_use();
 					}			
 					fsk_rx_disable();
-#ifndef OUTPUT_ON_SERIAL
-					fsk_tx_enable();
-					sleep_ms(FSK_TX_SLEEP);
-#endif
-					while (fifo_get(&sub_cmd)) {
+
 #ifdef OUTPUT_ON_SERIAL
+					for (i = 0; i < fifo_in_use(); i++) {
+						// get every data from fifo...
+						fifo_get(&sub_cmd);
+						// ...print it...
 						sprintf(debug_buffer, "%d ", sub_cmd);
 						usart_puts(debug_buffer);
-#else               	
+						// ...and put it back
+						fifo_put(sub_cmd);
+					}
+#endif               	
+
+					// Send reply back to iOS
+					fsk_tx_enable();
+					sleep_ms(FSK_TX_SLEEP);
+					while (fifo_get(&sub_cmd)) {
 						fsk_tx_byte(sub_cmd);
 						sleep_ms(FSK_TX_SLEEP);
-#endif
 					}
-#ifndef OUTPUT_ON_SERIAL
 					fsk_tx_disable();
-#endif
+
+#ifdef DEBUG
 					usart_puts("\n\rwaiting for new command\n\r");
+#endif
 					fsk_rx_enable();
 					break;
 
@@ -198,9 +218,9 @@ void main(void) {
 #ifdef DEBUG
 					usart_puts("\n\rkamstrup - send kmp frame data\n\r");
 #endif
-					fsk_rx_enable();
 					
 					// wait for iOS stop sending kmp command
+					fsk_rx_enable();
 					last_fifo_size = 0;
 					sleep_ms(400);							// sleep 400 ms to let some data come in
 					fifo_size = fifo_in_use();
@@ -214,12 +234,20 @@ void main(void) {
 #ifdef DEBUG
 					usart_puts("\n\rkamstrup - kmp frame received:\n\r");
 #endif
-					rs232_tx_enable();
-					while (fifo_get(&sub_cmd)) {
 #ifdef OUTPUT_ON_SERIAL
+					for (i = 0; i < fifo_in_use(); i++) {
+						// get every data from fifo...
+						fifo_get(&sub_cmd);
+						// ...print it...
 						sprintf(debug_buffer, "%d ", sub_cmd);
 						usart_puts(debug_buffer);
+						// ...and put it back
+						fifo_put(sub_cmd);
+					}
 #endif
+					
+					rs232_tx_enable();
+					while (fifo_get(&sub_cmd)) {
 						rs232_tx_byte(sub_cmd);
 						sleep_ms(RS232_TX_SLEEP);
 					}
@@ -227,7 +255,7 @@ void main(void) {
 					
 					// Wait for kmp reply
 #ifdef DEBUG
-					usart_puts("\n\rkamstrup - waiting for reply:\n\r");
+					//usart_puts("\n\rkamstrup - waiting for reply:\n\r");
 #endif
 					rs232_rx_enable();
 					last_fifo_size = 0;
@@ -246,23 +274,16 @@ void main(void) {
 #ifdef DEBUG
 					usart_puts("\n\rkamstrup - kmp reply received:\n\r");
 #endif
-#ifndef OUTPUT_ON_SERIAL
-					DEBUG2_PIN = 1;
-					__asm
-						nop
-						nop
-					__endasm;
-					DEBUG2_PIN = 0;
-					__asm
-						nop
-						nop
-					__endasm;
-					DEBUG2_PIN = 1;
-					__asm
-						nop
-						nop
-					__endasm;
-					DEBUG2_PIN = 0;
+#ifdef OUTPUT_ON_SERIAL
+					for (i = 0; i < fifo_in_use(); i++) {
+						// get every data from fifo...
+						fifo_get(&sub_cmd);
+						// ...print it...
+						sprintf(debug_buffer, "%d ", sub_cmd);
+						usart_puts(debug_buffer);
+						// ...and put it back
+						fifo_put(sub_cmd);
+					}
 #endif					
 					if (fifo_in_use()) {
 						// if there was a reply from kamstrup meter...
@@ -272,22 +293,22 @@ void main(void) {
 							nop
 						__endasm;
 						DEBUG2_PIN = 0;
-#ifndef OUTPUT_ON_SERIAL
+						//#ifndef OUTPUT_ON_SERIAL
 						fsk_tx_enable();
-#endif
+						//#endif
 						sleep_ms(FSK_TX_SLEEP);
 						while (fifo_get(&sub_cmd)) {
-#ifdef OUTPUT_ON_SERIAL
-							sprintf(debug_buffer, "%d ", sub_cmd);
-							usart_puts(debug_buffer);
-#else
+							//#ifdef OUTPUT_ON_SERIAL
+							//sprintf(debug_buffer, "%d ", sub_cmd);
+							//usart_puts(debug_buffer);
+							//#else
 							fsk_tx_byte(sub_cmd);
 							sleep_ms(FSK_TX_SLEEP);
-#endif
+							//#endif
 						}
-#ifndef OUTPUT_ON_SERIAL
+						//#ifndef OUTPUT_ON_SERIAL
 						fsk_tx_disable();
-#endif
+						//#endif
 					}
 					else {
 						// no reply from kamstrup meter...
@@ -307,16 +328,15 @@ void main(void) {
 							nop
 						__endasm;
 						DEBUG2_PIN = 0;
-#ifdef OUTPUT_ON_SERIAL
+#ifdef DEBUG
 						sprintf(debug_buffer, "\n\rno reply from meter\n\r");
 						usart_puts(debug_buffer);
-#else
+#endif
 						fsk_tx_enable();
 						sleep_ms(FSK_TX_SLEEP);
 						fsk_tx_byte(0x0d);
 						sleep_ms(FSK_TX_SLEEP);
 						fsk_tx_disable();
-#endif
 					}
 #ifdef DEBUG
 					usart_puts("\n\rwaiting for new command\n\r");
