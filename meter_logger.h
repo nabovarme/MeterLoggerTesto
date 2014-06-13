@@ -41,6 +41,8 @@
 #define COMP1_PIN		PORTAbits.RA0
 #define COMP2_PIN		PORTAbits.RA1
 
+#define TRIS_V_SENSE	TRISAbits.RA5
+
 #define TRIS_IR_PIN		TRISBbits.RB0
 #define IR_PIN			PORTBbits.RB0
 
@@ -71,9 +73,10 @@
 #define TICK 855
 #define TICK_ADJ 200
 
-#define PROTO_TESTO			(254)
-#define PROTO_TESTO_DEMO	(255)
-#define PROTO_KAMSTRUP		(253)
+#define PROTO_TESTO				(254)
+#define PROTO_TESTO_DEMO		(255)
+#define PROTO_KAMSTRUP			(253)
+#define PROTO_BATTERY_LEVEL		(252)
 
 void sleep_ms(unsigned int ms);
 
@@ -109,6 +112,8 @@ unsigned int fifo_in_use();
 unsigned char fifo_put(unsigned char c);
 unsigned char fifo_get(unsigned char  *c);
 unsigned char fifo_snoop(unsigned char *c, unsigned int pos);
+
+unsigned int battery_level();
 
 void flash_led(unsigned char ms);
 

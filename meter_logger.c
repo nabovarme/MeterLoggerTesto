@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <usart.h>
+#include <pic16/adc.h>
 #include "config.h"
 #include "meter_logger.h"
 
@@ -10,6 +11,8 @@
 #define OUTPUT_ON_SERIAL
 #define DEBUG_LED_ON_FSK_RX
 #define DEBUG_LED_ON_FSK_TX
+
+#define WITH_BATTERY_CHECK
 
 #define QUEUE_SIZE 256
 #define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
@@ -115,12 +118,16 @@ void main(void) {
 	fifo_head = 0;
 	fifo_tail = 0;
 	
-	init_system();
+	init_system();	
+	sleep_ms(100);
 
 #ifdef DEBUG
 	usart_puts("\n\rMeterLogger... serial working\n\r");
 #endif
-	sleep_ms(100);
+
+#ifdef WITH_BATTERY_CHECK
+	battery_level();
+#endif
 
 	fsk_rx_enable();
 	while (1) {
@@ -341,6 +348,11 @@ void main(void) {
 #ifdef DEBUG
 					usart_puts("\n\rwaiting for new command\n\r");
 #endif
+					fsk_rx_enable();
+					break;
+				case PROTO_BATTERY_LEVEL:
+					fsk_rx_disable();
+					battery_level();
 					fsk_rx_enable();
 					break;
 			}
@@ -771,6 +783,8 @@ void init_system() {
 	
 	TRIS_IR_LED_PIN = OUTPUT_STATE;	// as output
 	IR_LED_PIN = 0;					// and clear
+	
+	TRIS_V_SENSE = INPUT_STATE;		// as input
 
 	TRIS_DEBUG_PIN = OUTPUT_STATE;	// as output
 	DEBUG_PIN = 0;					// and clear
@@ -4175,6 +4189,24 @@ unsigned char fifo_snoop(unsigned char *c, unsigned int pos) {
 	else {
 		return 0;
 	}
+}
+
+unsigned int battery_level() {
+	unsigned int v_level;
+	
+	adc_open(ADC_CHN_4 , ADC_FOSC_64, ADC_CFG_5A, ADC_FRM_RJUST | ADC_INT_OFF | ADC_VCFG_VDD_VSS);
+	
+	adc_setchannel(ADC_CHN_4);
+	adc_conv();
+	while(adc_busy()) {
+		// wait
+	}
+	v_level = (unsigned long)1000 * (unsigned long)adc_read() * (unsigned long)833/(unsigned long)93600;
+	sprintf(debug_buffer, "Battery: %dmV\n\r", v_level);
+	usart_puts(debug_buffer);	
+	
+	adc_close();
+	return v_level;
 }
 
 void flash_led(unsigned char ms) {
