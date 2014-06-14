@@ -8373,7 +8373,7 @@ Source: Fairchild .. BAT54.pdf</description>
 <part name="R12" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
 <part name="R13" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
 <part name="GND16" library="supply1" deviceset="GND" device=""/>
-<part name="C5" library="rcl" deviceset="C-EU" device="C0805" value="2.2uF"/>
+<part name="C5" library="rcl" deviceset="C-EU" device="C0805" value="2200nF"/>
 <part name="C6" library="rcl" deviceset="C-EU" device="C0805" value="10nF"/>
 <part name="C7" library="rcl" deviceset="C-EU" device="C0805" value="10uF"/>
 <part name="GND17" library="supply1" deviceset="GND" device=""/>
