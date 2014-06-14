@@ -3280,6 +3280,28 @@ We've spent an enormous amount of time creating and checking these footprints an
 <pad name="4" x="1.5" y="0" drill="0.7"/>
 <pad name="5" x="3" y="0" drill="0.7"/>
 </package>
+<package name="AUDIO-JACK-TRRS-SMD">
+<wire x1="0.5" y1="-3.3" x2="10.5" y2="-3.3" width="0.254" layer="21"/>
+<wire x1="12.2" y1="3.3" x2="12.2" y2="-3.3" width="0.254" layer="21"/>
+<wire x1="12.2" y1="3.3" x2="11" y2="3.3" width="0.254" layer="21"/>
+<wire x1="0.5" y1="3.3" x2="0" y2="3.3" width="0.254" layer="51"/>
+<wire x1="0" y1="3.3" x2="0" y2="2.8" width="0.254" layer="51"/>
+<wire x1="0" y1="2.8" x2="0" y2="-2.8" width="0.254" layer="51"/>
+<wire x1="0" y1="-2.8" x2="0" y2="-3.3" width="0.254" layer="51"/>
+<wire x1="0" y1="-3.3" x2="0.5" y2="-3.3" width="0.254" layer="51"/>
+<wire x1="0" y1="2.8" x2="-2" y2="2.8" width="0.254" layer="51"/>
+<wire x1="-2" y1="2.8" x2="-2" y2="-2.8" width="0.254" layer="51"/>
+<wire x1="-2" y1="-2.8" x2="0" y2="-2.8" width="0.254" layer="51"/>
+<smd name="TIP" x="10.2" y="3.25" dx="1.2" dy="2.5" layer="1"/>
+<smd name="EARTH" x="11.3" y="-3.25" dx="1.2" dy="2.5" layer="1"/>
+<smd name="RING1" x="6.2" y="3.25" dx="1.2" dy="2.5" layer="1"/>
+<smd name="RING2" x="3.2" y="3.25" dx="1.2" dy="2.5" layer="1" rot="R180"/>
+<hole x="1.6" y="0" drill="1.2"/>
+<hole x="8.6" y="0" drill="1.2"/>
+<wire x1="7" y1="3.3" x2="9.4" y2="3.3" width="0.254" layer="21"/>
+<wire x1="4" y1="3.3" x2="5.4" y2="3.3" width="0.254" layer="21"/>
+<wire x1="0.5" y1="3.3" x2="2.4" y2="3.3" width="0.254" layer="21"/>
+</package>
 </packages>
 <symbols>
 <symbol name="PIC-ISCP-MINI">
@@ -3300,6 +3322,25 @@ We've spent an enormous amount of time creating and checking these footprints an
 <pin name="PGD" x="-7.62" y="-2.54" visible="pin" length="middle" direction="pas" swaplevel="1"/>
 <pin name="PGC" x="-7.62" y="-5.08" visible="pin" length="middle" direction="pas" swaplevel="1"/>
 </symbol>
+<symbol name="AUDIO-JACK3-TRRS">
+<wire x1="-3.81" y1="-5.08" x2="-2.54" y2="-3.81" width="0.1524" layer="94"/>
+<wire x1="-2.54" y1="-3.81" x2="-1.27" y2="-5.08" width="0.1524" layer="94"/>
+<wire x1="-1.27" y1="-5.08" x2="2.54" y2="-5.08" width="0.1524" layer="94"/>
+<wire x1="2.54" y1="2.54" x2="0" y2="2.54" width="0.1524" layer="94"/>
+<wire x1="0" y1="2.54" x2="-1.27" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="-1.27" y1="1.27" x2="-2.54" y2="2.54" width="0.1524" layer="94"/>
+<wire x1="2.54" y1="5.08" x2="-5.08" y2="5.08" width="0.1524" layer="94"/>
+<text x="-5.08" y="5.588" size="1.778" layer="95">&gt;NAME</text>
+<text x="-5.08" y="-7.62" size="1.778" layer="96">&gt;VALUE</text>
+<rectangle x1="-6.35" y1="-5.08" x2="-5.08" y2="5.08" layer="94"/>
+<pin name="RING1" x="5.08" y="2.54" visible="off" length="short" rot="R180"/>
+<pin name="RING2" x="5.08" y="-5.08" visible="off" length="short" rot="R180"/>
+<pin name="EARTH" x="5.08" y="5.08" visible="off" length="short" rot="R180"/>
+<pin name="TIP" x="5.08" y="-2.54" visible="off" length="short" rot="R180"/>
+<wire x1="-1.27" y1="-2.54" x2="0" y2="-1.27" width="0.1524" layer="94"/>
+<wire x1="0" y1="-1.27" x2="1.27" y2="-2.54" width="0.1524" layer="94"/>
+<wire x1="1.27" y1="-2.54" x2="2.54" y2="-2.54" width="0.1524" layer="94"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="PIC-ICSP-MINI">
@@ -3316,6 +3357,25 @@ Miniature 5-pin connection for temporary programming of PICs. Use this device in
 <connect gate="G$1" pin="PGD" pad="4"/>
 <connect gate="G$1" pin="VCC" pad="2"/>
 <connect gate="G$1" pin="VPP" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="AUDIO-JACK3">
+<description>Audio jack - 3.5mm TRRS variety - two rings.</description>
+<gates>
+<gate name="G$1" symbol="AUDIO-JACK3-TRRS" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="AUDIO-JACK-TRRS-SMD">
+<connects>
+<connect gate="G$1" pin="EARTH" pad="EARTH"/>
+<connect gate="G$1" pin="RING1" pad="RING1"/>
+<connect gate="G$1" pin="RING2" pad="RING2"/>
+<connect gate="G$1" pin="TIP" pad="TIP"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -9683,6 +9743,8 @@ Source: AVX .. aphvc.pdf</description>
 <part name="Q1" library="transistor-small-signal" deviceset="BSS123" device=""/>
 <part name="C4" library="rcl" deviceset="C-EU" device="C0805"/>
 <part name="R4" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
+<part name="U$2" library="SparkFun-Connectors" deviceset="AUDIO-JACK3" device=""/>
+<part name="GND12" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -9729,6 +9791,8 @@ Source: AVX .. aphvc.pdf</description>
 <instance part="Q1" gate="G$1" x="269.24" y="12.7" rot="R270"/>
 <instance part="C4" gate="G$1" x="289.56" y="30.48" rot="R90"/>
 <instance part="R4" gate="G$1" x="203.2" y="66.04" rot="R90"/>
+<instance part="U$2" gate="G$1" x="266.7" y="91.44" rot="R180"/>
+<instance part="GND12" gate="1" x="256.54" y="78.74"/>
 </instances>
 <busses>
 </busses>
@@ -9826,6 +9890,12 @@ Source: AVX .. aphvc.pdf</description>
 <pinref part="R4" gate="G$1" pin="1"/>
 <pinref part="GND5" gate="1" pin="GND"/>
 <wire x1="203.2" y1="60.96" x2="203.2" y2="55.88" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="RING2"/>
+<pinref part="GND12" gate="1" pin="GND"/>
+<wire x1="261.62" y1="96.52" x2="256.54" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="256.54" y1="96.52" x2="256.54" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -9962,9 +10032,10 @@ Source: AVX .. aphvc.pdf</description>
 </net>
 <net name="N$16" class="0">
 <segment>
-<pinref part="Q1" gate="G$1" pin="D"/>
-<pinref part="BAT1" gate="G$1" pin="+"/>
-<wire x1="274.32" y1="12.7" x2="284.48" y2="12.7" width="0.1524" layer="91"/>
+<pinref part="IC1" gate="G$1" pin="RA5/AN4/!SS!/HLVDIN/C2OUT"/>
+<wire x1="55.88" y1="22.86" x2="50.8" y2="22.86" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="22.86" x2="50.8" y2="-17.78" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="-17.78" x2="279.4" y2="-17.78" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$17" class="0">
@@ -9978,6 +10049,13 @@ Source: AVX .. aphvc.pdf</description>
 <pinref part="C4" gate="G$1" pin="1"/>
 <wire x1="266.7" y1="30.48" x2="287.02" y2="30.48" width="0.1524" layer="91"/>
 <junction x="266.7" y="30.48"/>
+</segment>
+</net>
+<net name="N$13" class="0">
+<segment>
+<pinref part="BAT1" gate="G$1" pin="+"/>
+<pinref part="Q1" gate="G$1" pin="D"/>
+<wire x1="274.32" y1="12.7" x2="284.48" y2="12.7" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
