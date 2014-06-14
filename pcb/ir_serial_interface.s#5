@@ -10081,6 +10081,10 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <part name="P+7" library="supply1" deviceset="V+" device=""/>
 <part name="P+8" library="supply1" deviceset="V+" device=""/>
 <part name="R11" library="resistor" deviceset="R-EU_" device="M0805" value="2k"/>
+<part name="P+9" library="supply1" deviceset="V+" device=""/>
+<part name="GND15" library="supply1" deviceset="GND" device=""/>
+<part name="R12" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
+<part name="R13" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
 </parts>
 <sheets>
 <sheet>
@@ -10134,6 +10138,10 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <instance part="P+7" gate="1" x="228.6" y="93.98"/>
 <instance part="P+8" gate="1" x="205.74" y="106.68"/>
 <instance part="R11" gate="G$1" x="205.74" y="73.66" rot="R270"/>
+<instance part="P+9" gate="1" x="33.02" y="35.56"/>
+<instance part="GND15" gate="1" x="33.02" y="5.08"/>
+<instance part="R12" gate="G$1" x="33.02" y="15.24" rot="R90"/>
+<instance part="R13" gate="G$1" x="33.02" y="27.94" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -10246,6 +10254,11 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <pinref part="R11" gate="G$1" pin="2"/>
 <pinref part="GND4" gate="1" pin="GND"/>
 <wire x1="205.74" y1="68.58" x2="205.74" y2="66.04" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="R12" gate="G$1" pin="1"/>
+<pinref part="GND15" gate="1" pin="GND"/>
+<wire x1="33.02" y1="10.16" x2="33.02" y2="7.62" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -10386,9 +10399,11 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <net name="N$16" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="RA5/AN4/!SS!/HLVDIN/C2OUT"/>
-<wire x1="55.88" y1="22.86" x2="50.8" y2="22.86" width="0.1524" layer="91"/>
-<wire x1="50.8" y1="22.86" x2="50.8" y2="-17.78" width="0.1524" layer="91"/>
-<wire x1="50.8" y1="-17.78" x2="279.4" y2="-17.78" width="0.1524" layer="91"/>
+<pinref part="R13" gate="G$1" pin="1"/>
+<pinref part="R12" gate="G$1" pin="2"/>
+<wire x1="33.02" y1="22.86" x2="33.02" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="22.86" x2="33.02" y2="22.86" width="0.1524" layer="91"/>
+<junction x="33.02" y="22.86"/>
 </segment>
 </net>
 <net name="N$12" class="0">
@@ -10418,6 +10433,10 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <pinref part="P+8" gate="1" pin="V+"/>
 <pinref part="Q2" gate="G$1" pin="C"/>
 <wire x1="205.74" y1="104.14" x2="205.74" y2="96.52" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="P+9" gate="1" pin="V+"/>
+<pinref part="R13" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="N$13" class="0">

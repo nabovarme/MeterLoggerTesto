@@ -10085,6 +10085,7 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <part name="GND15" library="supply1" deviceset="GND" device=""/>
 <part name="R12" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
 <part name="R13" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
+<part name="GND16" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -10142,6 +10143,7 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <instance part="GND15" gate="1" x="33.02" y="5.08"/>
 <instance part="R12" gate="G$1" x="33.02" y="15.24" rot="R90"/>
 <instance part="R13" gate="G$1" x="33.02" y="27.94" rot="R90"/>
+<instance part="GND16" gate="1" x="48.26" y="15.24"/>
 </instances>
 <busses>
 </busses>
@@ -10259,6 +10261,12 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <pinref part="R12" gate="G$1" pin="1"/>
 <pinref part="GND15" gate="1" pin="GND"/>
 <wire x1="33.02" y1="10.16" x2="33.02" y2="7.62" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="IC1" gate="G$1" pin="VSS"/>
+<pinref part="GND16" gate="1" pin="GND"/>
+<wire x1="55.88" y1="20.32" x2="48.26" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="20.32" x2="48.26" y2="17.78" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">

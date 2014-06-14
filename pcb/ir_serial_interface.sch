@@ -10057,21 +10057,21 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <part name="R7" library="resistor" deviceset="R-EU_" device="M0805" value="10k"/>
 <part name="GND7" library="supply1" deviceset="GND" device=""/>
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
-<part name="D1" library="SparkFun-LED" deviceset="LED-RED" device="LILYPAD" value="RED"/>
+<part name="D2" library="SparkFun-LED" deviceset="LED-RED" device="LILYPAD" value="RED"/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="R8" library="resistor" deviceset="R-EU_" device="M0805" value="190"/>
 <part name="BAT1" library="SparkFun-Electromechanical" deviceset="BATTERY" device="20PTH" value="20mm coincell"/>
 <part name="P+5" library="supply1" deviceset="+5V" device=""/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
 <part name="R9" library="resistor" deviceset="R-EU_" device="M0805" value="190"/>
-<part name="D4" library="led" deviceset="LED" device="3MM" value="IR"/>
+<part name="D1" library="led" deviceset="LED" device="3MM" value="IR"/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
 <part name="C4" library="rcl" deviceset="C-EU" device="C0805"/>
 <part name="R4" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
 <part name="U$2" library="SparkFun-Connectors" deviceset="AUDIO-JACK3" device=""/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
 <part name="Q2" library="transistor-npn" deviceset="BC847*" device="SMD"/>
-<part name="D2" library="semicon-smd-ipc" deviceset="D-" device="A1-C3"/>
+<part name="D3" library="semicon-smd-ipc" deviceset="D-" device="A1-C3"/>
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
 <part name="R10" library="resistor" deviceset="R-EU_" device="M0805" value="2k"/>
 <part name="P+6" library="supply1" deviceset="V+" device=""/>
@@ -10114,21 +10114,21 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <instance part="R7" gate="G$1" x="58.42" y="76.2" rot="R180"/>
 <instance part="GND7" gate="1" x="86.36" y="58.42"/>
 <instance part="GND8" gate="1" x="68.58" y="58.42"/>
-<instance part="D1" gate="G$1" x="142.24" y="66.04" rot="R90"/>
+<instance part="D2" gate="G$1" x="142.24" y="66.04" rot="R90"/>
 <instance part="GND9" gate="1" x="149.86" y="60.96"/>
 <instance part="R8" gate="G$1" x="134.62" y="60.96" rot="R90"/>
 <instance part="BAT1" gate="G$1" x="259.08" y="48.26" rot="R270"/>
 <instance part="P+5" gate="1" x="259.08" y="93.98"/>
 <instance part="GND10" gate="1" x="172.72" y="63.5"/>
 <instance part="R9" gate="G$1" x="137.16" y="48.26" rot="R90"/>
-<instance part="D4" gate="G$1" x="142.24" y="53.34" rot="R90"/>
+<instance part="D1" gate="G$1" x="142.24" y="53.34" rot="R90"/>
 <instance part="GND11" gate="1" x="149.86" y="48.26"/>
 <instance part="C4" gate="G$1" x="172.72" y="78.74"/>
 <instance part="R4" gate="G$1" x="76.2" y="104.14" rot="R90"/>
 <instance part="U$2" gate="G$1" x="127" y="114.3" rot="R180"/>
 <instance part="GND12" gate="1" x="106.68" y="116.84"/>
 <instance part="Q2" gate="G$1" x="203.2" y="91.44"/>
-<instance part="D2" gate="G$1" x="162.56" y="91.44"/>
+<instance part="D3" gate="G$1" x="162.56" y="91.44"/>
 <instance part="GND4" gate="1" x="205.74" y="63.5"/>
 <instance part="R10" gate="G$1" x="185.42" y="91.44" rot="R180"/>
 <instance part="P+6" gate="1" x="259.08" y="58.42"/>
@@ -10213,13 +10213,13 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <wire x1="68.58" y1="60.96" x2="68.58" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="D1" gate="G$1" pin="C"/>
+<pinref part="D2" gate="G$1" pin="C"/>
 <pinref part="GND9" gate="1" pin="GND"/>
 <wire x1="147.32" y1="66.04" x2="149.86" y2="66.04" width="0.1524" layer="91"/>
 <wire x1="149.86" y1="66.04" x2="149.86" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="D4" gate="G$1" pin="C"/>
+<pinref part="D1" gate="G$1" pin="C"/>
 <pinref part="GND11" gate="1" pin="GND"/>
 <wire x1="147.32" y1="53.34" x2="149.86" y2="53.34" width="0.1524" layer="91"/>
 <wire x1="149.86" y1="53.34" x2="149.86" y2="50.8" width="0.1524" layer="91"/>
@@ -10359,7 +10359,7 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 </net>
 <net name="N$10" class="0">
 <segment>
-<pinref part="D1" gate="G$1" pin="A"/>
+<pinref part="D2" gate="G$1" pin="A"/>
 <pinref part="R8" gate="G$1" pin="2"/>
 <wire x1="139.7" y1="66.04" x2="134.62" y2="66.04" width="0.1524" layer="91"/>
 </segment>
@@ -10383,7 +10383,7 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 </net>
 <net name="N$14" class="0">
 <segment>
-<pinref part="D4" gate="G$1" pin="A"/>
+<pinref part="D1" gate="G$1" pin="A"/>
 <pinref part="R9" gate="G$1" pin="2"/>
 <wire x1="139.7" y1="53.34" x2="137.16" y2="53.34" width="0.1524" layer="91"/>
 </segment>
@@ -10408,7 +10408,7 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 </net>
 <net name="N$12" class="0">
 <segment>
-<pinref part="D2" gate="G$1" pin="A"/>
+<pinref part="D3" gate="G$1" pin="A"/>
 <wire x1="160.02" y1="91.44" x2="116.84" y2="91.44" width="0.1524" layer="91"/>
 <wire x1="116.84" y1="91.44" x2="116.84" y2="111.76" width="0.1524" layer="91"/>
 <pinref part="U$2" gate="G$1" pin="RING1"/>
@@ -10457,7 +10457,7 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 </net>
 <net name="N$18" class="0">
 <segment>
-<pinref part="D2" gate="G$1" pin="C"/>
+<pinref part="D3" gate="G$1" pin="C"/>
 <pinref part="R10" gate="G$1" pin="2"/>
 <wire x1="165.1" y1="91.44" x2="172.72" y2="91.44" width="0.1524" layer="91"/>
 <pinref part="C4" gate="G$1" pin="1"/>

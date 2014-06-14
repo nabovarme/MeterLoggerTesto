@@ -2782,46 +2782,57 @@ design rules under a new name.</description>
 </pass>
 </autorouter>
 <elements>
-<element name="T1" library="opto-trans-siemens" package="SFH303" value="SFH303" x="24.13" y="34.29" rot="R180">
+<element name="T1" library="opto-trans-siemens" package="SFH303" value="SFH303" x="24.13" y="34.29" smashed="yes" rot="R180">
 <attribute name="OC_NEWARK" value="unknown" x="24.13" y="34.29" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MPN" value="" x="24.13" y="34.29" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MF" value="" x="24.13" y="34.29" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="24.13" y="34.29" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="NAME" x="25.4" y="35.2425" size="1.016" layer="25" ratio="10" rot="R270"/>
 </element>
 <element name="R2" library="resistor" package="M0805" value="10k" x="25.4" y="29.21" rot="MR0"/>
 <element name="U$1" library="SparkFun-Connectors" package="PIC-ICSP-MINI" value="PIC-ICSP-MINI" x="52.07" y="48.26"/>
 <element name="R1" library="resistor" package="M0805" value="10k" x="45.72" y="48.26"/>
 <element name="R3" library="resistor" package="M0805" value="100k" x="51.1175" y="30.48" rot="R90"/>
 <element name="C1" library="SparkFun (old)" package="0805" value="0.2uF" x="53.34" y="30.1625" rot="R90"/>
-<element name="IC1" library="microchip" package="SO28W" value="PIC18F2550_28W" x="35.8775" y="36.83">
+<element name="IC1" library="microchip" package="SO28W" value="PIC18F2550_28W" x="35.8775" y="36.83" smashed="yes">
 <attribute name="OC_NEWARK" value="73K1297" x="35.8775" y="36.83" size="1.778" layer="27" display="off"/>
 <attribute name="MPN" value="PIC18F2550-I/SO" x="35.8775" y="36.83" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="MICROCHIP" x="35.8775" y="36.83" size="1.778" layer="27" display="off"/>
 <attribute name="OC_FARNELL" value="9321268" x="35.8775" y="36.83" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="27.686" y="34.9885" size="1.016" layer="25" ratio="10" rot="R90"/>
+<attribute name="VALUE" x="45.339" y="43.6245" size="0.6096" layer="27" ratio="10" rot="R180"/>
 </element>
 <element name="C2" library="SparkFun (old)" package="0805" value="47pF" x="30.48" y="29.845" rot="R180"/>
 <element name="C3" library="SparkFun (old)" package="0805" value="0.2uF" x="57.4675" y="43.815"/>
 <element name="R5" library="resistor" package="M0805" value="2k" x="60.325" y="44.7675" rot="R270"/>
 <element name="R6" library="resistor" package="M0805" value="2k" x="54.61" y="44.7675" rot="R270"/>
 <element name="R7" library="resistor" package="M0805" value="10k" x="49.53" y="41.275" rot="R270"/>
-<element name="D1" library="SparkFun-LED" package="LED-1206" value="RED" x="27.94" y="46.0375" rot="R180">
+<element name="D2" library="SparkFun-LED" package="LED-1206" value="RED" x="27.94" y="46.0375" smashed="yes" rot="R180">
 <attribute name="PROD_ID" value="DIO-09912" x="27.94" y="46.0375" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="NAME" x="28.829" y="48.4505" size="1.016" layer="25" ratio="10" rot="R180"/>
 </element>
 <element name="R8" library="resistor" package="M0805" value="190" x="32.0675" y="45.085" rot="R90"/>
 <element name="BAT1" library="SparkFun-Electromechanical" package="BATTCOM_20MM_PTH" value="20mm coincell" x="46.355" y="38.1" rot="MR0"/>
 <element name="R9" library="resistor" package="M0805" value="190" x="35.8775" y="45.085" rot="R90"/>
-<element name="D4" library="led" package="LED3MM" value="IR" x="24.13" y="41.91" rot="R270"/>
+<element name="D1" library="led" package="LED3MM" value="IR" x="24.13" y="41.91" smashed="yes" rot="R270">
+<attribute name="NAME" x="26.0985" y="41.91" size="1.016" layer="25" ratio="10" rot="R270"/>
+</element>
 <element name="C4" library="rcl" package="C0805" value="" x="51.435" y="43.815" rot="MR0"/>
 <element name="R4" library="resistor" package="M0805" value="100k" x="47.9425" y="34.6075" rot="R270"/>
 <element name="U$2" library="SparkFun-Connectors" package="AUDIO-JACK-TRRS-SMD" value="AUDIO-JACK3" x="63.5" y="37.465" rot="R180"/>
 <element name="Q2" library="transistor-npn" package="SOT23" value="BC847SMD" x="51.435" y="34.925" rot="MR180"/>
-<element name="D2" library="semicon-smd-ipc" package="SOT23" value="" x="57.15" y="41.275" rot="MR270"/>
+<element name="D3" library="semicon-smd-ipc" package="SOT23" value="" x="57.15" y="41.275" smashed="yes" rot="MR270">
+<attribute name="NAME" x="56.1975" y="43.815" size="0.6096" layer="26" rot="MR180"/>
+<attribute name="VALUE" x="60.325" y="43.18" size="1.27" layer="28" rot="MR270"/>
+</element>
 <element name="R10" library="resistor" package="M0805" value="2k" x="51.435" y="41.275" rot="MR180"/>
-<element name="IC2" library="texas" package="SOT23-DBV" value="LP2992" x="56.515" y="32.0675" rot="MR180">
+<element name="IC2" library="texas" package="SOT23-DBV" value="LP2992" x="56.515" y="32.0675" smashed="yes" rot="MR180">
 <attribute name="OC_NEWARK" value="77C1171" x="56.515" y="32.0675" size="1.778" layer="28" rot="MR180" display="off"/>
 <attribute name="MPN" value="TPS77001DBVT" x="56.515" y="32.0675" size="1.778" layer="28" rot="MR180" display="off"/>
 <attribute name="MF" value="TEXAS INSTRUMENTS" x="56.515" y="32.0675" size="1.778" layer="28" rot="MR180" display="off"/>
 <attribute name="OC_FARNELL" value="8461554" x="56.515" y="32.0675" size="1.778" layer="28" rot="MR180" display="off"/>
+<attribute name="NAME" x="58.7375" y="33.02" size="0.6096" layer="26" rot="MR270"/>
+<attribute name="VALUE" x="54.0385" y="30.48" size="0.6096" layer="28" rot="MR90"/>
 </element>
 <element name="R11" library="resistor" package="M0805" value="100k" x="58.42" y="35.8775" rot="MR180"/>
 <element name="R12" library="resistor" package="M0805" value="100k" x="34.6075" y="29.5275"/>
@@ -2866,8 +2877,8 @@ design rules under a new name.</description>
 <contactref element="IC1" pad="19"/>
 <contactref element="R5" pad="1"/>
 <contactref element="R6" pad="1"/>
-<contactref element="D1" pad="C"/>
-<contactref element="D4" pad="K"/>
+<contactref element="D2" pad="C"/>
+<contactref element="D1" pad="K"/>
 <contactref element="R4" pad="1"/>
 <contactref element="U$2" pad="RING2"/>
 <contactref element="C4" pad="2"/>
@@ -2993,7 +3004,7 @@ design rules under a new name.</description>
 <wire x1="42.2275" y1="36.5125" x2="42.2275" y2="32.05" width="0.4064" layer="1"/>
 </signal>
 <signal name="N$10">
-<contactref element="D1" pad="A"/>
+<contactref element="D2" pad="A"/>
 <contactref element="R8" pad="2"/>
 <wire x1="32.0675" y1="46.035" x2="29.4425" y2="46.035" width="0.4064" layer="1"/>
 <wire x1="29.4425" y1="46.035" x2="29.44" y2="46.0375" width="0.4064" layer="1"/>
@@ -3009,7 +3020,7 @@ design rules under a new name.</description>
 <wire x1="32.0675" y1="41.61" x2="32.0675" y2="44.135" width="0.4064" layer="1"/>
 </signal>
 <signal name="N$14">
-<contactref element="D4" pad="A"/>
+<contactref element="D1" pad="A"/>
 <contactref element="R9" pad="2"/>
 <wire x1="24.13" y1="43.18" x2="24.13" y2="46.99" width="0.4064" layer="1"/>
 <wire x1="24.13" y1="46.99" x2="25.4" y2="48.26" width="0.4064" layer="1"/>
@@ -3031,7 +3042,7 @@ design rules under a new name.</description>
 <wire x1="35.8775" y1="30.165" x2="35.5575" y2="29.5275" width="0.4064" layer="1"/>
 </signal>
 <signal name="N$12">
-<contactref element="D2" pad="1"/>
+<contactref element="D3" pad="1"/>
 <contactref element="U$2" pad="RING1"/>
 <wire x1="57.3" y1="34.215" x2="57.3" y2="35.075" width="0.4064" layer="1"/>
 <wire x1="57.3" y1="35.075" x2="59.69" y2="37.465" width="0.4064" layer="1"/>
@@ -3073,7 +3084,7 @@ design rules under a new name.</description>
 <wire x1="50.485" y1="41.275" x2="50.485" y2="36.025" width="0.4064" layer="16"/>
 </signal>
 <signal name="N$18">
-<contactref element="D2" pad="3"/>
+<contactref element="D3" pad="3"/>
 <contactref element="R10" pad="2"/>
 <contactref element="C4" pad="1"/>
 <wire x1="56.05" y1="41.275" x2="52.385" y2="41.275" width="0.4064" layer="16"/>

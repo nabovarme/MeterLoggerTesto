@@ -10408,13 +10408,11 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 </net>
 <net name="N$12" class="0">
 <segment>
-<wire x1="121.92" y1="111.76" x2="124.46" y2="111.76" width="0.1524" layer="91"/>
-<pinref part="U$2" gate="G$1" pin="RING1"/>
 <pinref part="D2" gate="G$1" pin="A"/>
 <wire x1="160.02" y1="91.44" x2="116.84" y2="91.44" width="0.1524" layer="91"/>
 <wire x1="116.84" y1="91.44" x2="116.84" y2="111.76" width="0.1524" layer="91"/>
-<wire x1="116.84" y1="111.76" x2="121.92" y2="111.76" width="0.1524" layer="91"/>
-<junction x="121.92" y="111.76"/>
+<pinref part="U$2" gate="G$1" pin="RING1"/>
+<wire x1="121.92" y1="111.76" x2="116.84" y2="111.76" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="V+" class="0">
