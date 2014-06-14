@@ -2798,7 +2798,7 @@ design rules under a new name.</description>
 <attribute name="MPN" value="PIC18F2550-I/SO" x="35.8775" y="36.83" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="MICROCHIP" x="35.8775" y="36.83" size="1.778" layer="27" display="off"/>
 <attribute name="OC_FARNELL" value="9321268" x="35.8775" y="36.83" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="29.9085" y="35.306" size="1.778" layer="25" ratio="10" rot="R90"/>
+<attribute name="NAME" x="27.686" y="34.9885" size="1.016" layer="25" ratio="10" rot="R90"/>
 <attribute name="VALUE" x="45.339" y="43.6245" size="0.6096" layer="27" ratio="10" rot="R180"/>
 </element>
 <element name="C2" library="SparkFun (old)" package="0805" value="47pF" x="30.48" y="29.845" rot="R180"/>
@@ -2817,13 +2817,18 @@ design rules under a new name.</description>
 <element name="R4" library="resistor" package="M0805" value="100k" x="47.9425" y="34.6075" rot="R270"/>
 <element name="U$2" library="SparkFun-Connectors" package="AUDIO-JACK-TRRS-SMD" value="AUDIO-JACK3" x="63.5" y="37.465" rot="R180"/>
 <element name="Q2" library="transistor-npn" package="SOT23" value="BC847SMD" x="51.435" y="34.925" rot="MR180"/>
-<element name="D2" library="semicon-smd-ipc" package="SOT23" value="" x="57.15" y="41.275" rot="MR270"/>
+<element name="D2" library="semicon-smd-ipc" package="SOT23" value="" x="57.15" y="41.275" smashed="yes" rot="MR270">
+<attribute name="NAME" x="56.1975" y="43.815" size="0.6096" layer="26" rot="MR180"/>
+<attribute name="VALUE" x="60.325" y="43.18" size="1.27" layer="28" rot="MR270"/>
+</element>
 <element name="R10" library="resistor" package="M0805" value="2k" x="51.435" y="41.275" rot="MR180"/>
-<element name="IC2" library="texas" package="SOT23-DBV" value="LP2992" x="56.515" y="32.0675" rot="MR180">
+<element name="IC2" library="texas" package="SOT23-DBV" value="LP2992" x="56.515" y="32.0675" smashed="yes" rot="MR180">
 <attribute name="OC_NEWARK" value="77C1171" x="56.515" y="32.0675" size="1.778" layer="28" rot="MR180" display="off"/>
 <attribute name="MPN" value="TPS77001DBVT" x="56.515" y="32.0675" size="1.778" layer="28" rot="MR180" display="off"/>
 <attribute name="MF" value="TEXAS INSTRUMENTS" x="56.515" y="32.0675" size="1.778" layer="28" rot="MR180" display="off"/>
 <attribute name="OC_FARNELL" value="8461554" x="56.515" y="32.0675" size="1.778" layer="28" rot="MR180" display="off"/>
+<attribute name="NAME" x="58.7375" y="33.02" size="0.6096" layer="26" rot="MR270"/>
+<attribute name="VALUE" x="54.0385" y="30.48" size="0.6096" layer="28" rot="MR90"/>
 </element>
 <element name="R11" library="resistor" package="M0805" value="100k" x="58.42" y="35.8775" rot="MR180"/>
 <element name="R12" library="resistor" package="M0805" value="100k" x="34.6075" y="29.5275"/>
