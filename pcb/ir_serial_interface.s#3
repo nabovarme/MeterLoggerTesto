@@ -8610,7 +8610,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="R9" library="resistor" deviceset="R-EU_" device="M0805" value="180"/>
 <part name="D1" library="SparkFun-LED" deviceset="LTE-302" device="" value="IR"/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
-<part name="C4" library="rcl" deviceset="C-EU" device="C0805"/>
+<part name="C4" library="rcl" deviceset="C-EU" device="C0805" value="220nF"/>
 <part name="R4" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
 <part name="U$2" library="SparkFun-Connectors" deviceset="AUDIO-JACK3" device=""/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>

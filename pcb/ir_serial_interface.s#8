@@ -10011,7 +10011,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </class>
 </classes>
 <parts>
-<part name="T1" library="SparkFun-Sensors" deviceset="LTR-301" device=""/>
+<part name="T1" library="SparkFun-Sensors" deviceset="LTR-301" device="" value="PS401"/>
 <part name="P+1" library="supply1" deviceset="+5V" device=""/>
 <part name="GND1" library="supply1" deviceset="GND" device=""/>
 <part name="P+2" library="supply1" deviceset="+5V" device=""/>

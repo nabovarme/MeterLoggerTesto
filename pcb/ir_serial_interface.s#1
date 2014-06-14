@@ -8428,7 +8428,7 @@ Source: Fairchild .. BAT54.pdf</description>
 <part name="R4" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
 <part name="U$2" library="SparkFun-Connectors" deviceset="AUDIO-JACK3" device=""/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
-<part name="Q2" library="transistor-npn" deviceset="BC847*" device="SMD"/>
+<part name="Q2" library="transistor-npn" deviceset="BC847*" device="SMD" value="MMBT6428LT1G"/>
 <part name="D3" library="diode" deviceset="BAT54" device="" value="BAT65-05"/>
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
 <part name="R10" library="resistor" deviceset="R-EU_" device="M0805" value="2k"/>

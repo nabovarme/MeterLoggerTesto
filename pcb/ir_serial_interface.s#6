@@ -8603,11 +8603,11 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
 <part name="D2" library="SparkFun-LED" deviceset="LED-RED" device="LILYPAD" value="RED"/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
-<part name="R8" library="resistor" deviceset="R-EU_" device="M0805" value="190"/>
+<part name="R8" library="resistor" deviceset="R-EU_" device="M0805" value="180"/>
 <part name="BAT1" library="SparkFun-Electromechanical" deviceset="BATTERY" device="20PTH" value="20mm coincell"/>
 <part name="P+5" library="supply1" deviceset="+5V" device=""/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
-<part name="R9" library="resistor" deviceset="R-EU_" device="M0805" value="190"/>
+<part name="R9" library="resistor" deviceset="R-EU_" device="M0805" value="180"/>
 <part name="D1" library="SparkFun-LED" deviceset="LTE-302" device="" value="IR"/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
 <part name="C4" library="rcl" deviceset="C-EU" device="C0805"/>

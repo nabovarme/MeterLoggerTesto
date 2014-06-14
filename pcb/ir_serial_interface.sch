@@ -8404,7 +8404,7 @@ Source: Fairchild .. BAT54.pdf</description>
 <part name="R1" library="resistor" deviceset="R-EU_" device="M0805" value="10k"/>
 <part name="R3" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
 <part name="C2" library="SparkFun (old)" deviceset="CAP" device="0805" value="220nF"/>
-<part name="IC1" library="microchip" deviceset="PIC18F2*_28" device="W" technology="550"/>
+<part name="IC1" library="microchip" deviceset="PIC18F2*_28" device="W" technology="550" value="PIC18LF2550"/>
 <part name="C1" library="SparkFun (old)" deviceset="CAP" device="0805" value="47pF"/>
 <part name="P+4" library="supply1" deviceset="+5V" device=""/>
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
