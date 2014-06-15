@@ -146,7 +146,7 @@
 <text x="53.34" y="41.275" size="0.6096" layer="121" ratio="10">Mic</text>
 <text x="57.4675" y="32.0675" size="0.6096" layer="121" ratio="10" align="bottom-center">R</text>
 <text x="60.325" y="32.0675" size="0.6096" layer="121" ratio="10" align="bottom-center">Ground</text>
-<text x="62.865" y="38.735" size="0.6096" layer="122" rot="R90">D3-D6: BAT65-05</text>
+<text x="62.23" y="38.735" size="0.6096" layer="122" rot="MR90">D3-D6: BAT65-05</text>
 </plain>
 <libraries>
 <library name="resistor">
@@ -2917,7 +2917,7 @@ design rules under a new name.</description>
 </element>
 <element name="D7" library="diode" package="SOT23" value="MMBZ5231BLT1G" x="60.0075" y="33.9725" smashed="yes" rot="MR270">
 <attribute name="NAME" x="58.42" y="34.925" size="0.6096" layer="26" rot="MR90"/>
-<attribute name="VALUE" x="62.865" y="36.195" size="0.6096" layer="28" rot="MR270"/>
+<attribute name="VALUE" x="62.23" y="36.195" size="0.6096" layer="28" rot="MR270" align="top-left"/>
 </element>
 </elements>
 <signals>
