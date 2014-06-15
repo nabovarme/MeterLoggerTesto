@@ -9518,6 +9518,14 @@ Source: Fairchild .. BAT54.pdf</description>
 </nets>
 </sheet>
 </sheets>
+<errors>
+<approved hash="104,1,55.88,20.32,IC1,VSS,GND,,,"/>
+<approved hash="104,1,132.08,17.78,IC1,VDD,+5V,,,"/>
+<approved hash="104,1,132.08,15.24,IC1,VSS,GND,,,"/>
+<approved hash="202,1,55.88,17.78,IC1,OSC1/CLKI,,,,"/>
+<approved hash="104,1,259.08,17.78,BAT1,-,GND,,,"/>
+<approved hash="104,1,259.08,27.94,BAT1,+,V+,,,"/>
+</errors>
 </schematic>
 </drawing>
 </eagle>
