@@ -163,7 +163,6 @@ void main(void) {
 					}
 #endif
 					fsk_tx_enable();
-					sleep_ms(FSK_TX_SLEEP);
 					while (fifo_get(&cmd)) {	// and print them to serial
 						fsk_tx_byte(cmd);
 						sleep_ms(FSK_TX_SLEEP);
@@ -207,7 +206,6 @@ void main(void) {
 
 					// Send reply back to iOS
 					fsk_tx_enable();
-					sleep_ms(FSK_TX_SLEEP);
 					while (fifo_get(&sub_cmd)) {
 						fsk_tx_byte(sub_cmd);
 						sleep_ms(FSK_TX_SLEEP);
@@ -253,7 +251,7 @@ void main(void) {
 					}
 #endif
 					
-					rs232_tx_enable();
+					rs232_tx_enable(TIMER0_RS232_1200);
 					while (fifo_get(&sub_cmd)) {
 						rs232_tx_byte(sub_cmd);
 						sleep_ms(RS232_TX_SLEEP);
@@ -264,7 +262,7 @@ void main(void) {
 #ifdef DEBUG
 					//usart_puts("\n\rkamstrup - waiting for reply:\n\r");
 #endif
-					rs232_rx_enable();
+					rs232_rx_enable(TIMER0_RS232_1200);
 					last_fifo_size = 0;
 					sleep_ms(400);							// sleep 200 ms to let some data come in
 					fifo_size = fifo_in_use();
@@ -300,22 +298,12 @@ void main(void) {
 							nop
 						__endasm;
 						DEBUG2_PIN = 0;
-						//#ifndef OUTPUT_ON_SERIAL
 						fsk_tx_enable();
-						//#endif
-						sleep_ms(FSK_TX_SLEEP);
 						while (fifo_get(&sub_cmd)) {
-							//#ifdef OUTPUT_ON_SERIAL
-							//sprintf(debug_buffer, "%d ", sub_cmd);
-							//usart_puts(debug_buffer);
-							//#else
 							fsk_tx_byte(sub_cmd);
 							sleep_ms(FSK_TX_SLEEP);
-							//#endif
 						}
-						//#ifndef OUTPUT_ON_SERIAL
 						fsk_tx_disable();
-						//#endif
 					}
 					else {
 						// no reply from kamstrup meter...
@@ -340,7 +328,124 @@ void main(void) {
 						usart_puts(debug_buffer);
 #endif
 						fsk_tx_enable();
+						fsk_tx_byte(0x0d);
 						sleep_ms(FSK_TX_SLEEP);
+						fsk_tx_disable();
+					}
+#ifdef DEBUG
+					usart_puts("\n\rwaiting for new command\n\r");
+#endif
+					fsk_rx_enable();
+					break;
+				case PROTO_KAMSTRUP_MULTICAL:
+					fsk_rx_disable();
+#ifdef DEBUG
+					usart_puts("\n\rkamstrup - send multical frame data\n\r");
+#endif
+					
+					// wait for iOS stop sending multical command
+					fsk_rx_enable();
+					last_fifo_size = 0;
+					sleep_ms(400);							// sleep 400 ms to let some data come in
+					fifo_size = fifo_in_use();
+					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
+						last_fifo_size = fifo_size;
+						sleep_ms(200);						// return data when no data for 100 ms
+						fifo_size = fifo_in_use();
+					}			
+					fsk_rx_disable();
+					
+#ifdef DEBUG
+					usart_puts("\n\rkamstrup - multical frame received:\n\r");
+#endif
+#ifdef OUTPUT_ON_SERIAL
+					for (i = 0; i < fifo_in_use(); i++) {
+						// get every data from fifo...
+						fifo_get(&sub_cmd);
+						// ...print it...
+						sprintf(debug_buffer, "%d ", sub_cmd);
+						usart_puts(debug_buffer);
+						// ...and put it back
+						fifo_put(sub_cmd);
+					}
+#endif
+					
+					while (fifo_get(&sub_cmd)) {
+						rs232_tx_byte(sub_cmd);
+						sleep_ms(RS232_TX_SLEEP);
+					}
+					rs232_tx_disable();
+					
+					// Wait for multical reply
+#ifdef DEBUG
+					//usart_puts("\n\rkamstrup - waiting for reply:\n\r");
+#endif
+					rs232_rx_enable(TIMER0_RS232_300);
+					last_fifo_size = 0;
+					sleep_ms(400);							// sleep 200 ms to let some data come in
+					fifo_size = fifo_in_use();
+					// BUG: sometimes it does not wait for data...
+					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
+						last_fifo_size = fifo_size;
+						sleep_ms(200);						// return data when no data for 100 ms
+						fifo_size = fifo_in_use();
+					}			
+					
+					rs232_rx_disable();
+			
+					// Send reply back to iOS
+#ifdef DEBUG
+					usart_puts("\n\rkamstrup - multical reply received:\n\r");
+#endif
+#ifdef OUTPUT_ON_SERIAL
+					for (i = 0; i < fifo_in_use(); i++) {
+						// get every data from fifo...
+						fifo_get(&sub_cmd);
+						// ...print it...
+						sprintf(debug_buffer, "%d ", sub_cmd);
+						usart_puts(debug_buffer);
+						// ...and put it back
+						fifo_put(sub_cmd);
+					}
+#endif					
+					if (fifo_in_use()) {
+						// if there was a reply from kamstrup meter...
+						DEBUG2_PIN = 1;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG2_PIN = 0;
+						fsk_tx_enable();
+						while (fifo_get(&sub_cmd)) {
+							fsk_tx_byte(sub_cmd);
+							sleep_ms(FSK_TX_SLEEP);
+						}
+						fsk_tx_disable();
+					}
+					else {
+						// no reply from kamstrup meter...
+						DEBUG2_PIN = 1;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG2_PIN = 0;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG2_PIN = 1;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG2_PIN = 0;
+#ifdef DEBUG
+						sprintf(debug_buffer, "\n\rno reply from meter\n\r");
+						usart_puts(debug_buffer);
+#endif
+						fsk_tx_enable();
 						fsk_tx_byte(0x0d);
 						sleep_ms(FSK_TX_SLEEP);
 						fsk_tx_disable();
@@ -994,8 +1099,8 @@ void testo_ir_disable() {
 	INTCONbits.INT0IE = 0;		// disable ext int
 }
 
-void rs232_tx_enable() {
-	timer0_reload = TIMER0_RS232_1200;
+void rs232_tx_enable(unsigned int t) {
+	timer0_reload = t;
 
 	rs232_proto.state = INIT_STATE;
 	rs232_proto.data_len = 0;
@@ -1026,11 +1131,11 @@ void rs232_tx_disable() {
 	T0CONbits.TMR0ON = 0;
 }
 
-void rs232_rx_enable() {
+void rs232_rx_enable(unsigned int t) {
 	rs232_proto.state = START_BIT_WAIT;
 	rs232_proto.data_len = 0;
 
-	timer0_reload = TIMER0_RS232_1200;
+	timer0_reload = t;
 	
 	codec_type = RS232_RX;
 
@@ -1061,6 +1166,9 @@ void rs232_tx_byte(unsigned char c) {
 	rs232_proto.data_len = 8;
 	T0CONbits.TMR0ON = 1;		// start timer 0
 	INTCONbits.TMR0IF = 1;		// enter timer interrupt handler now
+	while (rs232_proto.data_len) {
+		// wait for byte to be sent
+	}
 }
 
 void fsk_tx_enable() {
@@ -4106,6 +4214,9 @@ void send_fsk_low(void) {
 void fsk_tx_byte(unsigned char c) {
 	fsk_proto.data = c;
 	fsk_proto.data_len = 8;
+	while (fsk_proto.data_len) {
+		// wait for byte to be sent
+	}
 }
 
 unsigned int fifo_in_use() {

@@ -16,9 +16,9 @@
 //#define TIMER0_RELOAD 0xFCC8	// 427us @ 8MHz
 //#define TIMER0_RELOAD 0xF000	// ~ 2ms @ 8MHz
 #define TIMER0_TESTO			 0xF323	// ~ 4 * 427us @ 8MHz
+#define TIMER0_RS232_300		0xe61b	// ~ 3.3ms @ 8 MHz
 #define TIMER0_RS232_1200		0xf9ae
 #define TIMER0_RS232_1200_START	0xf700
-#define TIMER0_RS232_2400		0xfcf2
 #define TIMER0_FSK				0xF99F	// @ 8MHz
 //#define TIMER0_FSK			0xF00F
 //#define TIMER0_RELOAD 0x0000
@@ -30,7 +30,7 @@
 #define SOFT_MODEM_LOW_FREQ		(4900)
 #define SOFT_MODEM_HIGH_FREQ	(7350)
 		
-#define FSK_TX_SLEEP			(12)
+#define FSK_TX_SLEEP			(2)
 #define RS232_TX_SLEEP			(12)
 
 #define OUTPUT_STATE (0)
@@ -76,7 +76,8 @@
 #define PROTO_TESTO				(254)
 #define PROTO_TESTO_DEMO		(255)
 #define PROTO_KAMSTRUP			(253)
-#define PROTO_BATTERY_LEVEL		(252)
+#define PROTO_KAMSTRUP_MULTICAL	(252)
+#define PROTO_BATTERY_LEVEL		(251)
 
 void sleep_ms(unsigned int ms);
 
@@ -91,10 +92,10 @@ unsigned char testo_valid_err_corr(unsigned int c);
 void testo_ir_enable();
 void testo_ir_disable();
 
-void rs232_tx_enable();
+void rs232_tx_enable(unsigned int t);
 void rs232_tx_disable();
 
-void rs232_rx_enable();
+void rs232_rx_enable(unsigned int t);
 void rs232_rx_disable();
 void rs232_tx_byte(unsigned char c);
 
