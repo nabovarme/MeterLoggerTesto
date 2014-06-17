@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.4.0 #8981 (Jun  6 2014) (Mac OS X x86_64)
-; This file was generated Wed Jun 18 00:48:56 2014
+; This file was generated Wed Jun 18 01:29:17 2014
 ;--------------------------------------------------------
 ; PIC16 port for the Microchip 16-bit core micros
 ;--------------------------------------------------------
@@ -8296,13 +8296,16 @@ _00417_DS_:
 	ANDLW	0xfd
 	IORWF	PRODH, W
 	MOVWF	_PORTBbits
-;	.line	731; meter_logger.c	rs232_proto.parity ^= (rs232_proto.data & 1);
-	MOVLW	0x01
 ; removed redundant BANKSEL
-	ANDWF	(_rs232_proto + 2), W, B
+;	.line	731; meter_logger.c	rs232_proto.parity ^= ((rs232_proto.data >> 1) & 1);
+	MOVF	(_rs232_proto + 2), W, B
+	ANDLW	0x02
+	RRNCF	WREG, W
 	MOVWF	r0x00
 ; removed redundant BANKSEL
 	MOVF	(_rs232_proto + 4), W, B
+	MOVWF	r0x01
+	MOVF	r0x01, W
 	XORWF	r0x00, F
 	MOVF	r0x00, W
 ; removed redundant BANKSEL
@@ -8323,11 +8326,17 @@ _00417_DS_:
 	MOVWF	(_rs232_proto + 3), B
 	BRA	_00461_DS_
 _00419_DS_:
+;	.line	736; meter_logger.c	IR_LED_PIN = (rs232_proto.parity & 1) == 0;		// inverted rs232 output on ir					
+	MOVLW	0x01
 	BANKSEL	(_rs232_proto + 4)
-;	.line	736; meter_logger.c	IR_LED_PIN = (rs232_proto.parity & 1);		// inverted rs232 output on ir					
-	MOVF	(_rs232_proto + 4), W, B
-	ANDLW	0x01
+	ANDWF	(_rs232_proto + 4), W, B
 	MOVWF	r0x00
+	MOVF	r0x00, W
+	BSF	STATUS, 0
+	TSTFSZ	WREG
+	BCF	STATUS, 0
+	CLRF	r0x00
+	RLCF	r0x00, F
 	MOVF	r0x00, W
 	ANDLW	0x01
 	RLNCF	WREG, W
@@ -8942,8 +8951,8 @@ ___str_16:
 
 
 ; Statistics:
-; code size:	15606 (0x3cf6) bytes (11.91%)
-;           	 7803 (0x1e7b) words
+; code size:	15624 (0x3d08) bytes (11.92%)
+;           	 7812 (0x1e84) words
 ; udata size:	 1198 (0x04ae) bytes (66.85%)
 ; access size:	   14 (0x000e) bytes
 

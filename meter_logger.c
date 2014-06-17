@@ -728,12 +728,12 @@ static void isr_high_prio(void) __interrupt 1 {
 					case START_BIT_SENT:
 						if (rs232_proto.data_len >= 1) {
 							IR_LED_PIN = (rs232_proto.data & 1) == 0;	// inverted rs232 output on ir
-							rs232_proto.parity ^= (rs232_proto.data & 1);
+							rs232_proto.parity ^= ((rs232_proto.data >> 1) & 1);
 							rs232_proto.data = rs232_proto.data >> 1;
 							rs232_proto.data_len--;
 						}
 						else {
-							IR_LED_PIN = (rs232_proto.parity & 1);		// inverted rs232 output on ir					
+							IR_LED_PIN = (rs232_proto.parity & 1) == 0;		// inverted rs232 output on ir					
 							rs232_proto.state = PARITY_BIT_SENT;
 						}
 						break;
