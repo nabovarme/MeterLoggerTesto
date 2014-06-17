@@ -54,6 +54,7 @@ enum state_t {
 	START_BIT_SENT,
 	DATA_WAIT,
 	DATA_SENT,
+	PARITY_BIT_SENT,
 	PARITY_WAIT,
 	STOP_BIT_WAIT,
 	STOP_BIT2_WAIT,
@@ -720,25 +721,27 @@ static void isr_high_prio(void) __interrupt 1 {
 					case INIT_STATE:
 						if (rs232_proto.data_len == 7) {
 							IR_LED_PIN = 1;		// inverted rs232 output on ir, start bit = ir light
+							rs232_proto.parity = rs232_proto.data & 1;
 							rs232_proto.state = START_BIT_SENT;
 						}
 						break;
 					case START_BIT_SENT:
 						if (rs232_proto.data_len >= 1) {
 							IR_LED_PIN = (rs232_proto.data & 1) == 0;	// inverted rs232 output on ir
+							rs232_proto.parity ^= (rs232_proto.data & 1);
 							rs232_proto.data = rs232_proto.data >> 1;
 							rs232_proto.data_len--;
 						}
 						else {
-							IR_LED_PIN = 0;								// inverted rs232 output on ir					
-							rs232_proto.state = STOP_BIT_SENT;
+							IR_LED_PIN = (rs232_proto.parity & 1);		// inverted rs232 output on ir					
+							rs232_proto.state = PARITY_BIT_SENT;
 						}
 						break;
-					case STOP_BIT_SENT:
+					case PARITY_BIT_SENT:
 						IR_LED_PIN = 0;									// inverted rs232 output on ir
-						rs232_proto.state = STOP_BIT2_SENT;
+						rs232_proto.state = STOP_BIT_SENT;
 						break;
- 	 				case STOP_BIT2_SENT:
+ 	 				case STOP_BIT_SENT:
 						IR_LED_PIN = 0;									// inverted rs232 output on ir
 						rs232_proto.state = INIT_STATE;
 						T0CONbits.TMR0ON = 0;							// stop timer 0

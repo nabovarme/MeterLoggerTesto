@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.4.0 #8981 (Jun  6 2014) (Mac OS X x86_64)
-; This file was generated Wed Jun 18 00:33:57 2014
+; This file was generated Wed Jun 18 00:48:56 2014
 ;--------------------------------------------------------
 ; PIC16 port for the Microchip 16-bit core micros
 ;--------------------------------------------------------
@@ -467,33 +467,33 @@ ivec_0x2_isr_low_prio:
 ; ; Starting pCode block
 S_meter_logger__main	code
 _main:
-;	.line	117; meter_logger.c	OSCCONbits.SCS = 0x10;
+;	.line	118; meter_logger.c	OSCCONbits.SCS = 0x10;
 	MOVF	_OSCCONbits, W
 	ANDLW	0xfc
 	MOVWF	_OSCCONbits
-;	.line	119; meter_logger.c	OSCCONbits.IRCF = 0x7;	// 8 MHz
+;	.line	120; meter_logger.c	OSCCONbits.IRCF = 0x7;	// 8 MHz
 	MOVF	_OSCCONbits, W
 	ANDLW	0x8f
 	IORLW	0x70
 	MOVWF	_OSCCONbits
 	BANKSEL	_timer_1_ms
-;	.line	122; meter_logger.c	timer_1_ms = 0;
+;	.line	123; meter_logger.c	timer_1_ms = 0;
 	CLRF	_timer_1_ms, B
 ; removed redundant BANKSEL
 	CLRF	(_timer_1_ms + 1), B
 	BANKSEL	_fifo_head
-;	.line	124; meter_logger.c	fifo_head = 0;
+;	.line	125; meter_logger.c	fifo_head = 0;
 	CLRF	_fifo_head, B
 ; removed redundant BANKSEL
 	CLRF	(_fifo_head + 1), B
 	BANKSEL	_fifo_tail
-;	.line	125; meter_logger.c	fifo_tail = 0;
+;	.line	126; meter_logger.c	fifo_tail = 0;
 	CLRF	_fifo_tail, B
 ; removed redundant BANKSEL
 	CLRF	(_fifo_tail + 1), B
-;	.line	127; meter_logger.c	init_system();	
+;	.line	128; meter_logger.c	init_system();	
 	CALL	_init_system
-;	.line	128; meter_logger.c	sleep_ms(100);
+;	.line	129; meter_logger.c	sleep_ms(100);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0x64
@@ -501,7 +501,7 @@ _main:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	131; meter_logger.c	usart_puts("\n\rMeterLogger... serial working\n\r");
+;	.line	132; meter_logger.c	usart_puts("\n\rMeterLogger... serial working\n\r");
 	MOVLW	UPPER(___str_0)
 	MOVWF	r0x02
 	MOVLW	HIGH(___str_0)
@@ -517,13 +517,13 @@ _main:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	135; meter_logger.c	get_battery_level();
+;	.line	136; meter_logger.c	get_battery_level();
 	CALL	_get_battery_level
-;	.line	138; meter_logger.c	dev_id = get_dev_id();
+;	.line	139; meter_logger.c	dev_id = get_dev_id();
 	CALL	_get_dev_id
 	MOVWF	r0x00
 	MOVFF	PRODL, r0x01
-;	.line	140; meter_logger.c	if (dev_id == 0x1240) {
+;	.line	141; meter_logger.c	if (dev_id == 0x1240) {
 	MOVF	r0x00, W
 	XORLW	0x40
 	BNZ	_00325_DS_
@@ -533,7 +533,7 @@ _main:
 _00325_DS_:
 	BRA	_00109_DS_
 _00326_DS_:
-;	.line	141; meter_logger.c	sprintf(debug_buffer, "Processor: pic18f2550\n\r");
+;	.line	142; meter_logger.c	sprintf(debug_buffer, "Processor: pic18f2550\n\r");
 	MOVLW	UPPER(___str_1)
 	MOVWF	r0x04
 	MOVLW	HIGH(___str_1)
@@ -563,7 +563,7 @@ _00326_DS_:
 	ADDWF	FSR1L, F
 	BRA	_00110_DS_
 _00109_DS_:
-;	.line	143; meter_logger.c	else if (dev_id == 0x2a40) {
+;	.line	144; meter_logger.c	else if (dev_id == 0x2a40) {
 	MOVF	r0x00, W
 	XORLW	0x40
 	BNZ	_00327_DS_
@@ -573,7 +573,7 @@ _00109_DS_:
 _00327_DS_:
 	BRA	_00106_DS_
 _00328_DS_:
-;	.line	144; meter_logger.c	sprintf(debug_buffer, "Processor: pic18f2553\n\r");
+;	.line	145; meter_logger.c	sprintf(debug_buffer, "Processor: pic18f2553\n\r");
 	MOVLW	UPPER(___str_2)
 	MOVWF	r0x04
 	MOVLW	HIGH(___str_2)
@@ -603,7 +603,7 @@ _00328_DS_:
 	ADDWF	FSR1L, F
 	BRA	_00110_DS_
 _00106_DS_:
-;	.line	147; meter_logger.c	sprintf(debug_buffer, "Processor: unsupported, device id: 0x%04x\n\r", dev_id);
+;	.line	148; meter_logger.c	sprintf(debug_buffer, "Processor: unsupported, device id: 0x%04x\n\r", dev_id);
 	MOVLW	UPPER(___str_3)
 	MOVWF	r0x04
 	MOVLW	HIGH(___str_3)
@@ -636,7 +636,7 @@ _00106_DS_:
 	MOVLW	0x08
 	ADDWF	FSR1L, F
 _00110_DS_:
-;	.line	149; meter_logger.c	usart_puts(debug_buffer);
+;	.line	150; meter_logger.c	usart_puts(debug_buffer);
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x01
 	MOVLW	LOW(_debug_buffer)
@@ -652,10 +652,10 @@ _00110_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	152; meter_logger.c	fsk_rx_enable();
+;	.line	153; meter_logger.c	fsk_rx_enable();
 	CALL	_fsk_rx_enable
 _00168_DS_:
-;	.line	154; meter_logger.c	if (fifo_get(&cmd)) {
+;	.line	155; meter_logger.c	if (fifo_get(&cmd)) {
 	MOVLW	HIGH(_main_cmd_1_90)
 	MOVWF	r0x01
 	MOVLW	LOW(_main_cmd_1_90)
@@ -674,7 +674,7 @@ _00168_DS_:
 	ADDWF	FSR1L, F
 	MOVF	r0x00, W
 	BZ	_00168_DS_
-;	.line	155; meter_logger.c	switch (cmd) {
+;	.line	156; meter_logger.c	switch (cmd) {
 	MOVLW	0xfb
 	BANKSEL	_main_cmd_1_90
 	SUBWF	_main_cmd_1_90, W, B
@@ -705,9 +705,9 @@ _00330_DS_:
 	GOTO	_00111_DS_
 	GOTO	_00119_DS_
 _00111_DS_:
-;	.line	157; meter_logger.c	fsk_rx_disable();
+;	.line	158; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
-;	.line	158; meter_logger.c	usart_puts("\n\rpress print on testo\n\r");
+;	.line	159; meter_logger.c	usart_puts("\n\rpress print on testo\n\r");
 	MOVLW	UPPER(___str_4)
 	MOVWF	r0x02
 	MOVLW	HIGH(___str_4)
@@ -723,12 +723,12 @@ _00111_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	159; meter_logger.c	testo_ir_enable();
+;	.line	160; meter_logger.c	testo_ir_enable();
 	CALL	_testo_ir_enable
-;	.line	161; meter_logger.c	last_fifo_size = 0;
+;	.line	162; meter_logger.c	last_fifo_size = 0;
 	CLRF	r0x00
 	CLRF	r0x01
-;	.line	162; meter_logger.c	sleep_ms(10000);						// 10 seconds to start printing
+;	.line	163; meter_logger.c	sleep_ms(10000);						// 10 seconds to start printing
 	MOVLW	0x27
 	MOVWF	POSTDEC1
 	MOVLW	0x10
@@ -736,12 +736,12 @@ _00111_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	163; meter_logger.c	fifo_size = fifo_in_use();
+;	.line	164; meter_logger.c	fifo_size = fifo_in_use();
 	CALL	_fifo_in_use
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
 _00112_DS_:
-;	.line	164; meter_logger.c	while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
+;	.line	165; meter_logger.c	while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 	MOVF	r0x03, W
 	SUBWF	r0x01, W
 	BNZ	_00331_DS_
@@ -749,10 +749,10 @@ _00112_DS_:
 	SUBWF	r0x00, W
 _00331_DS_:
 	BC	_00114_DS_
-;	.line	165; meter_logger.c	last_fifo_size = fifo_size;
+;	.line	166; meter_logger.c	last_fifo_size = fifo_size;
 	MOVFF	r0x02, r0x00
 	MOVFF	r0x03, r0x01
-;	.line	166; meter_logger.c	sleep_ms(200);						// return data when no data for 200 ms
+;	.line	167; meter_logger.c	sleep_ms(200);						// return data when no data for 200 ms
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0xc8
@@ -760,15 +760,15 @@ _00331_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	167; meter_logger.c	fifo_size = fifo_in_use();
+;	.line	168; meter_logger.c	fifo_size = fifo_in_use();
 	CALL	_fifo_in_use
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
 	BRA	_00112_DS_
 _00114_DS_:
-;	.line	169; meter_logger.c	testo_ir_disable();
+;	.line	170; meter_logger.c	testo_ir_disable();
 	CALL	_testo_ir_disable
-;	.line	172; meter_logger.c	usart_puts("\n\rdone receiving - sending via serial/fsk\n\r");
+;	.line	173; meter_logger.c	usart_puts("\n\rdone receiving - sending via serial/fsk\n\r");
 	MOVLW	UPPER(___str_5)
 	MOVWF	r0x06
 	MOVLW	HIGH(___str_5)
@@ -784,7 +784,7 @@ _00114_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	175; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
+;	.line	176; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
 	CLRF	r0x04
 	CLRF	r0x05
 _00171_DS_:
@@ -799,7 +799,7 @@ _00171_DS_:
 _00332_DS_:
 	BTFSC	STATUS, 0
 	BRA	_00115_DS_
-;	.line	177; meter_logger.c	fifo_get(&sub_cmd);
+;	.line	178; meter_logger.c	fifo_get(&sub_cmd);
 	MOVLW	HIGH(_main_sub_cmd_1_90)
 	MOVWF	r0x07
 	MOVLW	LOW(_main_sub_cmd_1_90)
@@ -815,7 +815,7 @@ _00332_DS_:
 	CALL	_fifo_get
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	179; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
+;	.line	180; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
 	MOVFF	_main_sub_cmd_1_90, r0x06
 	CLRF	r0x07
 	MOVLW	UPPER(___str_6)
@@ -849,7 +849,7 @@ _00332_DS_:
 	CALL	_sprintf
 	MOVLW	0x08
 	ADDWF	FSR1L, F
-;	.line	180; meter_logger.c	usart_puts(debug_buffer);
+;	.line	181; meter_logger.c	usart_puts(debug_buffer);
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x07
 	MOVLW	LOW(_debug_buffer)
@@ -866,20 +866,20 @@ _00332_DS_:
 	MOVLW	0x03
 	ADDWF	FSR1L, F
 	BANKSEL	_main_sub_cmd_1_90
-;	.line	182; meter_logger.c	fifo_put(sub_cmd);
+;	.line	183; meter_logger.c	fifo_put(sub_cmd);
 	MOVF	_main_sub_cmd_1_90, W, B
 	MOVWF	POSTDEC1
 	CALL	_fifo_put
 	MOVF	POSTINC1, F
-;	.line	175; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
+;	.line	176; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
 	INFSNZ	r0x04, F
 	INCF	r0x05, F
 	BRA	_00171_DS_
 _00115_DS_:
-;	.line	185; meter_logger.c	fsk_tx_enable();
+;	.line	186; meter_logger.c	fsk_tx_enable();
 	CALL	_fsk_tx_enable
 _00116_DS_:
-;	.line	186; meter_logger.c	while (fifo_get(&cmd)) {	// and print them to serial
+;	.line	187; meter_logger.c	while (fifo_get(&cmd)) {	// and print them to serial
 	MOVLW	HIGH(_main_cmd_1_90)
 	MOVWF	r0x05
 	MOVLW	LOW(_main_cmd_1_90)
@@ -899,12 +899,12 @@ _00116_DS_:
 	MOVF	r0x04, W
 	BZ	_00118_DS_
 	BANKSEL	_main_cmd_1_90
-;	.line	187; meter_logger.c	fsk_tx_byte(cmd);
+;	.line	188; meter_logger.c	fsk_tx_byte(cmd);
 	MOVF	_main_cmd_1_90, W, B
 	MOVWF	POSTDEC1
 	CALL	_fsk_tx_byte
 	MOVF	POSTINC1, F
-;	.line	188; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
+;	.line	189; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0x02
@@ -914,9 +914,9 @@ _00116_DS_:
 	MOVF	POSTINC1, F
 	BRA	_00116_DS_
 _00118_DS_:
-;	.line	190; meter_logger.c	fsk_tx_disable();
+;	.line	191; meter_logger.c	fsk_tx_disable();
 	CALL	_fsk_tx_disable
-;	.line	192; meter_logger.c	usart_puts("\n\rwaiting for new command\n\r");
+;	.line	193; meter_logger.c	usart_puts("\n\rwaiting for new command\n\r");
 	MOVLW	UPPER(___str_7)
 	MOVWF	r0x06
 	MOVLW	HIGH(___str_7)
@@ -932,14 +932,14 @@ _00118_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	194; meter_logger.c	fsk_rx_enable();
+;	.line	195; meter_logger.c	fsk_rx_enable();
 	CALL	_fsk_rx_enable
-;	.line	195; meter_logger.c	break;
+;	.line	196; meter_logger.c	break;
 	BRA	_00168_DS_
 _00119_DS_:
-;	.line	199; meter_logger.c	fsk_rx_disable();
+;	.line	200; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
-;	.line	200; meter_logger.c	usart_puts("\n\recho test - send some data\n\r");
+;	.line	201; meter_logger.c	usart_puts("\n\recho test - send some data\n\r");
 	MOVLW	UPPER(___str_8)
 	MOVWF	r0x06
 	MOVLW	HIGH(___str_8)
@@ -955,12 +955,12 @@ _00119_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	201; meter_logger.c	fsk_rx_enable();
+;	.line	202; meter_logger.c	fsk_rx_enable();
 	CALL	_fsk_rx_enable
-;	.line	205; meter_logger.c	last_fifo_size = 0;
+;	.line	206; meter_logger.c	last_fifo_size = 0;
 	CLRF	r0x00
 	CLRF	r0x01
-;	.line	206; meter_logger.c	sleep_ms(1000);							// 1 second
+;	.line	207; meter_logger.c	sleep_ms(1000);							// 1 second
 	MOVLW	0x03
 	MOVWF	POSTDEC1
 	MOVLW	0xe8
@@ -968,12 +968,12 @@ _00119_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	207; meter_logger.c	fifo_size = fifo_in_use();
+;	.line	208; meter_logger.c	fifo_size = fifo_in_use();
 	CALL	_fifo_in_use
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
 _00120_DS_:
-;	.line	208; meter_logger.c	while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
+;	.line	209; meter_logger.c	while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 	MOVF	r0x03, W
 	SUBWF	r0x01, W
 	BNZ	_00333_DS_
@@ -981,10 +981,10 @@ _00120_DS_:
 	SUBWF	r0x00, W
 _00333_DS_:
 	BC	_00122_DS_
-;	.line	209; meter_logger.c	last_fifo_size = fifo_size;
+;	.line	210; meter_logger.c	last_fifo_size = fifo_size;
 	MOVFF	r0x02, r0x00
 	MOVFF	r0x03, r0x01
-;	.line	210; meter_logger.c	sleep_ms(500);						// return data when no data for 500 ms
+;	.line	211; meter_logger.c	sleep_ms(500);						// return data when no data for 500 ms
 	MOVLW	0x01
 	MOVWF	POSTDEC1
 	MOVLW	0xf4
@@ -992,15 +992,15 @@ _00333_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	211; meter_logger.c	fifo_size = fifo_in_use();
+;	.line	212; meter_logger.c	fifo_size = fifo_in_use();
 	CALL	_fifo_in_use
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
 	BRA	_00120_DS_
 _00122_DS_:
-;	.line	213; meter_logger.c	fsk_rx_disable();
+;	.line	214; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
-;	.line	216; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
+;	.line	217; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
 	CLRF	r0x04
 	CLRF	r0x05
 _00174_DS_:
@@ -1015,7 +1015,7 @@ _00174_DS_:
 _00334_DS_:
 	BTFSC	STATUS, 0
 	BRA	_00123_DS_
-;	.line	218; meter_logger.c	fifo_get(&sub_cmd);
+;	.line	219; meter_logger.c	fifo_get(&sub_cmd);
 	MOVLW	HIGH(_main_sub_cmd_1_90)
 	MOVWF	r0x07
 	MOVLW	LOW(_main_sub_cmd_1_90)
@@ -1031,7 +1031,7 @@ _00334_DS_:
 	CALL	_fifo_get
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	220; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
+;	.line	221; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
 	MOVFF	_main_sub_cmd_1_90, r0x06
 	CLRF	r0x07
 	MOVLW	UPPER(___str_6)
@@ -1065,7 +1065,7 @@ _00334_DS_:
 	CALL	_sprintf
 	MOVLW	0x08
 	ADDWF	FSR1L, F
-;	.line	221; meter_logger.c	usart_puts(debug_buffer);
+;	.line	222; meter_logger.c	usart_puts(debug_buffer);
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x07
 	MOVLW	LOW(_debug_buffer)
@@ -1082,20 +1082,20 @@ _00334_DS_:
 	MOVLW	0x03
 	ADDWF	FSR1L, F
 	BANKSEL	_main_sub_cmd_1_90
-;	.line	223; meter_logger.c	fifo_put(sub_cmd);
+;	.line	224; meter_logger.c	fifo_put(sub_cmd);
 	MOVF	_main_sub_cmd_1_90, W, B
 	MOVWF	POSTDEC1
 	CALL	_fifo_put
 	MOVF	POSTINC1, F
-;	.line	216; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
+;	.line	217; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
 	INFSNZ	r0x04, F
 	INCF	r0x05, F
 	BRA	_00174_DS_
 _00123_DS_:
-;	.line	228; meter_logger.c	fsk_tx_enable();
+;	.line	229; meter_logger.c	fsk_tx_enable();
 	CALL	_fsk_tx_enable
 _00124_DS_:
-;	.line	229; meter_logger.c	while (fifo_get(&sub_cmd)) {
+;	.line	230; meter_logger.c	while (fifo_get(&sub_cmd)) {
 	MOVLW	HIGH(_main_sub_cmd_1_90)
 	MOVWF	r0x05
 	MOVLW	LOW(_main_sub_cmd_1_90)
@@ -1115,12 +1115,12 @@ _00124_DS_:
 	MOVF	r0x04, W
 	BZ	_00126_DS_
 	BANKSEL	_main_sub_cmd_1_90
-;	.line	230; meter_logger.c	fsk_tx_byte(sub_cmd);
+;	.line	231; meter_logger.c	fsk_tx_byte(sub_cmd);
 	MOVF	_main_sub_cmd_1_90, W, B
 	MOVWF	POSTDEC1
 	CALL	_fsk_tx_byte
 	MOVF	POSTINC1, F
-;	.line	231; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
+;	.line	232; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0x02
@@ -1130,9 +1130,9 @@ _00124_DS_:
 	MOVF	POSTINC1, F
 	BRA	_00124_DS_
 _00126_DS_:
-;	.line	233; meter_logger.c	fsk_tx_disable();
+;	.line	234; meter_logger.c	fsk_tx_disable();
 	CALL	_fsk_tx_disable
-;	.line	236; meter_logger.c	usart_puts("\n\rwaiting for new command\n\r");
+;	.line	237; meter_logger.c	usart_puts("\n\rwaiting for new command\n\r");
 	MOVLW	UPPER(___str_7)
 	MOVWF	r0x06
 	MOVLW	HIGH(___str_7)
@@ -1148,14 +1148,14 @@ _00126_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	238; meter_logger.c	fsk_rx_enable();
+;	.line	239; meter_logger.c	fsk_rx_enable();
 	CALL	_fsk_rx_enable
-;	.line	239; meter_logger.c	break;
+;	.line	240; meter_logger.c	break;
 	BRA	_00168_DS_
 _00127_DS_:
-;	.line	242; meter_logger.c	fsk_rx_disable();
+;	.line	243; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
-;	.line	244; meter_logger.c	usart_puts("\n\rkamstrup - send kmp frame data\n\r");
+;	.line	245; meter_logger.c	usart_puts("\n\rkamstrup - send kmp frame data\n\r");
 	MOVLW	UPPER(___str_9)
 	MOVWF	r0x06
 	MOVLW	HIGH(___str_9)
@@ -1171,12 +1171,12 @@ _00127_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	248; meter_logger.c	fsk_rx_enable();
+;	.line	249; meter_logger.c	fsk_rx_enable();
 	CALL	_fsk_rx_enable
-;	.line	249; meter_logger.c	last_fifo_size = 0;
+;	.line	250; meter_logger.c	last_fifo_size = 0;
 	CLRF	r0x00
 	CLRF	r0x01
-;	.line	250; meter_logger.c	sleep_ms(400);							// sleep 400 ms to let some data come in
+;	.line	251; meter_logger.c	sleep_ms(400);							// sleep 400 ms to let some data come in
 	MOVLW	0x01
 	MOVWF	POSTDEC1
 	MOVLW	0x90
@@ -1184,12 +1184,12 @@ _00127_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	251; meter_logger.c	fifo_size = fifo_in_use();
+;	.line	252; meter_logger.c	fifo_size = fifo_in_use();
 	CALL	_fifo_in_use
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
 _00128_DS_:
-;	.line	252; meter_logger.c	while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
+;	.line	253; meter_logger.c	while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 	MOVF	r0x03, W
 	SUBWF	r0x01, W
 	BNZ	_00335_DS_
@@ -1197,10 +1197,10 @@ _00128_DS_:
 	SUBWF	r0x00, W
 _00335_DS_:
 	BC	_00130_DS_
-;	.line	253; meter_logger.c	last_fifo_size = fifo_size;
+;	.line	254; meter_logger.c	last_fifo_size = fifo_size;
 	MOVFF	r0x02, r0x00
 	MOVFF	r0x03, r0x01
-;	.line	254; meter_logger.c	sleep_ms(200);						// return data when no data for 100 ms
+;	.line	255; meter_logger.c	sleep_ms(200);						// return data when no data for 100 ms
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0xc8
@@ -1208,15 +1208,15 @@ _00335_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	255; meter_logger.c	fifo_size = fifo_in_use();
+;	.line	256; meter_logger.c	fifo_size = fifo_in_use();
 	CALL	_fifo_in_use
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
 	BRA	_00128_DS_
 _00130_DS_:
-;	.line	257; meter_logger.c	fsk_rx_disable();
+;	.line	258; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
-;	.line	260; meter_logger.c	usart_puts("\n\rkamstrup - kmp frame received:\n\r");
+;	.line	261; meter_logger.c	usart_puts("\n\rkamstrup - kmp frame received:\n\r");
 	MOVLW	UPPER(___str_10)
 	MOVWF	r0x06
 	MOVLW	HIGH(___str_10)
@@ -1232,7 +1232,7 @@ _00130_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	263; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
+;	.line	264; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
 	CLRF	r0x04
 	CLRF	r0x05
 _00177_DS_:
@@ -1247,7 +1247,7 @@ _00177_DS_:
 _00336_DS_:
 	BTFSC	STATUS, 0
 	BRA	_00131_DS_
-;	.line	265; meter_logger.c	fifo_get(&sub_cmd);
+;	.line	266; meter_logger.c	fifo_get(&sub_cmd);
 	MOVLW	HIGH(_main_sub_cmd_1_90)
 	MOVWF	r0x07
 	MOVLW	LOW(_main_sub_cmd_1_90)
@@ -1263,7 +1263,7 @@ _00336_DS_:
 	CALL	_fifo_get
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	267; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
+;	.line	268; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
 	MOVFF	_main_sub_cmd_1_90, r0x06
 	CLRF	r0x07
 	MOVLW	UPPER(___str_6)
@@ -1297,7 +1297,7 @@ _00336_DS_:
 	CALL	_sprintf
 	MOVLW	0x08
 	ADDWF	FSR1L, F
-;	.line	268; meter_logger.c	usart_puts(debug_buffer);
+;	.line	269; meter_logger.c	usart_puts(debug_buffer);
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x07
 	MOVLW	LOW(_debug_buffer)
@@ -1314,17 +1314,17 @@ _00336_DS_:
 	MOVLW	0x03
 	ADDWF	FSR1L, F
 	BANKSEL	_main_sub_cmd_1_90
-;	.line	270; meter_logger.c	fifo_put(sub_cmd);
+;	.line	271; meter_logger.c	fifo_put(sub_cmd);
 	MOVF	_main_sub_cmd_1_90, W, B
 	MOVWF	POSTDEC1
 	CALL	_fifo_put
 	MOVF	POSTINC1, F
-;	.line	263; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
+;	.line	264; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
 	INFSNZ	r0x04, F
 	INCF	r0x05, F
 	BRA	_00177_DS_
 _00131_DS_:
-;	.line	274; meter_logger.c	rs232_8n2_tx_enable(TIMER0_RS232_1200);
+;	.line	275; meter_logger.c	rs232_8n2_tx_enable(TIMER0_RS232_1200);
 	MOVLW	0xf9
 	MOVWF	POSTDEC1
 	MOVLW	0xae
@@ -1333,7 +1333,7 @@ _00131_DS_:
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
 _00132_DS_:
-;	.line	275; meter_logger.c	while (fifo_get(&sub_cmd)) {
+;	.line	276; meter_logger.c	while (fifo_get(&sub_cmd)) {
 	MOVLW	HIGH(_main_sub_cmd_1_90)
 	MOVWF	r0x05
 	MOVLW	LOW(_main_sub_cmd_1_90)
@@ -1353,12 +1353,12 @@ _00132_DS_:
 	MOVF	r0x04, W
 	BZ	_00134_DS_
 	BANKSEL	_main_sub_cmd_1_90
-;	.line	276; meter_logger.c	rs232_8n2_tx_byte(sub_cmd);
+;	.line	277; meter_logger.c	rs232_8n2_tx_byte(sub_cmd);
 	MOVF	_main_sub_cmd_1_90, W, B
 	MOVWF	POSTDEC1
 	CALL	_rs232_8n2_tx_byte
 	MOVF	POSTINC1, F
-;	.line	277; meter_logger.c	sleep_ms(RS232_TX_SLEEP);
+;	.line	278; meter_logger.c	sleep_ms(RS232_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0x0c
@@ -1368,9 +1368,9 @@ _00132_DS_:
 	MOVF	POSTINC1, F
 	BRA	_00132_DS_
 _00134_DS_:
-;	.line	279; meter_logger.c	rs232_8n2_tx_disable();
+;	.line	280; meter_logger.c	rs232_8n2_tx_disable();
 	CALL	_rs232_8n2_tx_disable
-;	.line	285; meter_logger.c	rs232_8n2_rx_enable(TIMER0_RS232_1200);
+;	.line	286; meter_logger.c	rs232_8n2_rx_enable(TIMER0_RS232_1200);
 	MOVLW	0xf9
 	MOVWF	POSTDEC1
 	MOVLW	0xae
@@ -1378,10 +1378,10 @@ _00134_DS_:
 	CALL	_rs232_8n2_rx_enable
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	286; meter_logger.c	last_fifo_size = 0;
+;	.line	287; meter_logger.c	last_fifo_size = 0;
 	CLRF	r0x00
 	CLRF	r0x01
-;	.line	287; meter_logger.c	sleep_ms(400);							// sleep 200 ms to let some data come in
+;	.line	288; meter_logger.c	sleep_ms(400);							// sleep 200 ms to let some data come in
 	MOVLW	0x01
 	MOVWF	POSTDEC1
 	MOVLW	0x90
@@ -1389,12 +1389,12 @@ _00134_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	288; meter_logger.c	fifo_size = fifo_in_use();
+;	.line	289; meter_logger.c	fifo_size = fifo_in_use();
 	CALL	_fifo_in_use
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
 _00135_DS_:
-;	.line	290; meter_logger.c	while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
+;	.line	291; meter_logger.c	while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 	MOVF	r0x03, W
 	SUBWF	r0x01, W
 	BNZ	_00337_DS_
@@ -1402,10 +1402,10 @@ _00135_DS_:
 	SUBWF	r0x00, W
 _00337_DS_:
 	BC	_00137_DS_
-;	.line	291; meter_logger.c	last_fifo_size = fifo_size;
+;	.line	292; meter_logger.c	last_fifo_size = fifo_size;
 	MOVFF	r0x02, r0x00
 	MOVFF	r0x03, r0x01
-;	.line	292; meter_logger.c	sleep_ms(200);						// return data when no data for 100 ms
+;	.line	293; meter_logger.c	sleep_ms(200);						// return data when no data for 100 ms
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0xc8
@@ -1413,15 +1413,15 @@ _00337_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	293; meter_logger.c	fifo_size = fifo_in_use();
+;	.line	294; meter_logger.c	fifo_size = fifo_in_use();
 	CALL	_fifo_in_use
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
 	BRA	_00135_DS_
 _00137_DS_:
-;	.line	296; meter_logger.c	rs232_8n2_rx_disable();
+;	.line	297; meter_logger.c	rs232_8n2_rx_disable();
 	CALL	_rs232_8n2_rx_disable
-;	.line	300; meter_logger.c	usart_puts("\n\rkamstrup - kmp reply received:\n\r");
+;	.line	301; meter_logger.c	usart_puts("\n\rkamstrup - kmp reply received:\n\r");
 	MOVLW	UPPER(___str_11)
 	MOVWF	r0x06
 	MOVLW	HIGH(___str_11)
@@ -1437,7 +1437,7 @@ _00137_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	303; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
+;	.line	304; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
 	CLRF	r0x04
 	CLRF	r0x05
 _00180_DS_:
@@ -1452,7 +1452,7 @@ _00180_DS_:
 _00338_DS_:
 	BTFSC	STATUS, 0
 	BRA	_00138_DS_
-;	.line	305; meter_logger.c	fifo_get(&sub_cmd);
+;	.line	306; meter_logger.c	fifo_get(&sub_cmd);
 	MOVLW	HIGH(_main_sub_cmd_1_90)
 	MOVWF	r0x07
 	MOVLW	LOW(_main_sub_cmd_1_90)
@@ -1468,7 +1468,7 @@ _00338_DS_:
 	CALL	_fifo_get
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	307; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
+;	.line	308; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
 	MOVFF	_main_sub_cmd_1_90, r0x06
 	CLRF	r0x07
 	MOVLW	UPPER(___str_6)
@@ -1502,7 +1502,7 @@ _00338_DS_:
 	CALL	_sprintf
 	MOVLW	0x08
 	ADDWF	FSR1L, F
-;	.line	308; meter_logger.c	usart_puts(debug_buffer);
+;	.line	309; meter_logger.c	usart_puts(debug_buffer);
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x07
 	MOVLW	LOW(_debug_buffer)
@@ -1519,34 +1519,34 @@ _00338_DS_:
 	MOVLW	0x03
 	ADDWF	FSR1L, F
 	BANKSEL	_main_sub_cmd_1_90
-;	.line	310; meter_logger.c	fifo_put(sub_cmd);
+;	.line	311; meter_logger.c	fifo_put(sub_cmd);
 	MOVF	_main_sub_cmd_1_90, W, B
 	MOVWF	POSTDEC1
 	CALL	_fifo_put
 	MOVF	POSTINC1, F
-;	.line	303; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
+;	.line	304; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
 	INFSNZ	r0x04, F
 	INCF	r0x05, F
 	BRA	_00180_DS_
 _00138_DS_:
-;	.line	313; meter_logger.c	if (fifo_in_use()) {
+;	.line	314; meter_logger.c	if (fifo_in_use()) {
 	CALL	_fifo_in_use
 	MOVWF	r0x04
 	MOVFF	PRODL, r0x05
 	MOVF	r0x04, W
 	IORWF	r0x05, W
 	BZ	_00143_DS_
-;	.line	315; meter_logger.c	DEBUG2_PIN = 1;
+;	.line	316; meter_logger.c	DEBUG2_PIN = 1;
 	BSF	_PORTBbits, 3
 	nop
 	nop
 	
-;	.line	320; meter_logger.c	DEBUG2_PIN = 0;
+;	.line	321; meter_logger.c	DEBUG2_PIN = 0;
 	BCF	_PORTBbits, 3
-;	.line	321; meter_logger.c	fsk_tx_enable();
+;	.line	322; meter_logger.c	fsk_tx_enable();
 	CALL	_fsk_tx_enable
 _00139_DS_:
-;	.line	322; meter_logger.c	while (fifo_get(&sub_cmd)) {
+;	.line	323; meter_logger.c	while (fifo_get(&sub_cmd)) {
 	MOVLW	HIGH(_main_sub_cmd_1_90)
 	MOVWF	r0x05
 	MOVLW	LOW(_main_sub_cmd_1_90)
@@ -1566,12 +1566,12 @@ _00139_DS_:
 	MOVF	r0x04, W
 	BZ	_00141_DS_
 	BANKSEL	_main_sub_cmd_1_90
-;	.line	323; meter_logger.c	fsk_tx_byte(sub_cmd);
+;	.line	324; meter_logger.c	fsk_tx_byte(sub_cmd);
 	MOVF	_main_sub_cmd_1_90, W, B
 	MOVWF	POSTDEC1
 	CALL	_fsk_tx_byte
 	MOVF	POSTINC1, F
-;	.line	324; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
+;	.line	325; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0x02
@@ -1581,28 +1581,28 @@ _00139_DS_:
 	MOVF	POSTINC1, F
 	BRA	_00139_DS_
 _00141_DS_:
-;	.line	326; meter_logger.c	fsk_tx_disable();
+;	.line	327; meter_logger.c	fsk_tx_disable();
 	CALL	_fsk_tx_disable
 	BRA	_00144_DS_
 _00143_DS_:
-;	.line	330; meter_logger.c	DEBUG2_PIN = 1;
+;	.line	331; meter_logger.c	DEBUG2_PIN = 1;
 	BSF	_PORTBbits, 3
 	nop
 	nop
 	
-;	.line	335; meter_logger.c	DEBUG2_PIN = 0;
+;	.line	336; meter_logger.c	DEBUG2_PIN = 0;
 	BCF	_PORTBbits, 3
 	nop
 	nop
 	
-;	.line	340; meter_logger.c	DEBUG2_PIN = 1;
+;	.line	341; meter_logger.c	DEBUG2_PIN = 1;
 	BSF	_PORTBbits, 3
 	nop
 	nop
 	
-;	.line	345; meter_logger.c	DEBUG2_PIN = 0;
+;	.line	346; meter_logger.c	DEBUG2_PIN = 0;
 	BCF	_PORTBbits, 3
-;	.line	347; meter_logger.c	sprintf(debug_buffer, "\n\rno reply from meter\n\r");
+;	.line	348; meter_logger.c	sprintf(debug_buffer, "\n\rno reply from meter\n\r");
 	MOVLW	UPPER(___str_12)
 	MOVWF	r0x06
 	MOVLW	HIGH(___str_12)
@@ -1630,7 +1630,7 @@ _00143_DS_:
 	CALL	_sprintf
 	MOVLW	0x06
 	ADDWF	FSR1L, F
-;	.line	348; meter_logger.c	usart_puts(debug_buffer);
+;	.line	349; meter_logger.c	usart_puts(debug_buffer);
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x05
 	MOVLW	LOW(_debug_buffer)
@@ -1646,14 +1646,14 @@ _00143_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	350; meter_logger.c	fsk_tx_enable();
+;	.line	351; meter_logger.c	fsk_tx_enable();
 	CALL	_fsk_tx_enable
-;	.line	351; meter_logger.c	fsk_tx_byte(0x0d);
+;	.line	352; meter_logger.c	fsk_tx_byte(0x0d);
 	MOVLW	0x0d
 	MOVWF	POSTDEC1
 	CALL	_fsk_tx_byte
 	MOVF	POSTINC1, F
-;	.line	352; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
+;	.line	353; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0x02
@@ -1661,10 +1661,10 @@ _00143_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	353; meter_logger.c	fsk_tx_disable();
+;	.line	354; meter_logger.c	fsk_tx_disable();
 	CALL	_fsk_tx_disable
 _00144_DS_:
-;	.line	356; meter_logger.c	usart_puts("\n\rwaiting for new command\n\r");
+;	.line	357; meter_logger.c	usart_puts("\n\rwaiting for new command\n\r");
 	MOVLW	UPPER(___str_7)
 	MOVWF	r0x06
 	MOVLW	HIGH(___str_7)
@@ -1680,14 +1680,14 @@ _00144_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	358; meter_logger.c	fsk_rx_enable();
+;	.line	359; meter_logger.c	fsk_rx_enable();
 	CALL	_fsk_rx_enable
-;	.line	359; meter_logger.c	break;
+;	.line	360; meter_logger.c	break;
 	GOTO	_00168_DS_
 _00145_DS_:
-;	.line	361; meter_logger.c	fsk_rx_disable();
+;	.line	362; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
-;	.line	363; meter_logger.c	usart_puts("\n\rkamstrup - send multical frame data\n\r");
+;	.line	364; meter_logger.c	usart_puts("\n\rkamstrup - send multical frame data\n\r");
 	MOVLW	UPPER(___str_13)
 	MOVWF	r0x06
 	MOVLW	HIGH(___str_13)
@@ -1703,12 +1703,12 @@ _00145_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	367; meter_logger.c	fsk_rx_enable();
+;	.line	368; meter_logger.c	fsk_rx_enable();
 	CALL	_fsk_rx_enable
-;	.line	368; meter_logger.c	last_fifo_size = 0;
+;	.line	369; meter_logger.c	last_fifo_size = 0;
 	CLRF	r0x00
 	CLRF	r0x01
-;	.line	369; meter_logger.c	sleep_ms(400);							// sleep 400 ms to let some data come in
+;	.line	370; meter_logger.c	sleep_ms(400);							// sleep 400 ms to let some data come in
 	MOVLW	0x01
 	MOVWF	POSTDEC1
 	MOVLW	0x90
@@ -1716,12 +1716,12 @@ _00145_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	370; meter_logger.c	fifo_size = fifo_in_use();
+;	.line	371; meter_logger.c	fifo_size = fifo_in_use();
 	CALL	_fifo_in_use
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
 _00146_DS_:
-;	.line	371; meter_logger.c	while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
+;	.line	372; meter_logger.c	while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 	MOVF	r0x03, W
 	SUBWF	r0x01, W
 	BNZ	_00339_DS_
@@ -1729,10 +1729,10 @@ _00146_DS_:
 	SUBWF	r0x00, W
 _00339_DS_:
 	BC	_00148_DS_
-;	.line	372; meter_logger.c	last_fifo_size = fifo_size;
+;	.line	373; meter_logger.c	last_fifo_size = fifo_size;
 	MOVFF	r0x02, r0x00
 	MOVFF	r0x03, r0x01
-;	.line	373; meter_logger.c	sleep_ms(200);						// return data when no data for 100 ms
+;	.line	374; meter_logger.c	sleep_ms(200);						// return data when no data for 100 ms
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0xc8
@@ -1740,15 +1740,15 @@ _00339_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	374; meter_logger.c	fifo_size = fifo_in_use();
+;	.line	375; meter_logger.c	fifo_size = fifo_in_use();
 	CALL	_fifo_in_use
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
 	BRA	_00146_DS_
 _00148_DS_:
-;	.line	376; meter_logger.c	fsk_rx_disable();
+;	.line	377; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
-;	.line	379; meter_logger.c	usart_puts("\n\rkamstrup - multical frame received:\n\r");
+;	.line	380; meter_logger.c	usart_puts("\n\rkamstrup - multical frame received:\n\r");
 	MOVLW	UPPER(___str_14)
 	MOVWF	r0x06
 	MOVLW	HIGH(___str_14)
@@ -1764,7 +1764,7 @@ _00148_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	382; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
+;	.line	383; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
 	CLRF	r0x04
 	CLRF	r0x05
 _00183_DS_:
@@ -1779,7 +1779,7 @@ _00183_DS_:
 _00340_DS_:
 	BTFSC	STATUS, 0
 	BRA	_00149_DS_
-;	.line	384; meter_logger.c	fifo_get(&sub_cmd);
+;	.line	385; meter_logger.c	fifo_get(&sub_cmd);
 	MOVLW	HIGH(_main_sub_cmd_1_90)
 	MOVWF	r0x07
 	MOVLW	LOW(_main_sub_cmd_1_90)
@@ -1795,7 +1795,7 @@ _00340_DS_:
 	CALL	_fifo_get
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	386; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
+;	.line	387; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
 	MOVFF	_main_sub_cmd_1_90, r0x06
 	CLRF	r0x07
 	MOVLW	UPPER(___str_6)
@@ -1829,7 +1829,7 @@ _00340_DS_:
 	CALL	_sprintf
 	MOVLW	0x08
 	ADDWF	FSR1L, F
-;	.line	387; meter_logger.c	usart_puts(debug_buffer);
+;	.line	388; meter_logger.c	usart_puts(debug_buffer);
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x07
 	MOVLW	LOW(_debug_buffer)
@@ -1846,17 +1846,17 @@ _00340_DS_:
 	MOVLW	0x03
 	ADDWF	FSR1L, F
 	BANKSEL	_main_sub_cmd_1_90
-;	.line	389; meter_logger.c	fifo_put(sub_cmd);
+;	.line	390; meter_logger.c	fifo_put(sub_cmd);
 	MOVF	_main_sub_cmd_1_90, W, B
 	MOVWF	POSTDEC1
 	CALL	_fifo_put
 	MOVF	POSTINC1, F
-;	.line	382; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
+;	.line	383; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
 	INFSNZ	r0x04, F
 	INCF	r0x05, F
 	BRA	_00183_DS_
 _00149_DS_:
-;	.line	392; meter_logger.c	rs232_7e1_tx_enable(TIMER0_RS232_300);
+;	.line	393; meter_logger.c	rs232_7e1_tx_enable(TIMER0_RS232_300);
 	MOVLW	0xe6
 	MOVWF	POSTDEC1
 	MOVLW	0x1b
@@ -1865,7 +1865,7 @@ _00149_DS_:
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
 _00150_DS_:
-;	.line	393; meter_logger.c	while (fifo_get(&sub_cmd)) {
+;	.line	394; meter_logger.c	while (fifo_get(&sub_cmd)) {
 	MOVLW	HIGH(_main_sub_cmd_1_90)
 	MOVWF	r0x05
 	MOVLW	LOW(_main_sub_cmd_1_90)
@@ -1885,12 +1885,12 @@ _00150_DS_:
 	MOVF	r0x04, W
 	BZ	_00152_DS_
 	BANKSEL	_main_sub_cmd_1_90
-;	.line	394; meter_logger.c	rs232_7e1_tx_byte(sub_cmd);
+;	.line	395; meter_logger.c	rs232_7e1_tx_byte(sub_cmd);
 	MOVF	_main_sub_cmd_1_90, W, B
 	MOVWF	POSTDEC1
 	CALL	_rs232_7e1_tx_byte
 	MOVF	POSTINC1, F
-;	.line	395; meter_logger.c	sleep_ms(RS232_TX_SLEEP);
+;	.line	396; meter_logger.c	sleep_ms(RS232_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0x0c
@@ -1900,9 +1900,9 @@ _00150_DS_:
 	MOVF	POSTINC1, F
 	BRA	_00150_DS_
 _00152_DS_:
-;	.line	397; meter_logger.c	rs232_7e1_tx_disable();
+;	.line	398; meter_logger.c	rs232_7e1_tx_disable();
 	CALL	_rs232_7e1_tx_disable
-;	.line	403; meter_logger.c	rs232_7e1_rx_enable(TIMER0_RS232_300);
+;	.line	404; meter_logger.c	rs232_7e1_rx_enable(TIMER0_RS232_300);
 	MOVLW	0xe6
 	MOVWF	POSTDEC1
 	MOVLW	0x1b
@@ -1910,10 +1910,10 @@ _00152_DS_:
 	CALL	_rs232_7e1_rx_enable
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	404; meter_logger.c	last_fifo_size = 0;
+;	.line	405; meter_logger.c	last_fifo_size = 0;
 	CLRF	r0x00
 	CLRF	r0x01
-;	.line	405; meter_logger.c	sleep_ms(400);							// sleep 200 ms to let some data come in
+;	.line	406; meter_logger.c	sleep_ms(400);							// sleep 200 ms to let some data come in
 	MOVLW	0x01
 	MOVWF	POSTDEC1
 	MOVLW	0x90
@@ -1921,12 +1921,12 @@ _00152_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	406; meter_logger.c	fifo_size = fifo_in_use();
+;	.line	407; meter_logger.c	fifo_size = fifo_in_use();
 	CALL	_fifo_in_use
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
 _00153_DS_:
-;	.line	408; meter_logger.c	while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
+;	.line	409; meter_logger.c	while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 	MOVF	r0x03, W
 	SUBWF	r0x01, W
 	BNZ	_00341_DS_
@@ -1934,10 +1934,10 @@ _00153_DS_:
 	SUBWF	r0x00, W
 _00341_DS_:
 	BC	_00155_DS_
-;	.line	409; meter_logger.c	last_fifo_size = fifo_size;
+;	.line	410; meter_logger.c	last_fifo_size = fifo_size;
 	MOVFF	r0x02, r0x00
 	MOVFF	r0x03, r0x01
-;	.line	410; meter_logger.c	sleep_ms(200);						// return data when no data for 100 ms
+;	.line	411; meter_logger.c	sleep_ms(200);						// return data when no data for 100 ms
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0xc8
@@ -1945,15 +1945,15 @@ _00341_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	411; meter_logger.c	fifo_size = fifo_in_use();
+;	.line	412; meter_logger.c	fifo_size = fifo_in_use();
 	CALL	_fifo_in_use
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
 	BRA	_00153_DS_
 _00155_DS_:
-;	.line	414; meter_logger.c	rs232_7e1_rx_disable();
+;	.line	415; meter_logger.c	rs232_7e1_rx_disable();
 	CALL	_rs232_7e1_rx_disable
-;	.line	418; meter_logger.c	usart_puts("\n\rkamstrup - multical reply received:\n\r");
+;	.line	419; meter_logger.c	usart_puts("\n\rkamstrup - multical reply received:\n\r");
 	MOVLW	UPPER(___str_15)
 	MOVWF	r0x02
 	MOVLW	HIGH(___str_15)
@@ -1969,7 +1969,7 @@ _00155_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	421; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
+;	.line	422; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
 	CLRF	r0x00
 	CLRF	r0x01
 _00186_DS_:
@@ -1984,7 +1984,7 @@ _00186_DS_:
 _00342_DS_:
 	BTFSC	STATUS, 0
 	BRA	_00156_DS_
-;	.line	423; meter_logger.c	fifo_get(&sub_cmd);
+;	.line	424; meter_logger.c	fifo_get(&sub_cmd);
 	MOVLW	HIGH(_main_sub_cmd_1_90)
 	MOVWF	r0x03
 	MOVLW	LOW(_main_sub_cmd_1_90)
@@ -2000,7 +2000,7 @@ _00342_DS_:
 	CALL	_fifo_get
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	425; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
+;	.line	426; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
 	MOVFF	_main_sub_cmd_1_90, r0x02
 	CLRF	r0x03
 	MOVLW	UPPER(___str_6)
@@ -2034,7 +2034,7 @@ _00342_DS_:
 	CALL	_sprintf
 	MOVLW	0x08
 	ADDWF	FSR1L, F
-;	.line	426; meter_logger.c	usart_puts(debug_buffer);
+;	.line	427; meter_logger.c	usart_puts(debug_buffer);
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x03
 	MOVLW	LOW(_debug_buffer)
@@ -2051,34 +2051,34 @@ _00342_DS_:
 	MOVLW	0x03
 	ADDWF	FSR1L, F
 	BANKSEL	_main_sub_cmd_1_90
-;	.line	428; meter_logger.c	fifo_put(sub_cmd);
+;	.line	429; meter_logger.c	fifo_put(sub_cmd);
 	MOVF	_main_sub_cmd_1_90, W, B
 	MOVWF	POSTDEC1
 	CALL	_fifo_put
 	MOVF	POSTINC1, F
-;	.line	421; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
+;	.line	422; meter_logger.c	for (i = 0; i < fifo_in_use(); i++) {
 	INFSNZ	r0x00, F
 	INCF	r0x01, F
 	BRA	_00186_DS_
 _00156_DS_:
-;	.line	431; meter_logger.c	if (fifo_in_use()) {
+;	.line	432; meter_logger.c	if (fifo_in_use()) {
 	CALL	_fifo_in_use
 	MOVWF	r0x00
 	MOVFF	PRODL, r0x01
 	MOVF	r0x00, W
 	IORWF	r0x01, W
 	BZ	_00161_DS_
-;	.line	433; meter_logger.c	DEBUG2_PIN = 1;
+;	.line	434; meter_logger.c	DEBUG2_PIN = 1;
 	BSF	_PORTBbits, 3
 	nop
 	nop
 	
-;	.line	438; meter_logger.c	DEBUG2_PIN = 0;
+;	.line	439; meter_logger.c	DEBUG2_PIN = 0;
 	BCF	_PORTBbits, 3
-;	.line	439; meter_logger.c	fsk_tx_enable();
+;	.line	440; meter_logger.c	fsk_tx_enable();
 	CALL	_fsk_tx_enable
 _00157_DS_:
-;	.line	440; meter_logger.c	while (fifo_get(&sub_cmd)) {
+;	.line	441; meter_logger.c	while (fifo_get(&sub_cmd)) {
 	MOVLW	HIGH(_main_sub_cmd_1_90)
 	MOVWF	r0x01
 	MOVLW	LOW(_main_sub_cmd_1_90)
@@ -2098,12 +2098,12 @@ _00157_DS_:
 	MOVF	r0x00, W
 	BZ	_00159_DS_
 	BANKSEL	_main_sub_cmd_1_90
-;	.line	441; meter_logger.c	fsk_tx_byte(sub_cmd);
+;	.line	442; meter_logger.c	fsk_tx_byte(sub_cmd);
 	MOVF	_main_sub_cmd_1_90, W, B
 	MOVWF	POSTDEC1
 	CALL	_fsk_tx_byte
 	MOVF	POSTINC1, F
-;	.line	442; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
+;	.line	443; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0x02
@@ -2113,28 +2113,28 @@ _00157_DS_:
 	MOVF	POSTINC1, F
 	BRA	_00157_DS_
 _00159_DS_:
-;	.line	444; meter_logger.c	fsk_tx_disable();
+;	.line	445; meter_logger.c	fsk_tx_disable();
 	CALL	_fsk_tx_disable
 	BRA	_00162_DS_
 _00161_DS_:
-;	.line	448; meter_logger.c	DEBUG2_PIN = 1;
+;	.line	449; meter_logger.c	DEBUG2_PIN = 1;
 	BSF	_PORTBbits, 3
 	nop
 	nop
 	
-;	.line	453; meter_logger.c	DEBUG2_PIN = 0;
+;	.line	454; meter_logger.c	DEBUG2_PIN = 0;
 	BCF	_PORTBbits, 3
 	nop
 	nop
 	
-;	.line	458; meter_logger.c	DEBUG2_PIN = 1;
+;	.line	459; meter_logger.c	DEBUG2_PIN = 1;
 	BSF	_PORTBbits, 3
 	nop
 	nop
 	
-;	.line	463; meter_logger.c	DEBUG2_PIN = 0;
+;	.line	464; meter_logger.c	DEBUG2_PIN = 0;
 	BCF	_PORTBbits, 3
-;	.line	465; meter_logger.c	sprintf(debug_buffer, "\n\rno reply from meter\n\r");
+;	.line	466; meter_logger.c	sprintf(debug_buffer, "\n\rno reply from meter\n\r");
 	MOVLW	UPPER(___str_12)
 	MOVWF	r0x02
 	MOVLW	HIGH(___str_12)
@@ -2162,7 +2162,7 @@ _00161_DS_:
 	CALL	_sprintf
 	MOVLW	0x06
 	ADDWF	FSR1L, F
-;	.line	466; meter_logger.c	usart_puts(debug_buffer);
+;	.line	467; meter_logger.c	usart_puts(debug_buffer);
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x01
 	MOVLW	LOW(_debug_buffer)
@@ -2178,14 +2178,14 @@ _00161_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	468; meter_logger.c	fsk_tx_enable();
+;	.line	469; meter_logger.c	fsk_tx_enable();
 	CALL	_fsk_tx_enable
-;	.line	469; meter_logger.c	fsk_tx_byte(0x0d);
+;	.line	470; meter_logger.c	fsk_tx_byte(0x0d);
 	MOVLW	0x0d
 	MOVWF	POSTDEC1
 	CALL	_fsk_tx_byte
 	MOVF	POSTINC1, F
-;	.line	470; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
+;	.line	471; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
 	MOVLW	0x02
@@ -2193,10 +2193,10 @@ _00161_DS_:
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
-;	.line	471; meter_logger.c	fsk_tx_disable();
+;	.line	472; meter_logger.c	fsk_tx_disable();
 	CALL	_fsk_tx_disable
 _00162_DS_:
-;	.line	474; meter_logger.c	usart_puts("\n\rwaiting for new command\n\r");
+;	.line	475; meter_logger.c	usart_puts("\n\rwaiting for new command\n\r");
 	MOVLW	UPPER(___str_7)
 	MOVWF	r0x02
 	MOVLW	HIGH(___str_7)
@@ -2212,28 +2212,28 @@ _00162_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	476; meter_logger.c	fsk_rx_enable();
+;	.line	477; meter_logger.c	fsk_rx_enable();
 	CALL	_fsk_rx_enable
-;	.line	477; meter_logger.c	break;
+;	.line	478; meter_logger.c	break;
 	GOTO	_00168_DS_
 _00163_DS_:
-;	.line	479; meter_logger.c	fsk_rx_disable();
+;	.line	480; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
-;	.line	480; meter_logger.c	get_battery_level();
+;	.line	481; meter_logger.c	get_battery_level();
 	CALL	_get_battery_level
-;	.line	481; meter_logger.c	fsk_rx_enable();
+;	.line	482; meter_logger.c	fsk_rx_enable();
 	CALL	_fsk_rx_enable
-;	.line	483; meter_logger.c	}
+;	.line	484; meter_logger.c	}
 	GOTO	_00168_DS_
 	RETURN	
 
 ; ; Starting pCode block
 S_meter_logger___debug2	code
 __debug2:
-;	.line	4660; meter_logger.c	void _debug2() {
+;	.line	4663; meter_logger.c	void _debug2() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
-;	.line	4661; meter_logger.c	DEBUG2_PIN = 0x1;
+;	.line	4664; meter_logger.c	DEBUG2_PIN = 0x1;
 	BSF	_PORTBbits, 3
 	nop
 	nop
@@ -2281,7 +2281,7 @@ __debug2:
 	nop
 	nop
 	
-;	.line	4709; meter_logger.c	DEBUG2_PIN = 0x0;
+;	.line	4712; meter_logger.c	DEBUG2_PIN = 0x0;
 	BCF	_PORTBbits, 3
 	nop
 	nop
@@ -2335,10 +2335,10 @@ __debug2:
 ; ; Starting pCode block
 S_meter_logger___debug	code
 __debug:
-;	.line	4560; meter_logger.c	void _debug() {
+;	.line	4563; meter_logger.c	void _debug() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
-;	.line	4561; meter_logger.c	DEBUG_PIN = 0x1;
+;	.line	4564; meter_logger.c	DEBUG_PIN = 0x1;
 	BSF	_PORTBbits, 2
 	nop
 	nop
@@ -2386,7 +2386,7 @@ __debug:
 	nop
 	nop
 	
-;	.line	4609; meter_logger.c	DEBUG_PIN = 0x0;
+;	.line	4612; meter_logger.c	DEBUG_PIN = 0x0;
 	BCF	_PORTBbits, 2
 	nop
 	nop
@@ -2440,18 +2440,18 @@ __debug:
 ; ; Starting pCode block
 S_meter_logger__flash_led	code
 _flash_led:
-;	.line	4555; meter_logger.c	void flash_led(unsigned char ms) {
+;	.line	4558; meter_logger.c	void flash_led(unsigned char ms) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
 	MOVLW	0x02
 	MOVFF	PLUSW2, r0x00
-;	.line	4556; meter_logger.c	led_flash.timer = ms;
+;	.line	4559; meter_logger.c	led_flash.timer = ms;
 	MOVF	r0x00, W
 	BANKSEL	(_led_flash + 1)
 	MOVWF	(_led_flash + 1), B
 ; removed redundant BANKSEL
-;	.line	4557; meter_logger.c	led_flash.state = LED_FLASH_RUN;
+;	.line	4560; meter_logger.c	led_flash.state = LED_FLASH_RUN;
 	CLRF	_led_flash, B
 	MOVFF	PREINC1, r0x00
 	MOVFF	PREINC1, FSR2L
@@ -2460,7 +2460,7 @@ _flash_led:
 ; ; Starting pCode block
 S_meter_logger__get_battery_level	code
 _get_battery_level:
-;	.line	4524; meter_logger.c	unsigned int get_battery_level() {
+;	.line	4527; meter_logger.c	unsigned int get_battery_level() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
@@ -2471,7 +2471,7 @@ _get_battery_level:
 	MOVFF	r0x05, POSTDEC1
 	MOVFF	r0x06, POSTDEC1
 	MOVFF	r0x07, POSTDEC1
-;	.line	4528; meter_logger.c	adc_open(ADC_CHN_4 , ADC_FOSC_64, ADC_CFG_5A, ADC_FRM_RJUST | ADC_INT_OFF | ADC_VCFG_VDD_VSS);
+;	.line	4531; meter_logger.c	adc_open(ADC_CHN_4 , ADC_FOSC_64, ADC_CFG_5A, ADC_FRM_RJUST | ADC_INT_OFF | ADC_VCFG_VDD_VSS);
 	MOVLW	0x80
 	MOVWF	POSTDEC1
 	MOVLW	0x0a
@@ -2483,34 +2483,34 @@ _get_battery_level:
 	CALL	_adc_open
 	MOVLW	0x04
 	ADDWF	FSR1L, F
-;	.line	4530; meter_logger.c	adc_setchannel(ADC_CHN_4);
+;	.line	4533; meter_logger.c	adc_setchannel(ADC_CHN_4);
 	MOVLW	0x04
 	MOVWF	POSTDEC1
 	CALL	_adc_setchannel
 	MOVF	POSTINC1, F
-;	.line	4531; meter_logger.c	adc_conv();
+;	.line	4534; meter_logger.c	adc_conv();
 	CALL	_adc_conv
-_01158_DS_:
-;	.line	4532; meter_logger.c	while(adc_busy()) {
+_01161_DS_:
+;	.line	4535; meter_logger.c	while(adc_busy()) {
 	CALL	_adc_busy
 	MOVWF	r0x00
 	MOVF	r0x00, W
-	BNZ	_01158_DS_
-;	.line	4536; meter_logger.c	dev_id = get_dev_id();
+	BNZ	_01161_DS_
+;	.line	4539; meter_logger.c	dev_id = get_dev_id();
 	CALL	_get_dev_id
 	MOVWF	r0x00
 	MOVFF	PRODL, r0x01
-;	.line	4537; meter_logger.c	if (dev_id == 0x1240) {
+;	.line	4540; meter_logger.c	if (dev_id == 0x1240) {
 	MOVF	r0x00, W
 	XORLW	0x40
-	BNZ	_01181_DS_
+	BNZ	_01184_DS_
 	MOVF	r0x01, W
 	XORLW	0x12
-	BZ	_01182_DS_
-_01181_DS_:
-	BRA	_01165_DS_
-_01182_DS_:
-;	.line	4539; meter_logger.c	v_level = (unsigned long)1000 * (unsigned long)adc_read() * (unsigned long)833/(unsigned long)93600;
+	BZ	_01185_DS_
+_01184_DS_:
+	BRA	_01168_DS_
+_01185_DS_:
+;	.line	4542; meter_logger.c	v_level = (unsigned long)1000 * (unsigned long)adc_read() * (unsigned long)833/(unsigned long)93600;
 	CALL	_adc_read
 	MOVWF	r0x02
 	MOVFF	PRODL, r0x03
@@ -2565,19 +2565,19 @@ _01182_DS_:
 	MOVFF	FSR0L, r0x05
 	MOVLW	0x08
 	ADDWF	FSR1L, F
-	BRA	_01166_DS_
-_01165_DS_:
-;	.line	4541; meter_logger.c	else if (dev_id == 0x2a40) {
+	BRA	_01169_DS_
+_01168_DS_:
+;	.line	4544; meter_logger.c	else if (dev_id == 0x2a40) {
 	MOVF	r0x00, W
 	XORLW	0x40
-	BNZ	_01183_DS_
+	BNZ	_01186_DS_
 	MOVF	r0x01, W
 	XORLW	0x2a
-	BZ	_01184_DS_
-_01183_DS_:
-	BRA	_01162_DS_
-_01184_DS_:
-;	.line	4543; meter_logger.c	v_level = (unsigned long)1000 * (unsigned long)(adc_read() >> 2) * (unsigned long)833/(unsigned long)93600;
+	BZ	_01187_DS_
+_01186_DS_:
+	BRA	_01165_DS_
+_01187_DS_:
+;	.line	4546; meter_logger.c	v_level = (unsigned long)1000 * (unsigned long)(adc_read() >> 2) * (unsigned long)833/(unsigned long)93600;
 	CALL	_adc_read
 	MOVWF	r0x00
 	MOVFF	PRODL, r0x01
@@ -2642,13 +2642,13 @@ _01184_DS_:
 	MOVWF	r0x02
 	MOVF	r0x01, W
 	MOVWF	r0x03
-	BRA	_01166_DS_
-_01162_DS_:
-;	.line	4546; meter_logger.c	v_level = 0;
+	BRA	_01169_DS_
+_01165_DS_:
+;	.line	4549; meter_logger.c	v_level = 0;
 	CLRF	r0x02
 	CLRF	r0x03
-_01166_DS_:
-;	.line	4548; meter_logger.c	sprintf(debug_buffer, "Battery: %dmV\n\r", v_level);
+_01169_DS_:
+;	.line	4551; meter_logger.c	sprintf(debug_buffer, "Battery: %dmV\n\r", v_level);
 	MOVLW	UPPER(___str_16)
 	MOVWF	r0x04
 	MOVLW	HIGH(___str_16)
@@ -2680,7 +2680,7 @@ _01166_DS_:
 	CALL	_sprintf
 	MOVLW	0x08
 	ADDWF	FSR1L, F
-;	.line	4549; meter_logger.c	usart_puts(debug_buffer);	
+;	.line	4552; meter_logger.c	usart_puts(debug_buffer);	
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x01
 	MOVLW	LOW(_debug_buffer)
@@ -2696,9 +2696,9 @@ _01166_DS_:
 	CALL	_usart_puts
 	MOVLW	0x03
 	ADDWF	FSR1L, F
-;	.line	4551; meter_logger.c	adc_close();
+;	.line	4554; meter_logger.c	adc_close();
 	CALL	_adc_close
-;	.line	4552; meter_logger.c	return v_level;
+;	.line	4555; meter_logger.c	return v_level;
 	MOVFF	r0x03, PRODL
 	MOVF	r0x02, W
 	MOVFF	PREINC1, r0x07
@@ -2715,7 +2715,7 @@ _01166_DS_:
 ; ; Starting pCode block
 S_meter_logger__fifo_snoop	code
 _fifo_snoop:
-;	.line	4501; meter_logger.c	unsigned char fifo_snoop(unsigned char *c, unsigned int pos) {
+;	.line	4504; meter_logger.c	unsigned char fifo_snoop(unsigned char *c, unsigned int pos) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
@@ -2735,31 +2735,31 @@ _fifo_snoop:
 	MOVFF	PLUSW2, r0x03
 	MOVLW	0x06
 	MOVFF	PLUSW2, r0x04
-;	.line	4502; meter_logger.c	if (fifo_in_use() > (pos)) {
+;	.line	4505; meter_logger.c	if (fifo_in_use() > (pos)) {
 	CALL	_fifo_in_use
 	MOVWF	r0x05
 	MOVFF	PRODL, r0x06
 	MOVF	r0x06, W
 	SUBWF	r0x04, W
-	BNZ	_01151_DS_
+	BNZ	_01154_DS_
 	MOVF	r0x05, W
 	SUBWF	r0x03, W
-_01151_DS_:
+_01154_DS_:
 	BTFSC	STATUS, 0
-	BRA	_01141_DS_
+	BRA	_01144_DS_
 	BANKSEL	(_fifo_tail + 1)
-;	.line	4503; meter_logger.c	switch (fifo_tail/QUEUE_SIZE) {
+;	.line	4506; meter_logger.c	switch (fifo_tail/QUEUE_SIZE) {
 	MOVF	(_fifo_tail + 1), W, B
 	MOVWF	r0x05
 	CLRF	r0x06
 	MOVLW	0x00
 	SUBWF	r0x06, W
-	BNZ	_01152_DS_
+	BNZ	_01155_DS_
 	MOVLW	0x04
 	SUBWF	r0x05, W
-_01152_DS_:
+_01155_DS_:
 	BTFSC	STATUS, 0
-	BRA	_01139_DS_
+	BRA	_01142_DS_
 	CLRF	PCLATH
 	CLRF	PCLATU
 	RLCF	r0x05, W
@@ -2767,21 +2767,21 @@ _01152_DS_:
 	RLCF	WREG, W
 	RLCF	PCLATH, F
 	ANDLW	0xfc
-	ADDLW	LOW(_01153_DS_)
+	ADDLW	LOW(_01156_DS_)
 	MOVWF	POSTDEC1
-	MOVLW	HIGH(_01153_DS_)
+	MOVLW	HIGH(_01156_DS_)
 	ADDWFC	PCLATH, F
-	MOVLW	UPPER(_01153_DS_)
+	MOVLW	UPPER(_01156_DS_)
 	ADDWFC	PCLATU, F
 	MOVF	PREINC1, W
 	MOVWF	PCL
-_01153_DS_:
-	GOTO	_01135_DS_
-	GOTO	_01136_DS_
-	GOTO	_01137_DS_
+_01156_DS_:
 	GOTO	_01138_DS_
-_01135_DS_:
-;	.line	4505; meter_logger.c	*c = fifo_buffer_0[(fifo_tail + pos) % QUEUE_SIZE];
+	GOTO	_01139_DS_
+	GOTO	_01140_DS_
+	GOTO	_01141_DS_
+_01138_DS_:
+;	.line	4508; meter_logger.c	*c = fifo_buffer_0[(fifo_tail + pos) % QUEUE_SIZE];
 	MOVF	r0x03, W
 	BANKSEL	_fifo_tail
 	ADDWF	_fifo_tail, W, B
@@ -2803,10 +2803,10 @@ _01135_DS_:
 	MOVFF	r0x01, PRODL
 	MOVF	r0x02, W
 	CALL	__gptrput1
-;	.line	4506; meter_logger.c	break;
-	BRA	_01139_DS_
-_01136_DS_:
-;	.line	4508; meter_logger.c	*c = fifo_buffer_1[(fifo_tail + pos) % QUEUE_SIZE];
+;	.line	4509; meter_logger.c	break;
+	BRA	_01142_DS_
+_01139_DS_:
+;	.line	4511; meter_logger.c	*c = fifo_buffer_1[(fifo_tail + pos) % QUEUE_SIZE];
 	MOVF	r0x03, W
 	BANKSEL	_fifo_tail
 	ADDWF	_fifo_tail, W, B
@@ -2828,10 +2828,10 @@ _01136_DS_:
 	MOVFF	r0x01, PRODL
 	MOVF	r0x02, W
 	CALL	__gptrput1
-;	.line	4509; meter_logger.c	break;
-	BRA	_01139_DS_
-_01137_DS_:
-;	.line	4511; meter_logger.c	*c = fifo_buffer_2[(fifo_tail + pos) % QUEUE_SIZE];
+;	.line	4512; meter_logger.c	break;
+	BRA	_01142_DS_
+_01140_DS_:
+;	.line	4514; meter_logger.c	*c = fifo_buffer_2[(fifo_tail + pos) % QUEUE_SIZE];
 	MOVF	r0x03, W
 	BANKSEL	_fifo_tail
 	ADDWF	_fifo_tail, W, B
@@ -2853,11 +2853,11 @@ _01137_DS_:
 	MOVFF	r0x01, PRODL
 	MOVF	r0x02, W
 	CALL	__gptrput1
-;	.line	4512; meter_logger.c	break;
-	BRA	_01139_DS_
-_01138_DS_:
+;	.line	4515; meter_logger.c	break;
+	BRA	_01142_DS_
+_01141_DS_:
 	BANKSEL	_fifo_tail
-;	.line	4514; meter_logger.c	*c = fifo_buffer_3[(fifo_tail + pos) % QUEUE_SIZE];
+;	.line	4517; meter_logger.c	*c = fifo_buffer_3[(fifo_tail + pos) % QUEUE_SIZE];
 	MOVF	_fifo_tail, W, B
 	ADDWF	r0x03, F
 ; removed redundant BANKSEL
@@ -2876,14 +2876,14 @@ _01138_DS_:
 	MOVFF	r0x01, PRODL
 	MOVF	r0x02, W
 	CALL	__gptrput1
-_01139_DS_:
-;	.line	4517; meter_logger.c	return 1;
+_01142_DS_:
+;	.line	4520; meter_logger.c	return 1;
 	MOVLW	0x01
-	BRA	_01143_DS_
-_01141_DS_:
-;	.line	4520; meter_logger.c	return 0;
+	BRA	_01146_DS_
+_01144_DS_:
+;	.line	4523; meter_logger.c	return 0;
 	CLRF	WREG
-_01143_DS_:
+_01146_DS_:
 	MOVFF	PREINC1, r0x06
 	MOVFF	PREINC1, r0x05
 	MOVFF	PREINC1, r0x04
@@ -2897,7 +2897,7 @@ _01143_DS_:
 ; ; Starting pCode block
 S_meter_logger__fifo_get	code
 _fifo_get:
-;	.line	4473; meter_logger.c	unsigned char fifo_get(unsigned char *c) {
+;	.line	4476; meter_logger.c	unsigned char fifo_get(unsigned char *c) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
@@ -2911,27 +2911,27 @@ _fifo_get:
 	MOVFF	PLUSW2, r0x01
 	MOVLW	0x04
 	MOVFF	PLUSW2, r0x02
-;	.line	4474; meter_logger.c	if (fifo_in_use() != 0) {
+;	.line	4477; meter_logger.c	if (fifo_in_use() != 0) {
 	CALL	_fifo_in_use
 	MOVWF	r0x03
 	MOVFF	PRODL, r0x04
 	MOVF	r0x03, W
 	IORWF	r0x04, W
 	BTFSC	STATUS, 2
-	BRA	_01110_DS_
+	BRA	_01113_DS_
 	BANKSEL	(_fifo_tail + 1)
-;	.line	4475; meter_logger.c	switch (fifo_tail/QUEUE_SIZE) {
+;	.line	4478; meter_logger.c	switch (fifo_tail/QUEUE_SIZE) {
 	MOVF	(_fifo_tail + 1), W, B
 	MOVWF	r0x03
 	CLRF	r0x04
 	MOVLW	0x00
 	SUBWF	r0x04, W
-	BNZ	_01123_DS_
+	BNZ	_01126_DS_
 	MOVLW	0x04
 	SUBWF	r0x03, W
-_01123_DS_:
+_01126_DS_:
 	BTFSC	STATUS, 0
-	BRA	_01106_DS_
+	BRA	_01109_DS_
 	CLRF	PCLATH
 	CLRF	PCLATU
 	RLCF	r0x03, W
@@ -2939,22 +2939,22 @@ _01123_DS_:
 	RLCF	WREG, W
 	RLCF	PCLATH, F
 	ANDLW	0xfc
-	ADDLW	LOW(_01124_DS_)
+	ADDLW	LOW(_01127_DS_)
 	MOVWF	POSTDEC1
-	MOVLW	HIGH(_01124_DS_)
+	MOVLW	HIGH(_01127_DS_)
 	ADDWFC	PCLATH, F
-	MOVLW	UPPER(_01124_DS_)
+	MOVLW	UPPER(_01127_DS_)
 	ADDWFC	PCLATU, F
 	MOVF	PREINC1, W
 	MOVWF	PCL
-_01124_DS_:
-	GOTO	_01102_DS_
-	GOTO	_01103_DS_
-	GOTO	_01104_DS_
+_01127_DS_:
 	GOTO	_01105_DS_
-_01102_DS_:
+	GOTO	_01106_DS_
+	GOTO	_01107_DS_
+	GOTO	_01108_DS_
+_01105_DS_:
 	BANKSEL	_fifo_tail
-;	.line	4477; meter_logger.c	*c = fifo_buffer_0[fifo_tail % QUEUE_SIZE];
+;	.line	4480; meter_logger.c	*c = fifo_buffer_0[fifo_tail % QUEUE_SIZE];
 	MOVF	_fifo_tail, W, B
 	MOVWF	r0x03
 	CLRF	r0x04
@@ -2970,11 +2970,11 @@ _01102_DS_:
 	MOVFF	r0x01, PRODL
 	MOVF	r0x02, W
 	CALL	__gptrput1
-;	.line	4478; meter_logger.c	break;
-	BRA	_01106_DS_
-_01103_DS_:
+;	.line	4481; meter_logger.c	break;
+	BRA	_01109_DS_
+_01106_DS_:
 	BANKSEL	_fifo_tail
-;	.line	4480; meter_logger.c	*c = fifo_buffer_1[fifo_tail % QUEUE_SIZE];
+;	.line	4483; meter_logger.c	*c = fifo_buffer_1[fifo_tail % QUEUE_SIZE];
 	MOVF	_fifo_tail, W, B
 	MOVWF	r0x03
 	CLRF	r0x04
@@ -2990,11 +2990,11 @@ _01103_DS_:
 	MOVFF	r0x01, PRODL
 	MOVF	r0x02, W
 	CALL	__gptrput1
-;	.line	4481; meter_logger.c	break;
-	BRA	_01106_DS_
-_01104_DS_:
+;	.line	4484; meter_logger.c	break;
+	BRA	_01109_DS_
+_01107_DS_:
 	BANKSEL	_fifo_tail
-;	.line	4483; meter_logger.c	*c = fifo_buffer_2[fifo_tail % QUEUE_SIZE];
+;	.line	4486; meter_logger.c	*c = fifo_buffer_2[fifo_tail % QUEUE_SIZE];
 	MOVF	_fifo_tail, W, B
 	MOVWF	r0x03
 	CLRF	r0x04
@@ -3010,11 +3010,11 @@ _01104_DS_:
 	MOVFF	r0x01, PRODL
 	MOVF	r0x02, W
 	CALL	__gptrput1
-;	.line	4484; meter_logger.c	break;
-	BRA	_01106_DS_
-_01105_DS_:
+;	.line	4487; meter_logger.c	break;
+	BRA	_01109_DS_
+_01108_DS_:
 	BANKSEL	_fifo_tail
-;	.line	4486; meter_logger.c	*c = fifo_buffer_3[fifo_tail % QUEUE_SIZE];
+;	.line	4489; meter_logger.c	*c = fifo_buffer_3[fifo_tail % QUEUE_SIZE];
 	MOVF	_fifo_tail, W, B
 	MOVWF	r0x03
 	CLRF	r0x04
@@ -3030,38 +3030,38 @@ _01105_DS_:
 	MOVFF	r0x01, PRODL
 	MOVF	r0x02, W
 	CALL	__gptrput1
-_01106_DS_:
+_01109_DS_:
 	BANKSEL	_fifo_tail
-;	.line	4489; meter_logger.c	fifo_tail++;
+;	.line	4492; meter_logger.c	fifo_tail++;
 	INCFSZ	_fifo_tail, F, B
-	BRA	_11199_DS_
+	BRA	_11202_DS_
 ; removed redundant BANKSEL
 	INCF	(_fifo_tail + 1), F, B
-_11199_DS_:
+_11202_DS_:
 	BANKSEL	_fifo_tail
-;	.line	4491; meter_logger.c	if (fifo_tail == QUEUE_SIZE_COMBINED) {
+;	.line	4494; meter_logger.c	if (fifo_tail == QUEUE_SIZE_COMBINED) {
 	MOVF	_fifo_tail, W, B
-	BNZ	_01129_DS_
+	BNZ	_01132_DS_
 ; removed redundant BANKSEL
 	MOVF	(_fifo_tail + 1), W, B
 	XORLW	0x04
-	BZ	_01130_DS_
-_01129_DS_:
-	BRA	_01108_DS_
-_01130_DS_:
+	BZ	_01133_DS_
+_01132_DS_:
+	BRA	_01111_DS_
+_01133_DS_:
 	BANKSEL	_fifo_tail
-;	.line	4492; meter_logger.c	fifo_tail = 0;
+;	.line	4495; meter_logger.c	fifo_tail = 0;
 	CLRF	_fifo_tail, B
 ; removed redundant BANKSEL
 	CLRF	(_fifo_tail + 1), B
-_01108_DS_:
-;	.line	4494; meter_logger.c	return 1;
+_01111_DS_:
+;	.line	4497; meter_logger.c	return 1;
 	MOVLW	0x01
-	BRA	_01112_DS_
-_01110_DS_:
-;	.line	4497; meter_logger.c	return 0;
+	BRA	_01115_DS_
+_01113_DS_:
+;	.line	4500; meter_logger.c	return 0;
 	CLRF	WREG
-_01112_DS_:
+_01115_DS_:
 	MOVFF	PREINC1, r0x04
 	MOVFF	PREINC1, r0x03
 	MOVFF	PREINC1, r0x02
@@ -3073,7 +3073,7 @@ _01112_DS_:
 ; ; Starting pCode block
 S_meter_logger__fifo_put	code
 _fifo_put:
-;	.line	4445; meter_logger.c	unsigned char fifo_put(unsigned char c) {
+;	.line	4448; meter_logger.c	unsigned char fifo_put(unsigned char c) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
@@ -3081,30 +3081,30 @@ _fifo_put:
 	MOVFF	r0x02, POSTDEC1
 	MOVLW	0x02
 	MOVFF	PLUSW2, r0x00
-;	.line	4446; meter_logger.c	if (fifo_in_use() != QUEUE_SIZE_COMBINED) {
+;	.line	4449; meter_logger.c	if (fifo_in_use() != QUEUE_SIZE_COMBINED) {
 	CALL	_fifo_in_use
 	MOVWF	r0x01
 	MOVFF	PRODL, r0x02
 	MOVF	r0x01, W
-	BNZ	_01089_DS_
+	BNZ	_01092_DS_
 	MOVF	r0x02, W
 	XORLW	0x04
-	BNZ	_01089_DS_
-	BRA	_01075_DS_
-_01089_DS_:
+	BNZ	_01092_DS_
+	BRA	_01078_DS_
+_01092_DS_:
 	BANKSEL	(_fifo_head + 1)
-;	.line	4447; meter_logger.c	switch (fifo_head/QUEUE_SIZE) {
+;	.line	4450; meter_logger.c	switch (fifo_head/QUEUE_SIZE) {
 	MOVF	(_fifo_head + 1), W, B
 	MOVWF	r0x01
 	CLRF	r0x02
 	MOVLW	0x00
 	SUBWF	r0x02, W
-	BNZ	_01090_DS_
+	BNZ	_01093_DS_
 	MOVLW	0x04
 	SUBWF	r0x01, W
-_01090_DS_:
+_01093_DS_:
 	BTFSC	STATUS, 0
-	BRA	_01071_DS_
+	BRA	_01074_DS_
 	CLRF	PCLATH
 	CLRF	PCLATU
 	RLCF	r0x01, W
@@ -3112,22 +3112,22 @@ _01090_DS_:
 	RLCF	WREG, W
 	RLCF	PCLATH, F
 	ANDLW	0xfc
-	ADDLW	LOW(_01091_DS_)
+	ADDLW	LOW(_01094_DS_)
 	MOVWF	POSTDEC1
-	MOVLW	HIGH(_01091_DS_)
+	MOVLW	HIGH(_01094_DS_)
 	ADDWFC	PCLATH, F
-	MOVLW	UPPER(_01091_DS_)
+	MOVLW	UPPER(_01094_DS_)
 	ADDWFC	PCLATU, F
 	MOVF	PREINC1, W
 	MOVWF	PCL
-_01091_DS_:
-	GOTO	_01067_DS_
-	GOTO	_01068_DS_
-	GOTO	_01069_DS_
+_01094_DS_:
 	GOTO	_01070_DS_
-_01067_DS_:
+	GOTO	_01071_DS_
+	GOTO	_01072_DS_
+	GOTO	_01073_DS_
+_01070_DS_:
 	BANKSEL	_fifo_head
-;	.line	4449; meter_logger.c	fifo_buffer_0[fifo_head % QUEUE_SIZE] = c;
+;	.line	4452; meter_logger.c	fifo_buffer_0[fifo_head % QUEUE_SIZE] = c;
 	MOVF	_fifo_head, W, B
 	MOVWF	r0x01
 	CLRF	r0x02
@@ -3138,11 +3138,11 @@ _01067_DS_:
 	MOVFF	r0x01, FSR0L
 	MOVFF	r0x02, FSR0H
 	MOVFF	r0x00, INDF0
-;	.line	4450; meter_logger.c	break;
-	BRA	_01071_DS_
-_01068_DS_:
+;	.line	4453; meter_logger.c	break;
+	BRA	_01074_DS_
+_01071_DS_:
 	BANKSEL	_fifo_head
-;	.line	4452; meter_logger.c	fifo_buffer_1[fifo_head % QUEUE_SIZE] = c;
+;	.line	4455; meter_logger.c	fifo_buffer_1[fifo_head % QUEUE_SIZE] = c;
 	MOVF	_fifo_head, W, B
 	MOVWF	r0x01
 	CLRF	r0x02
@@ -3153,11 +3153,11 @@ _01068_DS_:
 	MOVFF	r0x01, FSR0L
 	MOVFF	r0x02, FSR0H
 	MOVFF	r0x00, INDF0
-;	.line	4453; meter_logger.c	break;
-	BRA	_01071_DS_
-_01069_DS_:
+;	.line	4456; meter_logger.c	break;
+	BRA	_01074_DS_
+_01072_DS_:
 	BANKSEL	_fifo_head
-;	.line	4455; meter_logger.c	fifo_buffer_2[fifo_head % QUEUE_SIZE] = c;
+;	.line	4458; meter_logger.c	fifo_buffer_2[fifo_head % QUEUE_SIZE] = c;
 	MOVF	_fifo_head, W, B
 	MOVWF	r0x01
 	CLRF	r0x02
@@ -3168,11 +3168,11 @@ _01069_DS_:
 	MOVFF	r0x01, FSR0L
 	MOVFF	r0x02, FSR0H
 	MOVFF	r0x00, INDF0
-;	.line	4456; meter_logger.c	break;
-	BRA	_01071_DS_
-_01070_DS_:
+;	.line	4459; meter_logger.c	break;
+	BRA	_01074_DS_
+_01073_DS_:
 	BANKSEL	_fifo_head
-;	.line	4458; meter_logger.c	fifo_buffer_3[fifo_head % QUEUE_SIZE] = c;
+;	.line	4461; meter_logger.c	fifo_buffer_3[fifo_head % QUEUE_SIZE] = c;
 	MOVF	_fifo_head, W, B
 	MOVWF	r0x01
 	CLRF	r0x02
@@ -3183,38 +3183,38 @@ _01070_DS_:
 	MOVFF	r0x01, FSR0L
 	MOVFF	r0x02, FSR0H
 	MOVFF	r0x00, INDF0
-_01071_DS_:
+_01074_DS_:
 	BANKSEL	_fifo_head
-;	.line	4461; meter_logger.c	fifo_head++;
+;	.line	4464; meter_logger.c	fifo_head++;
 	INCFSZ	_fifo_head, F, B
-	BRA	_21200_DS_
+	BRA	_21203_DS_
 ; removed redundant BANKSEL
 	INCF	(_fifo_head + 1), F, B
-_21200_DS_:
+_21203_DS_:
 	BANKSEL	_fifo_head
-;	.line	4463; meter_logger.c	if (fifo_head == QUEUE_SIZE_COMBINED) {
+;	.line	4466; meter_logger.c	if (fifo_head == QUEUE_SIZE_COMBINED) {
 	MOVF	_fifo_head, W, B
-	BNZ	_01096_DS_
+	BNZ	_01099_DS_
 ; removed redundant BANKSEL
 	MOVF	(_fifo_head + 1), W, B
 	XORLW	0x04
-	BZ	_01097_DS_
-_01096_DS_:
-	BRA	_01073_DS_
-_01097_DS_:
+	BZ	_01100_DS_
+_01099_DS_:
+	BRA	_01076_DS_
+_01100_DS_:
 	BANKSEL	_fifo_head
-;	.line	4464; meter_logger.c	fifo_head = 0;
+;	.line	4467; meter_logger.c	fifo_head = 0;
 	CLRF	_fifo_head, B
 ; removed redundant BANKSEL
 	CLRF	(_fifo_head + 1), B
-_01073_DS_:
-;	.line	4466; meter_logger.c	return 1;
+_01076_DS_:
+;	.line	4469; meter_logger.c	return 1;
 	MOVLW	0x01
-	BRA	_01077_DS_
-_01075_DS_:
-;	.line	4469; meter_logger.c	return 0;
+	BRA	_01080_DS_
+_01078_DS_:
+;	.line	4472; meter_logger.c	return 0;
 	CLRF	WREG
-_01077_DS_:
+_01080_DS_:
 	MOVFF	PREINC1, r0x02
 	MOVFF	PREINC1, r0x01
 	MOVFF	PREINC1, r0x00
@@ -3224,13 +3224,13 @@ _01077_DS_:
 ; ; Starting pCode block
 S_meter_logger__fifo_in_use	code
 _fifo_in_use:
-;	.line	4441; meter_logger.c	unsigned int fifo_in_use() {
+;	.line	4444; meter_logger.c	unsigned int fifo_in_use() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
 	MOVFF	r0x01, POSTDEC1
 	BANKSEL	_fifo_tail
-;	.line	4442; meter_logger.c	return fifo_head - fifo_tail;
+;	.line	4445; meter_logger.c	return fifo_head - fifo_tail;
 	MOVF	_fifo_tail, W, B
 	BANKSEL	_fifo_head
 	SUBWF	_fifo_head, W, B
@@ -3250,25 +3250,25 @@ _fifo_in_use:
 ; ; Starting pCode block
 S_meter_logger__fsk_tx_byte	code
 _fsk_tx_byte:
-;	.line	4433; meter_logger.c	void fsk_tx_byte(unsigned char c) {
+;	.line	4436; meter_logger.c	void fsk_tx_byte(unsigned char c) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
 	MOVLW	0x02
 	MOVFF	PLUSW2, r0x00
-;	.line	4434; meter_logger.c	fsk_proto.data = c;
+;	.line	4437; meter_logger.c	fsk_proto.data = c;
 	MOVF	r0x00, W
 	BANKSEL	(_fsk_proto + 12)
 	MOVWF	(_fsk_proto + 12), B
-;	.line	4435; meter_logger.c	fsk_proto.data_len = 8;
+;	.line	4438; meter_logger.c	fsk_proto.data_len = 8;
 	MOVLW	0x08
 ; removed redundant BANKSEL
 	MOVWF	(_fsk_proto + 13), B
-_01054_DS_:
+_01057_DS_:
 	BANKSEL	(_fsk_proto + 13)
-;	.line	4436; meter_logger.c	while (fsk_proto.data_len) {
+;	.line	4439; meter_logger.c	while (fsk_proto.data_len) {
 	MOVF	(_fsk_proto + 13), W, B
-	BNZ	_01054_DS_
+	BNZ	_01057_DS_
 	MOVFF	PREINC1, r0x00
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -3276,10 +3276,10 @@ _01054_DS_:
 ; ; Starting pCode block
 S_meter_logger__send_fsk_low	code
 _send_fsk_low:
-;	.line	2980; meter_logger.c	void send_fsk_low(void) {
+;	.line	2983; meter_logger.c	void send_fsk_low(void) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
-;	.line	2981; meter_logger.c	PWM_PIN = 1;
+;	.line	2984; meter_logger.c	PWM_PIN = 1;
 	BSF	_PORTCbits, 1
 	nop
 	nop
@@ -3486,7 +3486,7 @@ _send_fsk_low:
 	nop
 	nop
 	
-;	.line	3188; meter_logger.c	PWM_PIN = 0;
+;	.line	3191; meter_logger.c	PWM_PIN = 0;
 	BCF	_PORTCbits, 1
 	nop
 	nop
@@ -3693,7 +3693,7 @@ _send_fsk_low:
 	nop
 	nop
 	
-;	.line	3395; meter_logger.c	PWM_PIN = 1;
+;	.line	3398; meter_logger.c	PWM_PIN = 1;
 	BSF	_PORTCbits, 1
 	nop
 	nop
@@ -3900,7 +3900,7 @@ _send_fsk_low:
 	nop
 	nop
 	
-;	.line	3602; meter_logger.c	PWM_PIN = 0;
+;	.line	3605; meter_logger.c	PWM_PIN = 0;
 	BCF	_PORTCbits, 1
 	nop
 	nop
@@ -4107,7 +4107,7 @@ _send_fsk_low:
 	nop
 	nop
 	
-;	.line	3809; meter_logger.c	PWM_PIN = 1;
+;	.line	3812; meter_logger.c	PWM_PIN = 1;
 	BSF	_PORTCbits, 1
 	nop
 	nop
@@ -4314,7 +4314,7 @@ _send_fsk_low:
 	nop
 	nop
 	
-;	.line	4016; meter_logger.c	PWM_PIN = 0;
+;	.line	4019; meter_logger.c	PWM_PIN = 0;
 	BCF	_PORTCbits, 1
 	nop
 	nop
@@ -4521,7 +4521,7 @@ _send_fsk_low:
 	nop
 	nop
 	
-;	.line	4223; meter_logger.c	PWM_PIN = 1;
+;	.line	4226; meter_logger.c	PWM_PIN = 1;
 	BSF	_PORTCbits, 1
 	nop
 	nop
@@ -4728,7 +4728,7 @@ _send_fsk_low:
 	nop
 	nop
 	
-;	.line	4430; meter_logger.c	PWM_PIN = 0;
+;	.line	4433; meter_logger.c	PWM_PIN = 0;
 	BCF	_PORTCbits, 1
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -4736,10 +4736,10 @@ _send_fsk_low:
 ; ; Starting pCode block
 S_meter_logger__send_fsk_high	code
 _send_fsk_high:
-;	.line	1458; meter_logger.c	void send_fsk_high(void) {
+;	.line	1461; meter_logger.c	void send_fsk_high(void) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
-;	.line	1459; meter_logger.c	PWM_PIN = 1;
+;	.line	1462; meter_logger.c	PWM_PIN = 1;
 	BSF	_PORTCbits, 1
 	nop
 	nop
@@ -4877,7 +4877,7 @@ _send_fsk_high:
 	nop
 	nop
 	
-;	.line	1597; meter_logger.c	PWM_PIN = 0;
+;	.line	1600; meter_logger.c	PWM_PIN = 0;
 	BCF	_PORTCbits, 1
 	nop
 	nop
@@ -5015,7 +5015,7 @@ _send_fsk_high:
 	nop
 	nop
 	
-;	.line	1735; meter_logger.c	PWM_PIN = 1;
+;	.line	1738; meter_logger.c	PWM_PIN = 1;
 	BSF	_PORTCbits, 1
 	nop
 	nop
@@ -5153,7 +5153,7 @@ _send_fsk_high:
 	nop
 	nop
 	
-;	.line	1873; meter_logger.c	PWM_PIN = 0;
+;	.line	1876; meter_logger.c	PWM_PIN = 0;
 	BCF	_PORTCbits, 1
 	nop
 	nop
@@ -5291,7 +5291,7 @@ _send_fsk_high:
 	nop
 	nop
 	
-;	.line	2011; meter_logger.c	PWM_PIN = 1;
+;	.line	2014; meter_logger.c	PWM_PIN = 1;
 	BSF	_PORTCbits, 1
 	nop
 	nop
@@ -5429,7 +5429,7 @@ _send_fsk_high:
 	nop
 	nop
 	
-;	.line	2149; meter_logger.c	PWM_PIN = 0;
+;	.line	2152; meter_logger.c	PWM_PIN = 0;
 	BCF	_PORTCbits, 1
 	nop
 	nop
@@ -5567,7 +5567,7 @@ _send_fsk_high:
 	nop
 	nop
 	
-;	.line	2287; meter_logger.c	PWM_PIN = 1;
+;	.line	2290; meter_logger.c	PWM_PIN = 1;
 	BSF	_PORTCbits, 1
 	nop
 	nop
@@ -5705,7 +5705,7 @@ _send_fsk_high:
 	nop
 	nop
 	
-;	.line	2425; meter_logger.c	PWM_PIN = 0;
+;	.line	2428; meter_logger.c	PWM_PIN = 0;
 	BCF	_PORTCbits, 1
 	nop
 	nop
@@ -5843,7 +5843,7 @@ _send_fsk_high:
 	nop
 	nop
 	
-;	.line	2563; meter_logger.c	PWM_PIN = 1;
+;	.line	2566; meter_logger.c	PWM_PIN = 1;
 	BSF	_PORTCbits, 1
 	nop
 	nop
@@ -5981,7 +5981,7 @@ _send_fsk_high:
 	nop
 	nop
 	
-;	.line	2701; meter_logger.c	PWM_PIN = 0;
+;	.line	2704; meter_logger.c	PWM_PIN = 0;
 	BCF	_PORTCbits, 1
 	nop
 	nop
@@ -6119,7 +6119,7 @@ _send_fsk_high:
 	nop
 	nop
 	
-;	.line	2839; meter_logger.c	PWM_PIN = 1;
+;	.line	2842; meter_logger.c	PWM_PIN = 1;
 	BSF	_PORTCbits, 1
 	nop
 	nop
@@ -6257,7 +6257,7 @@ _send_fsk_high:
 	nop
 	nop
 	
-;	.line	2977; meter_logger.c	PWM_PIN = 0;
+;	.line	2980; meter_logger.c	PWM_PIN = 0;
 	BCF	_PORTCbits, 1
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6265,13 +6265,13 @@ _send_fsk_high:
 ; ; Starting pCode block
 S_meter_logger__fsk_rx_disable	code
 _fsk_rx_disable:
-;	.line	1453; meter_logger.c	void fsk_rx_disable() {
+;	.line	1456; meter_logger.c	void fsk_rx_disable() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
-;	.line	1454; meter_logger.c	PIE2bits.CMIE = 0;		// Disable comparator interrupt
+;	.line	1457; meter_logger.c	PIE2bits.CMIE = 0;		// Disable comparator interrupt
 	BCF	_PIE2bits, 6
 	BANKSEL	_codec_type
-;	.line	1455; meter_logger.c	codec_type = NONE;
+;	.line	1458; meter_logger.c	codec_type = NONE;
 	CLRF	_codec_type, B
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6279,74 +6279,74 @@ _fsk_rx_disable:
 ; ; Starting pCode block
 S_meter_logger__fsk_rx_enable	code
 _fsk_rx_enable:
-;	.line	1417; meter_logger.c	void fsk_rx_enable() {
+;	.line	1420; meter_logger.c	void fsk_rx_enable() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
-;	.line	1418; meter_logger.c	fsk_proto.state = START_BIT_WAIT;
+;	.line	1421; meter_logger.c	fsk_proto.state = START_BIT_WAIT;
 	MOVLW	0x02
 	BANKSEL	_fsk_proto
 	MOVWF	_fsk_proto, B
 ; removed redundant BANKSEL
-;	.line	1419; meter_logger.c	fsk_proto.start_bit_time = 0;
+;	.line	1422; meter_logger.c	fsk_proto.start_bit_time = 0;
 	CLRF	(_fsk_proto + 10), B
 ; removed redundant BANKSEL
 	CLRF	(_fsk_proto + 11), B
-;	.line	1421; meter_logger.c	timer0_reload = TIMER0_FSK;
+;	.line	1424; meter_logger.c	timer0_reload = TIMER0_FSK;
 	MOVLW	0x9f
 	BANKSEL	_timer0_reload
 	MOVWF	_timer0_reload, B
 	MOVLW	0xf9
 ; removed redundant BANKSEL
 	MOVWF	(_timer0_reload + 1), B
-;	.line	1423; meter_logger.c	codec_type = FSK_RX;
+;	.line	1426; meter_logger.c	codec_type = FSK_RX;
 	MOVLW	0x06
 	BANKSEL	_codec_type
 	MOVWF	_codec_type, B
-;	.line	1426; meter_logger.c	T0CONbits.TMR0ON = 1;
+;	.line	1429; meter_logger.c	T0CONbits.TMR0ON = 1;
 	BSF	_T0CONbits, 7
-;	.line	1427; meter_logger.c	T0CONbits.T0PS0 = 0;
+;	.line	1430; meter_logger.c	T0CONbits.T0PS0 = 0;
 	BCF	_T0CONbits, 0
-;	.line	1428; meter_logger.c	T0CONbits.T0PS1 = 0;
+;	.line	1431; meter_logger.c	T0CONbits.T0PS1 = 0;
 	BCF	_T0CONbits, 1
-;	.line	1429; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+;	.line	1432; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
 	BCF	_T0CONbits, 2
-;	.line	1430; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+;	.line	1433; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
 	BCF	_T0CONbits, 6
-;	.line	1431; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
+;	.line	1434; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
 	BCF	_T0CONbits, 5
-;	.line	1432; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
+;	.line	1435; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
 	BSF	_T0CONbits, 3
-;	.line	1433; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
+;	.line	1436; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
 	BSF	_INTCON2bits, 2
-;	.line	1434; meter_logger.c	INTCONbits.TMR0IE = 0;		// Dont enable TMR0 Interrupt
+;	.line	1437; meter_logger.c	INTCONbits.TMR0IE = 0;		// Dont enable TMR0 Interrupt
 	BCF	_INTCONbits, 5
-;	.line	1437; meter_logger.c	CVRCONbits.CVREF = 0xf;	// 0V
+;	.line	1440; meter_logger.c	CVRCONbits.CVREF = 0xf;	// 0V
 	BSF	_CVRCONbits, 4
-;	.line	1439; meter_logger.c	CVRCONbits.CVRSS = 0;	// VDD – VSS
+;	.line	1442; meter_logger.c	CVRCONbits.CVRSS = 0;	// VDD – VSS
 	BCF	_CVRCONbits, 4
-;	.line	1440; meter_logger.c	CVRCONbits.CVRR = 0;	// high range, 0.25 CVRSRC to 0.75 CVRSRC, with CVRSRC/32 step size
+;	.line	1443; meter_logger.c	CVRCONbits.CVRR = 0;	// high range, 0.25 CVRSRC to 0.75 CVRSRC, with CVRSRC/32 step size
 	BCF	_CVRCONbits, 5
-;	.line	1441; meter_logger.c	CVRCONbits.CVR = 9;		// 2,65625 V
+;	.line	1444; meter_logger.c	CVRCONbits.CVR = 9;		// 2,65625 V
 	MOVF	_CVRCONbits, W
 	ANDLW	0xf0
 	IORLW	0x09
 	MOVWF	_CVRCONbits
-;	.line	1442; meter_logger.c	CVRCONbits.CVROE = 0;	// Comparator VREF Output disabled, CVREF voltage is disconnected from the RA2/AN2/VREF-/CVREF pin
+;	.line	1445; meter_logger.c	CVRCONbits.CVROE = 0;	// Comparator VREF Output disabled, CVREF voltage is disconnected from the RA2/AN2/VREF-/CVREF pin
 	BCF	_CVRCONbits, 6
-;	.line	1443; meter_logger.c	CVRCONbits.CVREN = 1;	// Comparator Voltage Reference Enable bit
+;	.line	1446; meter_logger.c	CVRCONbits.CVREN = 1;	// Comparator Voltage Reference Enable bit
 	BSF	_CVRCONbits, 7
-;	.line	1445; meter_logger.c	CMCONbits.CM = 0x6;		// four inputs multiplexed to two comparators
+;	.line	1448; meter_logger.c	CMCONbits.CM = 0x6;		// four inputs multiplexed to two comparators
 	MOVF	_CMCONbits, W
 	ANDLW	0xf8
 	IORLW	0x06
 	MOVWF	_CMCONbits
-;	.line	1446; meter_logger.c	CMCONbits.CIS = 0;		// multiplexed to RA0/AN0 and RA1/AN1
+;	.line	1449; meter_logger.c	CMCONbits.CIS = 0;		// multiplexed to RA0/AN0 and RA1/AN1
 	BCF	_CMCONbits, 3
-;	.line	1447; meter_logger.c	CMCONbits.C1INV = 1;	// inverted output, C1 VIN+ < C1 VIN-
+;	.line	1450; meter_logger.c	CMCONbits.C1INV = 1;	// inverted output, C1 VIN+ < C1 VIN-
 	BSF	_CMCONbits, 4
-;	.line	1449; meter_logger.c	IPR2bits.CMIP = 1;		// high priority
+;	.line	1452; meter_logger.c	IPR2bits.CMIP = 1;		// high priority
 	BSF	_IPR2bits, 6
-;	.line	1450; meter_logger.c	PIE2bits.CMIE = 1;		// Enable comparator interrupt
+;	.line	1453; meter_logger.c	PIE2bits.CMIE = 1;		// Enable comparator interrupt
 	BSF	_PIE2bits, 6
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6354,15 +6354,15 @@ _fsk_rx_enable:
 ; ; Starting pCode block
 S_meter_logger__fsk_tx_disable	code
 _fsk_tx_disable:
-;	.line	1411; meter_logger.c	void fsk_tx_disable() {
+;	.line	1414; meter_logger.c	void fsk_tx_disable() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	BANKSEL	_codec_type
-;	.line	1412; meter_logger.c	codec_type = NONE;
+;	.line	1415; meter_logger.c	codec_type = NONE;
 	CLRF	_codec_type, B
-;	.line	1413; meter_logger.c	T0CONbits.TMR0ON = 0;	// Disable TMR0 
+;	.line	1416; meter_logger.c	T0CONbits.TMR0ON = 0;	// Disable TMR0 
 	BCF	_T0CONbits, 7
-;	.line	1414; meter_logger.c	PIE2bits.CMIE = 1;		// Disable comparator interrupt
+;	.line	1417; meter_logger.c	PIE2bits.CMIE = 1;		// Disable comparator interrupt
 	BSF	_PIE2bits, 6
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6370,10 +6370,10 @@ _fsk_tx_disable:
 ; ; Starting pCode block
 S_meter_logger__fsk_tx_enable	code
 _fsk_tx_enable:
-;	.line	1393; meter_logger.c	void fsk_tx_enable() {
+;	.line	1396; meter_logger.c	void fsk_tx_enable() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
-;	.line	1394; meter_logger.c	timer0_reload = TIMER0_FSK;
+;	.line	1397; meter_logger.c	timer0_reload = TIMER0_FSK;
 	MOVLW	0x9f
 	BANKSEL	_timer0_reload
 	MOVWF	_timer0_reload, B
@@ -6381,29 +6381,29 @@ _fsk_tx_enable:
 ; removed redundant BANKSEL
 	MOVWF	(_timer0_reload + 1), B
 	BANKSEL	_fsk_proto
-;	.line	1396; meter_logger.c	fsk_proto.state = INIT_STATE;
+;	.line	1399; meter_logger.c	fsk_proto.state = INIT_STATE;
 	CLRF	_fsk_proto, B
-;	.line	1397; meter_logger.c	codec_type = FSK_TX;
+;	.line	1400; meter_logger.c	codec_type = FSK_TX;
 	MOVLW	0x07
 	BANKSEL	_codec_type
 	MOVWF	_codec_type, B
-;	.line	1400; meter_logger.c	T0CONbits.TMR0ON = 1;
+;	.line	1403; meter_logger.c	T0CONbits.TMR0ON = 1;
 	BSF	_T0CONbits, 7
-;	.line	1401; meter_logger.c	T0CONbits.T0PS0 = 0;
+;	.line	1404; meter_logger.c	T0CONbits.T0PS0 = 0;
 	BCF	_T0CONbits, 0
-;	.line	1402; meter_logger.c	T0CONbits.T0PS1 = 0;
+;	.line	1405; meter_logger.c	T0CONbits.T0PS1 = 0;
 	BCF	_T0CONbits, 1
-;	.line	1403; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+;	.line	1406; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
 	BCF	_T0CONbits, 2
-;	.line	1404; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+;	.line	1407; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
 	BCF	_T0CONbits, 6
-;	.line	1405; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
+;	.line	1408; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
 	BCF	_T0CONbits, 5
-;	.line	1406; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
+;	.line	1409; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
 	BSF	_T0CONbits, 3
-;	.line	1407; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
+;	.line	1410; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
 	BSF	_INTCON2bits, 2
-;	.line	1408; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+;	.line	1411; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
 	BSF	_INTCONbits, 5
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6411,29 +6411,29 @@ _fsk_tx_enable:
 ; ; Starting pCode block
 S_meter_logger__rs232_7e1_tx_byte	code
 _rs232_7e1_tx_byte:
-;	.line	1383; meter_logger.c	void rs232_7e1_tx_byte(unsigned char c) {
+;	.line	1386; meter_logger.c	void rs232_7e1_tx_byte(unsigned char c) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
 	MOVLW	0x02
 	MOVFF	PLUSW2, r0x00
-;	.line	1384; meter_logger.c	rs232_proto.data = c;
+;	.line	1387; meter_logger.c	rs232_proto.data = c;
 	MOVF	r0x00, W
 	BANKSEL	(_rs232_proto + 2)
 	MOVWF	(_rs232_proto + 2), B
-;	.line	1385; meter_logger.c	rs232_proto.data_len = 8;
-	MOVLW	0x08
+;	.line	1388; meter_logger.c	rs232_proto.data_len = 7;
+	MOVLW	0x07
 ; removed redundant BANKSEL
 	MOVWF	(_rs232_proto + 3), B
-;	.line	1386; meter_logger.c	T0CONbits.TMR0ON = 1;		// start timer 0
+;	.line	1389; meter_logger.c	T0CONbits.TMR0ON = 1;		// start timer 0
 	BSF	_T0CONbits, 7
-;	.line	1387; meter_logger.c	INTCONbits.TMR0IF = 1;		// enter timer interrupt handler now
+;	.line	1390; meter_logger.c	INTCONbits.TMR0IF = 1;		// enter timer interrupt handler now
 	BSF	_INTCONbits, 2
-_01016_DS_:
+_01019_DS_:
 	BANKSEL	(_rs232_proto + 3)
-;	.line	1388; meter_logger.c	while (rs232_proto.data_len) {
+;	.line	1391; meter_logger.c	while (rs232_proto.data_len) {
 	MOVF	(_rs232_proto + 3), W, B
-	BNZ	_01016_DS_
+	BNZ	_01019_DS_
 	MOVFF	PREINC1, r0x00
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6441,15 +6441,15 @@ _01016_DS_:
 ; ; Starting pCode block
 S_meter_logger__rs232_7e1_rx_disable	code
 _rs232_7e1_rx_disable:
-;	.line	1377; meter_logger.c	void rs232_7e1_rx_disable() {
+;	.line	1380; meter_logger.c	void rs232_7e1_rx_disable() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
-;	.line	1378; meter_logger.c	INTCONbits.INT0IE = 0;		// disable ext int
+;	.line	1381; meter_logger.c	INTCONbits.INT0IE = 0;		// disable ext int
 	BCF	_INTCONbits, 4
 	BANKSEL	_codec_type
-;	.line	1379; meter_logger.c	codec_type = NONE;
+;	.line	1382; meter_logger.c	codec_type = NONE;
 	CLRF	_codec_type, B
-;	.line	1380; meter_logger.c	T0CONbits.TMR0ON = 0;
+;	.line	1383; meter_logger.c	T0CONbits.TMR0ON = 0;
 	BCF	_T0CONbits, 7
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6457,47 +6457,47 @@ _rs232_7e1_rx_disable:
 ; ; Starting pCode block
 S_meter_logger__rs232_7e1_rx_enable	code
 _rs232_7e1_rx_enable:
-;	.line	1353; meter_logger.c	void rs232_7e1_rx_enable(unsigned int t) {
+;	.line	1356; meter_logger.c	void rs232_7e1_rx_enable(unsigned int t) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVLW	0x02
 	MOVFF	PLUSW2, _timer0_reload
 	MOVLW	0x03
 	MOVFF	PLUSW2, (_timer0_reload + 1)
-;	.line	1354; meter_logger.c	rs232_proto.state = START_BIT_WAIT;
+;	.line	1357; meter_logger.c	rs232_proto.state = START_BIT_WAIT;
 	MOVLW	0x02
 	BANKSEL	_rs232_proto
 	MOVWF	_rs232_proto, B
 ; removed redundant BANKSEL
-;	.line	1355; meter_logger.c	rs232_proto.data_len = 0;
+;	.line	1358; meter_logger.c	rs232_proto.data_len = 0;
 	CLRF	(_rs232_proto + 3), B
-;	.line	1359; meter_logger.c	codec_type = RS232_7E1_RX;
+;	.line	1362; meter_logger.c	codec_type = RS232_7E1_RX;
 	MOVLW	0x04
 	BANKSEL	_codec_type
 	MOVWF	_codec_type, B
-;	.line	1362; meter_logger.c	T0CONbits.TMR0ON = 0;
+;	.line	1365; meter_logger.c	T0CONbits.TMR0ON = 0;
 	BCF	_T0CONbits, 7
-;	.line	1363; meter_logger.c	T0CONbits.T0PS0 = 0;
+;	.line	1366; meter_logger.c	T0CONbits.T0PS0 = 0;
 	BCF	_T0CONbits, 0
-;	.line	1364; meter_logger.c	T0CONbits.T0PS1 = 0;
+;	.line	1367; meter_logger.c	T0CONbits.T0PS1 = 0;
 	BCF	_T0CONbits, 1
-;	.line	1365; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+;	.line	1368; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
 	BCF	_T0CONbits, 2
-;	.line	1366; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+;	.line	1369; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
 	BCF	_T0CONbits, 6
-;	.line	1367; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
+;	.line	1370; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
 	BCF	_T0CONbits, 5
-;	.line	1368; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
+;	.line	1371; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
 	BSF	_T0CONbits, 3
-;	.line	1369; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
+;	.line	1372; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
 	BSF	_INTCON2bits, 2
-;	.line	1370; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+;	.line	1373; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
 	BSF	_INTCONbits, 5
-;	.line	1371; meter_logger.c	INTCONbits.TMR0IF = 0;
+;	.line	1374; meter_logger.c	INTCONbits.TMR0IF = 0;
 	BCF	_INTCONbits, 2
-;	.line	1373; meter_logger.c	INTCONbits.INT0IE = 1;		// enable ext int
+;	.line	1376; meter_logger.c	INTCONbits.INT0IE = 1;		// enable ext int
 	BSF	_INTCONbits, 4
-;	.line	1374; meter_logger.c	INTCON2bits.INTEDG0 = 1;	// rising edge
+;	.line	1377; meter_logger.c	INTCON2bits.INTEDG0 = 1;	// rising edge
 	BSF	_INTCON2bits, 6
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6505,15 +6505,15 @@ _rs232_7e1_rx_enable:
 ; ; Starting pCode block
 S_meter_logger__rs232_7e1_tx_disable	code
 _rs232_7e1_tx_disable:
-;	.line	1347; meter_logger.c	void rs232_7e1_tx_disable() {
+;	.line	1350; meter_logger.c	void rs232_7e1_tx_disable() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	BANKSEL	_codec_type
-;	.line	1348; meter_logger.c	codec_type = NONE;
+;	.line	1351; meter_logger.c	codec_type = NONE;
 	CLRF	_codec_type, B
-;	.line	1349; meter_logger.c	IR_LED_PIN = 0;				// no need to set it to inverted idle
+;	.line	1352; meter_logger.c	IR_LED_PIN = 0;				// no need to set it to inverted idle
 	BCF	_PORTBbits, 1
-;	.line	1350; meter_logger.c	T0CONbits.TMR0ON = 0;
+;	.line	1353; meter_logger.c	T0CONbits.TMR0ON = 0;
 	BCF	_T0CONbits, 7
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6521,7 +6521,7 @@ _rs232_7e1_tx_disable:
 ; ; Starting pCode block
 S_meter_logger__rs232_7e1_tx_enable	code
 _rs232_7e1_tx_enable:
-;	.line	1321; meter_logger.c	void rs232_7e1_tx_enable(unsigned int t) {
+;	.line	1324; meter_logger.c	void rs232_7e1_tx_enable(unsigned int t) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVLW	0x02
@@ -6529,38 +6529,38 @@ _rs232_7e1_tx_enable:
 	MOVLW	0x03
 	MOVFF	PLUSW2, (_timer0_reload + 1)
 	BANKSEL	_rs232_proto
-;	.line	1324; meter_logger.c	rs232_proto.state = INIT_STATE;
+;	.line	1327; meter_logger.c	rs232_proto.state = INIT_STATE;
 	CLRF	_rs232_proto, B
 ; removed redundant BANKSEL
-;	.line	1325; meter_logger.c	rs232_proto.data_len = 0;
+;	.line	1328; meter_logger.c	rs232_proto.data_len = 0;
 	CLRF	(_rs232_proto + 3), B
-;	.line	1327; meter_logger.c	IR_LED_PIN = 0;				// inverted rs232 output on ir, idle = no ir light
+;	.line	1330; meter_logger.c	IR_LED_PIN = 0;				// inverted rs232 output on ir, idle = no ir light
 	BCF	_PORTBbits, 1
-;	.line	1329; meter_logger.c	codec_type = RS232_7E1_TX;
+;	.line	1332; meter_logger.c	codec_type = RS232_7E1_TX;
 	MOVLW	0x05
 	BANKSEL	_codec_type
 	MOVWF	_codec_type, B
-;	.line	1332; meter_logger.c	T0CONbits.TMR0ON = 0;
+;	.line	1335; meter_logger.c	T0CONbits.TMR0ON = 0;
 	BCF	_T0CONbits, 7
-;	.line	1333; meter_logger.c	T0CONbits.T0PS0 = 0;
+;	.line	1336; meter_logger.c	T0CONbits.T0PS0 = 0;
 	BCF	_T0CONbits, 0
-;	.line	1334; meter_logger.c	T0CONbits.T0PS1 = 0;
+;	.line	1337; meter_logger.c	T0CONbits.T0PS1 = 0;
 	BCF	_T0CONbits, 1
-;	.line	1335; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+;	.line	1338; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
 	BCF	_T0CONbits, 2
-;	.line	1336; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+;	.line	1339; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
 	BCF	_T0CONbits, 6
-;	.line	1337; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
+;	.line	1340; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
 	BCF	_T0CONbits, 5
-;	.line	1338; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
+;	.line	1341; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
 	BSF	_T0CONbits, 3
-;	.line	1339; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
+;	.line	1342; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
 	BSF	_INTCON2bits, 2
-;	.line	1340; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+;	.line	1343; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
 	BSF	_INTCONbits, 5
-;	.line	1341; meter_logger.c	INTCONbits.TMR0IF = 0;
+;	.line	1344; meter_logger.c	INTCONbits.TMR0IF = 0;
 	BCF	_INTCONbits, 2
-;	.line	1344; meter_logger.c	T0CONbits.TMR0ON = 0;		// timer 0 started in rs232_8n2_tx_byte()
+;	.line	1347; meter_logger.c	T0CONbits.TMR0ON = 0;		// timer 0 started in rs232_8n2_tx_byte()
 	BCF	_T0CONbits, 7
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6568,29 +6568,29 @@ _rs232_7e1_tx_enable:
 ; ; Starting pCode block
 S_meter_logger__rs232_8n2_tx_byte	code
 _rs232_8n2_tx_byte:
-;	.line	1311; meter_logger.c	void rs232_8n2_tx_byte(unsigned char c) {
+;	.line	1314; meter_logger.c	void rs232_8n2_tx_byte(unsigned char c) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
 	MOVLW	0x02
 	MOVFF	PLUSW2, r0x00
-;	.line	1312; meter_logger.c	rs232_proto.data = c;
+;	.line	1315; meter_logger.c	rs232_proto.data = c;
 	MOVF	r0x00, W
 	BANKSEL	(_rs232_proto + 2)
 	MOVWF	(_rs232_proto + 2), B
-;	.line	1313; meter_logger.c	rs232_proto.data_len = 8;
+;	.line	1316; meter_logger.c	rs232_proto.data_len = 8;
 	MOVLW	0x08
 ; removed redundant BANKSEL
 	MOVWF	(_rs232_proto + 3), B
-;	.line	1314; meter_logger.c	T0CONbits.TMR0ON = 1;		// start timer 0
+;	.line	1317; meter_logger.c	T0CONbits.TMR0ON = 1;		// start timer 0
 	BSF	_T0CONbits, 7
-;	.line	1315; meter_logger.c	INTCONbits.TMR0IF = 1;		// enter timer interrupt handler now
+;	.line	1318; meter_logger.c	INTCONbits.TMR0IF = 1;		// enter timer interrupt handler now
 	BSF	_INTCONbits, 2
-_00988_DS_:
+_00991_DS_:
 	BANKSEL	(_rs232_proto + 3)
-;	.line	1316; meter_logger.c	while (rs232_proto.data_len) {
+;	.line	1319; meter_logger.c	while (rs232_proto.data_len) {
 	MOVF	(_rs232_proto + 3), W, B
-	BNZ	_00988_DS_
+	BNZ	_00991_DS_
 	MOVFF	PREINC1, r0x00
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6598,15 +6598,15 @@ _00988_DS_:
 ; ; Starting pCode block
 S_meter_logger__rs232_8n2_rx_disable	code
 _rs232_8n2_rx_disable:
-;	.line	1305; meter_logger.c	void rs232_8n2_rx_disable() {
+;	.line	1308; meter_logger.c	void rs232_8n2_rx_disable() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
-;	.line	1306; meter_logger.c	INTCONbits.INT0IE = 0;		// disable ext int
+;	.line	1309; meter_logger.c	INTCONbits.INT0IE = 0;		// disable ext int
 	BCF	_INTCONbits, 4
 	BANKSEL	_codec_type
-;	.line	1307; meter_logger.c	codec_type = NONE;
+;	.line	1310; meter_logger.c	codec_type = NONE;
 	CLRF	_codec_type, B
-;	.line	1308; meter_logger.c	T0CONbits.TMR0ON = 0;
+;	.line	1311; meter_logger.c	T0CONbits.TMR0ON = 0;
 	BCF	_T0CONbits, 7
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6614,47 +6614,47 @@ _rs232_8n2_rx_disable:
 ; ; Starting pCode block
 S_meter_logger__rs232_8n2_rx_enable	code
 _rs232_8n2_rx_enable:
-;	.line	1281; meter_logger.c	void rs232_8n2_rx_enable(unsigned int t) {
+;	.line	1284; meter_logger.c	void rs232_8n2_rx_enable(unsigned int t) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVLW	0x02
 	MOVFF	PLUSW2, _timer0_reload
 	MOVLW	0x03
 	MOVFF	PLUSW2, (_timer0_reload + 1)
-;	.line	1282; meter_logger.c	rs232_proto.state = START_BIT_WAIT;
+;	.line	1285; meter_logger.c	rs232_proto.state = START_BIT_WAIT;
 	MOVLW	0x02
 	BANKSEL	_rs232_proto
 	MOVWF	_rs232_proto, B
 ; removed redundant BANKSEL
-;	.line	1283; meter_logger.c	rs232_proto.data_len = 0;
+;	.line	1286; meter_logger.c	rs232_proto.data_len = 0;
 	CLRF	(_rs232_proto + 3), B
-;	.line	1287; meter_logger.c	codec_type = RS232_8N2_RX;
+;	.line	1290; meter_logger.c	codec_type = RS232_8N2_RX;
 	MOVLW	0x02
 	BANKSEL	_codec_type
 	MOVWF	_codec_type, B
-;	.line	1290; meter_logger.c	T0CONbits.TMR0ON = 0;
+;	.line	1293; meter_logger.c	T0CONbits.TMR0ON = 0;
 	BCF	_T0CONbits, 7
-;	.line	1291; meter_logger.c	T0CONbits.T0PS0 = 0;
+;	.line	1294; meter_logger.c	T0CONbits.T0PS0 = 0;
 	BCF	_T0CONbits, 0
-;	.line	1292; meter_logger.c	T0CONbits.T0PS1 = 0;
+;	.line	1295; meter_logger.c	T0CONbits.T0PS1 = 0;
 	BCF	_T0CONbits, 1
-;	.line	1293; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+;	.line	1296; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
 	BCF	_T0CONbits, 2
-;	.line	1294; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+;	.line	1297; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
 	BCF	_T0CONbits, 6
-;	.line	1295; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
+;	.line	1298; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
 	BCF	_T0CONbits, 5
-;	.line	1296; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
+;	.line	1299; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
 	BSF	_T0CONbits, 3
-;	.line	1297; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
+;	.line	1300; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
 	BSF	_INTCON2bits, 2
-;	.line	1298; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+;	.line	1301; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
 	BSF	_INTCONbits, 5
-;	.line	1299; meter_logger.c	INTCONbits.TMR0IF = 0;
+;	.line	1302; meter_logger.c	INTCONbits.TMR0IF = 0;
 	BCF	_INTCONbits, 2
-;	.line	1301; meter_logger.c	INTCONbits.INT0IE = 1;		// enable ext int
+;	.line	1304; meter_logger.c	INTCONbits.INT0IE = 1;		// enable ext int
 	BSF	_INTCONbits, 4
-;	.line	1302; meter_logger.c	INTCON2bits.INTEDG0 = 1;	// rising edge
+;	.line	1305; meter_logger.c	INTCON2bits.INTEDG0 = 1;	// rising edge
 	BSF	_INTCON2bits, 6
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6662,15 +6662,15 @@ _rs232_8n2_rx_enable:
 ; ; Starting pCode block
 S_meter_logger__rs232_8n2_tx_disable	code
 _rs232_8n2_tx_disable:
-;	.line	1275; meter_logger.c	void rs232_8n2_tx_disable() {
+;	.line	1278; meter_logger.c	void rs232_8n2_tx_disable() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	BANKSEL	_codec_type
-;	.line	1276; meter_logger.c	codec_type = NONE;
+;	.line	1279; meter_logger.c	codec_type = NONE;
 	CLRF	_codec_type, B
-;	.line	1277; meter_logger.c	IR_LED_PIN = 0;				// no need to set it to inverted idle
+;	.line	1280; meter_logger.c	IR_LED_PIN = 0;				// no need to set it to inverted idle
 	BCF	_PORTBbits, 1
-;	.line	1278; meter_logger.c	T0CONbits.TMR0ON = 0;
+;	.line	1281; meter_logger.c	T0CONbits.TMR0ON = 0;
 	BCF	_T0CONbits, 7
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6678,7 +6678,7 @@ _rs232_8n2_tx_disable:
 ; ; Starting pCode block
 S_meter_logger__rs232_8n2_tx_enable	code
 _rs232_8n2_tx_enable:
-;	.line	1249; meter_logger.c	void rs232_8n2_tx_enable(unsigned int t) {
+;	.line	1252; meter_logger.c	void rs232_8n2_tx_enable(unsigned int t) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVLW	0x02
@@ -6686,38 +6686,38 @@ _rs232_8n2_tx_enable:
 	MOVLW	0x03
 	MOVFF	PLUSW2, (_timer0_reload + 1)
 	BANKSEL	_rs232_proto
-;	.line	1252; meter_logger.c	rs232_proto.state = INIT_STATE;
+;	.line	1255; meter_logger.c	rs232_proto.state = INIT_STATE;
 	CLRF	_rs232_proto, B
 ; removed redundant BANKSEL
-;	.line	1253; meter_logger.c	rs232_proto.data_len = 0;
+;	.line	1256; meter_logger.c	rs232_proto.data_len = 0;
 	CLRF	(_rs232_proto + 3), B
-;	.line	1255; meter_logger.c	IR_LED_PIN = 0;				// inverted rs232 output on ir, idle = no ir light
+;	.line	1258; meter_logger.c	IR_LED_PIN = 0;				// inverted rs232 output on ir, idle = no ir light
 	BCF	_PORTBbits, 1
-;	.line	1257; meter_logger.c	codec_type = RS232_8N2_TX;
+;	.line	1260; meter_logger.c	codec_type = RS232_8N2_TX;
 	MOVLW	0x03
 	BANKSEL	_codec_type
 	MOVWF	_codec_type, B
-;	.line	1260; meter_logger.c	T0CONbits.TMR0ON = 0;
+;	.line	1263; meter_logger.c	T0CONbits.TMR0ON = 0;
 	BCF	_T0CONbits, 7
-;	.line	1261; meter_logger.c	T0CONbits.T0PS0 = 0;
+;	.line	1264; meter_logger.c	T0CONbits.T0PS0 = 0;
 	BCF	_T0CONbits, 0
-;	.line	1262; meter_logger.c	T0CONbits.T0PS1 = 0;
+;	.line	1265; meter_logger.c	T0CONbits.T0PS1 = 0;
 	BCF	_T0CONbits, 1
-;	.line	1263; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+;	.line	1266; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
 	BCF	_T0CONbits, 2
-;	.line	1264; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+;	.line	1267; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
 	BCF	_T0CONbits, 6
-;	.line	1265; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
+;	.line	1268; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
 	BCF	_T0CONbits, 5
-;	.line	1266; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
+;	.line	1269; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
 	BSF	_T0CONbits, 3
-;	.line	1267; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
+;	.line	1270; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
 	BSF	_INTCON2bits, 2
-;	.line	1268; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+;	.line	1271; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
 	BSF	_INTCONbits, 5
-;	.line	1269; meter_logger.c	INTCONbits.TMR0IF = 0;
+;	.line	1272; meter_logger.c	INTCONbits.TMR0IF = 0;
 	BCF	_INTCONbits, 2
-;	.line	1272; meter_logger.c	T0CONbits.TMR0ON = 0;		// timer 0 started in rs232_8n2_tx_byte()
+;	.line	1275; meter_logger.c	T0CONbits.TMR0ON = 0;		// timer 0 started in rs232_8n2_tx_byte()
 	BCF	_T0CONbits, 7
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6725,13 +6725,13 @@ _rs232_8n2_tx_enable:
 ; ; Starting pCode block
 S_meter_logger__testo_ir_disable	code
 _testo_ir_disable:
-;	.line	1244; meter_logger.c	void testo_ir_disable() {
+;	.line	1247; meter_logger.c	void testo_ir_disable() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	BANKSEL	_codec_type
-;	.line	1245; meter_logger.c	codec_type = NONE;
+;	.line	1248; meter_logger.c	codec_type = NONE;
 	CLRF	_codec_type, B
-;	.line	1246; meter_logger.c	INTCONbits.INT0IE = 0;		// disable ext int
+;	.line	1249; meter_logger.c	INTCONbits.INT0IE = 0;		// disable ext int
 	BCF	_INTCONbits, 4
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6739,49 +6739,49 @@ _testo_ir_disable:
 ; ; Starting pCode block
 S_meter_logger__testo_ir_enable	code
 _testo_ir_enable:
-;	.line	1220; meter_logger.c	void testo_ir_enable() {
+;	.line	1223; meter_logger.c	void testo_ir_enable() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	BANKSEL	_testo_ir_proto
-;	.line	1221; meter_logger.c	testo_ir_proto.state = INIT_STATE;
+;	.line	1224; meter_logger.c	testo_ir_proto.state = INIT_STATE;
 	CLRF	_testo_ir_proto, B
 ; removed redundant BANKSEL
-;	.line	1222; meter_logger.c	testo_ir_proto.start_bit_len = 0;
+;	.line	1225; meter_logger.c	testo_ir_proto.start_bit_len = 0;
 	CLRF	(_testo_ir_proto + 2), B
-;	.line	1224; meter_logger.c	timer0_reload = TIMER0_TESTO;
+;	.line	1227; meter_logger.c	timer0_reload = TIMER0_TESTO;
 	MOVLW	0x23
 	BANKSEL	_timer0_reload
 	MOVWF	_timer0_reload, B
 	MOVLW	0xf3
 ; removed redundant BANKSEL
 	MOVWF	(_timer0_reload + 1), B
-;	.line	1226; meter_logger.c	codec_type = TESTO;
+;	.line	1229; meter_logger.c	codec_type = TESTO;
 	MOVLW	0x01
 	BANKSEL	_codec_type
 	MOVWF	_codec_type, B
-;	.line	1229; meter_logger.c	T0CONbits.TMR0ON = 0;
+;	.line	1232; meter_logger.c	T0CONbits.TMR0ON = 0;
 	BCF	_T0CONbits, 7
-;	.line	1230; meter_logger.c	T0CONbits.T0PS0 = 0;
+;	.line	1233; meter_logger.c	T0CONbits.T0PS0 = 0;
 	BCF	_T0CONbits, 0
-;	.line	1231; meter_logger.c	T0CONbits.T0PS1 = 0;
+;	.line	1234; meter_logger.c	T0CONbits.T0PS1 = 0;
 	BCF	_T0CONbits, 1
-;	.line	1232; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+;	.line	1235; meter_logger.c	T0CONbits.T0PS2 = 0;		// prescaler 1:2
 	BCF	_T0CONbits, 2
-;	.line	1233; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+;	.line	1236; meter_logger.c	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
 	BCF	_T0CONbits, 6
-;	.line	1234; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
+;	.line	1237; meter_logger.c	T0CONbits.T0CS = 0;			// internal clock source
 	BCF	_T0CONbits, 5
-;	.line	1235; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
+;	.line	1238; meter_logger.c	T0CONbits.PSA = 1;			// disable timer0 prescaler
 	BSF	_T0CONbits, 3
-;	.line	1236; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
+;	.line	1239; meter_logger.c	INTCON2bits.TMR0IP = 1;		// high priority
 	BSF	_INTCON2bits, 2
-;	.line	1237; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+;	.line	1240; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
 	BSF	_INTCONbits, 5
-;	.line	1238; meter_logger.c	INTCONbits.TMR0IF = 0;
+;	.line	1241; meter_logger.c	INTCONbits.TMR0IF = 0;
 	BCF	_INTCONbits, 2
-;	.line	1240; meter_logger.c	INTCONbits.INT0IE = 1;		// enable ext int
+;	.line	1243; meter_logger.c	INTCONbits.INT0IE = 1;		// enable ext int
 	BSF	_INTCONbits, 4
-;	.line	1241; meter_logger.c	INTCON2bits.INTEDG0 = 1;	// rising edge
+;	.line	1244; meter_logger.c	INTCON2bits.INTEDG0 = 1;	// rising edge
 	BSF	_INTCON2bits, 6
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -6789,7 +6789,7 @@ _testo_ir_enable:
 ; ; Starting pCode block
 S_meter_logger__testo_valid_err_corr	code
 _testo_valid_err_corr:
-;	.line	1165; meter_logger.c	unsigned char testo_valid_err_corr(unsigned int c) {
+;	.line	1168; meter_logger.c	unsigned char testo_valid_err_corr(unsigned int c) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
@@ -6805,44 +6805,44 @@ _testo_valid_err_corr:
 	MOVFF	PLUSW2, r0x00
 	MOVLW	0x03
 	MOVFF	PLUSW2, r0x01
-;	.line	1172; meter_logger.c	calculated_err_corr_bit = 0;
+;	.line	1175; meter_logger.c	calculated_err_corr_bit = 0;
 	CLRF	r0x02
-;	.line	1173; meter_logger.c	for (i = 0; i < 8; i++) {
+;	.line	1176; meter_logger.c	for (i = 0; i < 8; i++) {
 	MOVLW	0x78
 	ANDWF	r0x00, W
 	MOVWF	r0x03
 	CLRF	r0x04
 	CLRF	r0x05
-_00876_DS_:
-;	.line	1174; meter_logger.c	calculated_err_corr_bit ^= (((c & 0x78) & (1 << i)) != 0);   // 0b01111000
+_00879_DS_:
+;	.line	1177; meter_logger.c	calculated_err_corr_bit ^= (((c & 0x78) & (1 << i)) != 0);   // 0b01111000
 	MOVLW	0x01
 	MOVWF	r0x06
 	MOVLW	0x00
 	MOVWF	r0x07
 	MOVF	r0x05, W
-	BZ	_00918_DS_
+	BZ	_00921_DS_
 	NEGF	WREG
 	BCF	STATUS, 0
-_00919_DS_:
+_00922_DS_:
 	RLCF	r0x06, F
 	RLCF	r0x07, F
 	ADDLW	0x01
-	BNC	_00919_DS_
-_00918_DS_:
+	BNC	_00922_DS_
+_00921_DS_:
 	MOVF	r0x03, W
 	ANDWF	r0x06, F
 	MOVF	r0x04, W
 	ANDWF	r0x07, F
 	MOVF	r0x06, W
-	BNZ	_00921_DS_
+	BNZ	_00924_DS_
 	MOVF	r0x07, W
-	BNZ	_00921_DS_
+	BNZ	_00924_DS_
 	CLRF	r0x06
 	INCF	r0x06, F
-	BRA	_00922_DS_
-_00921_DS_:
+	BRA	_00925_DS_
+_00924_DS_:
 	CLRF	r0x06
-_00922_DS_:
+_00925_DS_:
 	MOVF	r0x06, W
 	BSF	STATUS, 0
 	TSTFSZ	WREG
@@ -6854,53 +6854,53 @@ _00922_DS_:
 	MOVF	r0x06, W
 	XORWF	r0x07, W
 	MOVWF	r0x02
-;	.line	1173; meter_logger.c	for (i = 0; i < 8; i++) {
+;	.line	1176; meter_logger.c	for (i = 0; i < 8; i++) {
 	INCF	r0x05, F
 	MOVLW	0x08
 	SUBWF	r0x05, W
-	BNC	_00876_DS_
-;	.line	1177; meter_logger.c	calculated_err_corr = calculated_err_corr << 1;
+	BNC	_00879_DS_
+;	.line	1180; meter_logger.c	calculated_err_corr = calculated_err_corr << 1;
 	RLNCF	r0x02, W
 	ANDLW	0xfe
 	MOVWF	r0x03
-;	.line	1180; meter_logger.c	calculated_err_corr_bit = 0;
+;	.line	1183; meter_logger.c	calculated_err_corr_bit = 0;
 	CLRF	r0x02
-;	.line	1181; meter_logger.c	for (i = 0; i < 8; i++) {
+;	.line	1184; meter_logger.c	for (i = 0; i < 8; i++) {
 	MOVLW	0xe6
 	ANDWF	r0x00, W
 	MOVWF	r0x04
 	CLRF	r0x05
 	CLRF	r0x06
-_00878_DS_:
-;	.line	1182; meter_logger.c	calculated_err_corr_bit ^= (((c & 0xe6) & (1 << i)) != 0);   // 0b11100110
+_00881_DS_:
+;	.line	1185; meter_logger.c	calculated_err_corr_bit ^= (((c & 0xe6) & (1 << i)) != 0);   // 0b11100110
 	MOVLW	0x01
 	MOVWF	r0x07
 	MOVLW	0x00
 	MOVWF	r0x08
 	MOVF	r0x06, W
-	BZ	_00926_DS_
+	BZ	_00929_DS_
 	NEGF	WREG
 	BCF	STATUS, 0
-_00927_DS_:
+_00930_DS_:
 	RLCF	r0x07, F
 	RLCF	r0x08, F
 	ADDLW	0x01
-	BNC	_00927_DS_
-_00926_DS_:
+	BNC	_00930_DS_
+_00929_DS_:
 	MOVF	r0x04, W
 	ANDWF	r0x07, F
 	MOVF	r0x05, W
 	ANDWF	r0x08, F
 	MOVF	r0x07, W
-	BNZ	_00929_DS_
+	BNZ	_00932_DS_
 	MOVF	r0x08, W
-	BNZ	_00929_DS_
+	BNZ	_00932_DS_
 	CLRF	r0x07
 	INCF	r0x07, F
-	BRA	_00930_DS_
-_00929_DS_:
+	BRA	_00933_DS_
+_00932_DS_:
 	CLRF	r0x07
-_00930_DS_:
+_00933_DS_:
 	MOVF	r0x07, W
 	BSF	STATUS, 0
 	TSTFSZ	WREG
@@ -6912,55 +6912,55 @@ _00930_DS_:
 	MOVF	r0x07, W
 	XORWF	r0x08, W
 	MOVWF	r0x02
-;	.line	1181; meter_logger.c	for (i = 0; i < 8; i++) {
+;	.line	1184; meter_logger.c	for (i = 0; i < 8; i++) {
 	INCF	r0x06, F
 	MOVLW	0x08
 	SUBWF	r0x06, W
-	BNC	_00878_DS_
-;	.line	1184; meter_logger.c	calculated_err_corr |= calculated_err_corr_bit;
+	BNC	_00881_DS_
+;	.line	1187; meter_logger.c	calculated_err_corr |= calculated_err_corr_bit;
 	MOVF	r0x02, W
 	IORWF	r0x03, F
-;	.line	1185; meter_logger.c	calculated_err_corr = calculated_err_corr << 1;
+;	.line	1188; meter_logger.c	calculated_err_corr = calculated_err_corr << 1;
 	BCF	STATUS, 0
 	RLCF	r0x03, F
-;	.line	1188; meter_logger.c	calculated_err_corr_bit = 0;
+;	.line	1191; meter_logger.c	calculated_err_corr_bit = 0;
 	CLRF	r0x02
-;	.line	1189; meter_logger.c	for (i = 0; i < 8; i++) {
+;	.line	1192; meter_logger.c	for (i = 0; i < 8; i++) {
 	MOVLW	0xd5
 	ANDWF	r0x00, W
 	MOVWF	r0x04
 	CLRF	r0x05
 	CLRF	r0x06
-_00880_DS_:
-;	.line	1190; meter_logger.c	calculated_err_corr_bit ^= (((c & 0xd5) & (1 << i)) != 0);   // 0b11010101
+_00883_DS_:
+;	.line	1193; meter_logger.c	calculated_err_corr_bit ^= (((c & 0xd5) & (1 << i)) != 0);   // 0b11010101
 	MOVLW	0x01
 	MOVWF	r0x07
 	MOVLW	0x00
 	MOVWF	r0x08
 	MOVF	r0x06, W
-	BZ	_00935_DS_
+	BZ	_00938_DS_
 	NEGF	WREG
 	BCF	STATUS, 0
-_00936_DS_:
+_00939_DS_:
 	RLCF	r0x07, F
 	RLCF	r0x08, F
 	ADDLW	0x01
-	BNC	_00936_DS_
-_00935_DS_:
+	BNC	_00939_DS_
+_00938_DS_:
 	MOVF	r0x04, W
 	ANDWF	r0x07, F
 	MOVF	r0x05, W
 	ANDWF	r0x08, F
 	MOVF	r0x07, W
-	BNZ	_00938_DS_
+	BNZ	_00941_DS_
 	MOVF	r0x08, W
-	BNZ	_00938_DS_
+	BNZ	_00941_DS_
 	CLRF	r0x07
 	INCF	r0x07, F
-	BRA	_00939_DS_
-_00938_DS_:
+	BRA	_00942_DS_
+_00941_DS_:
 	CLRF	r0x07
-_00939_DS_:
+_00942_DS_:
 	MOVF	r0x07, W
 	BSF	STATUS, 0
 	TSTFSZ	WREG
@@ -6972,55 +6972,55 @@ _00939_DS_:
 	MOVF	r0x07, W
 	XORWF	r0x08, W
 	MOVWF	r0x02
-;	.line	1189; meter_logger.c	for (i = 0; i < 8; i++) {
+;	.line	1192; meter_logger.c	for (i = 0; i < 8; i++) {
 	INCF	r0x06, F
 	MOVLW	0x08
 	SUBWF	r0x06, W
-	BNC	_00880_DS_
-;	.line	1192; meter_logger.c	calculated_err_corr |= calculated_err_corr_bit;
+	BNC	_00883_DS_
+;	.line	1195; meter_logger.c	calculated_err_corr |= calculated_err_corr_bit;
 	MOVF	r0x02, W
 	IORWF	r0x03, F
-;	.line	1193; meter_logger.c	calculated_err_corr = calculated_err_corr << 1;
+;	.line	1196; meter_logger.c	calculated_err_corr = calculated_err_corr << 1;
 	BCF	STATUS, 0
 	RLCF	r0x03, F
-;	.line	1196; meter_logger.c	calculated_err_corr_bit = 0;
+;	.line	1199; meter_logger.c	calculated_err_corr_bit = 0;
 	CLRF	r0x02
-;	.line	1197; meter_logger.c	for (i = 0; i < 8; i++) {
+;	.line	1200; meter_logger.c	for (i = 0; i < 8; i++) {
 	MOVLW	0x8b
 	ANDWF	r0x00, W
 	MOVWF	r0x04
 	CLRF	r0x05
 	CLRF	r0x06
-_00882_DS_:
-;	.line	1198; meter_logger.c	calculated_err_corr_bit ^= (((c & 0x8b) & (1 << i)) != 0);   // 0b10001011
+_00885_DS_:
+;	.line	1201; meter_logger.c	calculated_err_corr_bit ^= (((c & 0x8b) & (1 << i)) != 0);   // 0b10001011
 	MOVLW	0x01
 	MOVWF	r0x07
 	MOVLW	0x00
 	MOVWF	r0x08
 	MOVF	r0x06, W
-	BZ	_00944_DS_
+	BZ	_00947_DS_
 	NEGF	WREG
 	BCF	STATUS, 0
-_00945_DS_:
+_00948_DS_:
 	RLCF	r0x07, F
 	RLCF	r0x08, F
 	ADDLW	0x01
-	BNC	_00945_DS_
-_00944_DS_:
+	BNC	_00948_DS_
+_00947_DS_:
 	MOVF	r0x04, W
 	ANDWF	r0x07, F
 	MOVF	r0x05, W
 	ANDWF	r0x08, F
 	MOVF	r0x07, W
-	BNZ	_00947_DS_
+	BNZ	_00950_DS_
 	MOVF	r0x08, W
-	BNZ	_00947_DS_
+	BNZ	_00950_DS_
 	CLRF	r0x07
 	INCF	r0x07, F
-	BRA	_00948_DS_
-_00947_DS_:
+	BRA	_00951_DS_
+_00950_DS_:
 	CLRF	r0x07
-_00948_DS_:
+_00951_DS_:
 	MOVF	r0x07, W
 	BSF	STATUS, 0
 	TSTFSZ	WREG
@@ -7032,35 +7032,35 @@ _00948_DS_:
 	MOVF	r0x07, W
 	XORWF	r0x08, W
 	MOVWF	r0x02
-;	.line	1197; meter_logger.c	for (i = 0; i < 8; i++) {
+;	.line	1200; meter_logger.c	for (i = 0; i < 8; i++) {
 	INCF	r0x06, F
 	MOVLW	0x08
 	SUBWF	r0x06, W
-	BNC	_00882_DS_
-;	.line	1200; meter_logger.c	calculated_err_corr |= calculated_err_corr_bit;
+	BNC	_00885_DS_
+;	.line	1203; meter_logger.c	calculated_err_corr |= calculated_err_corr_bit;
 	MOVF	r0x02, W
 	IORWF	r0x03, F
-;	.line	1211; meter_logger.c	if ((c >> 8) == calculated_err_corr) {
+;	.line	1214; meter_logger.c	if ((c >> 8) == calculated_err_corr) {
 	MOVF	r0x01, W
 	MOVWF	r0x00
 	CLRF	r0x01
 	CLRF	r0x02
 	MOVF	r0x00, W
 	XORWF	r0x03, W
-	BNZ	_00952_DS_
+	BNZ	_00955_DS_
 	MOVF	r0x01, W
 	XORWF	r0x02, W
-	BZ	_00953_DS_
-_00952_DS_:
-	BRA	_00874_DS_
-_00953_DS_:
-;	.line	1212; meter_logger.c	return 1;
+	BZ	_00956_DS_
+_00955_DS_:
+	BRA	_00877_DS_
+_00956_DS_:
+;	.line	1215; meter_logger.c	return 1;
 	MOVLW	0x01
-	BRA	_00884_DS_
-_00874_DS_:
-;	.line	1215; meter_logger.c	return 0;
+	BRA	_00887_DS_
+_00877_DS_:
+;	.line	1218; meter_logger.c	return 0;
 	CLRF	WREG
-_00884_DS_:
+_00887_DS_:
 	MOVFF	PREINC1, r0x08
 	MOVFF	PREINC1, r0x07
 	MOVFF	PREINC1, r0x06
@@ -7076,7 +7076,7 @@ _00884_DS_:
 ; ; Starting pCode block
 S_meter_logger__reverse	code
 _reverse:
-;	.line	1157; meter_logger.c	unsigned char reverse(unsigned char b) {
+;	.line	1160; meter_logger.c	unsigned char reverse(unsigned char b) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
@@ -7085,7 +7085,7 @@ _reverse:
 	MOVFF	r0x03, POSTDEC1
 	MOVLW	0x02
 	MOVFF	PLUSW2, r0x00
-;	.line	1159; meter_logger.c	c  = ((b >>  1) & 0x55) | ((b <<  1) & 0xaa);
+;	.line	1162; meter_logger.c	c  = ((b >>  1) & 0x55) | ((b <<  1) & 0xaa);
 	RRNCF	r0x00, W
 	ANDLW	0x7f
 	MOVWF	r0x01
@@ -7098,7 +7098,7 @@ _reverse:
 	ANDWF	r0x02, F
 	MOVF	r0x02, W
 	IORWF	r0x01, F
-;	.line	1160; meter_logger.c	c |= ((b >>  2) & 0x33) | ((b <<  2) & 0xcc);
+;	.line	1163; meter_logger.c	c |= ((b >>  2) & 0x33) | ((b <<  2) & 0xcc);
 	RRNCF	r0x00, W
 	RRNCF	WREG, W
 	ANDLW	0x3f
@@ -7115,7 +7115,7 @@ _reverse:
 	IORWF	r0x02, F
 	MOVF	r0x02, W
 	IORWF	r0x01, F
-;	.line	1161; meter_logger.c	c |= ((b >>  4) & 0x0f) | ((b <<  4) & 0xf0);
+;	.line	1164; meter_logger.c	c |= ((b >>  4) & 0x0f) | ((b <<  4) & 0xf0);
 	SWAPF	r0x00, W
 	ANDLW	0x0f
 	MOVWF	r0x02
@@ -7131,7 +7131,7 @@ _reverse:
 	IORWF	r0x02, F
 	MOVF	r0x02, W
 	IORWF	r0x01, F
-;	.line	1162; meter_logger.c	return(c);
+;	.line	1165; meter_logger.c	return(c);
 	MOVF	r0x01, W
 	MOVFF	PREINC1, r0x03
 	MOVFF	PREINC1, r0x02
@@ -7143,35 +7143,35 @@ _reverse:
 ; ; Starting pCode block
 S_meter_logger__my_usart_open	code
 _my_usart_open:
-;	.line	1127; meter_logger.c	void my_usart_open() {
+;	.line	1130; meter_logger.c	void my_usart_open() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
-;	.line	1128; meter_logger.c	SPBRG = 103;					// 8MHz => 19230 baud
+;	.line	1131; meter_logger.c	SPBRG = 103;					// 8MHz => 19230 baud
 	MOVLW	0x67
 	MOVWF	_SPBRG
-;	.line	1129; meter_logger.c	TXSTAbits.BRGH = 1;	// (0 = low speed)
+;	.line	1132; meter_logger.c	TXSTAbits.BRGH = 1;	// (0 = low speed)
 	BSF	_TXSTAbits, 2
-;	.line	1130; meter_logger.c	TXSTAbits.SYNC = 0;	// (0 = asynchronous)
+;	.line	1133; meter_logger.c	TXSTAbits.SYNC = 0;	// (0 = asynchronous)
 	BCF	_TXSTAbits, 4
-;	.line	1131; meter_logger.c	BAUDCONbits.BRG16 = 1;
+;	.line	1134; meter_logger.c	BAUDCONbits.BRG16 = 1;
 	BSF	_BAUDCONbits, 3
-;	.line	1134; meter_logger.c	RCSTAbits.SPEN = 1; // (1 = serial port enabled)
+;	.line	1137; meter_logger.c	RCSTAbits.SPEN = 1; // (1 = serial port enabled)
 	BSF	_RCSTAbits, 7
-;	.line	1137; meter_logger.c	PIE1bits.TXIE = 0; // (1 = enabled)
+;	.line	1140; meter_logger.c	PIE1bits.TXIE = 0; // (1 = enabled)
 	BCF	_PIE1bits, 4
-;	.line	1138; meter_logger.c	IPR1bits.TXIP = 0; // USART Tx on low priority interrupt
+;	.line	1141; meter_logger.c	IPR1bits.TXIP = 0; // USART Tx on low priority interrupt
 	BCF	_IPR1bits, 4
-;	.line	1141; meter_logger.c	PIE1bits.RCIE = 1; // (1 = enabled)
+;	.line	1144; meter_logger.c	PIE1bits.RCIE = 1; // (1 = enabled)
 	BSF	_PIE1bits, 5
-;	.line	1142; meter_logger.c	IPR1bits.RCIP = 0; // USART Rx on low priority interrupt
+;	.line	1145; meter_logger.c	IPR1bits.RCIP = 0; // USART Rx on low priority interrupt
 	BCF	_IPR1bits, 5
-;	.line	1145; meter_logger.c	TXSTAbits.TX9 = 0; // (0 = 8-bit transmit)
+;	.line	1148; meter_logger.c	TXSTAbits.TX9 = 0; // (0 = 8-bit transmit)
 	BCF	_TXSTAbits, 6
-;	.line	1148; meter_logger.c	RCSTAbits.RX9 = 0; // (0 = 8-bit reception)
+;	.line	1151; meter_logger.c	RCSTAbits.RX9 = 0; // (0 = 8-bit reception)
 	BCF	_RCSTAbits, 6
-;	.line	1151; meter_logger.c	RCSTAbits.CREN = 1; // (1 = Enables receiver)
+;	.line	1154; meter_logger.c	RCSTAbits.CREN = 1; // (1 = Enables receiver)
 	BSF	_RCSTAbits, 4
-;	.line	1154; meter_logger.c	TXSTAbits.TXEN = 1; // (1 = transmit enabled)
+;	.line	1157; meter_logger.c	TXSTAbits.TXEN = 1; // (1 = transmit enabled)
 	BSF	_TXSTAbits, 5
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -7179,7 +7179,7 @@ _my_usart_open:
 ; ; Starting pCode block
 S_meter_logger__get_dev_id	code
 _get_dev_id:
-;	.line	1110; meter_logger.c	unsigned int get_dev_id() {
+;	.line	1113; meter_logger.c	unsigned int get_dev_id() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
@@ -7188,24 +7188,24 @@ _get_dev_id:
 	MOVFF	r0x03, POSTDEC1
 	MOVFF	r0x04, POSTDEC1
 	MOVFF	r0x05, POSTDEC1
-;	.line	1113; meter_logger.c	TBLPTRU = __DEVID1 >> 16;
+;	.line	1116; meter_logger.c	TBLPTRU = __DEVID1 >> 16;
 	MOVLW	0x3f
 	MOVWF	_TBLPTRU
-;	.line	1114; meter_logger.c	TBLPTRH = __DEVID1 >> 8;
+;	.line	1117; meter_logger.c	TBLPTRH = __DEVID1 >> 8;
 	MOVLW	0xff
 	MOVWF	_TBLPTRH
-;	.line	1115; meter_logger.c	TBLPTRL = __DEVID1;
+;	.line	1118; meter_logger.c	TBLPTRL = __DEVID1;
 	MOVLW	0xfe
 	MOVWF	_TBLPTRL
 	tblrd*+
 	
-;	.line	1119; meter_logger.c	dev_id_low = TABLAT;
+;	.line	1122; meter_logger.c	dev_id_low = TABLAT;
 	MOVFF	_TABLAT, r0x00
 	tblrd*+
 	
-;	.line	1123; meter_logger.c	dev_id_high = TABLAT;
+;	.line	1126; meter_logger.c	dev_id_high = TABLAT;
 	MOVFF	_TABLAT, r0x01
-;	.line	1124; meter_logger.c	return ((dev_id_high << 8) + dev_id_low) & 0xffe0;	// dont return revision
+;	.line	1127; meter_logger.c	return ((dev_id_high << 8) + dev_id_low) & 0xffe0;	// dont return revision
 	CLRF	r0x02
 	MOVF	r0x01, W
 	MOVWF	r0x04
@@ -7231,78 +7231,78 @@ _get_dev_id:
 ; ; Starting pCode block
 S_meter_logger__init_system	code
 _init_system:
-;	.line	1009; meter_logger.c	void init_system() {
+;	.line	1012; meter_logger.c	void init_system() {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
-;	.line	1011; meter_logger.c	TRIS_COMP1 = INPUT_STATE;		// as input
+;	.line	1014; meter_logger.c	TRIS_COMP1 = INPUT_STATE;		// as input
 	BSF	_TRISAbits, 0
-;	.line	1012; meter_logger.c	TRIS_COMP2 = INPUT_STATE;		// as input
+;	.line	1015; meter_logger.c	TRIS_COMP2 = INPUT_STATE;		// as input
 	BSF	_TRISAbits, 1
-;	.line	1014; meter_logger.c	TRIS_IR_PIN = INPUT_STATE;		// as input
+;	.line	1017; meter_logger.c	TRIS_IR_PIN = INPUT_STATE;		// as input
 	BSF	_TRISBbits, 0
-;	.line	1016; meter_logger.c	TRIS_LED_PIN = OUTPUT_STATE;	// as output
+;	.line	1019; meter_logger.c	TRIS_LED_PIN = OUTPUT_STATE;	// as output
 	BCF	_TRISBbits, 4
-;	.line	1017; meter_logger.c	LED_PIN = 0;					// and clear
+;	.line	1020; meter_logger.c	LED_PIN = 0;					// and clear
 	BCF	_PORTBbits, 4
-;	.line	1019; meter_logger.c	TRIS_IR_LED_PIN = OUTPUT_STATE;	// as output
+;	.line	1022; meter_logger.c	TRIS_IR_LED_PIN = OUTPUT_STATE;	// as output
 	BCF	_TRISBbits, 1
-;	.line	1020; meter_logger.c	IR_LED_PIN = 0;					// and clear
+;	.line	1023; meter_logger.c	IR_LED_PIN = 0;					// and clear
 	BCF	_PORTBbits, 1
-;	.line	1022; meter_logger.c	TRIS_V_SENSE = INPUT_STATE;		// as input
+;	.line	1025; meter_logger.c	TRIS_V_SENSE = INPUT_STATE;		// as input
 	BSF	_TRISAbits, 5
-;	.line	1024; meter_logger.c	TRIS_DEBUG_PIN = OUTPUT_STATE;	// as output
+;	.line	1027; meter_logger.c	TRIS_DEBUG_PIN = OUTPUT_STATE;	// as output
 	BCF	_TRISBbits, 2
-;	.line	1025; meter_logger.c	DEBUG_PIN = 0;					// and clear
+;	.line	1028; meter_logger.c	DEBUG_PIN = 0;					// and clear
 	BCF	_PORTBbits, 2
-;	.line	1027; meter_logger.c	TRIS_DEBUG2_PIN = OUTPUT_STATE;	// as output
+;	.line	1030; meter_logger.c	TRIS_DEBUG2_PIN = OUTPUT_STATE;	// as output
 	BCF	_TRISBbits, 3
-;	.line	1028; meter_logger.c	DEBUG2_PIN = 0;					// and clear
+;	.line	1031; meter_logger.c	DEBUG2_PIN = 0;					// and clear
 	BCF	_PORTBbits, 3
-;	.line	1030; meter_logger.c	TRIS_DEBUG3_PIN = OUTPUT_STATE;	// as output
+;	.line	1033; meter_logger.c	TRIS_DEBUG3_PIN = OUTPUT_STATE;	// as output
 	BCF	_TRISBbits, 4
-;	.line	1031; meter_logger.c	DEBUG3_PIN = 0;					// and clear
+;	.line	1034; meter_logger.c	DEBUG3_PIN = 0;					// and clear
 	BCF	_PORTBbits, 4
-;	.line	1035; meter_logger.c	TRIS_PWM_PIN = OUTPUT_STATE;	// enable output from pwm module at init
+;	.line	1038; meter_logger.c	TRIS_PWM_PIN = OUTPUT_STATE;	// enable output from pwm module at init
 	BCF	_TRISCbits, 1
-;	.line	1036; meter_logger.c	PWM_PIN = 0;					// and clear
+;	.line	1039; meter_logger.c	PWM_PIN = 0;					// and clear
 	BCF	_PORTCbits, 1
-;	.line	1039; meter_logger.c	TRIS_RX_PIN = INPUT_STATE;		// as input
+;	.line	1042; meter_logger.c	TRIS_RX_PIN = INPUT_STATE;		// as input
 	BSF	_TRISCbits, 7
-;	.line	1040; meter_logger.c	TRIS_TX_PIN = OUTPUT_STATE;		// as input
+;	.line	1043; meter_logger.c	TRIS_TX_PIN = OUTPUT_STATE;		// as input
 	BCF	_TRISCbits, 6
-;	.line	1045; meter_logger.c	T1CONbits.TMR1ON = 1;
+;	.line	1048; meter_logger.c	T1CONbits.TMR1ON = 1;
 	BSF	_T1CONbits, 0
-;	.line	1046; meter_logger.c	T1CONbits.RD16 = 1;
+;	.line	1049; meter_logger.c	T1CONbits.RD16 = 1;
 	BSF	_T1CONbits, 7
-;	.line	1047; meter_logger.c	T1CONbits.TMR1CS = 0;   // internal clock source
+;	.line	1050; meter_logger.c	T1CONbits.TMR1CS = 0;   // internal clock source
 	BCF	_T1CONbits, 1
-;	.line	1048; meter_logger.c	T1CONbits.T1OSCEN = 0;  // dont put t1 on pin
+;	.line	1051; meter_logger.c	T1CONbits.T1OSCEN = 0;  // dont put t1 on pin
 	BCF	_T1CONbits, 3
-;	.line	1049; meter_logger.c	T1CONbits.T1CKPS0 = 0;
+;	.line	1052; meter_logger.c	T1CONbits.T1CKPS0 = 0;
 	BCF	_T1CONbits, 4
-;	.line	1050; meter_logger.c	T1CONbits.T1CKPS1 = 0;
+;	.line	1053; meter_logger.c	T1CONbits.T1CKPS1 = 0;
 	BCF	_T1CONbits, 5
-;	.line	1051; meter_logger.c	IPR1bits.TMR1IP = 0;	// low priority
+;	.line	1054; meter_logger.c	IPR1bits.TMR1IP = 0;	// low priority
 	BCF	_IPR1bits, 0
-;	.line	1052; meter_logger.c	PIE1bits.TMR1IE = 1;	// Ensure that TMR1 Interrupt is enabled
+;	.line	1055; meter_logger.c	PIE1bits.TMR1IE = 1;	// Ensure that TMR1 Interrupt is enabled
 	BSF	_PIE1bits, 0
-;	.line	1053; meter_logger.c	PIR1bits.TMR1IF = 1;	// Force Instant entry to Timer 1 Interrupt
+;	.line	1056; meter_logger.c	PIR1bits.TMR1IF = 1;	// Force Instant entry to Timer 1 Interrupt
 	BSF	_PIR1bits, 0
-;	.line	1084; meter_logger.c	RCONbits.IPEN = 1;
+;	.line	1087; meter_logger.c	RCONbits.IPEN = 1;
 	BSF	_RCONbits, 7
-;	.line	1086; meter_logger.c	INTCONbits.INT0IE = 0;		// disable ext int, enabled when ir demodulator is started
+;	.line	1089; meter_logger.c	INTCONbits.INT0IE = 0;		// disable ext int, enabled when ir demodulator is started
 	BCF	_INTCONbits, 4
-;	.line	1087; meter_logger.c	INTCON2bits.INTEDG0 = 1;	// rising edge
+;	.line	1090; meter_logger.c	INTCON2bits.INTEDG0 = 1;	// rising edge
 	BSF	_INTCON2bits, 6
-;	.line	1089; meter_logger.c	INTCONbits.PEIE = 1;
+;	.line	1092; meter_logger.c	INTCONbits.PEIE = 1;
 	BSF	_INTCONbits, 6
-;	.line	1090; meter_logger.c	INTCONbits.GIE = 1;	/* Enable Global interrupts   */	
+;	.line	1093; meter_logger.c	INTCONbits.GIE = 1;	/* Enable Global interrupts   */	
 	BSF	_INTCONbits, 7
-;	.line	1095; meter_logger.c	IPR1bits.RCIP = 0;
+;	.line	1098; meter_logger.c	IPR1bits.RCIP = 0;
 	BCF	_IPR1bits, 5
-;	.line	1096; meter_logger.c	IPR1bits.TXIP = 0;
+;	.line	1099; meter_logger.c	IPR1bits.TXIP = 0;
 	BCF	_IPR1bits, 4
-;	.line	1107; meter_logger.c	my_usart_open();
+;	.line	1110; meter_logger.c	my_usart_open();
 	CALL	_my_usart_open
 	MOVFF	PREINC1, FSR2L
 	RETURN	
@@ -7310,7 +7310,7 @@ _init_system:
 ; ; Starting pCode block
 S_meter_logger__sleep_ms	code
 _sleep_ms:
-;	.line	989; meter_logger.c	void sleep_ms(unsigned int ms) {
+;	.line	992; meter_logger.c	void sleep_ms(unsigned int ms) {
 	MOVFF	FSR2L, POSTDEC1
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
@@ -7325,28 +7325,28 @@ _sleep_ms:
 	MOVFF	PLUSW2, r0x00
 	MOVLW	0x03
 	MOVFF	PLUSW2, r0x01
-;	.line	992; meter_logger.c	start_timer_1_ms = timer_1_ms;	
+;	.line	995; meter_logger.c	start_timer_1_ms = timer_1_ms;	
 	MOVFF	_timer_1_ms, r0x02
 	MOVFF	(_timer_1_ms + 1), r0x03
-;	.line	995; meter_logger.c	do {
+;	.line	998; meter_logger.c	do {
 	MOVF	r0x02, W
 	SUBLW	0xff
 	MOVWF	r0x04
 	MOVLW	0xff
 	SUBFWB	r0x03, W
 	MOVWF	r0x05
-_00832_DS_:
-;	.line	996; meter_logger.c	if (start_timer_1_ms <= timer_1_ms) {
+_00835_DS_:
+;	.line	999; meter_logger.c	if (start_timer_1_ms <= timer_1_ms) {
 	MOVF	r0x03, W
 	BANKSEL	(_timer_1_ms + 1)
 	SUBWF	(_timer_1_ms + 1), W, B
-	BNZ	_00843_DS_
+	BNZ	_00846_DS_
 	MOVF	r0x02, W
 ; removed redundant BANKSEL
 	SUBWF	_timer_1_ms, W, B
-_00843_DS_:
-	BNC	_00830_DS_
-;	.line	997; meter_logger.c	diff = timer_1_ms - start_timer_1_ms;
+_00846_DS_:
+	BNC	_00833_DS_
+;	.line	1000; meter_logger.c	diff = timer_1_ms - start_timer_1_ms;
 	MOVF	r0x02, W
 	BANKSEL	_timer_1_ms
 	SUBWF	_timer_1_ms, W, B
@@ -7355,10 +7355,10 @@ _00843_DS_:
 ; removed redundant BANKSEL
 	SUBWFB	(_timer_1_ms + 1), W, B
 	MOVWF	r0x07
-	BRA	_00833_DS_
-_00830_DS_:
+	BRA	_00836_DS_
+_00833_DS_:
 	BANKSEL	_timer_1_ms
-;	.line	1001; meter_logger.c	diff = 0xffff - start_timer_1_ms + timer_1_ms;
+;	.line	1004; meter_logger.c	diff = 0xffff - start_timer_1_ms + timer_1_ms;
 	MOVF	_timer_1_ms, W, B
 	ADDWF	r0x04, W
 	MOVWF	r0x06
@@ -7366,15 +7366,15 @@ _00830_DS_:
 	MOVF	(_timer_1_ms + 1), W, B
 	ADDWFC	r0x05, W
 	MOVWF	r0x07
-_00833_DS_:
-;	.line	1003; meter_logger.c	} while (diff < ms);
+_00836_DS_:
+;	.line	1006; meter_logger.c	} while (diff < ms);
 	MOVF	r0x01, W
 	SUBWF	r0x07, W
-	BNZ	_00844_DS_
+	BNZ	_00847_DS_
 	MOVF	r0x00, W
 	SUBWF	r0x06, W
-_00844_DS_:
-	BNC	_00832_DS_
+_00847_DS_:
+	BNC	_00835_DS_
 	MOVFF	PREINC1, r0x07
 	MOVFF	PREINC1, r0x06
 	MOVFF	PREINC1, r0x05
@@ -7389,7 +7389,7 @@ _00844_DS_:
 ; ; Starting pCode block
 S_meter_logger__isr_low_prio	code
 _isr_low_prio:
-;	.line	957; meter_logger.c	static void isr_low_prio(void) __interrupt 2 {
+;	.line	960; meter_logger.c	static void isr_low_prio(void) __interrupt 2 {
 	MOVFF	STATUS, POSTDEC1
 	MOVFF	BSR, POSTDEC1
 	MOVWF	POSTDEC1
@@ -7403,36 +7403,36 @@ _isr_low_prio:
 	MOVFF	FSR1L, FSR2L
 	MOVFF	r0x00, POSTDEC1
 	MOVFF	r0x01, POSTDEC1
-;	.line	960; meter_logger.c	if (PIR1bits.TMR1IF) {
+;	.line	963; meter_logger.c	if (PIR1bits.TMR1IF) {
 	BTFSS	_PIR1bits, 0
-	BRA	_00801_DS_
-;	.line	961; meter_logger.c	TMR1H = (unsigned char)(TIMER1_RELOAD >> 8);    // 262,158ms @ 8MHz
+	BRA	_00804_DS_
+;	.line	964; meter_logger.c	TMR1H = (unsigned char)(TIMER1_RELOAD >> 8);    // 262,158ms @ 8MHz
 	MOVLW	0xf8
 	MOVWF	_TMR1H
-;	.line	962; meter_logger.c	TMR1L = (unsigned char)TIMER1_RELOAD;
+;	.line	965; meter_logger.c	TMR1L = (unsigned char)TIMER1_RELOAD;
 	MOVLW	0x53
 	MOVWF	_TMR1L
-;	.line	964; meter_logger.c	switch (led_flash.state) {
+;	.line	967; meter_logger.c	switch (led_flash.state) {
 	MOVFF	_led_flash, r0x00
 	MOVF	r0x00, W
 	MOVWF	r0x01
 	MOVF	r0x01, W
-	BZ	_00795_DS_
+	BZ	_00798_DS_
 	MOVF	r0x00, W
 	XORLW	0x01
-	BZ	_00796_DS_
-	BRA	_00799_DS_
-_00795_DS_:
-;	.line	966; meter_logger.c	LED_PIN = 1;
+	BZ	_00799_DS_
+	BRA	_00802_DS_
+_00798_DS_:
+;	.line	969; meter_logger.c	LED_PIN = 1;
 	BSF	_PORTBbits, 4
-;	.line	967; meter_logger.c	led_flash.state = LED_FLASH_RUNNING;
+;	.line	970; meter_logger.c	led_flash.state = LED_FLASH_RUNNING;
 	MOVLW	0x01
 	BANKSEL	_led_flash
 	MOVWF	_led_flash, B
-;	.line	968; meter_logger.c	break;
-	BRA	_00799_DS_
-_00796_DS_:
-;	.line	970; meter_logger.c	if (led_flash.timer-- == 0) {
+;	.line	971; meter_logger.c	break;
+	BRA	_00802_DS_
+_00799_DS_:
+;	.line	973; meter_logger.c	if (led_flash.timer-- == 0) {
 	MOVFF	(_led_flash + 1), r0x00
 	DECF	r0x00, W
 	MOVWF	r0x01
@@ -7440,36 +7440,36 @@ _00796_DS_:
 	BANKSEL	(_led_flash + 1)
 	MOVWF	(_led_flash + 1), B
 	MOVF	r0x00, W
-	BNZ	_00799_DS_
-;	.line	971; meter_logger.c	LED_PIN = 0;
+	BNZ	_00802_DS_
+;	.line	974; meter_logger.c	LED_PIN = 0;
 	BCF	_PORTBbits, 4
-;	.line	972; meter_logger.c	led_flash.state = LED_FLASH_STOPPED;
+;	.line	975; meter_logger.c	led_flash.state = LED_FLASH_STOPPED;
 	MOVLW	0x02
 ; removed redundant BANKSEL
 	MOVWF	_led_flash, B
-_00799_DS_:
+_00802_DS_:
 	BANKSEL	_timer_1_ms
-;	.line	976; meter_logger.c	timer_1_ms++;
+;	.line	979; meter_logger.c	timer_1_ms++;
 	INCFSZ	_timer_1_ms, F, B
-	BRA	_31201_DS_
+	BRA	_31204_DS_
 ; removed redundant BANKSEL
 	INCF	(_timer_1_ms + 1), F, B
-_31201_DS_:
-;	.line	977; meter_logger.c	PIR1bits.TMR1IF = 0;    /* Clear the Timer Flag  */
+_31204_DS_:
+;	.line	980; meter_logger.c	PIR1bits.TMR1IF = 0;    /* Clear the Timer Flag  */
 	BCF	_PIR1bits, 0
-_00801_DS_:
-;	.line	981; meter_logger.c	if (usart_drdy()) {
+_00804_DS_:
+;	.line	984; meter_logger.c	if (usart_drdy()) {
 	CALL	_usart_drdy
 	MOVWF	r0x00
 	MOVF	r0x00, W
-	BZ	_00804_DS_
-;	.line	983; meter_logger.c	c = usart_getc();
+	BZ	_00807_DS_
+;	.line	986; meter_logger.c	c = usart_getc();
 	CALL	_usart_getc
 	MOVWF	r0x00
-;	.line	984; meter_logger.c	usart_putc(c);
+;	.line	987; meter_logger.c	usart_putc(c);
 	MOVF	r0x00, W
 	CALL	_usart_putc
-_00804_DS_:
+_00807_DS_:
 	MOVFF	PREINC1, r0x01
 	MOVFF	PREINC1, r0x00
 	MOVFF	PREINC1, FSR2L
@@ -7487,7 +7487,7 @@ _00804_DS_:
 ; ; Starting pCode block
 S_meter_logger__isr_high_prio	code
 _isr_high_prio:
-;	.line	488; meter_logger.c	static void isr_high_prio(void) __interrupt 1 {
+;	.line	489; meter_logger.c	static void isr_high_prio(void) __interrupt 1 {
 	MOVFF	STATUS, POSTDEC1
 	MOVFF	BSR, POSTDEC1
 	MOVWF	POSTDEC1
@@ -7505,12 +7505,12 @@ _isr_high_prio:
 	MOVFF	r0x03, POSTDEC1
 	MOVFF	r0x04, POSTDEC1
 	MOVFF	r0x05, POSTDEC1
-;	.line	490; meter_logger.c	if (INTCONbits.INT0IF && INTCONbits.INT0IE) {
+;	.line	491; meter_logger.c	if (INTCONbits.INT0IF && INTCONbits.INT0IE) {
 	BTFSS	_INTCONbits, 1
 	BRA	_00389_DS_
 	BTFSS	_INTCONbits, 4
 	BRA	_00389_DS_
-;	.line	491; meter_logger.c	timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
+;	.line	492; meter_logger.c	timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
 	MOVFF	_TMR0L, r0x00
 	CLRF	r0x01
 	MOVFF	_TMR0H, r0x02
@@ -7527,18 +7527,18 @@ _isr_high_prio:
 ; removed redundant BANKSEL
 	MOVWF	(_timer_0 + 1), B
 	BANKSEL	(_timer0_reload + 1)
-;	.line	492; meter_logger.c	TMR0H = (unsigned char)(timer0_reload >> 8);
+;	.line	493; meter_logger.c	TMR0H = (unsigned char)(timer0_reload >> 8);
 	MOVF	(_timer0_reload + 1), W, B
 	MOVWF	r0x00
 	CLRF	r0x01
 	MOVF	r0x00, W
 	MOVWF	_TMR0H
 ; removed redundant BANKSEL
-;	.line	493; meter_logger.c	TMR0L = (unsigned char)timer0_reload;
+;	.line	494; meter_logger.c	TMR0L = (unsigned char)timer0_reload;
 	MOVF	_timer0_reload, W, B
 	MOVWF	_TMR0L
 	BANKSEL	_codec_type
-;	.line	495; meter_logger.c	switch (codec_type) {
+;	.line	496; meter_logger.c	switch (codec_type) {
 	MOVF	_codec_type, W, B
 	XORLW	0x01
 	BZ	_00347_DS_
@@ -7557,12 +7557,12 @@ _00692_DS_:
 _00694_DS_:
 	BRA	_00387_DS_
 _00347_DS_:
-;	.line	497; meter_logger.c	flash_led(100);
+;	.line	498; meter_logger.c	flash_led(100);
 	MOVLW	0x64
 	MOVWF	POSTDEC1
 	CALL	_flash_led
 	MOVF	POSTINC1, F
-;	.line	498; meter_logger.c	switch (testo_ir_proto.state) {
+;	.line	499; meter_logger.c	switch (testo_ir_proto.state) {
 	MOVFF	_testo_ir_proto, r0x00
 	MOVF	r0x00, W
 	MOVWF	r0x01
@@ -7578,21 +7578,21 @@ _00347_DS_:
 _00700_DS_:
 	BRA	_00387_DS_
 _00348_DS_:
-;	.line	500; meter_logger.c	T0CONbits.TMR0ON = 1;		// Start TMR0
+;	.line	501; meter_logger.c	T0CONbits.TMR0ON = 1;		// Start TMR0
 	BSF	_T0CONbits, 7
-;	.line	501; meter_logger.c	testo_ir_proto.start_bit_len = 1;
+;	.line	502; meter_logger.c	testo_ir_proto.start_bit_len = 1;
 	MOVLW	0x01
 	BANKSEL	(_testo_ir_proto + 2)
 	MOVWF	(_testo_ir_proto + 2), B
-;	.line	502; meter_logger.c	testo_ir_proto.state = START_BIT_WAIT;
+;	.line	503; meter_logger.c	testo_ir_proto.state = START_BIT_WAIT;
 	MOVLW	0x02
 ; removed redundant BANKSEL
 	MOVWF	_testo_ir_proto, B
-;	.line	503; meter_logger.c	break;
+;	.line	504; meter_logger.c	break;
 	BRA	_00387_DS_
 _00349_DS_:
 	BANKSEL	_timer0_reload
-;	.line	505; meter_logger.c	if ((TICK + timer0_reload - TICK_ADJ < timer_0) && (timer_0 < TICK + timer0_reload + TICK_ADJ)) {
+;	.line	506; meter_logger.c	if ((TICK + timer0_reload - TICK_ADJ < timer_0) && (timer_0 < TICK + timer0_reload + TICK_ADJ)) {
 	MOVF	_timer0_reload, W, B
 	ADDLW	0x8f
 	MOVWF	r0x00
@@ -7626,12 +7626,12 @@ _00701_DS_:
 	SUBWF	_timer_0, W, B
 _00702_DS_:
 	BC	_00354_DS_
-;	.line	506; meter_logger.c	if (testo_ir_proto.start_bit_len < 2) {
+;	.line	507; meter_logger.c	if (testo_ir_proto.start_bit_len < 2) {
 	MOVLW	0x02
 	BANKSEL	(_testo_ir_proto + 2)
 	SUBWF	(_testo_ir_proto + 2), W, B
 	BC	_00351_DS_
-;	.line	507; meter_logger.c	testo_ir_proto.start_bit_len++;
+;	.line	508; meter_logger.c	testo_ir_proto.start_bit_len++;
 	MOVFF	(_testo_ir_proto + 2), r0x00
 	INCF	r0x00, F
 	MOVF	r0x00, W
@@ -7640,38 +7640,38 @@ _00702_DS_:
 	BRA	_00387_DS_
 _00351_DS_:
 	BANKSEL	(_testo_ir_proto + 3)
-;	.line	511; meter_logger.c	testo_ir_proto.data = 0;
+;	.line	512; meter_logger.c	testo_ir_proto.data = 0;
 	CLRF	(_testo_ir_proto + 3), B
 ; removed redundant BANKSEL
 	CLRF	(_testo_ir_proto + 4), B
 ; removed redundant BANKSEL
-;	.line	512; meter_logger.c	testo_ir_proto.data_len = 0;
+;	.line	513; meter_logger.c	testo_ir_proto.data_len = 0;
 	CLRF	(_testo_ir_proto + 5), B
-;	.line	513; meter_logger.c	testo_ir_proto.state = DATA_WAIT;
+;	.line	514; meter_logger.c	testo_ir_proto.state = DATA_WAIT;
 	MOVLW	0x04
 ; removed redundant BANKSEL
 	MOVWF	_testo_ir_proto, B
 	BRA	_00387_DS_
 _00354_DS_:
-;	.line	518; meter_logger.c	testo_ir_proto.start_bit_len = 1;
+;	.line	519; meter_logger.c	testo_ir_proto.start_bit_len = 1;
 	MOVLW	0x01
 	BANKSEL	(_testo_ir_proto + 2)
 	MOVWF	(_testo_ir_proto + 2), B
-;	.line	519; meter_logger.c	testo_ir_proto.state = START_BIT_WAIT;
+;	.line	520; meter_logger.c	testo_ir_proto.state = START_BIT_WAIT;
 	MOVLW	0x02
 ; removed redundant BANKSEL
 	MOVWF	_testo_ir_proto, B
-;	.line	521; meter_logger.c	break;
+;	.line	522; meter_logger.c	break;
 	BRA	_00387_DS_
 _00357_DS_:
-;	.line	523; meter_logger.c	if (testo_ir_proto.data_len <= 12) {
+;	.line	524; meter_logger.c	if (testo_ir_proto.data_len <= 12) {
 	MOVLW	0x0d
 	BANKSEL	(_testo_ir_proto + 5)
 	SUBWF	(_testo_ir_proto + 5), W, B
 	BTFSC	STATUS, 0
 	BRA	_00387_DS_
 	BANKSEL	_timer0_reload
-;	.line	524; meter_logger.c	if (((TICK + timer0_reload - TICK_ADJ < timer_0) && (timer_0 < TICK + timer0_reload + TICK_ADJ)) || ((3 * TICK + timer0_reload - TICK_ADJ < timer_0) && (timer_0 < 3 * TICK + timer0_reload + TICK_ADJ))) {
+;	.line	525; meter_logger.c	if (((TICK + timer0_reload - TICK_ADJ < timer_0) && (timer_0 < TICK + timer0_reload + TICK_ADJ)) || ((3 * TICK + timer0_reload - TICK_ADJ < timer_0) && (timer_0 < 3 * TICK + timer0_reload + TICK_ADJ))) {
 	MOVF	_timer0_reload, W, B
 	ADDLW	0x8f
 	MOVWF	r0x00
@@ -7742,11 +7742,11 @@ _00708_DS_:
 	BC	_00369_DS_
 _00368_DS_:
 	BANKSEL	(_testo_ir_proto + 3)
-;	.line	526; meter_logger.c	if ((testo_ir_proto.data & 1) != 0) {
+;	.line	527; meter_logger.c	if ((testo_ir_proto.data & 1) != 0) {
 	BTFSS	(_testo_ir_proto + 3), 0
 	BRA	_00359_DS_
 ; removed redundant BANKSEL
-;	.line	528; meter_logger.c	testo_ir_proto.data <<= 1;		// bitshift once to left
+;	.line	529; meter_logger.c	testo_ir_proto.data <<= 1;		// bitshift once to left
 	MOVF	(_testo_ir_proto + 3), W, B
 	MOVWF	r0x00
 	ADDWF	r0x00, F
@@ -7762,7 +7762,7 @@ _00368_DS_:
 	BRA	_00360_DS_
 _00359_DS_:
 	BANKSEL	(_testo_ir_proto + 3)
-;	.line	533; meter_logger.c	testo_ir_proto.data <<= 1;		// bitshift once to left
+;	.line	534; meter_logger.c	testo_ir_proto.data <<= 1;		// bitshift once to left
 	MOVF	(_testo_ir_proto + 3), W, B
 	MOVWF	r0x00
 	ADDWF	r0x00, F
@@ -7775,7 +7775,7 @@ _00359_DS_:
 	MOVF	r0x01, W
 ; removed redundant BANKSEL
 	MOVWF	(_testo_ir_proto + 4), B
-;	.line	534; meter_logger.c	testo_ir_proto.data |= 1;	// and set bit 0
+;	.line	535; meter_logger.c	testo_ir_proto.data |= 1;	// and set bit 0
 	MOVLW	0x01
 ; removed redundant BANKSEL
 	IORWF	(_testo_ir_proto + 3), W, B
@@ -7790,7 +7790,7 @@ _00359_DS_:
 ; removed redundant BANKSEL
 	MOVWF	(_testo_ir_proto + 4), B
 _00360_DS_:
-;	.line	536; meter_logger.c	testo_ir_proto.data_len++;
+;	.line	537; meter_logger.c	testo_ir_proto.data_len++;
 	MOVFF	(_testo_ir_proto + 5), r0x00
 	INCF	r0x00, F
 	MOVF	r0x00, W
@@ -7799,7 +7799,7 @@ _00360_DS_:
 	BRA	_00370_DS_
 _00369_DS_:
 	BANKSEL	_timer0_reload
-;	.line	538; meter_logger.c	else if ((2 * TICK + timer0_reload - TICK_ADJ < timer_0) && (timer_0 < 2 * TICK + timer0_reload + TICK_ADJ)) {
+;	.line	539; meter_logger.c	else if ((2 * TICK + timer0_reload - TICK_ADJ < timer_0) && (timer_0 < 2 * TICK + timer0_reload + TICK_ADJ)) {
 	MOVF	_timer0_reload, W, B
 	ADDLW	0xe6
 	MOVWF	r0x00
@@ -7834,11 +7834,11 @@ _00711_DS_:
 _00712_DS_:
 	BC	_00365_DS_
 	BANKSEL	(_testo_ir_proto + 3)
-;	.line	540; meter_logger.c	if ((testo_ir_proto.data & 1) != 0) {
+;	.line	541; meter_logger.c	if ((testo_ir_proto.data & 1) != 0) {
 	BTFSS	(_testo_ir_proto + 3), 0
 	BRA	_00362_DS_
 ; removed redundant BANKSEL
-;	.line	542; meter_logger.c	testo_ir_proto.data <<= 1;		// bitshift once to left
+;	.line	543; meter_logger.c	testo_ir_proto.data <<= 1;		// bitshift once to left
 	MOVF	(_testo_ir_proto + 3), W, B
 	MOVWF	r0x00
 	ADDWF	r0x00, F
@@ -7851,7 +7851,7 @@ _00712_DS_:
 	MOVF	r0x01, W
 ; removed redundant BANKSEL
 	MOVWF	(_testo_ir_proto + 4), B
-;	.line	543; meter_logger.c	testo_ir_proto.data |= 1;	// and set bit 0
+;	.line	544; meter_logger.c	testo_ir_proto.data |= 1;	// and set bit 0
 	MOVLW	0x01
 ; removed redundant BANKSEL
 	IORWF	(_testo_ir_proto + 3), W, B
@@ -7868,7 +7868,7 @@ _00712_DS_:
 	BRA	_00363_DS_
 _00362_DS_:
 	BANKSEL	(_testo_ir_proto + 3)
-;	.line	547; meter_logger.c	testo_ir_proto.data <<= 1;		// bitshift once to left
+;	.line	548; meter_logger.c	testo_ir_proto.data <<= 1;		// bitshift once to left
 	MOVF	(_testo_ir_proto + 3), W, B
 	MOVWF	r0x00
 	ADDWF	r0x00, F
@@ -7882,7 +7882,7 @@ _00362_DS_:
 ; removed redundant BANKSEL
 	MOVWF	(_testo_ir_proto + 4), B
 _00363_DS_:
-;	.line	550; meter_logger.c	testo_ir_proto.data_len++;
+;	.line	551; meter_logger.c	testo_ir_proto.data_len++;
 	MOVFF	(_testo_ir_proto + 5), r0x00
 	INCF	r0x00, F
 	MOVF	r0x00, W
@@ -7890,23 +7890,23 @@ _00363_DS_:
 	MOVWF	(_testo_ir_proto + 5), B
 	BRA	_00370_DS_
 _00365_DS_:
-;	.line	555; meter_logger.c	testo_ir_proto.start_bit_len = 1;
+;	.line	556; meter_logger.c	testo_ir_proto.start_bit_len = 1;
 	MOVLW	0x01
 	BANKSEL	(_testo_ir_proto + 2)
 	MOVWF	(_testo_ir_proto + 2), B
-;	.line	556; meter_logger.c	testo_ir_proto.state = START_BIT_WAIT;
+;	.line	557; meter_logger.c	testo_ir_proto.state = START_BIT_WAIT;
 	MOVLW	0x02
 ; removed redundant BANKSEL
 	MOVWF	_testo_ir_proto, B
 _00370_DS_:
 	BANKSEL	(_testo_ir_proto + 5)
-;	.line	558; meter_logger.c	if (testo_ir_proto.data_len == 12) {
+;	.line	559; meter_logger.c	if (testo_ir_proto.data_len == 12) {
 	MOVF	(_testo_ir_proto + 5), W, B
 	XORLW	0x0c
 	BNZ	_00387_DS_
 _00716_DS_:
 	BANKSEL	(_testo_ir_proto + 4)
-;	.line	561; meter_logger.c	if (testo_valid_err_corr(testo_ir_proto.data & 0xffff)) {
+;	.line	562; meter_logger.c	if (testo_valid_err_corr(testo_ir_proto.data & 0xffff)) {
 	MOVF	(_testo_ir_proto + 4), W, B
 	MOVWF	POSTDEC1
 ; removed redundant BANKSEL
@@ -7919,7 +7919,7 @@ _00716_DS_:
 	MOVF	r0x00, W
 	BZ	_00375_DS_
 	BANKSEL	(_testo_ir_proto + 3)
-;	.line	563; meter_logger.c	fifo_put(testo_ir_proto.data & 0xff);
+;	.line	564; meter_logger.c	fifo_put(testo_ir_proto.data & 0xff);
 	MOVF	(_testo_ir_proto + 3), W, B
 	MOVWF	r0x00
 	CLRF	r0x01
@@ -7927,85 +7927,85 @@ _00716_DS_:
 	MOVWF	POSTDEC1
 	CALL	_fifo_put
 	MOVF	POSTINC1, F
-;	.line	564; meter_logger.c	LED_PIN = 1;
+;	.line	565; meter_logger.c	LED_PIN = 1;
 	BSF	_PORTBbits, 4
 _00375_DS_:
 	BANKSEL	_testo_ir_proto
-;	.line	566; meter_logger.c	testo_ir_proto.state = INIT_STATE;
+;	.line	567; meter_logger.c	testo_ir_proto.state = INIT_STATE;
 	CLRF	_testo_ir_proto, B
-;	.line	571; meter_logger.c	break;
+;	.line	572; meter_logger.c	break;
 	BRA	_00387_DS_
 _00381_DS_:
 	BANKSEL	_rs232_proto
-;	.line	573; meter_logger.c	switch (rs232_proto.state) {
+;	.line	574; meter_logger.c	switch (rs232_proto.state) {
 	MOVF	_rs232_proto, W, B
 	XORLW	0x02
 	BNZ	_00387_DS_
-;	.line	584; meter_logger.c	TMR0H = (unsigned char)(TIMER0_RS232_1200_START >> 8);
+;	.line	585; meter_logger.c	TMR0H = (unsigned char)(TIMER0_RS232_1200_START >> 8);
 	MOVLW	0xf7
 	MOVWF	_TMR0H
-;	.line	585; meter_logger.c	TMR0L = (unsigned char)TIMER0_RS232_1200_START;
+;	.line	586; meter_logger.c	TMR0L = (unsigned char)TIMER0_RS232_1200_START;
 	CLRF	_TMR0L
-;	.line	586; meter_logger.c	INTCONbits.INT0IE = 0;		// disable ext int while we are using timer to receive data bits
+;	.line	587; meter_logger.c	INTCONbits.INT0IE = 0;		// disable ext int while we are using timer to receive data bits
 	BCF	_INTCONbits, 4
-;	.line	587; meter_logger.c	T0CONbits.TMR0ON = 1;		// Start TMR0
+;	.line	588; meter_logger.c	T0CONbits.TMR0ON = 1;		// Start TMR0
 	BSF	_T0CONbits, 7
-;	.line	588; meter_logger.c	rs232_proto.state = DATA_WAIT;
+;	.line	589; meter_logger.c	rs232_proto.state = DATA_WAIT;
 	MOVLW	0x04
 	BANKSEL	_rs232_proto
 	MOVWF	_rs232_proto, B
-;	.line	591; meter_logger.c	break;
+;	.line	592; meter_logger.c	break;
 	BRA	_00387_DS_
 _00384_DS_:
 	BANKSEL	_rs232_proto
-;	.line	593; meter_logger.c	switch (rs232_proto.state) {
+;	.line	594; meter_logger.c	switch (rs232_proto.state) {
 	MOVF	_rs232_proto, W, B
 	XORLW	0x02
 	BNZ	_00387_DS_
-;	.line	604; meter_logger.c	TMR0H = (unsigned char)(TIMER0_RS232_1200_START >> 8);
+;	.line	605; meter_logger.c	TMR0H = (unsigned char)(TIMER0_RS232_1200_START >> 8);
 	MOVLW	0xf7
 	MOVWF	_TMR0H
-;	.line	605; meter_logger.c	TMR0L = (unsigned char)TIMER0_RS232_1200_START;
+;	.line	606; meter_logger.c	TMR0L = (unsigned char)TIMER0_RS232_1200_START;
 	CLRF	_TMR0L
-;	.line	606; meter_logger.c	INTCONbits.INT0IE = 0;		// disable ext int while we are using timer to receive data bits
+;	.line	607; meter_logger.c	INTCONbits.INT0IE = 0;		// disable ext int while we are using timer to receive data bits
 	BCF	_INTCONbits, 4
-;	.line	607; meter_logger.c	T0CONbits.TMR0ON = 1;		// Start TMR0
+;	.line	608; meter_logger.c	T0CONbits.TMR0ON = 1;		// Start TMR0
 	BSF	_T0CONbits, 7
-;	.line	608; meter_logger.c	rs232_proto.state = DATA_WAIT;
+;	.line	609; meter_logger.c	rs232_proto.state = DATA_WAIT;
 	MOVLW	0x04
 	BANKSEL	_rs232_proto
 	MOVWF	_rs232_proto, B
 _00387_DS_:
-;	.line	613; meter_logger.c	INTCONbits.INT0IF = 0;	/* Clear Interrupt Flag */
+;	.line	614; meter_logger.c	INTCONbits.INT0IF = 0;	/* Clear Interrupt Flag */
 	BCF	_INTCONbits, 1
 _00389_DS_:
-;	.line	617; meter_logger.c	if (INTCONbits.TMR0IF && INTCONbits.TMR0IE) {
+;	.line	618; meter_logger.c	if (INTCONbits.TMR0IF && INTCONbits.TMR0IE) {
 	BTFSS	_INTCONbits, 2
-	BRA	_00463_DS_
+	GOTO	_00463_DS_
 	BTFSS	_INTCONbits, 5
-	BRA	_00463_DS_
+	GOTO	_00463_DS_
 	BANKSEL	(_timer0_reload + 1)
-;	.line	619; meter_logger.c	TMR0H = (unsigned char)(timer0_reload >> 8);
+;	.line	620; meter_logger.c	TMR0H = (unsigned char)(timer0_reload >> 8);
 	MOVF	(_timer0_reload + 1), W, B
 	MOVWF	r0x00
 	CLRF	r0x01
 	MOVF	r0x00, W
 	MOVWF	_TMR0H
 ; removed redundant BANKSEL
-;	.line	620; meter_logger.c	TMR0L = (unsigned char)timer0_reload;
+;	.line	621; meter_logger.c	TMR0L = (unsigned char)timer0_reload;
 	MOVF	_timer0_reload, W, B
 	MOVWF	_TMR0L
-;	.line	622; meter_logger.c	switch (codec_type) {
+;	.line	623; meter_logger.c	switch (codec_type) {
 	MOVLW	0x01
 	BANKSEL	_codec_type
 	SUBWF	_codec_type, W, B
 	BTFSS	STATUS, 0
-	BRA	_00461_DS_
+	GOTO	_00461_DS_
 	MOVLW	0x08
 ; removed redundant BANKSEL
 	SUBWF	_codec_type, W, B
 	BTFSC	STATUS, 0
-	BRA	_00461_DS_
+	GOTO	_00461_DS_
 ; removed redundant BANKSEL
 	DECF	_codec_type, W, B
 	MOVWF	r0x00
@@ -8033,16 +8033,16 @@ _00724_DS_:
 	GOTO	_00434_DS_
 	GOTO	_00445_DS_
 _00391_DS_:
-;	.line	624; meter_logger.c	T0CONbits.TMR0ON = 0;			// Stop TMR0
+;	.line	625; meter_logger.c	T0CONbits.TMR0ON = 0;			// Stop TMR0
 	BCF	_T0CONbits, 7
 	BANKSEL	_testo_ir_proto
-;	.line	625; meter_logger.c	testo_ir_proto.state = INIT_STATE;
+;	.line	626; meter_logger.c	testo_ir_proto.state = INIT_STATE;
 	CLRF	_testo_ir_proto, B
 	sleep 
-;	.line	627; meter_logger.c	break;
+;	.line	628; meter_logger.c	break;
 	BRA	_00461_DS_
 _00392_DS_:
-;	.line	629; meter_logger.c	switch (rs232_proto.state) {
+;	.line	630; meter_logger.c	switch (rs232_proto.state) {
 	MOVFF	_rs232_proto, r0x00
 	MOVF	r0x00, W
 	MOVWF	r0x01
@@ -8052,35 +8052,35 @@ _00392_DS_:
 	XORLW	0x03
 	BZ	_00396_DS_
 	MOVF	r0x00, W
-	XORLW	0x09
+	XORLW	0x0a
 	BZ	_00400_DS_
 	MOVF	r0x00, W
-	XORLW	0x0a
+	XORLW	0x0b
 	BZ	_00401_DS_
 	BRA	_00461_DS_
 _00393_DS_:
 	BANKSEL	(_rs232_proto + 3)
-;	.line	631; meter_logger.c	if (rs232_proto.data_len == 8) {
+;	.line	632; meter_logger.c	if (rs232_proto.data_len == 8) {
 	MOVF	(_rs232_proto + 3), W, B
 	XORLW	0x08
 	BZ	_00734_DS_
 	BRA	_00461_DS_
 _00734_DS_:
-;	.line	632; meter_logger.c	IR_LED_PIN = 1;		// inverted rs232 output on ir, start bit = ir light
+;	.line	633; meter_logger.c	IR_LED_PIN = 1;		// inverted rs232 output on ir, start bit = ir light
 	BSF	_PORTBbits, 1
-;	.line	633; meter_logger.c	rs232_proto.state = START_BIT_SENT;
+;	.line	634; meter_logger.c	rs232_proto.state = START_BIT_SENT;
 	MOVLW	0x03
 	BANKSEL	_rs232_proto
 	MOVWF	_rs232_proto, B
-;	.line	635; meter_logger.c	break;
+;	.line	636; meter_logger.c	break;
 	BRA	_00461_DS_
 _00396_DS_:
-;	.line	637; meter_logger.c	if (rs232_proto.data_len >= 1) {
+;	.line	638; meter_logger.c	if (rs232_proto.data_len >= 1) {
 	MOVLW	0x01
 	BANKSEL	(_rs232_proto + 3)
 	SUBWF	(_rs232_proto + 3), W, B
 	BNC	_00398_DS_
-;	.line	638; meter_logger.c	IR_LED_PIN = (rs232_proto.data & 1) == 0;	// inverted rs232 output on ir
+;	.line	639; meter_logger.c	IR_LED_PIN = (rs232_proto.data & 1) == 0;	// inverted rs232 output on ir
 	MOVLW	0x01
 ; removed redundant BANKSEL
 	ANDWF	(_rs232_proto + 2), W, B
@@ -8100,14 +8100,14 @@ _00396_DS_:
 	IORWF	PRODH, W
 	MOVWF	_PORTBbits
 ; removed redundant BANKSEL
-;	.line	639; meter_logger.c	rs232_proto.data = rs232_proto.data >> 1;
+;	.line	640; meter_logger.c	rs232_proto.data = rs232_proto.data >> 1;
 	RRNCF	(_rs232_proto + 2), W, B
 	ANDLW	0x7f
 	MOVWF	r0x00
 	MOVF	r0x00, W
 ; removed redundant BANKSEL
 	MOVWF	(_rs232_proto + 2), B
-;	.line	640; meter_logger.c	rs232_proto.data_len--;
+;	.line	641; meter_logger.c	rs232_proto.data_len--;
 	MOVFF	(_rs232_proto + 3), r0x00
 	DECF	r0x00, F
 	MOVF	r0x00, W
@@ -8115,60 +8115,60 @@ _00396_DS_:
 	MOVWF	(_rs232_proto + 3), B
 	BRA	_00461_DS_
 _00398_DS_:
-;	.line	643; meter_logger.c	IR_LED_PIN = 0;								// inverted rs232 output on ir					
+;	.line	644; meter_logger.c	IR_LED_PIN = 0;								// inverted rs232 output on ir					
 	BCF	_PORTBbits, 1
-;	.line	644; meter_logger.c	rs232_proto.state = STOP_BIT_SENT;
-	MOVLW	0x09
-	BANKSEL	_rs232_proto
-	MOVWF	_rs232_proto, B
-;	.line	646; meter_logger.c	break;
-	BRA	_00461_DS_
-_00400_DS_:
-;	.line	648; meter_logger.c	IR_LED_PIN = 0;									// inverted rs232 output on ir
-	BCF	_PORTBbits, 1
-;	.line	649; meter_logger.c	rs232_proto.state = STOP_BIT2_SENT;
+;	.line	645; meter_logger.c	rs232_proto.state = STOP_BIT_SENT;
 	MOVLW	0x0a
 	BANKSEL	_rs232_proto
 	MOVWF	_rs232_proto, B
-;	.line	650; meter_logger.c	break;
+;	.line	647; meter_logger.c	break;
+	BRA	_00461_DS_
+_00400_DS_:
+;	.line	649; meter_logger.c	IR_LED_PIN = 0;									// inverted rs232 output on ir
+	BCF	_PORTBbits, 1
+;	.line	650; meter_logger.c	rs232_proto.state = STOP_BIT2_SENT;
+	MOVLW	0x0b
+	BANKSEL	_rs232_proto
+	MOVWF	_rs232_proto, B
+;	.line	651; meter_logger.c	break;
 	BRA	_00461_DS_
 _00401_DS_:
-;	.line	652; meter_logger.c	IR_LED_PIN = 0;									// inverted rs232 output on ir
+;	.line	653; meter_logger.c	IR_LED_PIN = 0;									// inverted rs232 output on ir
 	BCF	_PORTBbits, 1
 	BANKSEL	_rs232_proto
-;	.line	653; meter_logger.c	rs232_proto.state = INIT_STATE;
+;	.line	654; meter_logger.c	rs232_proto.state = INIT_STATE;
 	CLRF	_rs232_proto, B
-;	.line	654; meter_logger.c	T0CONbits.TMR0ON = 0;							// stop timer 0
+;	.line	655; meter_logger.c	T0CONbits.TMR0ON = 0;							// stop timer 0
 	BCF	_T0CONbits, 7
-;	.line	657; meter_logger.c	break;
+;	.line	658; meter_logger.c	break;
 	BRA	_00461_DS_
 _00403_DS_:
-;	.line	659; meter_logger.c	switch (rs232_proto.state) {
+;	.line	660; meter_logger.c	switch (rs232_proto.state) {
 	MOVFF	_rs232_proto, r0x00
 	MOVF	r0x00, W
 	XORLW	0x04
 	BZ	_00404_DS_
 	MOVF	r0x00, W
-	XORLW	0x07
+	XORLW	0x08
 	BZ	_00411_DS_
 	BRA	_00461_DS_
 _00404_DS_:
-;	.line	661; meter_logger.c	rs232_proto.data_len++;
+;	.line	662; meter_logger.c	rs232_proto.data_len++;
 	MOVFF	(_rs232_proto + 3), r0x00
 	INCF	r0x00, F
 	MOVF	r0x00, W
 	BANKSEL	(_rs232_proto + 3)
 	MOVWF	(_rs232_proto + 3), B
-;	.line	662; meter_logger.c	if (rs232_proto.data_len <= 8) {
+;	.line	663; meter_logger.c	if (rs232_proto.data_len <= 8) {
 	MOVLW	0x09
 ; removed redundant BANKSEL
 	SUBWF	(_rs232_proto + 3), W, B
 	BC	_00409_DS_
-;	.line	663; meter_logger.c	if (IR_PIN) {		
+;	.line	664; meter_logger.c	if (IR_PIN) {		
 	BTFSS	_PORTBbits, 0
 	BRA	_00406_DS_
 ; removed redundant BANKSEL
-;	.line	665; meter_logger.c	rs232_proto.data >>= 1;
+;	.line	666; meter_logger.c	rs232_proto.data >>= 1;
 	RRNCF	(_rs232_proto + 2), W, B
 	ANDLW	0x7f
 	MOVWF	r0x00
@@ -8178,14 +8178,14 @@ _00404_DS_:
 	BRA	_00461_DS_
 _00406_DS_:
 	BANKSEL	(_rs232_proto + 2)
-;	.line	677; meter_logger.c	rs232_proto.data >>= 1;
+;	.line	678; meter_logger.c	rs232_proto.data >>= 1;
 	RRNCF	(_rs232_proto + 2), W, B
 	ANDLW	0x7f
 	MOVWF	r0x00
 	MOVF	r0x00, W
 ; removed redundant BANKSEL
 	MOVWF	(_rs232_proto + 2), B
-;	.line	678; meter_logger.c	rs232_proto.data |= 0x80;
+;	.line	679; meter_logger.c	rs232_proto.data |= 0x80;
 	MOVLW	0x80
 ; removed redundant BANKSEL
 	IORWF	(_rs232_proto + 2), W, B
@@ -8195,39 +8195,39 @@ _00406_DS_:
 	MOVWF	(_rs232_proto + 2), B
 	BRA	_00461_DS_
 _00409_DS_:
-;	.line	700; meter_logger.c	rs232_proto.state = STOP_BIT_WAIT;
-	MOVLW	0x07
+;	.line	701; meter_logger.c	rs232_proto.state = STOP_BIT_WAIT;
+	MOVLW	0x08
 	BANKSEL	_rs232_proto
 	MOVWF	_rs232_proto, B
-;	.line	702; meter_logger.c	break;
+;	.line	703; meter_logger.c	break;
 	BRA	_00461_DS_
 _00411_DS_:
 	BANKSEL	(_rs232_proto + 2)
-;	.line	708; meter_logger.c	fifo_put(rs232_proto.data);
+;	.line	709; meter_logger.c	fifo_put(rs232_proto.data);
 	MOVF	(_rs232_proto + 2), W, B
 	MOVWF	POSTDEC1
 	CALL	_fifo_put
 	MOVF	POSTINC1, F
 	BANKSEL	(_rs232_proto + 2)
-;	.line	709; meter_logger.c	rs232_proto.data = 0;
+;	.line	710; meter_logger.c	rs232_proto.data = 0;
 	CLRF	(_rs232_proto + 2), B
 ; removed redundant BANKSEL
-;	.line	710; meter_logger.c	rs232_proto.data_len = 0;
+;	.line	711; meter_logger.c	rs232_proto.data_len = 0;
 	CLRF	(_rs232_proto + 3), B
-;	.line	711; meter_logger.c	rs232_proto.state = START_BIT_WAIT;
+;	.line	712; meter_logger.c	rs232_proto.state = START_BIT_WAIT;
 	MOVLW	0x02
 ; removed redundant BANKSEL
 	MOVWF	_rs232_proto, B
-;	.line	712; meter_logger.c	T0CONbits.TMR0ON = 0;
+;	.line	713; meter_logger.c	T0CONbits.TMR0ON = 0;
 	BCF	_T0CONbits, 7
-;	.line	713; meter_logger.c	INTCONbits.INT0IF = 0;		// dont enter ext int now
+;	.line	714; meter_logger.c	INTCONbits.INT0IF = 0;		// dont enter ext int now
 	BCF	_INTCONbits, 1
-;	.line	714; meter_logger.c	INTCONbits.INT0IE = 1;		// enable ext int again
+;	.line	715; meter_logger.c	INTCONbits.INT0IE = 1;		// enable ext int again
 	BSF	_INTCONbits, 4
-;	.line	717; meter_logger.c	break;
+;	.line	718; meter_logger.c	break;
 	BRA	_00461_DS_
 _00413_DS_:
-;	.line	719; meter_logger.c	switch (rs232_proto.state) {
+;	.line	720; meter_logger.c	switch (rs232_proto.state) {
 	MOVFF	_rs232_proto, r0x00
 	MOVF	r0x00, W
 	MOVWF	r0x01
@@ -8237,35 +8237,47 @@ _00413_DS_:
 	XORLW	0x03
 	BZ	_00417_DS_
 	MOVF	r0x00, W
-	XORLW	0x09
-	BZ	_00421_DS_
+	XORLW	0x06
+	BNZ	_00748_DS_
+	BRA	_00421_DS_
+_00748_DS_:
 	MOVF	r0x00, W
 	XORLW	0x0a
-	BZ	_00422_DS_
+	BNZ	_00750_DS_
+	BRA	_00422_DS_
+_00750_DS_:
 	BRA	_00461_DS_
 _00414_DS_:
 	BANKSEL	(_rs232_proto + 3)
-;	.line	721; meter_logger.c	if (rs232_proto.data_len == 8) {
+;	.line	722; meter_logger.c	if (rs232_proto.data_len == 7) {
 	MOVF	(_rs232_proto + 3), W, B
-	XORLW	0x08
+	XORLW	0x07
 	BZ	_00752_DS_
 	BRA	_00461_DS_
 _00752_DS_:
-;	.line	722; meter_logger.c	IR_LED_PIN = 1;		// inverted rs232 output on ir, start bit = ir light
+;	.line	723; meter_logger.c	IR_LED_PIN = 1;		// inverted rs232 output on ir, start bit = ir light
 	BSF	_PORTBbits, 1
-;	.line	723; meter_logger.c	rs232_proto.state = START_BIT_SENT;
+;	.line	724; meter_logger.c	rs232_proto.parity = rs232_proto.data & 1;
+	MOVLW	0x01
+	BANKSEL	(_rs232_proto + 2)
+	ANDWF	(_rs232_proto + 2), W, B
+	MOVWF	r0x00
+	MOVF	r0x00, W
+; removed redundant BANKSEL
+	MOVWF	(_rs232_proto + 4), B
+;	.line	725; meter_logger.c	rs232_proto.state = START_BIT_SENT;
 	MOVLW	0x03
-	BANKSEL	_rs232_proto
+; removed redundant BANKSEL
 	MOVWF	_rs232_proto, B
-;	.line	725; meter_logger.c	break;
+;	.line	727; meter_logger.c	break;
 	BRA	_00461_DS_
 _00417_DS_:
-;	.line	727; meter_logger.c	if (rs232_proto.data_len >= 1) {
+;	.line	729; meter_logger.c	if (rs232_proto.data_len >= 1) {
 	MOVLW	0x01
 	BANKSEL	(_rs232_proto + 3)
 	SUBWF	(_rs232_proto + 3), W, B
 	BNC	_00419_DS_
-;	.line	728; meter_logger.c	IR_LED_PIN = (rs232_proto.data & 1) == 0;	// inverted rs232 output on ir
+;	.line	730; meter_logger.c	IR_LED_PIN = (rs232_proto.data & 1) == 0;	// inverted rs232 output on ir
 	MOVLW	0x01
 ; removed redundant BANKSEL
 	ANDWF	(_rs232_proto + 2), W, B
@@ -8284,15 +8296,26 @@ _00417_DS_:
 	ANDLW	0xfd
 	IORWF	PRODH, W
 	MOVWF	_PORTBbits
+;	.line	731; meter_logger.c	rs232_proto.parity ^= (rs232_proto.data & 1);
+	MOVLW	0x01
 ; removed redundant BANKSEL
-;	.line	729; meter_logger.c	rs232_proto.data = rs232_proto.data >> 1;
+	ANDWF	(_rs232_proto + 2), W, B
+	MOVWF	r0x00
+; removed redundant BANKSEL
+	MOVF	(_rs232_proto + 4), W, B
+	XORWF	r0x00, F
+	MOVF	r0x00, W
+; removed redundant BANKSEL
+	MOVWF	(_rs232_proto + 4), B
+; removed redundant BANKSEL
+;	.line	732; meter_logger.c	rs232_proto.data = rs232_proto.data >> 1;
 	RRNCF	(_rs232_proto + 2), W, B
 	ANDLW	0x7f
 	MOVWF	r0x00
 	MOVF	r0x00, W
 ; removed redundant BANKSEL
 	MOVWF	(_rs232_proto + 2), B
-;	.line	730; meter_logger.c	rs232_proto.data_len--;
+;	.line	733; meter_logger.c	rs232_proto.data_len--;
 	MOVFF	(_rs232_proto + 3), r0x00
 	DECF	r0x00, F
 	MOVF	r0x00, W
@@ -8300,60 +8323,71 @@ _00417_DS_:
 	MOVWF	(_rs232_proto + 3), B
 	BRA	_00461_DS_
 _00419_DS_:
-;	.line	733; meter_logger.c	IR_LED_PIN = 0;								// inverted rs232 output on ir					
-	BCF	_PORTBbits, 1
-;	.line	734; meter_logger.c	rs232_proto.state = STOP_BIT_SENT;
-	MOVLW	0x09
-	BANKSEL	_rs232_proto
+	BANKSEL	(_rs232_proto + 4)
+;	.line	736; meter_logger.c	IR_LED_PIN = (rs232_proto.parity & 1);		// inverted rs232 output on ir					
+	MOVF	(_rs232_proto + 4), W, B
+	ANDLW	0x01
+	MOVWF	r0x00
+	MOVF	r0x00, W
+	ANDLW	0x01
+	RLNCF	WREG, W
+	MOVWF	PRODH
+	MOVF	_PORTBbits, W
+	ANDLW	0xfd
+	IORWF	PRODH, W
+	MOVWF	_PORTBbits
+;	.line	737; meter_logger.c	rs232_proto.state = PARITY_BIT_SENT;
+	MOVLW	0x06
+; removed redundant BANKSEL
 	MOVWF	_rs232_proto, B
-;	.line	736; meter_logger.c	break;
+;	.line	739; meter_logger.c	break;
 	BRA	_00461_DS_
 _00421_DS_:
-;	.line	738; meter_logger.c	IR_LED_PIN = 0;									// inverted rs232 output on ir
+;	.line	741; meter_logger.c	IR_LED_PIN = 0;									// inverted rs232 output on ir
 	BCF	_PORTBbits, 1
-;	.line	739; meter_logger.c	rs232_proto.state = STOP_BIT2_SENT;
+;	.line	742; meter_logger.c	rs232_proto.state = STOP_BIT_SENT;
 	MOVLW	0x0a
 	BANKSEL	_rs232_proto
 	MOVWF	_rs232_proto, B
-;	.line	740; meter_logger.c	break;
+;	.line	743; meter_logger.c	break;
 	BRA	_00461_DS_
 _00422_DS_:
-;	.line	742; meter_logger.c	IR_LED_PIN = 0;									// inverted rs232 output on ir
+;	.line	745; meter_logger.c	IR_LED_PIN = 0;									// inverted rs232 output on ir
 	BCF	_PORTBbits, 1
 	BANKSEL	_rs232_proto
-;	.line	743; meter_logger.c	rs232_proto.state = INIT_STATE;
+;	.line	746; meter_logger.c	rs232_proto.state = INIT_STATE;
 	CLRF	_rs232_proto, B
-;	.line	744; meter_logger.c	T0CONbits.TMR0ON = 0;							// stop timer 0
+;	.line	747; meter_logger.c	T0CONbits.TMR0ON = 0;							// stop timer 0
 	BCF	_T0CONbits, 7
-;	.line	747; meter_logger.c	break;
+;	.line	750; meter_logger.c	break;
 	BRA	_00461_DS_
 _00424_DS_:
-;	.line	749; meter_logger.c	switch (rs232_proto.state) {
+;	.line	752; meter_logger.c	switch (rs232_proto.state) {
 	MOVFF	_rs232_proto, r0x00
 	MOVF	r0x00, W
 	XORLW	0x04
 	BZ	_00425_DS_
 	MOVF	r0x00, W
-	XORLW	0x07
+	XORLW	0x08
 	BZ	_00432_DS_
 	BRA	_00461_DS_
 _00425_DS_:
-;	.line	751; meter_logger.c	rs232_proto.data_len++;
+;	.line	754; meter_logger.c	rs232_proto.data_len++;
 	MOVFF	(_rs232_proto + 3), r0x00
 	INCF	r0x00, F
 	MOVF	r0x00, W
 	BANKSEL	(_rs232_proto + 3)
 	MOVWF	(_rs232_proto + 3), B
-;	.line	752; meter_logger.c	if (rs232_proto.data_len <= 8) {
+;	.line	755; meter_logger.c	if (rs232_proto.data_len <= 8) {
 	MOVLW	0x09
 ; removed redundant BANKSEL
 	SUBWF	(_rs232_proto + 3), W, B
 	BC	_00430_DS_
-;	.line	753; meter_logger.c	if (IR_PIN) {		
+;	.line	756; meter_logger.c	if (IR_PIN) {		
 	BTFSS	_PORTBbits, 0
 	BRA	_00427_DS_
 ; removed redundant BANKSEL
-;	.line	755; meter_logger.c	rs232_proto.data >>= 1;
+;	.line	758; meter_logger.c	rs232_proto.data >>= 1;
 	RRNCF	(_rs232_proto + 2), W, B
 	ANDLW	0x7f
 	MOVWF	r0x00
@@ -8363,14 +8397,14 @@ _00425_DS_:
 	BRA	_00461_DS_
 _00427_DS_:
 	BANKSEL	(_rs232_proto + 2)
-;	.line	767; meter_logger.c	rs232_proto.data >>= 1;
+;	.line	770; meter_logger.c	rs232_proto.data >>= 1;
 	RRNCF	(_rs232_proto + 2), W, B
 	ANDLW	0x7f
 	MOVWF	r0x00
 	MOVF	r0x00, W
 ; removed redundant BANKSEL
 	MOVWF	(_rs232_proto + 2), B
-;	.line	768; meter_logger.c	rs232_proto.data |= 0x80;
+;	.line	771; meter_logger.c	rs232_proto.data |= 0x80;
 	MOVLW	0x80
 ; removed redundant BANKSEL
 	IORWF	(_rs232_proto + 2), W, B
@@ -8380,80 +8414,80 @@ _00427_DS_:
 	MOVWF	(_rs232_proto + 2), B
 	BRA	_00461_DS_
 _00430_DS_:
-;	.line	790; meter_logger.c	rs232_proto.state = STOP_BIT_WAIT;
-	MOVLW	0x07
+;	.line	793; meter_logger.c	rs232_proto.state = STOP_BIT_WAIT;
+	MOVLW	0x08
 	BANKSEL	_rs232_proto
 	MOVWF	_rs232_proto, B
-;	.line	792; meter_logger.c	break;
+;	.line	795; meter_logger.c	break;
 	BRA	_00461_DS_
 _00432_DS_:
 	BANKSEL	(_rs232_proto + 2)
-;	.line	798; meter_logger.c	fifo_put(rs232_proto.data);
+;	.line	801; meter_logger.c	fifo_put(rs232_proto.data);
 	MOVF	(_rs232_proto + 2), W, B
 	MOVWF	POSTDEC1
 	CALL	_fifo_put
 	MOVF	POSTINC1, F
 	BANKSEL	(_rs232_proto + 2)
-;	.line	799; meter_logger.c	rs232_proto.data = 0;
+;	.line	802; meter_logger.c	rs232_proto.data = 0;
 	CLRF	(_rs232_proto + 2), B
 ; removed redundant BANKSEL
-;	.line	800; meter_logger.c	rs232_proto.data_len = 0;
+;	.line	803; meter_logger.c	rs232_proto.data_len = 0;
 	CLRF	(_rs232_proto + 3), B
-;	.line	801; meter_logger.c	rs232_proto.state = START_BIT_WAIT;
+;	.line	804; meter_logger.c	rs232_proto.state = START_BIT_WAIT;
 	MOVLW	0x02
 ; removed redundant BANKSEL
 	MOVWF	_rs232_proto, B
-;	.line	802; meter_logger.c	T0CONbits.TMR0ON = 0;
+;	.line	805; meter_logger.c	T0CONbits.TMR0ON = 0;
 	BCF	_T0CONbits, 7
-;	.line	803; meter_logger.c	INTCONbits.INT0IF = 0;		// dont enter ext int now
+;	.line	806; meter_logger.c	INTCONbits.INT0IF = 0;		// dont enter ext int now
 	BCF	_INTCONbits, 1
-;	.line	804; meter_logger.c	INTCONbits.INT0IE = 1;		// enable ext int again
+;	.line	807; meter_logger.c	INTCONbits.INT0IE = 1;		// enable ext int again
 	BSF	_INTCONbits, 4
-;	.line	807; meter_logger.c	break;
+;	.line	810; meter_logger.c	break;
 	BRA	_00461_DS_
 _00434_DS_:
-;	.line	809; meter_logger.c	switch (fsk_proto.state) {
+;	.line	812; meter_logger.c	switch (fsk_proto.state) {
 	MOVFF	_fsk_proto, r0x00
 	MOVF	r0x00, W
 	XORLW	0x04
 	BZ	_00435_DS_
 	MOVF	r0x00, W
-	XORLW	0x07
+	XORLW	0x08
 	BZ	_00443_DS_
 	BRA	_00461_DS_
 _00435_DS_:
-;	.line	811; meter_logger.c	fsk_proto.data_len++;						
+;	.line	814; meter_logger.c	fsk_proto.data_len++;						
 	MOVFF	(_fsk_proto + 13), r0x00
 	INCF	r0x00, F
 	MOVF	r0x00, W
 	BANKSEL	(_fsk_proto + 13)
 	MOVWF	(_fsk_proto + 13), B
-;	.line	812; meter_logger.c	if (fsk_proto.data_len <= 8) {
+;	.line	815; meter_logger.c	if (fsk_proto.data_len <= 8) {
 	MOVLW	0x09
 ; removed redundant BANKSEL
 	SUBWF	(_fsk_proto + 13), W, B
 	BC	_00441_DS_
-;	.line	813; meter_logger.c	if ((fsk_proto.diff > 340) && (fsk_proto.diff < 476)) {
+;	.line	816; meter_logger.c	if ((fsk_proto.diff > 340) && (fsk_proto.diff < 476)) {
 	MOVLW	0x01
 ; removed redundant BANKSEL
 	SUBWF	(_fsk_proto + 2), W, B
-	BNZ	_00766_DS_
+	BNZ	_00769_DS_
 	MOVLW	0x55
 ; removed redundant BANKSEL
 	SUBWF	(_fsk_proto + 1), W, B
-_00766_DS_:
+_00769_DS_:
 	BNC	_00437_DS_
 	MOVLW	0x01
 	BANKSEL	(_fsk_proto + 2)
 	SUBWF	(_fsk_proto + 2), W, B
-	BNZ	_00767_DS_
+	BNZ	_00770_DS_
 	MOVLW	0xdc
 ; removed redundant BANKSEL
 	SUBWF	(_fsk_proto + 1), W, B
-_00767_DS_:
+_00770_DS_:
 	BC	_00437_DS_
 	BANKSEL	(_fsk_proto + 12)
-;	.line	816; meter_logger.c	fsk_proto.data >>= 1;
+;	.line	819; meter_logger.c	fsk_proto.data >>= 1;
 	RRNCF	(_fsk_proto + 12), W, B
 	ANDLW	0x7f
 	MOVWF	r0x00
@@ -8463,14 +8497,14 @@ _00767_DS_:
 	BRA	_00461_DS_
 _00437_DS_:
 	BANKSEL	(_fsk_proto + 12)
-;	.line	821; meter_logger.c	fsk_proto.data >>= 1;
+;	.line	824; meter_logger.c	fsk_proto.data >>= 1;
 	RRNCF	(_fsk_proto + 12), W, B
 	ANDLW	0x7f
 	MOVWF	r0x00
 	MOVF	r0x00, W
 ; removed redundant BANKSEL
 	MOVWF	(_fsk_proto + 12), B
-;	.line	822; meter_logger.c	fsk_proto.data |= 0x80;
+;	.line	825; meter_logger.c	fsk_proto.data |= 0x80;
 	MOVLW	0x80
 ; removed redundant BANKSEL
 	IORWF	(_fsk_proto + 12), W, B
@@ -8480,32 +8514,32 @@ _00437_DS_:
 	MOVWF	(_fsk_proto + 12), B
 	BRA	_00461_DS_
 _00441_DS_:
-;	.line	830; meter_logger.c	fsk_proto.state = STOP_BIT_WAIT;
-	MOVLW	0x07
+;	.line	833; meter_logger.c	fsk_proto.state = STOP_BIT_WAIT;
+	MOVLW	0x08
 	BANKSEL	_fsk_proto
 	MOVWF	_fsk_proto, B
-;	.line	832; meter_logger.c	break;
+;	.line	835; meter_logger.c	break;
 	BRA	_00461_DS_
 _00443_DS_:
 	BANKSEL	(_fsk_proto + 12)
-;	.line	835; meter_logger.c	fifo_put(fsk_proto.data);
+;	.line	838; meter_logger.c	fifo_put(fsk_proto.data);
 	MOVF	(_fsk_proto + 12), W, B
 	MOVWF	POSTDEC1
 	CALL	_fifo_put
 	MOVF	POSTINC1, F
 	BANKSEL	(_fsk_proto + 12)
-;	.line	836; meter_logger.c	fsk_proto.data = 0;
+;	.line	839; meter_logger.c	fsk_proto.data = 0;
 	CLRF	(_fsk_proto + 12), B
-;	.line	837; meter_logger.c	fsk_proto.state = START_BIT_WAIT;
+;	.line	840; meter_logger.c	fsk_proto.state = START_BIT_WAIT;
 	MOVLW	0x02
 ; removed redundant BANKSEL
 	MOVWF	_fsk_proto, B
-;	.line	839; meter_logger.c	INTCONbits.TMR0IE = 0;						
+;	.line	842; meter_logger.c	INTCONbits.TMR0IE = 0;						
 	BCF	_INTCONbits, 5
-;	.line	842; meter_logger.c	break;
+;	.line	845; meter_logger.c	break;
 	BRA	_00461_DS_
 _00445_DS_:
-;	.line	844; meter_logger.c	switch (fsk_proto.state) {
+;	.line	847; meter_logger.c	switch (fsk_proto.state) {
 	MOVFF	_fsk_proto, r0x00
 	MOVF	r0x00, W
 	MOVWF	r0x01
@@ -8519,43 +8553,43 @@ _00445_DS_:
 	BZ	_00450_DS_
 	MOVF	r0x00, W
 	XORLW	0x05
-	BNZ	_00776_DS_
+	BNZ	_00779_DS_
 	BRA	_00458_DS_
-_00776_DS_:
+_00779_DS_:
 	MOVF	r0x00, W
-	XORLW	0x09
-	BNZ	_00778_DS_
+	XORLW	0x0a
+	BNZ	_00781_DS_
 	BRA	_00459_DS_
-_00778_DS_:
+_00781_DS_:
 	BRA	_00461_DS_
 _00446_DS_:
 	BANKSEL	(_fsk_proto + 13)
-;	.line	847; meter_logger.c	if (fsk_proto.data_len == 8) {
+;	.line	850; meter_logger.c	if (fsk_proto.data_len == 8) {
 	MOVF	(_fsk_proto + 13), W, B
 	XORLW	0x08
 	BNZ	_00448_DS_
-;	.line	848; meter_logger.c	fsk_proto.state = IDLE;
+;	.line	851; meter_logger.c	fsk_proto.state = IDLE;
 	MOVLW	0x01
 	BANKSEL	_fsk_proto
 	MOVWF	_fsk_proto, B
 _00448_DS_:
-;	.line	851; meter_logger.c	DEBUG_PIN = 0;
+;	.line	854; meter_logger.c	DEBUG_PIN = 0;
 	BCF	_PORTBbits, 2
-;	.line	853; meter_logger.c	break;
+;	.line	856; meter_logger.c	break;
 	BRA	_00461_DS_
 _00449_DS_:
-;	.line	855; meter_logger.c	send_fsk_low();
+;	.line	858; meter_logger.c	send_fsk_low();
 	CALL	_send_fsk_low
-;	.line	856; meter_logger.c	fsk_proto.state = START_BIT_SENT;
+;	.line	859; meter_logger.c	fsk_proto.state = START_BIT_SENT;
 	MOVLW	0x03
 	BANKSEL	_fsk_proto
 	MOVWF	_fsk_proto, B
-;	.line	858; meter_logger.c	DEBUG_PIN = 1;
+;	.line	861; meter_logger.c	DEBUG_PIN = 1;
 	BSF	_PORTBbits, 2
-;	.line	860; meter_logger.c	break;
+;	.line	863; meter_logger.c	break;
 	BRA	_00461_DS_
 _00450_DS_:
-;	.line	862; meter_logger.c	if (fsk_proto.data_len--) {
+;	.line	865; meter_logger.c	if (fsk_proto.data_len--) {
 	MOVFF	(_fsk_proto + 13), r0x00
 	DECF	r0x00, W
 	MOVWF	r0x01
@@ -8564,77 +8598,77 @@ _00450_DS_:
 	MOVWF	(_fsk_proto + 13), B
 	MOVF	r0x00, W
 	BZ	_00455_DS_
-;	.line	863; meter_logger.c	if (fsk_proto.data & (0x80 >> fsk_proto.data_len)) {
+;	.line	866; meter_logger.c	if (fsk_proto.data & (0x80 >> fsk_proto.data_len)) {
 	MOVLW	0x80
 	MOVWF	r0x00
 ; removed redundant BANKSEL
 	MOVF	(_fsk_proto + 13), W, B
-	BZ	_00781_DS_
+	BZ	_00784_DS_
 	NEGF	WREG
 	BCF	STATUS, 0
-_00782_DS_:
+_00785_DS_:
 	RRCF	r0x00, F
 	ADDLW	0x01
-	BNC	_00782_DS_
-_00781_DS_:
+	BNC	_00785_DS_
+_00784_DS_:
 	BANKSEL	(_fsk_proto + 12)
 	MOVF	(_fsk_proto + 12), W, B
 	ANDWF	r0x00, F
 	MOVF	r0x00, W
 	BZ	_00452_DS_
-;	.line	864; meter_logger.c	send_fsk_high();
+;	.line	867; meter_logger.c	send_fsk_high();
 	CALL	_send_fsk_high
-;	.line	866; meter_logger.c	DEBUG_PIN = 0;
+;	.line	869; meter_logger.c	DEBUG_PIN = 0;
 	BCF	_PORTBbits, 2
 	BRA	_00455_DS_
 _00452_DS_:
-;	.line	870; meter_logger.c	send_fsk_low();
+;	.line	873; meter_logger.c	send_fsk_low();
 	CALL	_send_fsk_low
-;	.line	872; meter_logger.c	DEBUG_PIN = 1;
+;	.line	875; meter_logger.c	DEBUG_PIN = 1;
 	BSF	_PORTBbits, 2
 _00455_DS_:
 	BANKSEL	(_fsk_proto + 13)
-;	.line	876; meter_logger.c	if (fsk_proto.data_len == 0) {
+;	.line	879; meter_logger.c	if (fsk_proto.data_len == 0) {
 	MOVF	(_fsk_proto + 13), W, B
 	BNZ	_00461_DS_
-;	.line	877; meter_logger.c	fsk_proto.state = DATA_SENT;
+;	.line	880; meter_logger.c	fsk_proto.state = DATA_SENT;
 	MOVLW	0x05
 ; removed redundant BANKSEL
 	MOVWF	_fsk_proto, B
-;	.line	879; meter_logger.c	break;
+;	.line	882; meter_logger.c	break;
 	BRA	_00461_DS_
 _00458_DS_:
-;	.line	881; meter_logger.c	send_fsk_high();
+;	.line	884; meter_logger.c	send_fsk_high();
 	CALL	_send_fsk_high
-;	.line	882; meter_logger.c	fsk_proto.state = STOP_BIT_SENT;
-	MOVLW	0x09
+;	.line	885; meter_logger.c	fsk_proto.state = STOP_BIT_SENT;
+	MOVLW	0x0a
 	BANKSEL	_fsk_proto
 	MOVWF	_fsk_proto, B
-;	.line	884; meter_logger.c	DEBUG_PIN = 0;
+;	.line	887; meter_logger.c	DEBUG_PIN = 0;
 	BCF	_PORTBbits, 2
-;	.line	886; meter_logger.c	break;
+;	.line	889; meter_logger.c	break;
 	BRA	_00461_DS_
 _00459_DS_:
-;	.line	888; meter_logger.c	send_fsk_high();
+;	.line	891; meter_logger.c	send_fsk_high();
 	CALL	_send_fsk_high
 	BANKSEL	_fsk_proto
-;	.line	889; meter_logger.c	fsk_proto.state = INIT_STATE;
+;	.line	892; meter_logger.c	fsk_proto.state = INIT_STATE;
 	CLRF	_fsk_proto, B
-;	.line	891; meter_logger.c	DEBUG_PIN = 0;
+;	.line	894; meter_logger.c	DEBUG_PIN = 0;
 	BCF	_PORTBbits, 2
 _00461_DS_:
-;	.line	898; meter_logger.c	INTCONbits.TMR0IF = 0;
+;	.line	901; meter_logger.c	INTCONbits.TMR0IF = 0;
 	BCF	_INTCONbits, 2
 _00463_DS_:
-;	.line	901; meter_logger.c	if (PIR2bits.CMIF && PIE2bits.CMIE) {
+;	.line	904; meter_logger.c	if (PIR2bits.CMIF && PIE2bits.CMIE) {
 	BTFSS	_PIR2bits, 6
 	BRA	_00482_DS_
 	BTFSS	_PIE2bits, 6
 	BRA	_00482_DS_
-;	.line	903; meter_logger.c	if (CMCONbits.C1OUT) {		// rising edge
+;	.line	906; meter_logger.c	if (CMCONbits.C1OUT) {		// rising edge
 	BTFSS	_CMCONbits, 6
 	BRA	_00477_DS_
-;	.line	904; meter_logger.c	timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
+;	.line	907; meter_logger.c	timer_0 = (unsigned int)(TMR0L) | ((unsigned int)(TMR0H) << 8);
 	MOVFF	_TMR0L, r0x00
 	CLRF	r0x01
 	MOVFF	_TMR0H, r0x02
@@ -8650,10 +8684,10 @@ _00463_DS_:
 	IORWF	r0x01, W
 ; removed redundant BANKSEL
 	MOVWF	(_timer_0 + 1), B
-;	.line	909; meter_logger.c	DEBUG_PIN = 1;
+;	.line	912; meter_logger.c	DEBUG_PIN = 1;
 	BSF	_PORTBbits, 2
 	BANKSEL	_last_timer_0
-;	.line	911; meter_logger.c	fsk_proto.diff = timer_0 - last_timer_0;
+;	.line	914; meter_logger.c	fsk_proto.diff = timer_0 - last_timer_0;
 	MOVF	_last_timer_0, W, B
 	BANKSEL	_timer_0
 	SUBWF	_timer_0, W, B
@@ -8669,30 +8703,30 @@ _00463_DS_:
 	MOVF	r0x01, W
 ; removed redundant BANKSEL
 	MOVWF	(_fsk_proto + 2), B
-;	.line	912; meter_logger.c	last_timer_0 = timer_0;
+;	.line	915; meter_logger.c	last_timer_0 = timer_0;
 	MOVFF	_timer_0, _last_timer_0
 	MOVFF	(_timer_0 + 1), (_last_timer_0 + 1)
-;	.line	914; meter_logger.c	if ((fsk_proto.diff > 340) && (fsk_proto.diff < 476)) {
+;	.line	917; meter_logger.c	if ((fsk_proto.diff > 340) && (fsk_proto.diff < 476)) {
 	MOVLW	0x01
 ; removed redundant BANKSEL
 	SUBWF	(_fsk_proto + 2), W, B
-	BNZ	_00784_DS_
+	BNZ	_00787_DS_
 	MOVLW	0x55
 ; removed redundant BANKSEL
 	SUBWF	(_fsk_proto + 1), W, B
-_00784_DS_:
+_00787_DS_:
 	BNC	_00473_DS_
 	MOVLW	0x01
 	BANKSEL	(_fsk_proto + 2)
 	SUBWF	(_fsk_proto + 2), W, B
-	BNZ	_00785_DS_
+	BNZ	_00788_DS_
 	MOVLW	0xdc
 ; removed redundant BANKSEL
 	SUBWF	(_fsk_proto + 1), W, B
-_00785_DS_:
+_00788_DS_:
 	BC	_00473_DS_
 	BANKSEL	(_fsk_proto + 1)
-;	.line	915; meter_logger.c	fsk_proto.low_count += fsk_proto.diff;
+;	.line	918; meter_logger.c	fsk_proto.low_count += fsk_proto.diff;
 	MOVF	(_fsk_proto + 1), W, B
 ; removed redundant BANKSEL
 	ADDWF	(_fsk_proto + 5), W, B
@@ -8709,77 +8743,77 @@ _00785_DS_:
 ; removed redundant BANKSEL
 	MOVWF	(_fsk_proto + 6), B
 ; removed redundant BANKSEL
-;	.line	916; meter_logger.c	if (fsk_proto.state == START_BIT_WAIT) {
+;	.line	919; meter_logger.c	if (fsk_proto.state == START_BIT_WAIT) {
 	MOVF	_fsk_proto, W, B
 	XORLW	0x02
 	BNZ	_00478_DS_
-;	.line	917; meter_logger.c	if (fsk_proto.low_count >= 800) {								// start bit received
+;	.line	920; meter_logger.c	if (fsk_proto.low_count >= 800) {								// start bit received
 	MOVLW	0x03
 	BANKSEL	(_fsk_proto + 6)
 	SUBWF	(_fsk_proto + 6), W, B
-	BNZ	_00788_DS_
+	BNZ	_00791_DS_
 	MOVLW	0x20
 ; removed redundant BANKSEL
 	SUBWF	(_fsk_proto + 5), W, B
-_00788_DS_:
+_00791_DS_:
 	BNC	_00478_DS_
 	BANKSEL	(_timer0_reload + 1)
-;	.line	919; meter_logger.c	TMR0H = (unsigned char)(timer0_reload >> 8);
+;	.line	922; meter_logger.c	TMR0H = (unsigned char)(timer0_reload >> 8);
 	MOVF	(_timer0_reload + 1), W, B
 	MOVWF	r0x00
 	CLRF	r0x01
 	MOVF	r0x00, W
 	MOVWF	_TMR0H
 ; removed redundant BANKSEL
-;	.line	920; meter_logger.c	TMR0L = (unsigned char)timer0_reload;
+;	.line	923; meter_logger.c	TMR0L = (unsigned char)timer0_reload;
 	MOVF	_timer0_reload, W, B
 	MOVWF	_TMR0L
 	BANKSEL	(_fsk_proto + 5)
-;	.line	921; meter_logger.c	fsk_proto.low_count = 0;
+;	.line	924; meter_logger.c	fsk_proto.low_count = 0;
 	CLRF	(_fsk_proto + 5), B
 ; removed redundant BANKSEL
 	CLRF	(_fsk_proto + 6), B
 ; removed redundant BANKSEL
-;	.line	922; meter_logger.c	fsk_proto.high_count = 0;
+;	.line	925; meter_logger.c	fsk_proto.high_count = 0;
 	CLRF	(_fsk_proto + 7), B
 ; removed redundant BANKSEL
 	CLRF	(_fsk_proto + 8), B
 ; removed redundant BANKSEL
-;	.line	924; meter_logger.c	fsk_proto.data_len = 0;
+;	.line	927; meter_logger.c	fsk_proto.data_len = 0;
 	CLRF	(_fsk_proto + 13), B
 ; removed redundant BANKSEL
-;	.line	925; meter_logger.c	fsk_proto.data = 0;
+;	.line	928; meter_logger.c	fsk_proto.data = 0;
 	CLRF	(_fsk_proto + 12), B
-;	.line	926; meter_logger.c	fsk_proto.state = DATA_WAIT;
+;	.line	929; meter_logger.c	fsk_proto.state = DATA_WAIT;
 	MOVLW	0x04
 ; removed redundant BANKSEL
 	MOVWF	_fsk_proto, B
-;	.line	927; meter_logger.c	INTCONbits.TMR0IF = 0;		// clear flag so it dont enter isr now
+;	.line	930; meter_logger.c	INTCONbits.TMR0IF = 0;		// clear flag so it dont enter isr now
 	BCF	_INTCONbits, 2
-;	.line	928; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+;	.line	931; meter_logger.c	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
 	BSF	_INTCONbits, 5
 	BRA	_00478_DS_
 _00473_DS_:
 	BANKSEL	_fsk_proto
-;	.line	934; meter_logger.c	if (fsk_proto.state == START_BIT_WAIT) {
+;	.line	937; meter_logger.c	if (fsk_proto.state == START_BIT_WAIT) {
 	MOVF	_fsk_proto, W, B
 	XORLW	0x02
 	BNZ	_00470_DS_
-_00790_DS_:
+_00793_DS_:
 	BANKSEL	(_fsk_proto + 5)
-;	.line	935; meter_logger.c	fsk_proto.low_count = 0;
+;	.line	938; meter_logger.c	fsk_proto.low_count = 0;
 	CLRF	(_fsk_proto + 5), B
 ; removed redundant BANKSEL
 	CLRF	(_fsk_proto + 6), B
 ; removed redundant BANKSEL
-;	.line	936; meter_logger.c	fsk_proto.high_count = 0;
+;	.line	939; meter_logger.c	fsk_proto.high_count = 0;
 	CLRF	(_fsk_proto + 7), B
 ; removed redundant BANKSEL
 	CLRF	(_fsk_proto + 8), B
 	BRA	_00478_DS_
 _00470_DS_:
 	BANKSEL	(_fsk_proto + 1)
-;	.line	939; meter_logger.c	fsk_proto.high_count += fsk_proto.diff;
+;	.line	942; meter_logger.c	fsk_proto.high_count += fsk_proto.diff;
 	MOVF	(_fsk_proto + 1), W, B
 ; removed redundant BANKSEL
 	ADDWF	(_fsk_proto + 7), W, B
@@ -8797,10 +8831,10 @@ _00470_DS_:
 	MOVWF	(_fsk_proto + 8), B
 	BRA	_00478_DS_
 _00477_DS_:
-;	.line	945; meter_logger.c	DEBUG_PIN = 0;
+;	.line	948; meter_logger.c	DEBUG_PIN = 0;
 	BCF	_PORTBbits, 2
 _00478_DS_:
-;	.line	949; meter_logger.c	PIR2bits.CMIF = 0;
+;	.line	952; meter_logger.c	PIR2bits.CMIF = 0;
 	BCF	_PIR2bits, 6
 _00482_DS_:
 	MOVFF	PREINC1, r0x05
@@ -8908,8 +8942,8 @@ ___str_16:
 
 
 ; Statistics:
-; code size:	15550 (0x3cbe) bytes (11.86%)
-;           	 7775 (0x1e5f) words
+; code size:	15606 (0x3cf6) bytes (11.91%)
+;           	 7803 (0x1e7b) words
 ; udata size:	 1198 (0x04ae) bytes (66.85%)
 ; access size:	   14 (0x000e) bytes
 
