@@ -13,6 +13,8 @@
 #define DEBUG_LED_ON_FSK_TX
 
 #define WITH_BATTERY_CHECK
+#define WITH_DEVICE_ID_CHECK
+
 
 #define QUEUE_SIZE 256
 #define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
@@ -108,6 +110,8 @@ void main(void) {
 	unsigned int i;
 	unsigned char cmd, sub_cmd;
 	unsigned int fifo_size, last_fifo_size;
+	unsigned int dev_id;
+
     OSCCONbits.SCS = 0x10;
 //    OSCCONbits.SCS = 0x00;	// external osc
     OSCCONbits.IRCF = 0x7;	// 8 MHz
@@ -126,8 +130,22 @@ void main(void) {
 #endif
 
 #ifdef WITH_BATTERY_CHECK
-	battery_level();
+	get_battery_level();
 #endif
+	
+	dev_id = get_dev_id();
+#ifdef WITH_DEVICE_ID_CHECK
+	if (dev_id == 0x1240) {
+		sprintf(debug_buffer, "Processor: pic18f2550\n\r");
+	}
+	else if (dev_id == 0x2a40) {
+		sprintf(debug_buffer, "Processor: pic18f2553\n\r");
+	}
+	else {
+		sprintf(debug_buffer, "Processor: unsupported, device id: 0x%04x\n\r", dev_id);
+	}
+	usart_puts(debug_buffer);
+#endif	
 
 	fsk_rx_enable();
 	while (1) {
@@ -457,7 +475,7 @@ void main(void) {
 					break;
 				case PROTO_BATTERY_LEVEL:
 					fsk_rx_disable();
-					battery_level();
+					get_battery_level();
 					fsk_rx_enable();
 					break;
 			}
@@ -975,6 +993,23 @@ void init_system() {
 	);
 	*/
 	my_usart_open();
+}
+
+unsigned int get_dev_id() {
+	unsigned char dev_id_low, dev_id_high;
+	
+    TBLPTRU = __DEVID1 >> 16;
+    TBLPTRH = __DEVID1 >> 8;
+    TBLPTRL = __DEVID1;
+    __asm
+		tblrd*+
+	__endasm;
+    dev_id_low = TABLAT;
+    __asm
+		tblrd*+
+	__endasm;
+    dev_id_high = TABLAT;
+    return ((dev_id_high << 8) + dev_id_low) & 0xffe0;	// dont return revision
 }
 
 void my_usart_open() {
@@ -4302,8 +4337,9 @@ unsigned char fifo_snoop(unsigned char *c, unsigned int pos) {
 	}
 }
 
-unsigned int battery_level() {
+unsigned int get_battery_level() {
 	unsigned int v_level;
+	unsigned int dev_id;
 	
 	adc_open(ADC_CHN_4 , ADC_FOSC_64, ADC_CFG_5A, ADC_FRM_RJUST | ADC_INT_OFF | ADC_VCFG_VDD_VSS);
 	
@@ -4312,7 +4348,19 @@ unsigned int battery_level() {
 	while(adc_busy()) {
 		// wait
 	}
-	v_level = (unsigned long)1000 * (unsigned long)adc_read() * (unsigned long)833/(unsigned long)93600;
+	
+	dev_id = get_dev_id();
+	if (dev_id == 0x1240) {
+		// 10 bit adc
+		v_level = (unsigned long)1000 * (unsigned long)adc_read() * (unsigned long)833/(unsigned long)93600;
+	}
+	else if (dev_id == 0x2a40) {
+		// 12 bit adc
+		v_level = (unsigned long)1000 * (unsigned long)(adc_read() >> 2) * (unsigned long)833/(unsigned long)93600;
+	}
+	else {
+		v_level = 0;
+	}
 	sprintf(debug_buffer, "Battery: %dmV\n\r", v_level);
 	usart_puts(debug_buffer);	
 	

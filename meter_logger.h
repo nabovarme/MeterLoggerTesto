@@ -83,6 +83,8 @@ void sleep_ms(unsigned int ms);
 
 void init_system();
 
+unsigned int get_dev_id();
+
 void my_usart_open();
 
 unsigned char reverse(unsigned char b);
@@ -114,7 +116,7 @@ unsigned char fifo_put(unsigned char c);
 unsigned char fifo_get(unsigned char  *c);
 unsigned char fifo_snoop(unsigned char *c, unsigned int pos);
 
-unsigned int battery_level();
+unsigned int get_battery_level();
 
 void flash_led(unsigned char ms);
 
