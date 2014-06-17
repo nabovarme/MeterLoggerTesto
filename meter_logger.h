@@ -94,12 +94,19 @@ unsigned char testo_valid_err_corr(unsigned int c);
 void testo_ir_enable();
 void testo_ir_disable();
 
-void rs232_tx_enable(unsigned int t);
-void rs232_tx_disable();
+void rs232_8n2_tx_enable(unsigned int t);
+void rs232_8n2_tx_disable();
 
-void rs232_rx_enable(unsigned int t);
-void rs232_rx_disable();
-void rs232_tx_byte(unsigned char c);
+void rs232_8n2_rx_enable(unsigned int t);
+void rs232_8n2_rx_disable();
+void rs232_8n2_tx_byte(unsigned char c);
+
+void rs232_7e1_tx_enable(unsigned int t);
+void rs232_7e1_tx_disable();
+
+void rs232_7e1_rx_enable(unsigned int t);
+void rs232_7e1_rx_disable();
+void rs232_7e1_tx_byte(unsigned char c);
 
 void fsk_tx_enable();
 void fsk_tx_disable();

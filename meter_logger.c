@@ -38,8 +38,10 @@ unsigned char fifo_buffer_3[QUEUE_SIZE];
 enum codec_type_t {
 	NONE,
 	TESTO,
-	RS232_RX,
-	RS232_TX,
+	RS232_8N2_RX,
+	RS232_8N2_TX,
+	RS232_7E1_RX,
+	RS232_7E1_TX,
 	FSK_RX,
 	FSK_TX
 };
@@ -269,18 +271,18 @@ void main(void) {
 					}
 #endif
 					
-					rs232_tx_enable(TIMER0_RS232_1200);
+					rs232_8n2_tx_enable(TIMER0_RS232_1200);
 					while (fifo_get(&sub_cmd)) {
-						rs232_tx_byte(sub_cmd);
+						rs232_8n2_tx_byte(sub_cmd);
 						sleep_ms(RS232_TX_SLEEP);
 					}
-					rs232_tx_disable();
+					rs232_8n2_tx_disable();
 					
 					// Wait for kmp reply
 #ifdef DEBUG
 					//usart_puts("\n\rkamstrup - waiting for reply:\n\r");
 #endif
-					rs232_rx_enable(TIMER0_RS232_1200);
+					rs232_8n2_rx_enable(TIMER0_RS232_1200);
 					last_fifo_size = 0;
 					sleep_ms(400);							// sleep 200 ms to let some data come in
 					fifo_size = fifo_in_use();
@@ -291,7 +293,7 @@ void main(void) {
 						fifo_size = fifo_in_use();
 					}			
 					
-					rs232_rx_disable();
+					rs232_8n2_rx_disable();
 			
 					// Send reply back to iOS
 #ifdef DEBUG
@@ -387,18 +389,18 @@ void main(void) {
 						fifo_put(sub_cmd);
 					}
 #endif
-					
+					rs232_7e1_tx_enable(TIMER0_RS232_300);
 					while (fifo_get(&sub_cmd)) {
-						rs232_tx_byte(sub_cmd);
+						rs232_7e1_tx_byte(sub_cmd);
 						sleep_ms(RS232_TX_SLEEP);
 					}
-					rs232_tx_disable();
+					rs232_7e1_tx_disable();
 					
 					// Wait for multical reply
 #ifdef DEBUG
 					//usart_puts("\n\rkamstrup - waiting for reply:\n\r");
 #endif
-					rs232_rx_enable(TIMER0_RS232_300);
+					rs232_7e1_rx_enable(TIMER0_RS232_300);
 					last_fifo_size = 0;
 					sleep_ms(400);							// sleep 200 ms to let some data come in
 					fifo_size = fifo_in_use();
@@ -409,7 +411,7 @@ void main(void) {
 						fifo_size = fifo_in_use();
 					}			
 					
-					rs232_rx_disable();
+					rs232_7e1_rx_disable();
 			
 					// Send reply back to iOS
 #ifdef DEBUG
@@ -567,7 +569,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						break;
 				}
 				break;
-			case RS232_RX:
+			case RS232_8N2_RX:
 				switch (rs232_proto.state) {
 					case START_BIT_WAIT:
 						/*
@@ -587,6 +589,26 @@ static void isr_high_prio(void) __interrupt 1 {
 						break;
 				}
 				break;
+			case RS232_7E1_RX:
+				switch (rs232_proto.state) {
+					case START_BIT_WAIT:
+						/*
+						DEBUG2_PIN = 1;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG2_PIN = 0;
+						*/
+						// sample data half bit time after...
+						TMR0H = (unsigned char)(TIMER0_RS232_1200_START >> 8);
+						TMR0L = (unsigned char)TIMER0_RS232_1200_START;
+						INTCONbits.INT0IE = 0;		// disable ext int while we are using timer to receive data bits
+						T0CONbits.TMR0ON = 1;		// Start TMR0
+						rs232_proto.state = DATA_WAIT;
+						break;
+				}
+				break;			
 		}
 		INTCONbits.INT0IF = 0;	/* Clear Interrupt Flag */
 	}
@@ -603,7 +625,7 @@ static void isr_high_prio(void) __interrupt 1 {
 				testo_ir_proto.state = INIT_STATE;
 				sleep();						// sleep until we receive next bit via interrupt on INT0
 				break;
-			case RS232_TX:
+			case RS232_8N2_TX:
 				switch (rs232_proto.state) {
 					case INIT_STATE:
 						if (rs232_proto.data_len == 8) {
@@ -633,7 +655,97 @@ static void isr_high_prio(void) __interrupt 1 {
 						break;
 				}
 				break;
-			case RS232_RX:
+			case RS232_8N2_RX:
+				switch (rs232_proto.state) {
+					case DATA_WAIT:
+						rs232_proto.data_len++;
+						if (rs232_proto.data_len <= 8) {
+							if (IR_PIN) {		
+								// logical 0, ir input inverted
+								rs232_proto.data >>= 1;
+								/*
+								DEBUG3_PIN = 1;
+								__asm
+									nop
+									nop
+								__endasm;
+								DEBUG3_PIN = 0;
+								*/
+							}
+							else {				
+								// logical 1, ir input inverted
+								rs232_proto.data >>= 1;
+								rs232_proto.data |= 0x80;
+								/*								
+								DEBUG3_PIN = 1;
+								__asm
+									nop
+									nop
+								__endasm;
+								DEBUG3_PIN = 0;
+								__asm
+									nop
+									nop
+								__endasm;
+								DEBUG3_PIN = 1;
+								__asm
+									nop
+									nop
+								__endasm;
+								DEBUG3_PIN = 0;
+								*/
+							}
+						}
+						else {
+							rs232_proto.state = STOP_BIT_WAIT;
+						}
+						break;
+					case STOP_BIT_WAIT:
+					//	rs232_proto.state = STOP_BIT2_WAIT;
+					//	break;
+					// kamstrup meter does not realy send 2 stop bits... 
+					//case STOP_BIT2_WAIT:
+						fifo_put(rs232_proto.data);
+						rs232_proto.data = 0;
+						rs232_proto.data_len = 0;
+						rs232_proto.state = START_BIT_WAIT;
+						T0CONbits.TMR0ON = 0;
+						INTCONbits.INT0IF = 0;		// dont enter ext int now
+						INTCONbits.INT0IE = 1;		// enable ext int again
+						break;
+				}
+				break;
+			case RS232_7E1_TX:
+				switch (rs232_proto.state) {
+					case INIT_STATE:
+						if (rs232_proto.data_len == 7) {
+							IR_LED_PIN = 1;		// inverted rs232 output on ir, start bit = ir light
+							rs232_proto.state = START_BIT_SENT;
+						}
+						break;
+					case START_BIT_SENT:
+						if (rs232_proto.data_len >= 1) {
+							IR_LED_PIN = (rs232_proto.data & 1) == 0;	// inverted rs232 output on ir
+							rs232_proto.data = rs232_proto.data >> 1;
+							rs232_proto.data_len--;
+						}
+						else {
+							IR_LED_PIN = 0;								// inverted rs232 output on ir					
+							rs232_proto.state = STOP_BIT_SENT;
+						}
+						break;
+					case STOP_BIT_SENT:
+						IR_LED_PIN = 0;									// inverted rs232 output on ir
+						rs232_proto.state = STOP_BIT2_SENT;
+						break;
+ 	 				case STOP_BIT2_SENT:
+						IR_LED_PIN = 0;									// inverted rs232 output on ir
+						rs232_proto.state = INIT_STATE;
+						T0CONbits.TMR0ON = 0;							// stop timer 0
+						break;
+				}
+				break;
+			case RS232_7E1_RX:
 				switch (rs232_proto.state) {
 					case DATA_WAIT:
 						rs232_proto.data_len++;
@@ -1134,7 +1246,7 @@ void testo_ir_disable() {
 	INTCONbits.INT0IE = 0;		// disable ext int
 }
 
-void rs232_tx_enable(unsigned int t) {
+void rs232_8n2_tx_enable(unsigned int t) {
 	timer0_reload = t;
 
 	rs232_proto.state = INIT_STATE;
@@ -1142,7 +1254,7 @@ void rs232_tx_enable(unsigned int t) {
 	
 	IR_LED_PIN = 0;				// inverted rs232 output on ir, idle = no ir light
 
-	codec_type = RS232_TX;
+	codec_type = RS232_8N2_TX;
 
 	// timer 0
 	T0CONbits.TMR0ON = 0;
@@ -1157,22 +1269,22 @@ void rs232_tx_enable(unsigned int t) {
 	INTCONbits.TMR0IF = 0;
 
 //	INTCONbits.INT0IE = 0;		// disable ext int while sending with software uart
-	T0CONbits.TMR0ON = 0;		// timer 0 started in rs232_tx_byte()
+	T0CONbits.TMR0ON = 0;		// timer 0 started in rs232_8n2_tx_byte()
 }
 
-void rs232_tx_disable() {
+void rs232_8n2_tx_disable() {
 	codec_type = NONE;
 	IR_LED_PIN = 0;				// no need to set it to inverted idle
 	T0CONbits.TMR0ON = 0;
 }
 
-void rs232_rx_enable(unsigned int t) {
+void rs232_8n2_rx_enable(unsigned int t) {
 	rs232_proto.state = START_BIT_WAIT;
 	rs232_proto.data_len = 0;
 
 	timer0_reload = t;
 	
-	codec_type = RS232_RX;
+	codec_type = RS232_8N2_RX;
 
 	// timer 0
 	T0CONbits.TMR0ON = 0;
@@ -1190,15 +1302,87 @@ void rs232_rx_enable(unsigned int t) {
 	INTCON2bits.INTEDG0 = 1;	// rising edge
 }
 
-void rs232_rx_disable() {
+void rs232_8n2_rx_disable() {
 	INTCONbits.INT0IE = 0;		// disable ext int
 	codec_type = NONE;
 	T0CONbits.TMR0ON = 0;
 }
 
-void rs232_tx_byte(unsigned char c) {
+void rs232_8n2_tx_byte(unsigned char c) {
 	rs232_proto.data = c;
 	rs232_proto.data_len = 8;
+	T0CONbits.TMR0ON = 1;		// start timer 0
+	INTCONbits.TMR0IF = 1;		// enter timer interrupt handler now
+	while (rs232_proto.data_len) {
+		// wait for byte to be sent
+	}
+}
+
+void rs232_7e1_tx_enable(unsigned int t) {
+	timer0_reload = t;
+
+	rs232_proto.state = INIT_STATE;
+	rs232_proto.data_len = 0;
+	
+	IR_LED_PIN = 0;				// inverted rs232 output on ir, idle = no ir light
+
+	codec_type = RS232_7E1_TX;
+
+	// timer 0
+	T0CONbits.TMR0ON = 0;
+	T0CONbits.T0PS0 = 0;
+	T0CONbits.T0PS1 = 0;
+	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+	T0CONbits.T0CS = 0;			// internal clock source
+	T0CONbits.PSA = 1;			// disable timer0 prescaler
+	INTCON2bits.TMR0IP = 1;		// high priority
+	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+	INTCONbits.TMR0IF = 0;
+
+//	INTCONbits.INT0IE = 0;		// disable ext int while sending with software uart
+	T0CONbits.TMR0ON = 0;		// timer 0 started in rs232_8n2_tx_byte()
+}
+
+void rs232_7e1_tx_disable() {
+	codec_type = NONE;
+	IR_LED_PIN = 0;				// no need to set it to inverted idle
+	T0CONbits.TMR0ON = 0;
+}
+
+void rs232_7e1_rx_enable(unsigned int t) {
+	rs232_proto.state = START_BIT_WAIT;
+	rs232_proto.data_len = 0;
+
+	timer0_reload = t;
+	
+	codec_type = RS232_7E1_RX;
+
+	// timer 0
+	T0CONbits.TMR0ON = 0;
+	T0CONbits.T0PS0 = 0;
+	T0CONbits.T0PS1 = 0;
+	T0CONbits.T0PS2 = 0;		// prescaler 1:2
+	T0CONbits.T08BIT = 0;		// use timer0 16-bit counter
+	T0CONbits.T0CS = 0;			// internal clock source
+	T0CONbits.PSA = 1;			// disable timer0 prescaler
+	INTCON2bits.TMR0IP = 1;		// high priority
+	INTCONbits.TMR0IE = 1;		// Enable TMR0 Interrupt
+	INTCONbits.TMR0IF = 0;
+
+	INTCONbits.INT0IE = 1;		// enable ext int
+	INTCON2bits.INTEDG0 = 1;	// rising edge
+}
+
+void rs232_7e1_rx_disable() {
+	INTCONbits.INT0IE = 0;		// disable ext int
+	codec_type = NONE;
+	T0CONbits.TMR0ON = 0;
+}
+
+void rs232_7e1_tx_byte(unsigned char c) {
+	rs232_proto.data = c;
+	rs232_proto.data_len = 7;
 	T0CONbits.TMR0ON = 1;		// start timer 0
 	INTCONbits.TMR0IF = 1;		// enter timer interrupt handler now
 	while (rs232_proto.data_len) {
