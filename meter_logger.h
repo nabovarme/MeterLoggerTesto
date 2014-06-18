@@ -76,7 +76,7 @@
 #define PROTO_TESTO				(254)
 #define PROTO_TESTO_DEMO		(255)
 #define PROTO_KAMSTRUP			(253)
-#define PROTO_KAMSTRUP_MULTICAL	(252)
+#define PROTO_IEC61107			(252)
 #define PROTO_BATTERY_LEVEL		(251)
 
 void sleep_ms(unsigned int ms);

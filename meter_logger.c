@@ -358,7 +358,7 @@ void main(void) {
 #endif
 					fsk_rx_enable();
 					break;
-				case PROTO_KAMSTRUP_MULTICAL:
+				case PROTO_IEC61107:
 					fsk_rx_disable();
 #ifdef DEBUG
 					usart_puts("\n\rkamstrup - send multical frame data\n\r");
