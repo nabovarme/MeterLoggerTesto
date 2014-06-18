@@ -1,6 +1,6 @@
 gplink-1.2.0 #980 (Jul 31 2013)
 Copyright (c) 1998-2013 gputils project
-Listing File Generated: 6-18-2014  01:29:17
+Listing File Generated: 6-18-2014  02:22:45
  
  
 Address  Value    Disassembly              Source
@@ -8,7 +8,7 @@ Address  Value    Disassembly              Source
                                            ;--------------------------------------------------------
                                            ; File Created by SDCC : free open source ANSI-C Compiler
                                            ; Version 3.4.0 #8981 (Jun  6 2014) (Mac OS X x86_64)
-                                           ; This file was generated Wed Jun 18 01:29:17 2014
+                                           ; This file was generated Wed Jun 18 02:22:45 2014
                                            ;--------------------------------------------------------
                                            ; PIC16 port for the Microchip 16-bit core micros
                                            ;--------------------------------------------------------
@@ -1826,7 +1826,7 @@ Address  Value    Disassembly              Source
                                            ;	.line	362; meter_logger.c	fsk_rx_disable();
 000930   ec6b     call    0x52d6, 0        	CALL	_fsk_rx_disable
 000932   f029
-                                           ;	.line	364; meter_logger.c	usart_puts("\n\rkamstrup - send multical frame data\n\r");
+                                           ;	.line	364; meter_logger.c	usart_puts("\n\rkamstrup - send IEC61107 frame data\n\r");
 000934   0e00     movlw   0                	MOVLW	UPPER(___str_13)
 000936   6e06     movwf   0x6, 0           	MOVWF	r0x06
 000938   0e2d     movlw   0x2d             	MOVLW	HIGH(___str_13)
@@ -1898,7 +1898,7 @@ Address  Value    Disassembly              Source
                                            ;	.line	377; meter_logger.c	fsk_rx_disable();
 0009a6   ec6b     call    0x52d6, 0        	CALL	_fsk_rx_disable
 0009a8   f029
-                                           ;	.line	380; meter_logger.c	usart_puts("\n\rkamstrup - multical frame received:\n\r");
+                                           ;	.line	380; meter_logger.c	usart_puts("\n\rkamstrup - IEC61107 frame received:\n\r");
 0009aa   0e00     movlw   0                	MOVLW	UPPER(___str_14)
 0009ac   6e06     movwf   0x6, 0           	MOVWF	r0x06
 0009ae   0e2e     movlw   0x2e             	MOVLW	HIGH(___str_14)
@@ -2126,7 +2126,7 @@ Address  Value    Disassembly              Source
                                            ;	.line	415; meter_logger.c	rs232_7e1_rx_disable();
 000b34   ec34     call    0x5268, 0        	CALL	_rs232_7e1_rx_disable
 000b36   f029
-                                           ;	.line	419; meter_logger.c	usart_puts("\n\rkamstrup - multical reply received:\n\r");
+                                           ;	.line	419; meter_logger.c	usart_puts("\n\rkamstrup - IEC61107 reply received:\n\r");
 000b38   0e00     movlw   0                	MOVLW	UPPER(___str_15)
 000b3a   6e02     movwf   0x2, 0           	MOVWF	r0x02
 000b3c   0e2e     movlw   0x2e             	MOVLW	HIGH(___str_15)
@@ -9758,13 +9758,13 @@ Address  Value    Disassembly              Source
 002dea   7274     btg     0x74, 0x1, 0     
 002dec   7075     btg     0x75, 0, 0       
 002dee   2d20     decfsz  0x20, 0, 0x1     
-002df0   7320     btg     0x20, 0x1, 0x1   	DB	0x20, 0x73, 0x65, 0x6e, 0x64, 0x20, 0x6d, 0x75, 0x6c, 0x74, 0x69, 0x63
+002df0   7320     btg     0x20, 0x1, 0x1   	DB	0x20, 0x73, 0x65, 0x6e, 0x64, 0x20, 0x49, 0x45, 0x43, 0x36, 0x31, 0x31
 002df2   6e65     movwf   0x65, 0          
 002df4   2064     addwfc  0x64, 0, 0       
-002df6   756d     btg     0x6d, 0x2, 0x1   
-002df8   746c     btg     0x6c, 0x2, 0     
-002dfa   6369     cpfseq  0x69, 0x1        
-002dfc   6c61     negf    0x61, 0          	DB	0x61, 0x6c, 0x20, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x20, 0x64, 0x61, 0x74
+002df6   4549     rlncf   0x49, 0, 0x1     
+002df8   3643     rlcf    0x43, 0x1, 0     
+002dfa   3131     rrcf    0x31, 0, 0x1     
+002dfc   3730     rlcf    0x30, 0x1, 0x1   	DB	0x30, 0x37, 0x20, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x20, 0x64, 0x61, 0x74
 002dfe   6620     tstfsz  0x20, 0          
 002e00   6172     cpfslt  0x72, 0x1        
 002e02   656d     cpfsgt  0x6d, 0x1        
@@ -9780,11 +9780,11 @@ Address  Value    Disassembly              Source
 002e12   7274     btg     0x74, 0x1, 0     
 002e14   7075     btg     0x75, 0, 0       
 002e16   2d20     decfsz  0x20, 0, 0x1     
-002e18   6d20     negf    0x20, 0x1        	DB	0x20, 0x6d, 0x75, 0x6c, 0x74, 0x69, 0x63, 0x61, 0x6c, 0x20, 0x66, 0x72
-002e1a   6c75     negf    0x75, 0          
-002e1c   6974     setf    0x74, 0x1        
-002e1e   6163     cpfslt  0x63, 0x1        
-002e20   206c     addwfc  0x6c, 0, 0       
+002e18   4920     infsnz  0x20, 0, 0x1     	DB	0x20, 0x49, 0x45, 0x43, 0x36, 0x31, 0x31, 0x30, 0x37, 0x20, 0x66, 0x72
+002e1a   4345     rrncf   0x45, 0x1, 0x1   
+002e1c   3136     rrcf    0x36, 0, 0x1     
+002e1e   3031     rrcf    0x31, 0, 0       
+002e20   2037     addwfc  0x37, 0, 0       
 002e22   7266     btg     0x66, 0x1, 0     
 002e24   6d61     negf    0x61, 0x1        	DB	0x61, 0x6d, 0x65, 0x20, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64
 002e26   2065     addwfc  0x65, 0, 0       
@@ -9802,11 +9802,11 @@ Address  Value    Disassembly              Source
 002e3a   7274     btg     0x74, 0x1, 0     
 002e3c   7075     btg     0x75, 0, 0       
 002e3e   2d20     decfsz  0x20, 0, 0x1     
-002e40   6d20     negf    0x20, 0x1        	DB	0x20, 0x6d, 0x75, 0x6c, 0x74, 0x69, 0x63, 0x61, 0x6c, 0x20, 0x72, 0x65
-002e42   6c75     negf    0x75, 0          
-002e44   6974     setf    0x74, 0x1        
-002e46   6163     cpfslt  0x63, 0x1        
-002e48   206c     addwfc  0x6c, 0, 0       
+002e40   4920     infsnz  0x20, 0, 0x1     	DB	0x20, 0x49, 0x45, 0x43, 0x36, 0x31, 0x31, 0x30, 0x37, 0x20, 0x72, 0x65
+002e42   4345     rrncf   0x45, 0x1, 0x1   
+002e44   3136     rrcf    0x36, 0, 0x1     
+002e46   3031     rrcf    0x31, 0, 0       
+002e48   2037     addwfc  0x37, 0, 0       
 002e4a   6572     cpfsgt  0x72, 0x1        
 002e4c   6c70     negf    0x70, 0          	DB	0x70, 0x6c, 0x79, 0x20, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64
 002e4e   2079     addwfc  0x79, 0, 0       

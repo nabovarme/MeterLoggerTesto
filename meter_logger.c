@@ -361,10 +361,10 @@ void main(void) {
 				case PROTO_IEC61107:
 					fsk_rx_disable();
 #ifdef DEBUG
-					usart_puts("\n\rkamstrup - send multical frame data\n\r");
+					usart_puts("\n\rkamstrup - send IEC61107 frame data\n\r");
 #endif
 					
-					// wait for iOS stop sending multical command
+					// wait for iOS stop sending IEC61107 command
 					fsk_rx_enable();
 					last_fifo_size = 0;
 					sleep_ms(400);							// sleep 400 ms to let some data come in
@@ -377,7 +377,7 @@ void main(void) {
 					fsk_rx_disable();
 					
 #ifdef DEBUG
-					usart_puts("\n\rkamstrup - multical frame received:\n\r");
+					usart_puts("\n\rkamstrup - IEC61107 frame received:\n\r");
 #endif
 #ifdef OUTPUT_ON_SERIAL
 					for (i = 0; i < fifo_in_use(); i++) {
@@ -397,7 +397,7 @@ void main(void) {
 					}
 					rs232_7e1_tx_disable();
 					
-					// Wait for multical reply
+					// Wait for IEC61107 reply
 #ifdef DEBUG
 					//usart_puts("\n\rkamstrup - waiting for reply:\n\r");
 #endif
@@ -416,7 +416,7 @@ void main(void) {
 			
 					// Send reply back to iOS
 #ifdef DEBUG
-					usart_puts("\n\rkamstrup - multical reply received:\n\r");
+					usart_puts("\n\rkamstrup - IEC61107 reply received:\n\r");
 #endif
 #ifdef OUTPUT_ON_SERIAL
 					for (i = 0; i < fifo_in_use(); i++) {
