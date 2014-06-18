@@ -8,6 +8,8 @@
 #include "meter_logger.h"
 
 #define DEBUG
+#define DEBUG_RS232_8N2_RX
+//#define DEBUG_RS232_7E1_RX
 #define OUTPUT_ON_SERIAL
 #define DEBUG_LED_ON_FSK_RX
 #define DEBUG_LED_ON_FSK_TX
@@ -55,7 +57,7 @@ enum state_t {
 	DATA_WAIT,
 	DATA_SENT,
 	PARITY_BIT_SENT,
-	PARITY_WAIT,
+	PARITY_BIT_WAIT,
 	STOP_BIT_WAIT,
 	STOP_BIT2_WAIT,
 	STOP_BIT_SENT,
@@ -285,12 +287,12 @@ void main(void) {
 #endif
 					rs232_8n2_rx_enable(TIMER0_RS232_1200);
 					last_fifo_size = 0;
-					sleep_ms(400);							// sleep 200 ms to let some data come in
+					sleep_ms(400);							// sleep 400 ms to let some data come in
 					fifo_size = fifo_in_use();
 					// BUG: sometimes it does not wait for data...
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 						last_fifo_size = fifo_size;
-						sleep_ms(200);						// return data when no data for 100 ms
+						sleep_ms(200);						// return data when no data for 200 ms
 						fifo_size = fifo_in_use();
 					}			
 					
@@ -403,12 +405,12 @@ void main(void) {
 #endif
 					rs232_7e1_rx_enable(TIMER0_RS232_300);
 					last_fifo_size = 0;
-					sleep_ms(400);							// sleep 200 ms to let some data come in
+					sleep_ms(1500);							// sleep 1500 ms to let some data come in
 					fifo_size = fifo_in_use();
 					// BUG: sometimes it does not wait for data...
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 						last_fifo_size = fifo_size;
-						sleep_ms(200);						// return data when no data for 100 ms
+						sleep_ms(200);						// return data when no data for 200 ms
 						fifo_size = fifo_in_use();
 					}			
 					
@@ -573,17 +575,17 @@ static void isr_high_prio(void) __interrupt 1 {
 			case RS232_8N2_RX:
 				switch (rs232_proto.state) {
 					case START_BIT_WAIT:
-						/*
+#ifdef DEBUG_RS232_8N2_RX
 						DEBUG2_PIN = 1;
 						__asm
 							nop
 							nop
 						__endasm;
 						DEBUG2_PIN = 0;
-						*/
+#endif
 						// sample data half bit time after...
-						TMR0H = (unsigned char)(TIMER0_RS232_1200_START >> 8);
-						TMR0L = (unsigned char)TIMER0_RS232_1200_START;
+						TMR0H = (unsigned char)((timer0_reload - ((0xffff - timer0_reload) >> 1)) >> 8);
+						TMR0L = (unsigned char)timer0_reload - ((0xffff - timer0_reload) >> 1);
 						INTCONbits.INT0IE = 0;		// disable ext int while we are using timer to receive data bits
 						T0CONbits.TMR0ON = 1;		// Start TMR0
 						rs232_proto.state = DATA_WAIT;
@@ -593,17 +595,17 @@ static void isr_high_prio(void) __interrupt 1 {
 			case RS232_7E1_RX:
 				switch (rs232_proto.state) {
 					case START_BIT_WAIT:
-						/*
+#ifdef DEBUG_RS232_7E1_RX
 						DEBUG2_PIN = 1;
 						__asm
 							nop
 							nop
 						__endasm;
 						DEBUG2_PIN = 0;
-						*/
+#endif
 						// sample data half bit time after...
-						TMR0H = (unsigned char)(TIMER0_RS232_1200_START >> 8);
-						TMR0L = (unsigned char)TIMER0_RS232_1200_START;
+						TMR0H = (unsigned char)((timer0_reload - ((0xffff - timer0_reload) >> 1)) >> 8);
+						TMR0L = (unsigned char)timer0_reload - ((0xffff - timer0_reload) >> 1);
 						INTCONbits.INT0IE = 0;		// disable ext int while we are using timer to receive data bits
 						T0CONbits.TMR0ON = 1;		// Start TMR0
 						rs232_proto.state = DATA_WAIT;
@@ -664,20 +666,20 @@ static void isr_high_prio(void) __interrupt 1 {
 							if (IR_PIN) {		
 								// logical 0, ir input inverted
 								rs232_proto.data >>= 1;
-								/*
+#ifdef DEBUG_RS232_8N2_RX
 								DEBUG3_PIN = 1;
 								__asm
 									nop
 									nop
 								__endasm;
 								DEBUG3_PIN = 0;
-								*/
+#endif
 							}
 							else {				
 								// logical 1, ir input inverted
 								rs232_proto.data >>= 1;
 								rs232_proto.data |= 0x80;
-								/*								
+#ifdef DEBUG_RS232_8N2_RX								
 								DEBUG3_PIN = 1;
 								__asm
 									nop
@@ -694,7 +696,7 @@ static void isr_high_prio(void) __interrupt 1 {
 									nop
 								__endasm;
 								DEBUG3_PIN = 0;
-								*/
+#endif
 							}
 						}
 						else {
@@ -752,24 +754,24 @@ static void isr_high_prio(void) __interrupt 1 {
 				switch (rs232_proto.state) {
 					case DATA_WAIT:
 						rs232_proto.data_len++;
-						if (rs232_proto.data_len <= 8) {
+						if (rs232_proto.data_len <= 7) {
 							if (IR_PIN) {		
 								// logical 0, ir input inverted
 								rs232_proto.data >>= 1;
-								/*
+#ifdef DEBUG_RS232_7E1_RX
 								DEBUG3_PIN = 1;
 								__asm
 									nop
 									nop
 								__endasm;
 								DEBUG3_PIN = 0;
-								*/
+#endif
 							}
 							else {				
 								// logical 1, ir input inverted
 								rs232_proto.data >>= 1;
-								rs232_proto.data |= 0x80;
-								/*								
+								rs232_proto.data |= 0x40;
+#ifdef DEBUG_RS232_7E1_RX							
 								DEBUG3_PIN = 1;
 								__asm
 									nop
@@ -786,18 +788,17 @@ static void isr_high_prio(void) __interrupt 1 {
 									nop
 								__endasm;
 								DEBUG3_PIN = 0;
-								*/
+#endif
 							}
 						}
 						else {
-							rs232_proto.state = STOP_BIT_WAIT;
+							rs232_proto.state = PARITY_BIT_WAIT;
 						}
 						break;
+					case PARITY_BIT_WAIT:
+						rs232_proto.state = STOP_BIT_WAIT;
+						break;
 					case STOP_BIT_WAIT:
-					//	rs232_proto.state = STOP_BIT2_WAIT;
-					//	break;
-					// kamstrup meter does not realy send 2 stop bits... 
-					//case STOP_BIT2_WAIT:
 						fifo_put(rs232_proto.data);
 						rs232_proto.data = 0;
 						rs232_proto.data_len = 0;

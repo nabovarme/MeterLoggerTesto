@@ -13,15 +13,11 @@
 
 #define sleep() __asm sleep __endasm
 
-//#define TIMER0_RELOAD 0xFCC8	// 427us @ 8MHz
-//#define TIMER0_RELOAD 0xF000	// ~ 2ms @ 8MHz
-#define TIMER0_TESTO			 0xF323	// ~ 4 * 427us @ 8MHz
+#define TIMER0_TESTO			0xF323	// ~ 4 * 427us @ 8MHz
 #define TIMER0_RS232_300		0xe61b	// ~ 3.3ms @ 8 MHz
 #define TIMER0_RS232_1200		0xf9ae
-#define TIMER0_RS232_1200_START	0xf700
 #define TIMER0_FSK				0xF99F	// @ 8MHz
-//#define TIMER0_FSK			0xF00F
-//#define TIMER0_RELOAD 0x0000
+
 #define TIMER1_RELOAD 0xF853    // 1 ms @ 8MHz
 #define TIMER2_RELOAD	0x00	// ~ 5 ms @ 8Mhz
 #define TIMER3_RELOAD	0x0000	// ~ 131 ms @ 4MHz
