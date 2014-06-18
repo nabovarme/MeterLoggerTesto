@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.4.0 #8981 (Jun  6 2014) (Mac OS X x86_64)
-; This file was generated Wed Jun 18 16:43:42 2014
+; This file was generated Wed Jun 18 16:47:08 2014
 ;--------------------------------------------------------
 ; PIC16 port for the Microchip 16-bit core micros
 ;--------------------------------------------------------
@@ -7944,13 +7944,6 @@ _00381_DS_:
 	BZ	_00723_DS_
 	BRA	_00387_DS_
 _00723_DS_:
-;	.line	579; meter_logger.c	DEBUG2_PIN = 1;
-	BSF	_PORTBbits, 3
-	nop
-	nop
-	
-;	.line	584; meter_logger.c	DEBUG2_PIN = 0;
-	BCF	_PORTBbits, 3
 	BANKSEL	_timer0_reload
 ;	.line	587; meter_logger.c	TMR0H = (unsigned char)((timer0_reload - ((0xffff - timer0_reload) >> 1)) >> 8);
 	MOVF	_timer0_reload, W, B
@@ -8127,7 +8120,7 @@ _00391_DS_:
 	CLRF	_testo_ir_proto, B
 	sleep 
 ;	.line	630; meter_logger.c	break;
-	GOTO	_00462_DS_
+	BRA	_00462_DS_
 _00392_DS_:
 ;	.line	632; meter_logger.c	switch (rs232_proto.state) {
 	MOVFF	_rs232_proto, r0x00
@@ -8262,13 +8255,6 @@ _00404_DS_:
 	MOVF	r0x00, W
 ; removed redundant BANKSEL
 	MOVWF	(_rs232_proto + 2), B
-;	.line	670; meter_logger.c	DEBUG3_PIN = 1;
-	BSF	_PORTBbits, 4
-	nop
-	nop
-	
-;	.line	675; meter_logger.c	DEBUG3_PIN = 0;
-	BCF	_PORTBbits, 4
 	BRA	_00462_DS_
 _00406_DS_:
 	BANKSEL	(_rs232_proto + 2)
@@ -8287,23 +8273,6 @@ _00406_DS_:
 	MOVF	r0x00, W
 ; removed redundant BANKSEL
 	MOVWF	(_rs232_proto + 2), B
-;	.line	683; meter_logger.c	DEBUG3_PIN = 1;
-	BSF	_PORTBbits, 4
-	nop
-	nop
-	
-;	.line	688; meter_logger.c	DEBUG3_PIN = 0;
-	BCF	_PORTBbits, 4
-	nop
-	nop
-	
-;	.line	693; meter_logger.c	DEBUG3_PIN = 1;
-	BSF	_PORTBbits, 4
-	nop
-	nop
-	
-;	.line	698; meter_logger.c	DEBUG3_PIN = 0;
-	BCF	_PORTBbits, 4
 	BRA	_00462_DS_
 _00409_DS_:
 ;	.line	703; meter_logger.c	rs232_proto.state = STOP_BIT_WAIT;
@@ -9072,8 +9041,8 @@ ___str_16:
 
 
 ; Statistics:
-; code size:	15818 (0x3dca) bytes (12.07%)
-;           	 7909 (0x1ee5) words
+; code size:	15770 (0x3d9a) bytes (12.03%)
+;           	 7885 (0x1ecd) words
 ; udata size:	 1198 (0x04ae) bytes (66.85%)
 ; access size:	   14 (0x000e) bytes
 
