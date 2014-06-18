@@ -410,7 +410,7 @@ void main(void) {
 					// BUG: sometimes it does not wait for data...
 					while (fifo_size > last_fifo_size) {	// and wait while we are still receiving data
 						last_fifo_size = fifo_size;
-						sleep_ms(200);						// return data when no data for 200 ms
+						sleep_ms(600);						// return data when no data for 600 ms
 						fifo_size = fifo_in_use();
 					}			
 					
@@ -529,7 +529,6 @@ static void isr_high_prio(void) __interrupt 1 {
 								if ((testo_ir_proto.data & 1) != 0) {
 									// previous bit is set
 									testo_ir_proto.data <<= 1;		// bitshift once to left
-									//testo_ir_proto.data &= 0b111111111110;	// and clear bit 0
 								}
 								else {
 									// previous bit is zero
@@ -548,7 +547,6 @@ static void isr_high_prio(void) __interrupt 1 {
 								else {
 									// previous bit is zero
 									testo_ir_proto.data <<= 1;		// bitshift once to left
-									//testo_ir_proto.data &= 0b111111111110;	// and clear bit 0
 								}
 								testo_ir_proto.data_len++;
 							}
@@ -595,14 +593,14 @@ static void isr_high_prio(void) __interrupt 1 {
 			case RS232_7E1_RX:
 				switch (rs232_proto.state) {
 					case START_BIT_WAIT:
-#ifdef DEBUG_RS232_7E1_RX
-						DEBUG2_PIN = 1;
+					//#ifdef DEBUG_RS232_7E1_RX
+						DEBUG3_PIN = 1;
 						__asm
 							nop
 							nop
 						__endasm;
-						DEBUG2_PIN = 0;
-#endif
+						DEBUG3_PIN = 0;
+						//#endif
 						// sample data half bit time after...
 						TMR0H = (unsigned char)((timer0_reload - ((0xffff - timer0_reload) >> 1)) >> 8);
 						TMR0L = (unsigned char)timer0_reload - ((0xffff - timer0_reload) >> 1);
@@ -793,16 +791,26 @@ static void isr_high_prio(void) __interrupt 1 {
 							}
 						}
 						else {
-							rs232_proto.state = PARITY_BIT_WAIT;
+							//rs232_proto.state = PARITY_BIT_WAIT;
+							// UGLY HACK: 
+							rs232_proto.state = STOP_BIT_WAIT;
 						}
 						break;
-					case PARITY_BIT_WAIT:
-						rs232_proto.state = STOP_BIT_WAIT;
-						break;
+					//case PARITY_BIT_WAIT:
+					//	rs232_proto.state = STOP_BIT_WAIT;
+					//	break;
 					case STOP_BIT_WAIT:
-						fifo_put(rs232_proto.data);
+						//fifo_put(rs232_proto.data);
 						rs232_proto.data = 0;
 						rs232_proto.data_len = 0;
+						// this happens too late if we wait on parity bit... same for 8n2
+						DEBUG2_PIN = 1;
+						__asm
+							nop
+							nop
+						__endasm;
+						DEBUG2_PIN = 0;
+						
 						rs232_proto.state = START_BIT_WAIT;
 						T0CONbits.TMR0ON = 0;
 						INTCONbits.INT0IF = 0;		// dont enter ext int now
