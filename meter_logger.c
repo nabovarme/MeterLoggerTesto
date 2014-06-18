@@ -608,6 +608,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						TMR0L = (unsigned char)timer0_reload - ((0xffff - timer0_reload) >> 1);
 						INTCONbits.INT0IE = 0;		// disable ext int while we are using timer to receive data bits
 						T0CONbits.TMR0ON = 1;		// Start TMR0
+						rs232_proto.data &= 0x7f;	// 7-bit data
 						rs232_proto.state = DATA_WAIT;
 						break;
 				}
