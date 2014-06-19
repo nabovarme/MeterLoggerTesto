@@ -593,14 +593,14 @@ static void isr_high_prio(void) __interrupt 1 {
 			case RS232_7E1_RX:
 				switch (rs232_proto.state) {
 					case START_BIT_WAIT:
-					//#ifdef DEBUG_RS232_7E1_RX
+#ifdef DEBUG_RS232_7E1_RX
 						DEBUG3_PIN = 1;
 						__asm
 							nop
 							nop
 						__endasm;
 						DEBUG3_PIN = 0;
-						//#endif
+#endif
 						// sample data half bit time after...
 						TMR0H = (unsigned char)((timer0_reload - ((0xffff - timer0_reload) >> 1)) >> 8);
 						TMR0L = (unsigned char)timer0_reload - ((0xffff - timer0_reload) >> 1);
@@ -661,52 +661,50 @@ static void isr_high_prio(void) __interrupt 1 {
 				switch (rs232_proto.state) {
 					case DATA_WAIT:
 						rs232_proto.data_len++;
-						if (rs232_proto.data_len <= 8) {
-							if (IR_PIN) {		
-								// logical 0, ir input inverted
-								rs232_proto.data >>= 1;
+						if (IR_PIN) {		
+							// logical 0, ir input inverted
+							rs232_proto.data >>= 1;
 #ifdef DEBUG_RS232_8N2_RX
-								DEBUG3_PIN = 1;
-								__asm
-									nop
-									nop
-								__endasm;
-								DEBUG3_PIN = 0;
+							DEBUG3_PIN = 1;
+							__asm
+								nop
+								nop
+							__endasm;
+							DEBUG3_PIN = 0;
 #endif
-							}
-							else {				
-								// logical 1, ir input inverted
-								rs232_proto.data >>= 1;
-								rs232_proto.data |= 0x80;
-#ifdef DEBUG_RS232_8N2_RX								
-								DEBUG3_PIN = 1;
-								__asm
-									nop
-									nop
-								__endasm;
-								DEBUG3_PIN = 0;
-								__asm
-									nop
-									nop
-								__endasm;
-								DEBUG3_PIN = 1;
-								__asm
-									nop
-									nop
-								__endasm;
-								DEBUG3_PIN = 0;
-#endif
-							}
 						}
-						else {
+						else {				
+							// logical 1, ir input inverted
+							rs232_proto.data >>= 1;
+							rs232_proto.data |= 0x80;
+#ifdef DEBUG_RS232_8N2_RX								
+							DEBUG3_PIN = 1;
+							__asm
+								nop
+								nop
+							__endasm;
+							DEBUG3_PIN = 0;
+							__asm
+								nop
+								nop
+							__endasm;
+							DEBUG3_PIN = 1;
+							__asm
+								nop
+								nop
+							__endasm;
+							DEBUG3_PIN = 0;
+#endif
+						}
+						if (rs232_proto.data_len >= 8) {
+							// last data bit, next is stop bit
 							rs232_proto.state = STOP_BIT_WAIT;
 						}
 						break;
 					case STOP_BIT_WAIT:
-					//	rs232_proto.state = STOP_BIT2_WAIT;
-					//	break;
-					// kamstrup meter does not realy send 2 stop bits... 
-					//case STOP_BIT2_WAIT:
+						rs232_proto.state = STOP_BIT2_WAIT;
+						break;
+					case STOP_BIT2_WAIT:
 						fifo_put(rs232_proto.data);
 						rs232_proto.data = 0;
 						rs232_proto.data_len = 0;
@@ -753,64 +751,53 @@ static void isr_high_prio(void) __interrupt 1 {
 				switch (rs232_proto.state) {
 					case DATA_WAIT:
 						rs232_proto.data_len++;
-						if (rs232_proto.data_len <= 7) {
-							if (IR_PIN) {		
-								// logical 0, ir input inverted
-								rs232_proto.data >>= 1;
+						if (IR_PIN) {
+							// logical 0, ir input inverted
+							rs232_proto.data >>= 1;
 #ifdef DEBUG_RS232_7E1_RX
-								DEBUG3_PIN = 1;
-								__asm
-									nop
-									nop
-								__endasm;
-								DEBUG3_PIN = 0;
+							DEBUG3_PIN = 1;
+							__asm
+								nop
+								nop
+							__endasm;
+							DEBUG3_PIN = 0;
 #endif
-							}
-							else {				
-								// logical 1, ir input inverted
-								rs232_proto.data >>= 1;
-								rs232_proto.data |= 0x40;
-#ifdef DEBUG_RS232_7E1_RX							
-								DEBUG3_PIN = 1;
-								__asm
-									nop
-									nop
-								__endasm;
-								DEBUG3_PIN = 0;
-								__asm
-									nop
-									nop
-								__endasm;
-								DEBUG3_PIN = 1;
-								__asm
-									nop
-									nop
-								__endasm;
-								DEBUG3_PIN = 0;
-#endif
-							}
 						}
-						else {
-							//rs232_proto.state = PARITY_BIT_WAIT;
-							// UGLY HACK: 
-							rs232_proto.state = STOP_BIT_WAIT;
+						else {				
+							// logical 1, ir input inverted
+							rs232_proto.data >>= 1;
+							rs232_proto.data |= 0x40;
+#ifdef DEBUG_RS232_7E1_RX							
+							DEBUG3_PIN = 1;
+							__asm
+								nop
+								nop
+							__endasm;
+							DEBUG3_PIN = 0;
+							__asm
+								nop
+								nop
+							__endasm;
+							DEBUG3_PIN = 1;
+							__asm
+								nop
+								nop
+							__endasm;
+							DEBUG3_PIN = 0;
+#endif
+						}
+						if (rs232_proto.data_len >= 7) {
+							// last data bit, next is parity
+							rs232_proto.state = PARITY_BIT_WAIT;
 						}
 						break;
-					//case PARITY_BIT_WAIT:
-					//	rs232_proto.state = STOP_BIT_WAIT;
-					//	break;
+					case PARITY_BIT_WAIT:
+						rs232_proto.state = STOP_BIT_WAIT;
+						break;
 					case STOP_BIT_WAIT:
-						//fifo_put(rs232_proto.data);
+						fifo_put(rs232_proto.data);
 						rs232_proto.data = 0;
 						rs232_proto.data_len = 0;
-						// this happens too late if we wait on parity bit... same for 8n2
-						DEBUG2_PIN = 1;
-						__asm
-							nop
-							nop
-						__endasm;
-						DEBUG2_PIN = 0;
-						
 						rs232_proto.state = START_BIT_WAIT;
 						T0CONbits.TMR0ON = 0;
 						INTCONbits.INT0IF = 0;		// dont enter ext int now
