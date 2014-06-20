@@ -78,6 +78,7 @@ typedef struct {
 	unsigned char data;
 	unsigned char data_len;
 	unsigned char parity;
+	unsigned char calculated_parity;
 	unsigned char stop_bit;
 } rs232_proto_t;
 
@@ -587,6 +588,8 @@ static void isr_high_prio(void) __interrupt 1 {
 						INTCONbits.INT0IE = 0;		// disable ext int while we are using timer to receive data bits
 						T0CONbits.TMR0ON = 1;		// Start TMR0
 						rs232_proto.data &= 0x7f;	// 7-bit data
+						rs232_proto.calculated_parity = 0;
+						
 						rs232_proto.state = DATA_WAIT;
 						break;
 				}
@@ -733,6 +736,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						rs232_proto.data_len++;
 						if (IR_PIN) {
 							// logical 0, ir input inverted
+							rs232_proto.calculated_parity ^= 0;
 							rs232_proto.data >>= 1;
 #ifdef DEBUG_RS232_7E1_RX
 							DEBUG3_PIN = 1;
@@ -745,6 +749,7 @@ static void isr_high_prio(void) __interrupt 1 {
 						}
 						else {				
 							// logical 1, ir input inverted
+							rs232_proto.calculated_parity ^= 1;
 							rs232_proto.data >>= 1;
 							rs232_proto.data |= 0x40;
 #ifdef DEBUG_RS232_7E1_RX							
@@ -772,10 +777,16 @@ static void isr_high_prio(void) __interrupt 1 {
 						}
 						break;
 					case PARITY_BIT_WAIT:
+						rs232_proto.parity = IR_PIN ? 0 : 1;
 						rs232_proto.state = STOP_BIT_WAIT;
 						break;
 					case STOP_BIT_WAIT:
-						fifo_put(rs232_proto.data);
+					if (rs232_proto.calculated_parity == rs232_proto.parity) {
+							fifo_put(rs232_proto.data);
+						}
+						else {
+							// parity error dont transmit
+						}
 						rs232_proto.data = 0;
 						rs232_proto.data_len = 0;
 						rs232_proto.state = START_BIT_WAIT;
