@@ -7,9 +7,9 @@
 #include "config.h"
 #include "meter_logger.h"
 
-#define DEBUG
+//#define DEBUG
 //#define DEBUG_RS232_8N2_RX
-#define DEBUG_RS232_7E1_RX
+//#define DEBUG_RS232_7E1_RX
 #define OUTPUT_ON_SERIAL
 #define DEBUG_LED_ON_FSK_RX
 #define DEBUG_LED_ON_FSK_TX
@@ -175,6 +175,8 @@ void main(void) {
 					usart_puts("\n\rdone receiving - sending via serial/fsk\n\r");
 #endif
 #ifdef OUTPUT_ON_SERIAL
+					sprintf(debug_buffer, "<- ");
+					usart_puts(debug_buffer);
 					for (i = 0; i < fifo_in_use(); i++) {
 						// get every data from fifo...
 						fifo_get(&sub_cmd);
@@ -184,9 +186,11 @@ void main(void) {
 						// ...and put it back
 						fifo_put(sub_cmd);
 					}
+					sprintf(debug_buffer, "\n\r");
+					usart_puts(debug_buffer);
 #endif
 					fsk_tx_enable();
-					while (fifo_get(&cmd)) {	// and print them to serial
+					while (fifo_get(&cmd)) {	// and send them via fsk
 						fsk_tx_byte(cmd);
 						sleep_ms(FSK_TX_SLEEP);
 					}
@@ -216,6 +220,8 @@ void main(void) {
 					fsk_rx_disable();
 
 #ifdef OUTPUT_ON_SERIAL
+					sprintf(debug_buffer, "-> ");
+					usart_puts(debug_buffer);
 					for (i = 0; i < fifo_in_use(); i++) {
 						// get every data from fifo...
 						fifo_get(&sub_cmd);
@@ -225,6 +231,8 @@ void main(void) {
 						// ...and put it back
 						fifo_put(sub_cmd);
 					}
+					sprintf(debug_buffer, "\n\r");
+					usart_puts(debug_buffer);
 #endif               	
 
 					// Send reply back to iOS
@@ -263,6 +271,8 @@ void main(void) {
 					usart_puts("\n\rkamstrup - kmp frame received:\n\r");
 #endif
 #ifdef OUTPUT_ON_SERIAL
+					sprintf(debug_buffer, "-> ");
+					usart_puts(debug_buffer);
 					for (i = 0; i < fifo_in_use(); i++) {
 						// get every data from fifo...
 						fifo_get(&sub_cmd);
@@ -272,6 +282,8 @@ void main(void) {
 						// ...and put it back
 						fifo_put(sub_cmd);
 					}
+					sprintf(debug_buffer, "\n\r");
+					usart_puts(debug_buffer);
 #endif
 					
 					rs232_8n2_tx_enable(TIMER0_RS232_1200);
@@ -303,6 +315,8 @@ void main(void) {
 					usart_puts("\n\rkamstrup - kmp reply received:\n\r");
 #endif
 #ifdef OUTPUT_ON_SERIAL
+					sprintf(debug_buffer, "<- ");
+					usart_puts(debug_buffer);
 					for (i = 0; i < fifo_in_use(); i++) {
 						// get every data from fifo...
 						fifo_get(&sub_cmd);
@@ -312,6 +326,8 @@ void main(void) {
 						// ...and put it back
 						fifo_put(sub_cmd);
 					}
+					sprintf(debug_buffer, "\n\r");
+					usart_puts(debug_buffer);
 #endif					
 					if (fifo_in_use()) {
 						// if there was a reply from kamstrup meter...
@@ -382,6 +398,8 @@ void main(void) {
 					usart_puts("\n\rkamstrup - IEC61107 frame received:\n\r");
 #endif
 #ifdef OUTPUT_ON_SERIAL
+					sprintf(debug_buffer, "-> ");
+					usart_puts(debug_buffer);
 					for (i = 0; i < fifo_in_use(); i++) {
 						// get every data from fifo...
 						fifo_get(&sub_cmd);
@@ -391,6 +409,8 @@ void main(void) {
 						// ...and put it back
 						fifo_put(sub_cmd);
 					}
+					sprintf(debug_buffer, "\n\r");
+					usart_puts(debug_buffer);
 #endif
 					rs232_7e1_tx_enable(TIMER0_RS232_300);
 					while (fifo_get(&sub_cmd)) {
@@ -421,6 +441,8 @@ void main(void) {
 					usart_puts("\n\rkamstrup - IEC61107 reply received:\n\r");
 #endif
 #ifdef OUTPUT_ON_SERIAL
+					sprintf(debug_buffer, "<- ");
+					usart_puts(debug_buffer);
 					for (i = 0; i < fifo_in_use(); i++) {
 						// get every data from fifo...
 						fifo_get(&sub_cmd);
@@ -430,6 +452,8 @@ void main(void) {
 						// ...and put it back
 						fifo_put(sub_cmd);
 					}
+					sprintf(debug_buffer, "\n\r");
+					usart_puts(debug_buffer);
 #endif					
 					if (fifo_in_use()) {
 						// if there was a reply from kamstrup meter...
