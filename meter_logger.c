@@ -331,12 +331,6 @@ void main(void) {
 #endif					
 					if (fifo_in_use()) {
 						// if there was a reply from kamstrup meter...
-						DEBUG2_PIN = 1;
-						__asm
-							nop
-							nop
-						__endasm;
-						DEBUG2_PIN = 0;
 						fsk_tx_enable();
 						while (fifo_get(&sub_cmd)) {
 							fsk_tx_byte(sub_cmd);
@@ -346,22 +340,6 @@ void main(void) {
 					}
 					else {
 						// no reply from kamstrup meter...
-						DEBUG2_PIN = 1;
-						__asm
-							nop
-							nop
-						__endasm;
-						DEBUG2_PIN = 0;
-						__asm
-							nop
-							nop
-						__endasm;
-						DEBUG2_PIN = 1;
-						__asm
-							nop
-							nop
-						__endasm;
-						DEBUG2_PIN = 0;
 #ifdef DEBUG
 						sprintf(debug_buffer, "\n\rno reply from meter\n\r");
 						usart_puts(debug_buffer);
@@ -457,12 +435,6 @@ void main(void) {
 #endif					
 					if (fifo_in_use()) {
 						// if there was a reply from kamstrup meter...
-						DEBUG2_PIN = 1;
-						__asm
-							nop
-							nop
-						__endasm;
-						DEBUG2_PIN = 0;
 						fsk_tx_enable();
 						while (fifo_get(&sub_cmd)) {
 							fsk_tx_byte(sub_cmd);
@@ -472,22 +444,6 @@ void main(void) {
 					}
 					else {
 						// no reply from kamstrup meter...
-						DEBUG2_PIN = 1;
-						__asm
-							nop
-							nop
-						__endasm;
-						DEBUG2_PIN = 0;
-						__asm
-							nop
-							nop
-						__endasm;
-						DEBUG2_PIN = 1;
-						__asm
-							nop
-							nop
-						__endasm;
-						DEBUG2_PIN = 0;
 #ifdef DEBUG
 						sprintf(debug_buffer, "\n\rno reply from meter\n\r");
 						usart_puts(debug_buffer);
