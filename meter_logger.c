@@ -9,7 +9,7 @@
 
 #define DEBUG
 //#define DEBUG_RS232_8N2_RX
-//#define DEBUG_RS232_7E1_RX
+#define DEBUG_RS232_7E1_RX
 #define OUTPUT_ON_SERIAL
 #define DEBUG_LED_ON_FSK_RX
 #define DEBUG_LED_ON_FSK_TX

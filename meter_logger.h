@@ -26,7 +26,7 @@
 #define SOFT_MODEM_LOW_FREQ		(4900)
 #define SOFT_MODEM_HIGH_FREQ	(7350)
 		
-#define FSK_TX_SLEEP			(2)
+#define FSK_TX_SLEEP			(4)
 #define RS232_TX_SLEEP			(12)
 
 #define OUTPUT_STATE (0)

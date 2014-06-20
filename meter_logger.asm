@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
-; Version 3.4.0 #8981 (Jun  6 2014) (Mac OS X x86_64)
-; This file was generated Thu Jun 19 02:41:35 2014
+; Version 3.3.0 #8604 (Oct 27 2013) (Mac OS X x86_64)
+; This file was generated Fri Jun 20 03:38:40 2014
 ;--------------------------------------------------------
 ; PIC16 port for the Microchip 16-bit core micros
 ;--------------------------------------------------------
@@ -502,11 +502,11 @@ _main:
 	MOVF	POSTINC1, F
 	MOVF	POSTINC1, F
 ;	.line	134; meter_logger.c	usart_puts("\n\rMeterLogger... serial working\n\r");
-	MOVLW	UPPER(___str_0)
+	MOVLW	UPPER(__str_0)
 	MOVWF	r0x02
-	MOVLW	HIGH(___str_0)
+	MOVLW	HIGH(__str_0)
 	MOVWF	r0x01
-	MOVLW	LOW(___str_0)
+	MOVLW	LOW(__str_0)
 	MOVWF	r0x00
 	MOVF	r0x02, W
 	MOVWF	POSTDEC1
@@ -534,11 +534,11 @@ _00325_DS_:
 	BRA	_00109_DS_
 _00326_DS_:
 ;	.line	144; meter_logger.c	sprintf(debug_buffer, "Processor: pic18f2550\n\r");
-	MOVLW	UPPER(___str_1)
+	MOVLW	UPPER(__str_1)
 	MOVWF	r0x04
-	MOVLW	HIGH(___str_1)
+	MOVLW	HIGH(__str_1)
 	MOVWF	r0x03
-	MOVLW	LOW(___str_1)
+	MOVLW	LOW(__str_1)
 	MOVWF	r0x02
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x06
@@ -574,11 +574,11 @@ _00327_DS_:
 	BRA	_00106_DS_
 _00328_DS_:
 ;	.line	147; meter_logger.c	sprintf(debug_buffer, "Processor: pic18f2553\n\r");
-	MOVLW	UPPER(___str_2)
+	MOVLW	UPPER(__str_2)
 	MOVWF	r0x04
-	MOVLW	HIGH(___str_2)
+	MOVLW	HIGH(__str_2)
 	MOVWF	r0x03
-	MOVLW	LOW(___str_2)
+	MOVLW	LOW(__str_2)
 	MOVWF	r0x02
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x06
@@ -604,11 +604,11 @@ _00328_DS_:
 	BRA	_00110_DS_
 _00106_DS_:
 ;	.line	150; meter_logger.c	sprintf(debug_buffer, "Processor: unsupported, device id: 0x%04x\n\r", dev_id);
-	MOVLW	UPPER(___str_3)
+	MOVLW	UPPER(__str_3)
 	MOVWF	r0x04
-	MOVLW	HIGH(___str_3)
+	MOVLW	HIGH(__str_3)
 	MOVWF	r0x03
-	MOVLW	LOW(___str_3)
+	MOVLW	LOW(__str_3)
 	MOVWF	r0x02
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x06
@@ -708,11 +708,11 @@ _00111_DS_:
 ;	.line	160; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
 ;	.line	161; meter_logger.c	usart_puts("\n\rpress print on testo\n\r");
-	MOVLW	UPPER(___str_4)
+	MOVLW	UPPER(__str_4)
 	MOVWF	r0x02
-	MOVLW	HIGH(___str_4)
+	MOVLW	HIGH(__str_4)
 	MOVWF	r0x01
-	MOVLW	LOW(___str_4)
+	MOVLW	LOW(__str_4)
 	MOVWF	r0x00
 	MOVF	r0x02, W
 	MOVWF	POSTDEC1
@@ -769,11 +769,11 @@ _00114_DS_:
 ;	.line	172; meter_logger.c	testo_ir_disable();
 	CALL	_testo_ir_disable
 ;	.line	175; meter_logger.c	usart_puts("\n\rdone receiving - sending via serial/fsk\n\r");
-	MOVLW	UPPER(___str_5)
+	MOVLW	UPPER(__str_5)
 	MOVWF	r0x06
-	MOVLW	HIGH(___str_5)
+	MOVLW	HIGH(__str_5)
 	MOVWF	r0x05
-	MOVLW	LOW(___str_5)
+	MOVLW	LOW(__str_5)
 	MOVWF	r0x04
 	MOVF	r0x06, W
 	MOVWF	POSTDEC1
@@ -818,11 +818,11 @@ _00332_DS_:
 ;	.line	182; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
 	MOVFF	_main_sub_cmd_1_90, r0x06
 	CLRF	r0x07
-	MOVLW	UPPER(___str_6)
+	MOVLW	UPPER(__str_6)
 	MOVWF	r0x0a
-	MOVLW	HIGH(___str_6)
+	MOVLW	HIGH(__str_6)
 	MOVWF	r0x09
-	MOVLW	LOW(___str_6)
+	MOVLW	LOW(__str_6)
 	MOVWF	r0x08
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x0c
@@ -907,7 +907,7 @@ _00116_DS_:
 ;	.line	191; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x02
+	MOVLW	0x04
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
@@ -917,11 +917,11 @@ _00118_DS_:
 ;	.line	193; meter_logger.c	fsk_tx_disable();
 	CALL	_fsk_tx_disable
 ;	.line	195; meter_logger.c	usart_puts("\n\rwaiting for new command\n\r");
-	MOVLW	UPPER(___str_7)
+	MOVLW	UPPER(__str_7)
 	MOVWF	r0x06
-	MOVLW	HIGH(___str_7)
+	MOVLW	HIGH(__str_7)
 	MOVWF	r0x05
-	MOVLW	LOW(___str_7)
+	MOVLW	LOW(__str_7)
 	MOVWF	r0x04
 	MOVF	r0x06, W
 	MOVWF	POSTDEC1
@@ -940,11 +940,11 @@ _00119_DS_:
 ;	.line	202; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
 ;	.line	203; meter_logger.c	usart_puts("\n\recho test - send some data\n\r");
-	MOVLW	UPPER(___str_8)
+	MOVLW	UPPER(__str_8)
 	MOVWF	r0x06
-	MOVLW	HIGH(___str_8)
+	MOVLW	HIGH(__str_8)
 	MOVWF	r0x05
-	MOVLW	LOW(___str_8)
+	MOVLW	LOW(__str_8)
 	MOVWF	r0x04
 	MOVF	r0x06, W
 	MOVWF	POSTDEC1
@@ -1034,11 +1034,11 @@ _00334_DS_:
 ;	.line	223; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
 	MOVFF	_main_sub_cmd_1_90, r0x06
 	CLRF	r0x07
-	MOVLW	UPPER(___str_6)
+	MOVLW	UPPER(__str_6)
 	MOVWF	r0x0a
-	MOVLW	HIGH(___str_6)
+	MOVLW	HIGH(__str_6)
 	MOVWF	r0x09
-	MOVLW	LOW(___str_6)
+	MOVLW	LOW(__str_6)
 	MOVWF	r0x08
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x0c
@@ -1123,7 +1123,7 @@ _00124_DS_:
 ;	.line	234; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x02
+	MOVLW	0x04
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
@@ -1133,11 +1133,11 @@ _00126_DS_:
 ;	.line	236; meter_logger.c	fsk_tx_disable();
 	CALL	_fsk_tx_disable
 ;	.line	239; meter_logger.c	usart_puts("\n\rwaiting for new command\n\r");
-	MOVLW	UPPER(___str_7)
+	MOVLW	UPPER(__str_7)
 	MOVWF	r0x06
-	MOVLW	HIGH(___str_7)
+	MOVLW	HIGH(__str_7)
 	MOVWF	r0x05
-	MOVLW	LOW(___str_7)
+	MOVLW	LOW(__str_7)
 	MOVWF	r0x04
 	MOVF	r0x06, W
 	MOVWF	POSTDEC1
@@ -1156,11 +1156,11 @@ _00127_DS_:
 ;	.line	245; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
 ;	.line	247; meter_logger.c	usart_puts("\n\rkamstrup - send kmp frame data\n\r");
-	MOVLW	UPPER(___str_9)
+	MOVLW	UPPER(__str_9)
 	MOVWF	r0x06
-	MOVLW	HIGH(___str_9)
+	MOVLW	HIGH(__str_9)
 	MOVWF	r0x05
-	MOVLW	LOW(___str_9)
+	MOVLW	LOW(__str_9)
 	MOVWF	r0x04
 	MOVF	r0x06, W
 	MOVWF	POSTDEC1
@@ -1217,11 +1217,11 @@ _00130_DS_:
 ;	.line	260; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
 ;	.line	263; meter_logger.c	usart_puts("\n\rkamstrup - kmp frame received:\n\r");
-	MOVLW	UPPER(___str_10)
+	MOVLW	UPPER(__str_10)
 	MOVWF	r0x06
-	MOVLW	HIGH(___str_10)
+	MOVLW	HIGH(__str_10)
 	MOVWF	r0x05
-	MOVLW	LOW(___str_10)
+	MOVLW	LOW(__str_10)
 	MOVWF	r0x04
 	MOVF	r0x06, W
 	MOVWF	POSTDEC1
@@ -1266,11 +1266,11 @@ _00336_DS_:
 ;	.line	270; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
 	MOVFF	_main_sub_cmd_1_90, r0x06
 	CLRF	r0x07
-	MOVLW	UPPER(___str_6)
+	MOVLW	UPPER(__str_6)
 	MOVWF	r0x0a
-	MOVLW	HIGH(___str_6)
+	MOVLW	HIGH(__str_6)
 	MOVWF	r0x09
-	MOVLW	LOW(___str_6)
+	MOVLW	LOW(__str_6)
 	MOVWF	r0x08
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x0c
@@ -1422,11 +1422,11 @@ _00137_DS_:
 ;	.line	299; meter_logger.c	rs232_8n2_rx_disable();
 	CALL	_rs232_8n2_rx_disable
 ;	.line	303; meter_logger.c	usart_puts("\n\rkamstrup - kmp reply received:\n\r");
-	MOVLW	UPPER(___str_11)
+	MOVLW	UPPER(__str_11)
 	MOVWF	r0x06
-	MOVLW	HIGH(___str_11)
+	MOVLW	HIGH(__str_11)
 	MOVWF	r0x05
-	MOVLW	LOW(___str_11)
+	MOVLW	LOW(__str_11)
 	MOVWF	r0x04
 	MOVF	r0x06, W
 	MOVWF	POSTDEC1
@@ -1471,11 +1471,11 @@ _00338_DS_:
 ;	.line	310; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
 	MOVFF	_main_sub_cmd_1_90, r0x06
 	CLRF	r0x07
-	MOVLW	UPPER(___str_6)
+	MOVLW	UPPER(__str_6)
 	MOVWF	r0x0a
-	MOVLW	HIGH(___str_6)
+	MOVLW	HIGH(__str_6)
 	MOVWF	r0x09
-	MOVLW	LOW(___str_6)
+	MOVLW	LOW(__str_6)
 	MOVWF	r0x08
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x0c
@@ -1574,7 +1574,7 @@ _00139_DS_:
 ;	.line	327; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x02
+	MOVLW	0x04
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
@@ -1603,11 +1603,11 @@ _00143_DS_:
 ;	.line	348; meter_logger.c	DEBUG2_PIN = 0;
 	BCF	_PORTBbits, 3
 ;	.line	350; meter_logger.c	sprintf(debug_buffer, "\n\rno reply from meter\n\r");
-	MOVLW	UPPER(___str_12)
+	MOVLW	UPPER(__str_12)
 	MOVWF	r0x06
-	MOVLW	HIGH(___str_12)
+	MOVLW	HIGH(__str_12)
 	MOVWF	r0x05
-	MOVLW	LOW(___str_12)
+	MOVLW	LOW(__str_12)
 	MOVWF	r0x04
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x08
@@ -1656,7 +1656,7 @@ _00143_DS_:
 ;	.line	355; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x02
+	MOVLW	0x04
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
@@ -1665,11 +1665,11 @@ _00143_DS_:
 	CALL	_fsk_tx_disable
 _00144_DS_:
 ;	.line	359; meter_logger.c	usart_puts("\n\rwaiting for new command\n\r");
-	MOVLW	UPPER(___str_7)
+	MOVLW	UPPER(__str_7)
 	MOVWF	r0x06
-	MOVLW	HIGH(___str_7)
+	MOVLW	HIGH(__str_7)
 	MOVWF	r0x05
-	MOVLW	LOW(___str_7)
+	MOVLW	LOW(__str_7)
 	MOVWF	r0x04
 	MOVF	r0x06, W
 	MOVWF	POSTDEC1
@@ -1688,11 +1688,11 @@ _00145_DS_:
 ;	.line	364; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
 ;	.line	366; meter_logger.c	usart_puts("\n\rkamstrup - send IEC61107 frame data\n\r");
-	MOVLW	UPPER(___str_13)
+	MOVLW	UPPER(__str_13)
 	MOVWF	r0x06
-	MOVLW	HIGH(___str_13)
+	MOVLW	HIGH(__str_13)
 	MOVWF	r0x05
-	MOVLW	LOW(___str_13)
+	MOVLW	LOW(__str_13)
 	MOVWF	r0x04
 	MOVF	r0x06, W
 	MOVWF	POSTDEC1
@@ -1749,11 +1749,11 @@ _00148_DS_:
 ;	.line	379; meter_logger.c	fsk_rx_disable();
 	CALL	_fsk_rx_disable
 ;	.line	382; meter_logger.c	usart_puts("\n\rkamstrup - IEC61107 frame received:\n\r");
-	MOVLW	UPPER(___str_14)
+	MOVLW	UPPER(__str_14)
 	MOVWF	r0x06
-	MOVLW	HIGH(___str_14)
+	MOVLW	HIGH(__str_14)
 	MOVWF	r0x05
-	MOVLW	LOW(___str_14)
+	MOVLW	LOW(__str_14)
 	MOVWF	r0x04
 	MOVF	r0x06, W
 	MOVWF	POSTDEC1
@@ -1798,11 +1798,11 @@ _00340_DS_:
 ;	.line	389; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
 	MOVFF	_main_sub_cmd_1_90, r0x06
 	CLRF	r0x07
-	MOVLW	UPPER(___str_6)
+	MOVLW	UPPER(__str_6)
 	MOVWF	r0x0a
-	MOVLW	HIGH(___str_6)
+	MOVLW	HIGH(__str_6)
 	MOVWF	r0x09
-	MOVLW	LOW(___str_6)
+	MOVLW	LOW(__str_6)
 	MOVWF	r0x08
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x0c
@@ -1954,11 +1954,11 @@ _00155_DS_:
 ;	.line	417; meter_logger.c	rs232_7e1_rx_disable();
 	CALL	_rs232_7e1_rx_disable
 ;	.line	421; meter_logger.c	usart_puts("\n\rkamstrup - IEC61107 reply received:\n\r");
-	MOVLW	UPPER(___str_15)
+	MOVLW	UPPER(__str_15)
 	MOVWF	r0x02
-	MOVLW	HIGH(___str_15)
+	MOVLW	HIGH(__str_15)
 	MOVWF	r0x01
-	MOVLW	LOW(___str_15)
+	MOVLW	LOW(__str_15)
 	MOVWF	r0x00
 	MOVF	r0x02, W
 	MOVWF	POSTDEC1
@@ -2003,11 +2003,11 @@ _00342_DS_:
 ;	.line	428; meter_logger.c	sprintf(debug_buffer, "%d ", sub_cmd);
 	MOVFF	_main_sub_cmd_1_90, r0x02
 	CLRF	r0x03
-	MOVLW	UPPER(___str_6)
+	MOVLW	UPPER(__str_6)
 	MOVWF	r0x06
-	MOVLW	HIGH(___str_6)
+	MOVLW	HIGH(__str_6)
 	MOVWF	r0x05
-	MOVLW	LOW(___str_6)
+	MOVLW	LOW(__str_6)
 	MOVWF	r0x04
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x08
@@ -2106,7 +2106,7 @@ _00157_DS_:
 ;	.line	445; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x02
+	MOVLW	0x04
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
@@ -2135,11 +2135,11 @@ _00161_DS_:
 ;	.line	466; meter_logger.c	DEBUG2_PIN = 0;
 	BCF	_PORTBbits, 3
 ;	.line	468; meter_logger.c	sprintf(debug_buffer, "\n\rno reply from meter\n\r");
-	MOVLW	UPPER(___str_12)
+	MOVLW	UPPER(__str_12)
 	MOVWF	r0x02
-	MOVLW	HIGH(___str_12)
+	MOVLW	HIGH(__str_12)
 	MOVWF	r0x01
-	MOVLW	LOW(___str_12)
+	MOVLW	LOW(__str_12)
 	MOVWF	r0x00
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x04
@@ -2188,7 +2188,7 @@ _00161_DS_:
 ;	.line	473; meter_logger.c	sleep_ms(FSK_TX_SLEEP);
 	MOVLW	0x00
 	MOVWF	POSTDEC1
-	MOVLW	0x02
+	MOVLW	0x04
 	MOVWF	POSTDEC1
 	CALL	_sleep_ms
 	MOVF	POSTINC1, F
@@ -2197,11 +2197,11 @@ _00161_DS_:
 	CALL	_fsk_tx_disable
 _00162_DS_:
 ;	.line	477; meter_logger.c	usart_puts("\n\rwaiting for new command\n\r");
-	MOVLW	UPPER(___str_7)
+	MOVLW	UPPER(__str_7)
 	MOVWF	r0x02
-	MOVLW	HIGH(___str_7)
+	MOVLW	HIGH(__str_7)
 	MOVWF	r0x01
-	MOVLW	LOW(___str_7)
+	MOVLW	LOW(__str_7)
 	MOVWF	r0x00
 	MOVF	r0x02, W
 	MOVWF	POSTDEC1
@@ -2649,11 +2649,11 @@ _01176_DS_:
 	CLRF	r0x03
 _01180_DS_:
 ;	.line	4548; meter_logger.c	sprintf(debug_buffer, "Battery: %dmV\n\r", v_level);
-	MOVLW	UPPER(___str_16)
+	MOVLW	UPPER(__str_16)
 	MOVWF	r0x04
-	MOVLW	HIGH(___str_16)
+	MOVLW	HIGH(__str_16)
 	MOVWF	r0x01
-	MOVLW	LOW(___str_16)
+	MOVLW	LOW(__str_16)
 	MOVWF	r0x00
 	MOVLW	HIGH(_debug_buffer)
 	MOVWF	r0x06
@@ -8003,7 +8003,13 @@ _00384_DS_:
 	MOVF	_rs232_proto, W, B
 	XORLW	0x02
 	BNZ	_00387_DS_
-_00727_DS_:
+;	.line	597; meter_logger.c	DEBUG3_PIN = 1;
+	BSF	_PORTBbits, 4
+	nop
+	nop
+	
+;	.line	602; meter_logger.c	DEBUG3_PIN = 0;
+	BCF	_PORTBbits, 4
 	BANKSEL	_timer0_reload
 ;	.line	605; meter_logger.c	TMR0H = (unsigned char)((timer0_reload - ((0xffff - timer0_reload) >> 1)) >> 8);
 	MOVF	_timer0_reload, W, B
@@ -8128,7 +8134,7 @@ _00391_DS_:
 	CLRF	_testo_ir_proto, B
 	sleep 
 ;	.line	629; meter_logger.c	break;
-	BRA	_00461_DS_
+	GOTO	_00461_DS_
 _00392_DS_:
 ;	.line	631; meter_logger.c	switch (rs232_proto.state) {
 	MOVFF	_rs232_proto, r0x00
@@ -8476,10 +8482,14 @@ _00424_DS_:
 	BZ	_00425_DS_
 	MOVF	r0x00, W
 	XORLW	0x07
-	BZ	_00431_DS_
+	BNZ	_00770_DS_
+	BRA	_00431_DS_
+_00770_DS_:
 	MOVF	r0x00, W
 	XORLW	0x08
-	BZ	_00432_DS_
+	BNZ	_00772_DS_
+	BRA	_00432_DS_
+_00772_DS_:
 	BRA	_00461_DS_
 _00425_DS_:
 ;	.line	753; meter_logger.c	rs232_proto.data_len++;
@@ -8499,6 +8509,13 @@ _00425_DS_:
 	MOVF	r0x00, W
 ; removed redundant BANKSEL
 	MOVWF	(_rs232_proto + 2), B
+;	.line	758; meter_logger.c	DEBUG3_PIN = 1;
+	BSF	_PORTBbits, 4
+	nop
+	nop
+	
+;	.line	763; meter_logger.c	DEBUG3_PIN = 0;
+	BCF	_PORTBbits, 4
 	BRA	_00428_DS_
 _00427_DS_:
 	BANKSEL	(_rs232_proto + 2)
@@ -8517,6 +8534,23 @@ _00427_DS_:
 	MOVF	r0x00, W
 ; removed redundant BANKSEL
 	MOVWF	(_rs232_proto + 2), B
+;	.line	771; meter_logger.c	DEBUG3_PIN = 1;
+	BSF	_PORTBbits, 4
+	nop
+	nop
+	
+;	.line	776; meter_logger.c	DEBUG3_PIN = 0;
+	BCF	_PORTBbits, 4
+	nop
+	nop
+	
+;	.line	781; meter_logger.c	DEBUG3_PIN = 1;
+	BSF	_PORTBbits, 4
+	nop
+	nop
+	
+;	.line	786; meter_logger.c	DEBUG3_PIN = 0;
+	BCF	_PORTBbits, 4
 _00428_DS_:
 ;	.line	789; meter_logger.c	if (rs232_proto.data_len >= 7) {
 	MOVLW	0x07
@@ -8973,94 +9007,94 @@ _00482_DS_:
 	RETFIE	
 
 ; ; Starting pCode block
-___str_0:
+__str_0:
 	DB	0x0a, 0x0d, 0x4d, 0x65, 0x74, 0x65, 0x72, 0x4c, 0x6f, 0x67, 0x67, 0x65
 	DB	0x72, 0x2e, 0x2e, 0x2e, 0x20, 0x73, 0x65, 0x72, 0x69, 0x61, 0x6c, 0x20
 	DB	0x77, 0x6f, 0x72, 0x6b, 0x69, 0x6e, 0x67, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_1:
+__str_1:
 	DB	0x50, 0x72, 0x6f, 0x63, 0x65, 0x73, 0x73, 0x6f, 0x72, 0x3a, 0x20, 0x70
 	DB	0x69, 0x63, 0x31, 0x38, 0x66, 0x32, 0x35, 0x35, 0x30, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_2:
+__str_2:
 	DB	0x50, 0x72, 0x6f, 0x63, 0x65, 0x73, 0x73, 0x6f, 0x72, 0x3a, 0x20, 0x70
 	DB	0x69, 0x63, 0x31, 0x38, 0x66, 0x32, 0x35, 0x35, 0x33, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_3:
+__str_3:
 	DB	0x50, 0x72, 0x6f, 0x63, 0x65, 0x73, 0x73, 0x6f, 0x72, 0x3a, 0x20, 0x75
 	DB	0x6e, 0x73, 0x75, 0x70, 0x70, 0x6f, 0x72, 0x74, 0x65, 0x64, 0x2c, 0x20
 	DB	0x64, 0x65, 0x76, 0x69, 0x63, 0x65, 0x20, 0x69, 0x64, 0x3a, 0x20, 0x30
 	DB	0x78, 0x25, 0x30, 0x34, 0x78, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_4:
+__str_4:
 	DB	0x0a, 0x0d, 0x70, 0x72, 0x65, 0x73, 0x73, 0x20, 0x70, 0x72, 0x69, 0x6e
 	DB	0x74, 0x20, 0x6f, 0x6e, 0x20, 0x74, 0x65, 0x73, 0x74, 0x6f, 0x0a, 0x0d
 	DB	0x00
 ; ; Starting pCode block
-___str_5:
+__str_5:
 	DB	0x0a, 0x0d, 0x64, 0x6f, 0x6e, 0x65, 0x20, 0x72, 0x65, 0x63, 0x65, 0x69
 	DB	0x76, 0x69, 0x6e, 0x67, 0x20, 0x2d, 0x20, 0x73, 0x65, 0x6e, 0x64, 0x69
 	DB	0x6e, 0x67, 0x20, 0x76, 0x69, 0x61, 0x20, 0x73, 0x65, 0x72, 0x69, 0x61
 	DB	0x6c, 0x2f, 0x66, 0x73, 0x6b, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_6:
+__str_6:
 	DB	0x25, 0x64, 0x20, 0x00
 ; ; Starting pCode block
-___str_7:
+__str_7:
 	DB	0x0a, 0x0d, 0x77, 0x61, 0x69, 0x74, 0x69, 0x6e, 0x67, 0x20, 0x66, 0x6f
 	DB	0x72, 0x20, 0x6e, 0x65, 0x77, 0x20, 0x63, 0x6f, 0x6d, 0x6d, 0x61, 0x6e
 	DB	0x64, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_8:
+__str_8:
 	DB	0x0a, 0x0d, 0x65, 0x63, 0x68, 0x6f, 0x20, 0x74, 0x65, 0x73, 0x74, 0x20
 	DB	0x2d, 0x20, 0x73, 0x65, 0x6e, 0x64, 0x20, 0x73, 0x6f, 0x6d, 0x65, 0x20
 	DB	0x64, 0x61, 0x74, 0x61, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_9:
+__str_9:
 	DB	0x0a, 0x0d, 0x6b, 0x61, 0x6d, 0x73, 0x74, 0x72, 0x75, 0x70, 0x20, 0x2d
 	DB	0x20, 0x73, 0x65, 0x6e, 0x64, 0x20, 0x6b, 0x6d, 0x70, 0x20, 0x66, 0x72
 	DB	0x61, 0x6d, 0x65, 0x20, 0x64, 0x61, 0x74, 0x61, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_10:
+__str_10:
 	DB	0x0a, 0x0d, 0x6b, 0x61, 0x6d, 0x73, 0x74, 0x72, 0x75, 0x70, 0x20, 0x2d
 	DB	0x20, 0x6b, 0x6d, 0x70, 0x20, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x20, 0x72
 	DB	0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x3a, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_11:
+__str_11:
 	DB	0x0a, 0x0d, 0x6b, 0x61, 0x6d, 0x73, 0x74, 0x72, 0x75, 0x70, 0x20, 0x2d
 	DB	0x20, 0x6b, 0x6d, 0x70, 0x20, 0x72, 0x65, 0x70, 0x6c, 0x79, 0x20, 0x72
 	DB	0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x3a, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_12:
+__str_12:
 	DB	0x0a, 0x0d, 0x6e, 0x6f, 0x20, 0x72, 0x65, 0x70, 0x6c, 0x79, 0x20, 0x66
 	DB	0x72, 0x6f, 0x6d, 0x20, 0x6d, 0x65, 0x74, 0x65, 0x72, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_13:
+__str_13:
 	DB	0x0a, 0x0d, 0x6b, 0x61, 0x6d, 0x73, 0x74, 0x72, 0x75, 0x70, 0x20, 0x2d
 	DB	0x20, 0x73, 0x65, 0x6e, 0x64, 0x20, 0x49, 0x45, 0x43, 0x36, 0x31, 0x31
 	DB	0x30, 0x37, 0x20, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x20, 0x64, 0x61, 0x74
 	DB	0x61, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_14:
+__str_14:
 	DB	0x0a, 0x0d, 0x6b, 0x61, 0x6d, 0x73, 0x74, 0x72, 0x75, 0x70, 0x20, 0x2d
 	DB	0x20, 0x49, 0x45, 0x43, 0x36, 0x31, 0x31, 0x30, 0x37, 0x20, 0x66, 0x72
 	DB	0x61, 0x6d, 0x65, 0x20, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64
 	DB	0x3a, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_15:
+__str_15:
 	DB	0x0a, 0x0d, 0x6b, 0x61, 0x6d, 0x73, 0x74, 0x72, 0x75, 0x70, 0x20, 0x2d
 	DB	0x20, 0x49, 0x45, 0x43, 0x36, 0x31, 0x31, 0x30, 0x37, 0x20, 0x72, 0x65
 	DB	0x70, 0x6c, 0x79, 0x20, 0x72, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64
 	DB	0x3a, 0x0a, 0x0d, 0x00
 ; ; Starting pCode block
-___str_16:
+__str_16:
 	DB	0x42, 0x61, 0x74, 0x74, 0x65, 0x72, 0x79, 0x3a, 0x20, 0x25, 0x64, 0x6d
 	DB	0x56, 0x0a, 0x0d, 0x00
 
 
 ; Statistics:
-; code size:	15794 (0x3db2) bytes (12.05%)
-;           	 7897 (0x1ed9) words
+; code size:	15846 (0x3de6) bytes (12.09%)
+;           	 7923 (0x1ef3) words
 ; udata size:	 1198 (0x04ae) bytes (66.85%)
 ; access size:	   14 (0x000e) bytes
 
