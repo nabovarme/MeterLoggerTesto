@@ -786,6 +786,8 @@ static void isr_high_prio(void) __interrupt 1 {
 						}
 						else {
 							// parity error dont transmit
+							// DEBUG: transmit it anyway, multical iii sends last byte with parity error
+							fifo_put(rs232_proto.data);
 						}
 						rs232_proto.data = 0;
 						rs232_proto.data_len = 0;
