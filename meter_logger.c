@@ -465,6 +465,11 @@ void main(void) {
 					fsk_rx_enable();
 					break;
 			}
+			
+			// empty fifo...
+			while (fifo_in_use()) {
+				fifo_get(&sub_cmd);
+			}
 		}
 	}
 }
