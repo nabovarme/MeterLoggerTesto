@@ -990,6 +990,7 @@ void sleep_ms(unsigned int ms) {
 	start_timer_1_ms = timer_1_ms;	
 
 // while the absolute value of the time diff < ms
+	/*
     do {
         if (start_timer_1_ms <= timer_1_ms) {
             diff = timer_1_ms - start_timer_1_ms;
@@ -999,9 +1000,10 @@ void sleep_ms(unsigned int ms) {
             diff = 0xffff - start_timer_1_ms + timer_1_ms;
         }
     } while (diff < ms);
-//	while ( (((signed int)(timer_1_ms - start_timer_1_ms) < 0) ? (-(timer_1_ms - start_timer_1_ms)) : (timer_1_ms - start_timer_1_ms)) < ms) {
+	*/
+	while ( (((signed int)(timer_1_ms - start_timer_1_ms) < 0) ? (-(timer_1_ms - start_timer_1_ms)) : (timer_1_ms - start_timer_1_ms)) < ms) {
 		// do nothing
-//	}
+	}
 }
 
 void init_system() {
