@@ -999,7 +999,7 @@ void sleep_ms(unsigned int ms) {
         }
         else {
             // timer_1_ms wrapped
-            diff = (unsigned int)(0xffff - start_timer_1_ms + timer_1_ms);
+            diff = 0xffff - start_timer_1_ms + timer_1_ms;
         }
     } while (diff < ms);
 	/*
