@@ -25,20 +25,20 @@
 #define QUEUE_SIZE_COMBINED (4 * QUEUE_SIZE)
 
 // Global variables
-unsigned int timer_0;
-unsigned int last_timer_0;
-unsigned int timer_1_ms;
+volatile unsigned int timer_0;
+volatile unsigned int last_timer_0;
+volatile unsigned int timer_1_ms;
 volatile unsigned int timer0_reload;
 
 unsigned char debug_buffer[DEBUG_BUFFER_MAX];
 unsigned char c;	// used in interrupt as buffer for fifo stuff
 
 // command queue
-unsigned int fifo_head, fifo_tail;
-unsigned char fifo_buffer_0[QUEUE_SIZE];
-unsigned char fifo_buffer_1[QUEUE_SIZE];
-unsigned char fifo_buffer_2[QUEUE_SIZE];
-unsigned char fifo_buffer_3[QUEUE_SIZE];
+volatile unsigned int fifo_head, fifo_tail;
+volatile unsigned char fifo_buffer_0[QUEUE_SIZE];
+volatile unsigned char fifo_buffer_1[QUEUE_SIZE];
+volatile unsigned char fifo_buffer_2[QUEUE_SIZE];
+volatile unsigned char fifo_buffer_3[QUEUE_SIZE];
 
 enum codec_type_t {
 	NONE,
@@ -111,9 +111,9 @@ typedef struct {
 } led_flash_t;
 volatile led_flash_t led_flash;
 
-volatile testo_ir_proto_t testo_ir_proto;
-volatile rs232_proto_t rs232_proto;
-volatile fsk_proto_t fsk_proto;
+testo_ir_proto_t testo_ir_proto;
+rs232_proto_t rs232_proto;
+fsk_proto_t fsk_proto;
 
 void main(void) {
 	unsigned int i;
