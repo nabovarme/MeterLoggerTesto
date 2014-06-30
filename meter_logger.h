@@ -69,8 +69,8 @@
 #define TICK 855
 #define TICK_ADJ 200
 
-#define PROTO_TESTO				(254)
 #define PROTO_TESTO_DEMO		(255)
+#define PROTO_TESTO				(254)
 #define PROTO_KAMSTRUP			(253)
 #define PROTO_IEC61107			(252)
 #define PROTO_BATTERY_LEVEL		(251)
