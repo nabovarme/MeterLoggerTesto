@@ -9040,7 +9040,6 @@ Source: Fairchild .. BAT54.pdf</description>
 <part name="IC2" library="texas" deviceset="TPS770*" device="" technology="01" value="LP2992"/>
 <part name="GND14" library="supply1" deviceset="GND" device=""/>
 <part name="P+7" library="supply1" deviceset="V+" device=""/>
-<part name="P+9" library="supply1" deviceset="V+" device=""/>
 <part name="GND15" library="supply1" deviceset="GND" device=""/>
 <part name="R12" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
 <part name="R13" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
@@ -9059,6 +9058,7 @@ Source: Fairchild .. BAT54.pdf</description>
 <part name="C10" library="rcl" deviceset="C-EU" device="C0805" value="220nF"/>
 <part name="D7" library="diode" deviceset="ZENER-DIODE" device="SOT23" value="MMBZ5231BLT1G"/>
 <part name="GND20" library="supply1" deviceset="GND" device=""/>
+<part name="P+8" library="supply1" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -9107,7 +9107,6 @@ Source: Fairchild .. BAT54.pdf</description>
 <instance part="IC2" gate="G$1" x="256.54" y="88.9"/>
 <instance part="GND14" gate="1" x="243.84" y="66.04"/>
 <instance part="P+7" gate="1" x="243.84" y="114.3"/>
-<instance part="P+9" gate="1" x="33.02" y="35.56"/>
 <instance part="GND15" gate="1" x="33.02" y="5.08"/>
 <instance part="R12" gate="G$1" x="33.02" y="15.24" rot="R90"/>
 <instance part="R13" gate="G$1" x="33.02" y="27.94" rot="R90"/>
@@ -9126,6 +9125,7 @@ Source: Fairchild .. BAT54.pdf</description>
 <instance part="C10" gate="G$1" x="195.58" y="88.9" rot="R90"/>
 <instance part="D7" gate="G$1" x="231.14" y="78.74" rot="R90"/>
 <instance part="GND20" gate="1" x="231.14" y="66.04"/>
+<instance part="P+8" gate="1" x="33.02" y="38.1"/>
 </instances>
 <busses>
 </busses>
@@ -9167,6 +9167,11 @@ Source: Fairchild .. BAT54.pdf</description>
 <wire x1="281.94" y1="106.68" x2="281.94" y2="109.22" width="0.1524" layer="91"/>
 <wire x1="281.94" y1="109.22" x2="274.32" y2="109.22" width="0.1524" layer="91"/>
 <junction x="274.32" y="109.22"/>
+</segment>
+<segment>
+<pinref part="P+8" gate="1" pin="+5V"/>
+<pinref part="R13" gate="G$1" pin="2"/>
+<wire x1="33.02" y1="35.56" x2="33.02" y2="33.02" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -9444,10 +9449,6 @@ Source: Fairchild .. BAT54.pdf</description>
 <wire x1="236.22" y1="106.68" x2="236.22" y2="109.22" width="0.1524" layer="91"/>
 <wire x1="236.22" y1="109.22" x2="243.84" y2="109.22" width="0.1524" layer="91"/>
 <junction x="243.84" y="109.22"/>
-</segment>
-<segment>
-<pinref part="P+9" gate="1" pin="V+"/>
-<pinref part="R13" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="N$22" class="0">

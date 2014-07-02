@@ -9059,7 +9059,7 @@ Source: Fairchild .. BAT54.pdf</description>
 <part name="C10" library="rcl" deviceset="C-EU" device="C0805" value="220nF"/>
 <part name="D7" library="diode" deviceset="ZENER-DIODE" device="SOT23"/>
 <part name="GND20" library="supply1" deviceset="GND" device=""/>
-<part name="R10" library="resistor" deviceset="R-EU_" device="M0805" value="100k"/>
+<part name="R10" library="resistor" deviceset="R-EU_" device="M0805" value="180"/>
 </parts>
 <sheets>
 <sheet>
