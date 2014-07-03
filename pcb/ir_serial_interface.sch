@@ -8626,9 +8626,13 @@ Source: Fairchild .. BAT54.pdf</description>
 <wire x1="0" y1="2.54" x2="12.7" y2="2.54" width="0.1524" layer="91"/>
 <wire x1="12.7" y1="2.54" x2="12.7" y2="-7.62" width="0.1524" layer="91"/>
 <wire x1="12.7" y1="-7.62" x2="147.32" y2="-7.62" width="0.1524" layer="91"/>
-<wire x1="147.32" y1="-7.62" x2="147.32" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="-7.62" x2="147.32" y2="12.7" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="RB7/BKI3/PGD"/>
+<wire x1="147.32" y1="12.7" x2="147.32" y2="38.1" width="0.1524" layer="91"/>
 <wire x1="147.32" y1="38.1" x2="132.08" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="IC1" gate="G$1" pin="RC7/RX/DT/SDO"/>
+<wire x1="132.08" y1="12.7" x2="147.32" y2="12.7" width="0.1524" layer="91"/>
+<junction x="147.32" y="12.7"/>
 </segment>
 </net>
 <net name="N$4" class="0">
@@ -8637,9 +8641,13 @@ Source: Fairchild .. BAT54.pdf</description>
 <pinref part="U$1" gate="G$1" pin="PGC"/>
 <wire x1="10.16" y1="0" x2="0" y2="0" width="0.1524" layer="91"/>
 <wire x1="10.16" y1="-10.16" x2="149.86" y2="-10.16" width="0.1524" layer="91"/>
-<wire x1="149.86" y1="-10.16" x2="149.86" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="149.86" y1="-10.16" x2="149.86" y2="10.16" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="RB6/KBI2/PGC"/>
+<wire x1="149.86" y1="10.16" x2="149.86" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="149.86" y1="35.56" x2="132.08" y2="35.56" width="0.1524" layer="91"/>
+<pinref part="IC1" gate="G$1" pin="RC6/TX/CK"/>
+<wire x1="132.08" y1="10.16" x2="149.86" y2="10.16" width="0.1524" layer="91"/>
+<junction x="149.86" y="10.16"/>
 </segment>
 </net>
 <net name="N$6" class="0">

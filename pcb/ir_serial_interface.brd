@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.0125" unitdist="inch" unit="inch" style="dots" multiple="1" display="no" altdistance="0.00625" altunitdist="inch" altunit="inch"/>
+<grid distance="0.05" unitdist="inch" unit="inch" style="dots" multiple="1" display="no" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -3035,11 +3035,15 @@ design rules under a new name.</description>
 <contactref element="IC1" pad="28"/>
 <wire x1="52.935" y1="48.26" x2="52.935" y2="47.5375" width="0.4064" layer="16"/>
 <wire x1="52.935" y1="47.5375" x2="52.3875" y2="46.99" width="0.4064" layer="16"/>
-<wire x1="52.3875" y1="46.99" x2="30.1625" y2="46.99" width="0.4064" layer="16"/>
+<wire x1="52.3875" y1="46.99" x2="40.9575" y2="46.99" width="0.4064" layer="16"/>
+<wire x1="40.9575" y1="46.99" x2="30.1625" y2="46.99" width="0.4064" layer="16"/>
 <wire x1="30.1625" y1="46.99" x2="28.2575" y2="45.085" width="0.4064" layer="16"/>
 <wire x1="28.2575" y1="45.085" x2="28.2575" y2="44.1325" width="0.4064" layer="16"/>
 <via x="28.2575" y="44.1325" extent="1-16" drill="0.5"/>
 <wire x1="28.2575" y1="41.61" x2="28.2575" y2="44.1325" width="0.4064" layer="1"/>
+<contactref element="IC1" pad="18"/>
+<wire x1="40.9575" y1="41.61" x2="40.9575" y2="46.99" width="0.4064" layer="1"/>
+<via x="40.9575" y="46.99" extent="1-16" drill="0.5"/>
 </signal>
 <signal name="N$4">
 <contactref element="U$1" pad="5"/>
@@ -3048,9 +3052,13 @@ design rules under a new name.</description>
 <wire x1="54.435" y1="47.1325" x2="53.34" y2="46.0375" width="0.4064" layer="16"/>
 <via x="29.5275" y="43.18" extent="1-16" drill="0.5"/>
 <wire x1="29.5275" y1="43.18" x2="29.5275" y2="41.61" width="0.4064" layer="1"/>
-<wire x1="53.34" y1="46.0375" x2="30.48" y2="46.0375" width="0.4064" layer="16"/>
+<wire x1="53.34" y1="46.0375" x2="42.2275" y2="46.0375" width="0.4064" layer="16"/>
+<wire x1="42.2275" y1="46.0375" x2="30.48" y2="46.0375" width="0.4064" layer="16"/>
 <wire x1="30.48" y1="46.0375" x2="29.5275" y2="45.085" width="0.4064" layer="16"/>
 <wire x1="29.5275" y1="45.085" x2="29.5275" y2="43.18" width="0.4064" layer="16"/>
+<contactref element="IC1" pad="17"/>
+<wire x1="42.2275" y1="41.61" x2="42.2275" y2="46.0375" width="0.4064" layer="1"/>
+<via x="42.2275" y="46.0375" extent="1-16" drill="0.5"/>
 </signal>
 <signal name="N$6">
 <contactref element="R3" pad="1"/>

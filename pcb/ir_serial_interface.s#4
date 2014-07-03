@@ -9057,9 +9057,8 @@ Source: Fairchild .. BAT54.pdf</description>
 <part name="D6" library="diode" deviceset="BAT54" device="" value="BAT65-05"/>
 <part name="C9" library="rcl" deviceset="C-EU" device="C0805" value="220nF"/>
 <part name="C10" library="rcl" deviceset="C-EU" device="C0805" value="220nF"/>
-<part name="D7" library="diode" deviceset="ZENER-DIODE" device="SOT23"/>
+<part name="D7" library="diode" deviceset="ZENER-DIODE" device="SOT23" value="MMBZ5231BLT1G"/>
 <part name="GND20" library="supply1" deviceset="GND" device=""/>
-<part name="R10" library="resistor" deviceset="R-EU_" device="M0805" value="180"/>
 </parts>
 <sheets>
 <sheet>
@@ -9125,9 +9124,8 @@ Source: Fairchild .. BAT54.pdf</description>
 <instance part="D6" gate="G$1" x="208.28" y="93.98" rot="R270"/>
 <instance part="C9" gate="G$1" x="177.8" y="99.06" rot="R90"/>
 <instance part="C10" gate="G$1" x="195.58" y="88.9" rot="R90"/>
-<instance part="D7" gate="G$1" x="231.14" y="83.82" rot="R90"/>
+<instance part="D7" gate="G$1" x="231.14" y="78.74" rot="R90"/>
 <instance part="GND20" gate="1" x="231.14" y="66.04"/>
-<instance part="R10" gate="G$1" x="231.14" y="76.2" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -9271,9 +9269,9 @@ Source: Fairchild .. BAT54.pdf</description>
 <junction x="149.86" y="88.9"/>
 </segment>
 <segment>
+<pinref part="D7" gate="G$1" pin="A"/>
 <pinref part="GND20" gate="1" pin="GND"/>
-<pinref part="R10" gate="G$1" pin="2"/>
-<wire x1="231.14" y1="68.58" x2="231.14" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="231.14" y1="76.2" x2="231.14" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -9513,20 +9511,21 @@ Source: Fairchild .. BAT54.pdf</description>
 <wire x1="246.38" y1="88.9" x2="231.14" y2="88.9" width="0.1524" layer="91"/>
 <pinref part="D7" gate="G$1" pin="C"/>
 <wire x1="231.14" y1="88.9" x2="208.28" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="231.14" y1="86.36" x2="231.14" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="231.14" y1="81.28" x2="231.14" y2="88.9" width="0.1524" layer="91"/>
 <junction x="231.14" y="88.9"/>
-</segment>
-</net>
-<net name="N$20" class="0">
-<segment>
-<pinref part="R10" gate="G$1" pin="1"/>
-<pinref part="D7" gate="G$1" pin="A"/>
-<wire x1="231.14" y1="78.74" x2="231.14" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
 </sheet>
 </sheets>
+<errors>
+<approved hash="104,1,55.88,20.32,IC1,VSS,GND,,,"/>
+<approved hash="104,1,132.08,17.78,IC1,VDD,+5V,,,"/>
+<approved hash="104,1,132.08,15.24,IC1,VSS,GND,,,"/>
+<approved hash="202,1,55.88,17.78,IC1,OSC1/CLKI,,,,"/>
+<approved hash="104,1,259.08,17.78,BAT1,-,GND,,,"/>
+<approved hash="104,1,259.08,27.94,BAT1,+,V+,,,"/>
+</errors>
 </schematic>
 </drawing>
 </eagle>
