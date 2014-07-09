@@ -132,7 +132,9 @@ void main(void) {
 	fifo_tail = 0;
 	
 	init_system();	
+	LED_PIN = 1;
 	sleep_ms(100);
+	LED_PIN = 0;
 
 #ifdef DEBUG
 	usart_puts("\n\rMeterLogger... serial working\n\r");
