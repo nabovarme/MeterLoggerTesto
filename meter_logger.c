@@ -851,14 +851,14 @@ static void isr_high_prio(void) __interrupt 1 {
 							fsk_proto.state = IDLE;
 						}
 #ifdef DEBUG_LED_ON_FSK_TX
-						DEBUG_PIN = 0;
+						LED_PIN = 0;
 #endif
 						break;
 					case IDLE:
 						send_fsk_low();
 						fsk_proto.state = START_BIT_SENT;
 #ifdef DEBUG_LED_ON_FSK_TX
-						DEBUG_PIN = 1;
+						LED_PIN = 1;
 #endif
 						break;
 					case START_BIT_SENT:
@@ -866,13 +866,13 @@ static void isr_high_prio(void) __interrupt 1 {
 							if (fsk_proto.data & (0x80 >> fsk_proto.data_len)) {
 								send_fsk_high();
 #ifdef DEBUG_LED_ON_FSK_TX
-								DEBUG_PIN = 0;
+								LED_PIN = 0;
 #endif
 							}
 							else {
 								send_fsk_low();
 #ifdef DEBUG_LED_ON_FSK_TX
-								DEBUG_PIN = 1;
+								LED_PIN = 1;
 #endif
 							}
 						}
@@ -884,14 +884,14 @@ static void isr_high_prio(void) __interrupt 1 {
 						send_fsk_high();
 						fsk_proto.state = STOP_BIT_SENT;
 #ifdef DEBUG_LED_ON_FSK_TX
-						DEBUG_PIN = 0;
+						LED_PIN = 0;
 #endif
 						break;
 					case STOP_BIT_SENT:
 						send_fsk_high();
 						fsk_proto.state = INIT_STATE;
 #ifdef DEBUG_LED_ON_FSK_TX
-						DEBUG_PIN = 0;
+						LED_PIN = 0;
 #endif
 						break;
 				}
@@ -909,7 +909,7 @@ static void isr_high_prio(void) __interrupt 1 {
 			//TMR0L = (unsigned char)timer0_reload;
 			//fsk_proto.start_bit_time += timer_0;
 #ifdef DEBUG_LED_ON_FSK_RX
-			DEBUG_PIN = 1;
+			LED_PIN = 1;
 #endif
 			fsk_proto.diff = timer_0 - last_timer_0;
 			last_timer_0 = timer_0;
@@ -945,7 +945,7 @@ static void isr_high_prio(void) __interrupt 1 {
 		}
 #ifdef DEBUG_LED_ON_FSK_RX
 		else {					// faling edge
-			DEBUG_PIN = 0;
+			LED_PIN = 0;
 		}
 #endif
 

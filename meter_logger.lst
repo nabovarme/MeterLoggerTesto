@@ -1,6 +1,6 @@
 gplink-1.2.0 #980 (Oct 25 2013)
 Copyright (c) 1998-2013 gputils project
-Listing File Generated: 7-10-2014  01:00:06
+Listing File Generated: 7-10-2014  02:46:16
  
  
 Address  Value    Disassembly              Source
@@ -8,7 +8,7 @@ Address  Value    Disassembly              Source
                                            ;--------------------------------------------------------
                                            ; File Created by SDCC : free open source ANSI-C Compiler
                                            ; Version 3.4.0 #8981 (Jul  1 2014) (Mac OS X x86_64)
-                                           ; This file was generated Thu Jul 10 01:00:06 2014
+                                           ; This file was generated Thu Jul 10 02:46:16 2014
                                            ;--------------------------------------------------------
                                            ; PIC16 port for the Microchip 16-bit core micros
                                            ;--------------------------------------------------------
@@ -9570,8 +9570,8 @@ Address  Value    Disassembly              Source
 002d60   0105     movlb   0x5              	BANKSEL	_fsk_proto
 002d62   6f00     movwf   0, 0x1           	MOVWF	_fsk_proto, B
                                            _00460_DS_:
-                                           ;	.line	854; meter_logger.c	DEBUG_PIN = 0;
-002d64   9481     bcf     0x81, 0x2, 0     	BCF	_PORTBbits, 2
+                                           ;	.line	854; meter_logger.c	LED_PIN = 0;
+002d64   9881     bcf     0x81, 0x4, 0     	BCF	_PORTBbits, 4
                                            ;	.line	856; meter_logger.c	break;
 002d66   d037     bra     0x2dd6           	BRA	_00473_DS_
                                            _00461_DS_:
@@ -9582,8 +9582,8 @@ Address  Value    Disassembly              Source
 002d6c   0e03     movlw   0x3              	MOVLW	0x03
 002d6e   0105     movlb   0x5              	BANKSEL	_fsk_proto
 002d70   6f00     movwf   0, 0x1           	MOVWF	_fsk_proto, B
-                                           ;	.line	861; meter_logger.c	DEBUG_PIN = 1;
-002d72   8481     bsf     0x81, 0x2, 0     	BSF	_PORTBbits, 2
+                                           ;	.line	861; meter_logger.c	LED_PIN = 1;
+002d72   8881     bsf     0x81, 0x4, 0     	BSF	_PORTBbits, 4
                                            ;	.line	863; meter_logger.c	break;
 002d74   d030     bra     0x2dd6           	BRA	_00473_DS_
                                            _00462_DS_:
@@ -9618,15 +9618,15 @@ Address  Value    Disassembly              Source
                                            ;	.line	867; meter_logger.c	send_fsk_high();
 002da4   ec83     call    0xf06, 0         	CALL	_send_fsk_high
 002da6   f007
-                                           ;	.line	869; meter_logger.c	DEBUG_PIN = 0;
-002da8   9481     bcf     0x81, 0x2, 0     	BCF	_PORTBbits, 2
+                                           ;	.line	869; meter_logger.c	LED_PIN = 0;
+002da8   9881     bcf     0x81, 0x4, 0     	BCF	_PORTBbits, 4
 002daa   d003     bra     0x2db2           	BRA	_00467_DS_
                                            _00464_DS_:
                                            ;	.line	873; meter_logger.c	send_fsk_low();
 002dac   ec63     call    0x1ac6, 0        	CALL	_send_fsk_low
 002dae   f00d
-                                           ;	.line	875; meter_logger.c	DEBUG_PIN = 1;
-002db0   8481     bsf     0x81, 0x2, 0     	BSF	_PORTBbits, 2
+                                           ;	.line	875; meter_logger.c	LED_PIN = 1;
+002db0   8881     bsf     0x81, 0x4, 0     	BSF	_PORTBbits, 4
                                            _00467_DS_:
 002db2   0105     movlb   0x5              	BANKSEL	(_fsk_proto + 13)
                                            ;	.line	879; meter_logger.c	if (fsk_proto.data_len == 0) {
@@ -9646,8 +9646,8 @@ Address  Value    Disassembly              Source
 002dc2   0e0a     movlw   0xa              	MOVLW	0x0a
 002dc4   0105     movlb   0x5              	BANKSEL	_fsk_proto
 002dc6   6f00     movwf   0, 0x1           	MOVWF	_fsk_proto, B
-                                           ;	.line	887; meter_logger.c	DEBUG_PIN = 0;
-002dc8   9481     bcf     0x81, 0x2, 0     	BCF	_PORTBbits, 2
+                                           ;	.line	887; meter_logger.c	LED_PIN = 0;
+002dc8   9881     bcf     0x81, 0x4, 0     	BCF	_PORTBbits, 4
                                            ;	.line	889; meter_logger.c	break;
 002dca   d005     bra     0x2dd6           	BRA	_00473_DS_
                                            _00471_DS_:
@@ -9657,8 +9657,8 @@ Address  Value    Disassembly              Source
 002dd0   0105     movlb   0x5              	BANKSEL	_fsk_proto
                                            ;	.line	892; meter_logger.c	fsk_proto.state = INIT_STATE;
 002dd2   6b00     clrf    0, 0x1           	CLRF	_fsk_proto, B
-                                           ;	.line	894; meter_logger.c	DEBUG_PIN = 0;
-002dd4   9481     bcf     0x81, 0x2, 0     	BCF	_PORTBbits, 2
+                                           ;	.line	894; meter_logger.c	LED_PIN = 0;
+002dd4   9881     bcf     0x81, 0x4, 0     	BCF	_PORTBbits, 4
                                            _00473_DS_:
                                            ;	.line	901; meter_logger.c	INTCONbits.TMR0IF = 0;
 002dd6   94f2     bcf     0xf2, 0x2, 0     	BCF	_INTCONbits, 2
@@ -9689,8 +9689,8 @@ Address  Value    Disassembly              Source
 002e00   1001     iorwf   0x1, 0, 0        	IORWF	r0x01, W
                                            ; removed redundant BANKSEL
 002e02   6f48     movwf   0x48, 0x1        	MOVWF	(_timer_0 + 1), B
-                                           ;	.line	912; meter_logger.c	DEBUG_PIN = 1;
-002e04   8481     bsf     0x81, 0x2, 0     	BSF	_PORTBbits, 2
+                                           ;	.line	912; meter_logger.c	LED_PIN = 1;
+002e04   8881     bsf     0x81, 0x4, 0     	BSF	_PORTBbits, 4
 002e06   0105     movlb   0x5              	BANKSEL	_last_timer_0
                                            ;	.line	914; meter_logger.c	fsk_proto.diff = timer_0 - last_timer_0;
 002e08   514b     movf    0x4b, 0, 0x1     	MOVF	_last_timer_0, W, B
@@ -9834,8 +9834,8 @@ Address  Value    Disassembly              Source
 002ec2   6f08     movwf   0x8, 0x1         	MOVWF	(_fsk_proto + 8), B
 002ec4   d001     bra     0x2ec8           	BRA	_00490_DS_
                                            _00489_DS_:
-                                           ;	.line	948; meter_logger.c	DEBUG_PIN = 0;
-002ec6   9481     bcf     0x81, 0x2, 0     	BCF	_PORTBbits, 2
+                                           ;	.line	948; meter_logger.c	LED_PIN = 0;
+002ec6   9881     bcf     0x81, 0x4, 0     	BCF	_PORTBbits, 4
                                            _00490_DS_:
                                            ;	.line	952; meter_logger.c	PIR2bits.CMIF = 0;
 002ec8   9ca1     bcf     0xa1, 0x6, 0     	BCF	_PIR2bits, 6

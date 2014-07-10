@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.4.0 #8981 (Jul  1 2014) (Mac OS X x86_64)
-; This file was generated Thu Jul 10 01:00:06 2014
+; This file was generated Thu Jul 10 02:46:16 2014
 ;--------------------------------------------------------
 ; PIC16 port for the Microchip 16-bit core micros
 ;--------------------------------------------------------
@@ -8912,8 +8912,8 @@ _00458_DS_:
 	BANKSEL	_fsk_proto
 	MOVWF	_fsk_proto, B
 _00460_DS_:
-;	.line	854; meter_logger.c	DEBUG_PIN = 0;
-	BCF	_PORTBbits, 2
+;	.line	854; meter_logger.c	LED_PIN = 0;
+	BCF	_PORTBbits, 4
 ;	.line	856; meter_logger.c	break;
 	BRA	_00473_DS_
 _00461_DS_:
@@ -8923,8 +8923,8 @@ _00461_DS_:
 	MOVLW	0x03
 	BANKSEL	_fsk_proto
 	MOVWF	_fsk_proto, B
-;	.line	861; meter_logger.c	DEBUG_PIN = 1;
-	BSF	_PORTBbits, 2
+;	.line	861; meter_logger.c	LED_PIN = 1;
+	BSF	_PORTBbits, 4
 ;	.line	863; meter_logger.c	break;
 	BRA	_00473_DS_
 _00462_DS_:
@@ -8957,14 +8957,14 @@ _00818_DS_:
 	BZ	_00464_DS_
 ;	.line	867; meter_logger.c	send_fsk_high();
 	CALL	_send_fsk_high
-;	.line	869; meter_logger.c	DEBUG_PIN = 0;
-	BCF	_PORTBbits, 2
+;	.line	869; meter_logger.c	LED_PIN = 0;
+	BCF	_PORTBbits, 4
 	BRA	_00467_DS_
 _00464_DS_:
 ;	.line	873; meter_logger.c	send_fsk_low();
 	CALL	_send_fsk_low
-;	.line	875; meter_logger.c	DEBUG_PIN = 1;
-	BSF	_PORTBbits, 2
+;	.line	875; meter_logger.c	LED_PIN = 1;
+	BSF	_PORTBbits, 4
 _00467_DS_:
 	BANKSEL	(_fsk_proto + 13)
 ;	.line	879; meter_logger.c	if (fsk_proto.data_len == 0) {
@@ -8983,8 +8983,8 @@ _00470_DS_:
 	MOVLW	0x0a
 	BANKSEL	_fsk_proto
 	MOVWF	_fsk_proto, B
-;	.line	887; meter_logger.c	DEBUG_PIN = 0;
-	BCF	_PORTBbits, 2
+;	.line	887; meter_logger.c	LED_PIN = 0;
+	BCF	_PORTBbits, 4
 ;	.line	889; meter_logger.c	break;
 	BRA	_00473_DS_
 _00471_DS_:
@@ -8993,8 +8993,8 @@ _00471_DS_:
 	BANKSEL	_fsk_proto
 ;	.line	892; meter_logger.c	fsk_proto.state = INIT_STATE;
 	CLRF	_fsk_proto, B
-;	.line	894; meter_logger.c	DEBUG_PIN = 0;
-	BCF	_PORTBbits, 2
+;	.line	894; meter_logger.c	LED_PIN = 0;
+	BCF	_PORTBbits, 4
 _00473_DS_:
 ;	.line	901; meter_logger.c	INTCONbits.TMR0IF = 0;
 	BCF	_INTCONbits, 2
@@ -9023,8 +9023,8 @@ _00475_DS_:
 	IORWF	r0x01, W
 ; removed redundant BANKSEL
 	MOVWF	(_timer_0 + 1), B
-;	.line	912; meter_logger.c	DEBUG_PIN = 1;
-	BSF	_PORTBbits, 2
+;	.line	912; meter_logger.c	LED_PIN = 1;
+	BSF	_PORTBbits, 4
 	BANKSEL	_last_timer_0
 ;	.line	914; meter_logger.c	fsk_proto.diff = timer_0 - last_timer_0;
 	MOVF	_last_timer_0, W, B
@@ -9164,8 +9164,8 @@ _00482_DS_:
 	MOVWF	(_fsk_proto + 8), B
 	BRA	_00490_DS_
 _00489_DS_:
-;	.line	948; meter_logger.c	DEBUG_PIN = 0;
-	BCF	_PORTBbits, 2
+;	.line	948; meter_logger.c	LED_PIN = 0;
+	BCF	_PORTBbits, 4
 _00490_DS_:
 ;	.line	952; meter_logger.c	PIR2bits.CMIF = 0;
 	BCF	_PIR2bits, 6
